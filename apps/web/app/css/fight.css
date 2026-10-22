@@ -1,0 +1,328 @@
+/* fight: the scene-first redesign. Loaded after globals.css (app/layout.tsx), so a rule here wins a tie. */
+
+/* The tracker's rows (components/gm/tracker). A row is a grid of cells for the eye; its select button lies under them
+   (absolute), and the WOUNDS / SHOCK numbers and a threat's visibility chip are sibling buttons over it. */
+.fight-agents {
+  --cols: 78px minmax(0, 1fr) 150px 76px 34px 34px minmax(84px, 1fr);
+}
+.fight-threats {
+  --cols: 78px minmax(0, 1fr) 150px 76px 34px 34px minmax(84px, 1fr) 84px;
+}
+.fight-head,
+.fight-row {
+  display: grid;
+  grid-template-columns: var(--cols);
+  gap: 8px;
+  align-items: center;
+  padding: 0 8px;
+}
+.fight-head {
+  min-height: 30px;
+  background: var(--iron-2);
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.fight-row {
+  position: relative;
+  min-height: 48px;
+  border: 1px solid transparent;
+}
+.fight-rows > .fight-row:nth-child(even) {
+  background: var(--vellum-2);
+}
+.fight-select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  border: 1px solid transparent;
+  background: transparent;
+}
+.fight-select:focus-visible {
+  outline-offset: -3px;
+}
+.fight-row.sel .fight-select {
+  border-color: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--vellum);
+}
+.fight-cell {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  pointer-events: none; /* a tap on a cell reaches the select button under it */
+}
+.fight-row .tag {
+  font-size: 14px;
+}
+.fight-name {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.fight-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fight-marker {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border: 1.5px solid var(--ink);
+}
+.fight-harm {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.fight-row .track {
+  width: 60px;
+  flex: none;
+}
+.fight-status {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.fight-row .chip {
+  white-space: normal;
+  line-height: 1.15;
+  padding: 2px 6px;
+}
+/* The tappable numbers and the visibility chip: 44px targets, dotted like a field you can edit. */
+.fight-num,
+.fight-vis {
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+}
+.fight-num {
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: underline dotted;
+  text-underline-offset: 5px;
+}
+.fight-num[aria-expanded="true"] {
+  color: var(--red);
+  background: var(--red-tint);
+  text-decoration-style: solid;
+}
+.fight-vis {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+}
+.fight-row.now,
+.fight-rows > .fight-row.now:nth-child(even) {
+  background: var(--red-fill);
+  color: var(--bone);
+}
+.fight-row.now .dim,
+.fight-row.now .accent {
+  color: inherit;
+}
+.fight-row.now .chip {
+  color: var(--bone);
+  border-color: var(--bone-2);
+  background: transparent;
+}
+.fight-row.now .track {
+  border-color: var(--bone);
+}
+.fight-row.now .track > span {
+  background: var(--bone);
+}
+.fight-row.now .fight-num[aria-expanded="true"] {
+  color: var(--bone);
+  background: var(--shade-28);
+}
+.fight-row.done {
+  color: var(--ink-3);
+}
+
+/* The delta pad: under its row, one for WOUNDS and SHOCK. Its own ink, whatever the row's (the acting row is bone). */
+.fight-pad {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 8px);
+  left: 80px;
+  width: min(420px, calc(100% - 96px));
+  padding: 10px;
+  color: var(--ink);
+  background: var(--vellum);
+  border: 2px solid var(--iron);
+  box-shadow:
+    inset 0 0 0 2px var(--vellum),
+    inset 0 0 0 3px var(--line),
+    0 12px 22px -4px var(--shade-28);
+  text-align: left;
+}
+.fight-pad-top {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.fight-pad-top .fight-seg {
+  flex: 1;
+}
+.fight-pad-top .fight-seg > button {
+  flex: 1;
+}
+.fight-pad-body {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.fight-amounts {
+  display: grid;
+  grid-template-columns: repeat(4, 52px);
+  grid-auto-rows: 52px;
+  gap: 8px;
+}
+.fight-amounts .btn {
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  font-size: 20px;
+  letter-spacing: 0;
+}
+.fight-pad-type {
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.fight-pad-foot {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+}
+
+/* A segmented choice (WOUNDS | SHOCK, DEAL | HEAL, HIDDEN | BAR ONLY | FULL): the pressed one is filled, and says so. */
+.fight-seg {
+  display: inline-flex;
+  background: var(--vellum);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+.fight-seg > button {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.fight-seg > button + button {
+  box-shadow: inset 1px 0 0 var(--ink);
+}
+.fight-seg > button[aria-pressed="true"] {
+  background: var(--red-fill);
+  color: var(--bone);
+}
+.fight-seg > button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* The key bar's fold-open panels (+ CONDITION, MORE) sit above the four buttons. */
+.fight-keys {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.fight-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  background: var(--vellum-2);
+}
+.fight-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.fight-pill {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-2);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.fight-pill[aria-pressed="true"] {
+  background: var(--red-fill);
+  border-color: var(--red-2);
+  color: var(--bone);
+}
+
+/* Narrower than the full row: CLASS, DEF, RES and the portraits go; the container is .tracker-main. */
+@container tracker (max-width: 801px) {
+  .fight-agents {
+    --cols: 78px minmax(0, 1fr) 150px 76px minmax(84px, 1fr);
+  }
+  .fight-threats {
+    --cols: 78px minmax(0, 1fr) 150px 76px minmax(84px, 1fr) 84px;
+  }
+  .fight-head .hide-sm,
+  .fight-row .hide-sm {
+    display: none;
+  }
+}
+/* Phones: the harm numbers keep their columns, STATUS and PLAYERS SEE drop to a second line under the name. */
+@container tracker (max-width: 599px) {
+  .fight-agents,
+  .fight-threats {
+    --cols: 64px minmax(0, 1fr) 84px 66px;
+  }
+  .fight-head > :nth-child(n + 7) {
+    display: none;
+  }
+  .fight-row {
+    row-gap: 0;
+    padding-block: 4px;
+  }
+  .fight-row .tag {
+    font-size: 12px;
+  }
+  .fight-label {
+    white-space: normal;
+  }
+  .fight-row .track {
+    display: none;
+  }
+  .fight-status {
+    grid-column: 2 / 4;
+  }
+  .fight-status:empty {
+    display: none;
+  }
+  .fight-vis {
+    grid-column: 4;
+  }
+  .fight-pad {
+    left: 0;
+    right: 0;
+    width: auto;
+  }
+}

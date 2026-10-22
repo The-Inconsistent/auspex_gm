@@ -1,9 +1,7 @@
 "use client";
-import Image from "next/image";
-import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 
 import {
-  CONDITIONS,
   Side,
   THREAT_CLASS_LABEL,
   THREAT_CLASS_RULES,
@@ -29,25 +27,26 @@ import {
   type LiveState,
   type MutationTable,
   type Threat,
-  type Visibility,
+  Visibility,
 } from "@wg/shared";
 
-import { Bar } from "@/components/ui/bar/bar";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
-import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { TurnActions } from "@/components/ui/turn-actions/turn-actions";
 import { VISIBILITY_LABEL } from "@/components/ui/visibility-select/constants";
-import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 import { parseCommand } from "@/lib/command/command";
-import { COUNTER_ACTIONS, COUNTER_ACTION_KEYS, type CounterAction, type CounterField } from "@/lib/command/constants";
+import { COUNTER_ACTIONS, type CounterField } from "@/lib/command/constants";
+import { counterKey } from "@/lib/fight-delta/fight-delta";
 import { combatantPortrait } from "@/lib/portraits/portraits";
 
 import { AddCombatants } from "./components/add-combatants/add-combatants";
 import { CritPerils } from "./components/crit-perils/crit-perils";
-import { AMOUNTS, LOG_LIMIT } from "./constants";
-import type { LogEntry, Run } from "./types";
+import { DeltaPad } from "./components/delta-pad/delta-pad";
+import { FightRow } from "./components/fight-row/fight-row";
+import { KeyBar } from "./components/key-bar/key-bar";
+import { LOG_LIMIT, NEW_ROUND, VISIBILITY_TAP } from "./constants";
+import type { KeyAction, LogEntry, Run, Vitals } from "./types";
 
 type TrackerProps = {
   state: LiveState;
@@ -153,7 +152,8 @@ const conditionsAction = (c: Combatant, conditions: string[]): ActionInput =>
 
 export function Tracker({ state, send, bestiary, lookups = null, mutations = [] }: TrackerProps) {
   const [selected, setSelected] = useState<string | null>(null);
-  const [amountFor, setAmountFor] = useState<CounterAction | null>(null);
+  // The delta pad: which row's number was tapped, and which track it is.
+  const [pad, setPad] = useState<{ id: string; field: CounterField } | null>(null);
   const [cmd, setCmd] = useState("");
   const [log, setLog] = useState<LogEntry[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -215,19 +215,69 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
   const portraits = enc.combatants.some((c) => portraitOf(c));
   const done = (side: Side) => `${rows(side).filter((c) => c.acted).length}/${rows(side).length}`;
   const seizeCost = sel && sideOf(sel) === "agents" ? "1 GLORY" : "1 RUIN";
+  const vitalsOf = (c: Combatant): Vitals => {
+    const ch = c.kind === "pc" ? chars.get(c.characterId) : undefined;
+    const d = ch ? derivedOf(ch) : null;
+    return c.kind === "pc"
+      ? {
+          wounds: ch?.wounds ?? 0,
+          maxWounds: d?.maxWounds ?? 0,
+          shock: ch?.shock ?? 0,
+          maxShock: d?.maxShock ?? 0,
+          defence: d?.defence,
+          resilience: d?.resilience,
+        }
+      : {
+          wounds: c.wounds,
+          maxWounds: c.maxWounds,
+          shock: c.shock,
+          maxShock: c.maxShock,
+          defence: c.stats?.defence,
+          resilience: c.stats?.resilience.value,
+        };
+  };
 
-  // Row tap: select the combatant, or deselect it if already selected.
-  const toggleSelected = (id: string) => setSelected(id === selected ? null : id);
+  // Row tap: select the combatant, or deselect it if already selected. The pad belongs to a row, so it closes.
+  const toggleSelected = (id: string) => {
+    setSelected(id === selected ? null : id);
+    setPad(null);
+  };
 
-  // Amount pad: applies the chosen counter action × n to the selected combatant.
-  const applyAmount = async (n: number) => {
-    if (!sel || !amountFor) return;
-    const { field, sign, word } = COUNTER_ACTIONS[amountFor];
+  // A row's WOUNDS or SHOCK number: selects that row and opens the pad on that track (a second tap on the same number
+  // closes it).
+  const handleCounter = ({ id, field }: { id: string; field: CounterField }) => {
+    setSelected(id);
+    setPad(pad?.id === id && pad.field === field ? null : { id, field });
+  };
+
+  // Delta pad: one signed delta on the padded row, through counterAction + run so the vox log, its notes and UNDO apply.
+  const applyDelta = async ({
+    combatant,
+    field,
+    delta,
+  }: {
+    combatant: Combatant;
+    field: CounterField;
+    delta: number;
+  }) => {
+    const { word } = COUNTER_ACTIONS[counterKey({ field, delta })];
     await run(
-      counterAction({ combatant: sel, field, delta: sign * n }),
-      `${nameOf(sel).toUpperCase()} ${sign > 0 ? "+" : "−"}${n} ${word}`,
+      counterAction({ combatant, field, delta }),
+      `${nameOf(combatant).toUpperCase()} ${delta > 0 ? "+" : "−"}${Math.abs(delta)} ${word}`,
     );
-    setAmountFor(null);
+    setPad(null);
+  };
+
+  // What the pad shows of each track, as the row does: what's left. A Mob's Wounds are its members; no Shock track is null.
+  const padReadout = (c: Combatant): Record<CounterField, string | null> => {
+    const v = vitalsOf(c);
+    return {
+      wounds:
+        c.kind === "threat" && c.mobCount !== null
+          ? `×${c.mobCount} OF ${c.mobStart} MEMBERS`
+          : `${Math.max(0, v.maxWounds - v.wounds)}/${v.maxWounds} LEFT`,
+      shock: v.maxShock === null ? null : `${Math.max(0, v.maxShock - v.shock)}/${v.maxShock} LEFT`,
+    };
   };
 
   // START TURN / SEIZE: starts the combatant's turn, then lists Conditions that tick at turn start, and the timed ones
@@ -285,10 +335,9 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
     setCmd("");
   };
 
-  // Condition picker: toggles the chosen Condition on the selected combatant.
-  const handleConditionPick = (e: ChangeEvent<HTMLSelectElement>) => {
+  // Condition chip: toggles the Condition on the selected combatant.
+  const handleConditionToggle = (k: string) => {
     if (!sel) return;
-    const k = e.target.value;
     const cur = conditionsOf(sel);
     const on = !cur.includes(k);
     void run(
@@ -297,13 +346,17 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
     );
   };
 
-  // PLAYERS picker: what the phones show of the selected threat. Hidden until its mini goes on the table (§11.56).
-  const handleVisibilityPick = (visibility: Visibility) => {
-    if (sel?.kind !== "threat") return;
+  // What the phones show of a threat, set from MORE or toggled HIDDEN ↔ BARS by its row's chip. Hidden until its mini goes on the table
+  // (§11.56).
+  const setVisibility = ({ threat, visibility }: { threat: Combatant; visibility: Visibility }) => {
     void run(
-      { type: "combatant.update", id: sel.id, visibility },
-      `${nameOf(sel).toUpperCase()} ${VISIBILITY_LABEL[visibility]}`,
+      { type: "combatant.update", id: threat.id, visibility },
+      `${nameOf(threat).toUpperCase()} ${VISIBILITY_LABEL[visibility]}`,
     );
+  };
+  const toggleVisibility = (c: Combatant) => {
+    if (c.kind !== "threat") return;
+    setVisibility({ threat: c, visibility: VISIBILITY_TAP[c.visibility] });
   };
 
   // AWARE: pays to let an ambushed combatant act in Round 1.
@@ -359,6 +412,26 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
     if (r.ok) setLog((x) => x.filter((y) => y.id !== entry.id)); // a refused undo keeps its button
   };
 
+  // The key bar: one turn button whose label follows the turn state, SEIZE when it's open to the selected row (§3.1).
+  const nobodyCanAct = !enc.combatants.some((x) => canAct(state, x));
+  const primary: KeyAction | null = current
+    ? { label: "END TURN", onClick: endTurn }
+    : sel && canAct(state, sel)
+      ? { label: `START ${nameOf(sel).toUpperCase()}'S TURN`, onClick: () => startTurn(sel, false) }
+      : nobodyCanAct
+        ? { label: NEW_ROUND, onClick: newRound }
+        : null;
+  const seize: KeyAction | null =
+    sel && !current && canAct(state, sel) && canSeize(state, sideOf(sel))
+      ? { label: `SEIZE · ${seizeCost}`, onClick: () => startTurn(sel, true) }
+      : null;
+  const ambush: KeyAction | null =
+    sel && enc.round === 1 && !sel.acted
+      ? sel.ambushed
+        ? { label: `AWARE · ${seizeCost}`, onClick: handleAware }
+        : { label: "AMBUSH", onClick: handleAmbush }
+      : null;
+
   return (
     <div className="tracker">
       <section className="tracker-main">
@@ -382,177 +455,86 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
               <span>{side.toUpperCase()}</span>
               <span style={{ fontSize: 12 }}>{done(side)} ACTED</span>
             </div>
-            <div className="row head">
+            <div className={`fight-head fight-${side}`}>
               <span>STATE</span>
               <span>DESIGNATION</span>
-              <span className="hide-sm">CLASS</span>
               <span>WOUNDS</span>
               <span>SHOCK</span>
-              <span className="hide-xs">DEF</span>
-              <span className="hide-xs">RES</span>
+              <span className="hide-sm">DEF</span>
+              <span className="hide-sm">RES</span>
               <span>STATUS</span>
-              <span className="hide-sm">PLAYERS</span>
+              {side === "threats" && <span>PLAYERS SEE</span>}
             </div>
-            {rows(side).map((c) => {
-              const ch = c.kind === "pc" ? chars.get(c.characterId) : undefined;
-              const d = ch ? derivedOf(ch) : null;
-              const now = c.id === enc.currentId;
-              const status = c.kind === "pc" ? (ch && d ? pcStatus(ch, d) : []) : threatStatus(c);
-              const pic = portraits ? portraitOf(c) : undefined;
-              const stateLabel = now
-                ? "▶ ACTING"
-                : c.acted
-                  ? "DONE"
-                  : c.ambushed && enc.round === 1
-                    ? "AMBUSHED"
-                    : "READY";
-              return (
-                <button
-                  key={c.id}
-                  className={`row ${now ? "now" : ""} ${c.id === selected ? "sel" : ""} ${c.acted ? "done" : ""}`}
-                  aria-pressed={c.id === selected}
-                  onClick={() => toggleSelected(c.id)}
-                >
-                  <span className={`tag ${now ? "accent" : "dim"}`}>{stateLabel}</span>
-                  <span style={{ fontWeight: 700, display: "flex", gap: 8, alignItems: "center" }}>
-                    {pic ? (
-                      <Image src={pic} alt="" width={120} className="portrait-thumb hide-sm" />
-                    ) : (
-                      portraits && <span className="portrait-thumb hide-sm" />
-                    )}
-                    {c.kind === "threat" && c.marker && (
-                      <span
-                        role="img"
-                        aria-label={`${c.marker} marker`}
-                        style={{
-                          width: 10,
-                          height: 10,
-                          flex: "none",
-                          background: `var(--marker-${c.marker})`,
-                          border: "1.5px solid var(--ink)",
-                          display: "inline-block",
-                        }}
+            <div className={`fight-rows fight-${side}`}>
+              {rows(side).map((c) => {
+                const ch = c.kind === "pc" ? chars.get(c.characterId) : undefined;
+                const d = ch ? derivedOf(ch) : null;
+                const now = c.id === enc.currentId;
+                const status = c.kind === "pc" ? (ch && d ? pcStatus(ch, d) : []) : threatStatus(c);
+                const stateLabel = now
+                  ? "▶ ACTING"
+                  : c.acted
+                    ? "DONE"
+                    : c.ambushed && enc.round === 1
+                      ? "AMBUSHED"
+                      : "READY";
+                const padId = `fight-pad-${c.id}`;
+                return (
+                  <FightRow
+                    key={c.id}
+                    combatant={c}
+                    name={nameOf(c)}
+                    vitals={vitalsOf(c)}
+                    conditions={conditionsOf(c)}
+                    status={status}
+                    stateLabel={stateLabel}
+                    portrait={portraits ? portraitOf(c) : undefined}
+                    showPortrait={portraits}
+                    now={now}
+                    selected={c.id === selected}
+                    padField={pad?.id === c.id ? pad.field : null}
+                    padId={padId}
+                    onSelect={() => toggleSelected(c.id)}
+                    onCounter={(field) => handleCounter({ id: c.id, field })}
+                    onVisibility={() => toggleVisibility(c)}
+                  >
+                    {pad?.id === c.id && (
+                      <DeltaPad
+                        id={padId}
+                        name={nameOf(c)}
+                        field={pad.field}
+                        onField={(field) => setPad({ id: c.id, field })}
+                        readout={padReadout(c)}
+                        onApply={({ field, delta }) => applyDelta({ combatant: c, field, delta })}
+                        onClose={() => setPad(null)}
                       />
                     )}
-                    {nameOf(c)}
-                  </span>
-                  <span className="tag hide-sm">{c.kind === "pc" ? "AGENT" : THREAT_CLASS_LABEL[c.threatClass]}</span>
-                  <span>
-                    {c.kind === "threat" && c.mobCount !== null ? (
-                      <span className="bar">
-                        ×{c.mobCount}{" "}
-                        <span style={{ fontSize: 14 }} className="dim">
-                          OF {c.mobStart}
-                        </span>
-                      </span>
-                    ) : (
-                      <Bar
-                        value={c.kind === "pc" ? (ch?.wounds ?? 0) : c.wounds}
-                        max={c.kind === "pc" ? (d?.maxWounds ?? 0) : c.maxWounds}
-                        danger
-                      />
-                    )}
-                  </span>
-                  <span>
-                    <Bar
-                      value={c.kind === "pc" ? (ch?.shock ?? 0) : c.shock}
-                      max={c.kind === "pc" ? (d?.maxShock ?? 0) : c.maxShock}
-                    />
-                  </span>
-                  <span className="hide-xs">{c.kind === "pc" ? d?.defence : c.stats?.defence}</span>
-                  <span className="hide-xs">{c.kind === "pc" ? d?.resilience : c.stats?.resilience.value}</span>
-                  <span style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-                    <StatusChips items={status} />
-                    {conditionsOf(c).map((k) => (
-                      <span key={k} className="chip">
-                        {k.toUpperCase()}
-                      </span>
-                    ))}
-                  </span>
-                  <span className={`tag hide-sm ${c.kind === "threat" && c.visibility !== "stats" ? "accent" : "dim"}`}>
-                    {VISIBILITY_LABEL[c.kind === "pc" ? "stats" : c.visibility]}
-                  </span>
-                </button>
-              );
-            })}
+                  </FightRow>
+                );
+              })}
+            </div>
           </div>
         ))}
 
         <div style={{ flex: 1 }} />
         {current && <TurnActions />}
         {error && <div className="red">! {error}</div>}
-        {amountFor && sel ? (
-          <div className="keys">
-            <span className="accent" style={{ alignSelf: "center" }}>
-              {amountFor.toUpperCase()} → {nameOf(sel).toUpperCase()}:
-            </span>
-            {AMOUNTS.map((n) => (
-              <button key={n} className="btn sq" onClick={() => applyAmount(n)}>
-                {n}
-              </button>
-            ))}
-            <button className="btn" onClick={() => setAmountFor(null)}>
-              CANCEL
-            </button>
-          </div>
-        ) : (
-          <div className="keys">
-            {current && (
-              <button className="btn primary" onClick={endTurn}>
-                END TURN
-              </button>
-            )}
-            {sel && !current && canAct(state, sel) && (
-              <button className="btn primary" onClick={() => startTurn(sel, false)}>
-                START TURN
-              </button>
-            )}
-            {sel && !current && canAct(state, sel) && canSeize(state, sideOf(sel)) && (
-              <button className="btn" onClick={() => startTurn(sel, true)}>
-                SEIZE · {seizeCost}
-              </button>
-            )}
-            {sel && (
-              <>
-                {COUNTER_ACTION_KEYS.map((k) => (
-                  <button key={k} className="btn" onClick={() => setAmountFor(k)}>
-                    {COUNTER_ACTIONS[k].button}
-                  </button>
-                ))}
-                <select className="btn" aria-label="Toggle condition" value="" onChange={handleConditionPick}>
-                  <option value="">±COND</option>
-                  {CONDITIONS.map((k) => (
-                    <option key={k} value={k}>
-                      {conditionsOf(sel).includes(k) ? `− ${k}` : `+ ${k}`}
-                    </option>
-                  ))}
-                </select>
-                {sel.kind === "threat" && <VisibilitySelect value={sel.visibility} onChange={handleVisibilityPick} />}
-                {enc.round === 1 &&
-                  !sel.acted &&
-                  (sel.ambushed ? (
-                    <button className="btn" onClick={handleAware}>
-                      AWARE · {seizeCost}
-                    </button>
-                  ) : (
-                    <button className="btn" onClick={handleAmbush}>
-                      AMBUSH
-                    </button>
-                  ))}
-                <button className="btn danger" onClick={handleRemove}>
-                  REMOVE
-                </button>
-              </>
-            )}
-            <span style={{ flex: 1 }} />
-            <button className="btn" onClick={newRound}>
-              NEW ROUND
-            </button>
-            <button className="btn danger" onClick={() => run({ type: "encounter.end" }, "ENCOUNTER ENDED")}>
-              END ENC
-            </button>
-          </div>
-        )}
+        <KeyBar
+          key={sel?.id ?? "none"}
+          primary={primary}
+          seize={seize}
+          conditions={sel && { name: nameOf(sel), active: conditionsOf(sel), onToggle: handleConditionToggle }}
+          more={{
+            ambush,
+            visibility:
+              sel?.kind === "threat"
+                ? { value: sel.visibility, onPick: (visibility) => setVisibility({ threat: sel, visibility }) }
+                : null,
+            remove: sel && { label: "REMOVE", onClick: handleRemove },
+            newRound: primary?.label === NEW_ROUND ? null : { label: NEW_ROUND, onClick: newRound },
+            endFight: { label: "END FIGHT", onClick: () => run({ type: "encounter.end" }, "ENCOUNTER ENDED") },
+          }}
+        />
         <form className="cmd" onSubmit={handleCmdSubmit}>
           <span className="label" aria-hidden="true">
             ORDER ›
