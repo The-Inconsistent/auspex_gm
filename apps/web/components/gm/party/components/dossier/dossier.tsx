@@ -1,6 +1,4 @@
 "use client";
-import { useState } from "react";
-
 import {
   deriveStats,
   rankOf,
@@ -31,11 +29,13 @@ type DossierProps = {
   send: Send;
   msg: PartyMsg | null;
   onResult: (r: ActionResult, ok: string) => void;
+  tab: DossierTab; // from the URL (/party/<agent>/gear)
+  onTab: (tab: DossierTab) => void;
   onClose: () => void;
 };
 
 // One Agent's dossier: a side sheet with four tabs, each label carrying a value. Every control the old PARTY card had
-// is in one of them; a refusal shows at the top of the sheet. Keyed by the Agent, so another one starts on STATUS.
+// is in one of them; a refusal shows at the top of the sheet. Its tab is in the URL, STATUS when none is.
 export function Dossier({
   character: c,
   state,
@@ -46,9 +46,10 @@ export function Dossier({
   send,
   msg,
   onResult,
+  tab,
+  onTab,
   onClose,
 }: DossierProps) {
-  const [tab, setTab] = useState<DossierTab>("status");
   const tier = state.campaign.tier;
   const d = deriveStats({ stats: c.stats, overrides: c.overrides, tier });
   const labels: Record<DossierTab, string> = {
@@ -72,7 +73,7 @@ export function Dossier({
             aria-selected={tab === t}
             aria-controls="dossier-panel"
             className="tab"
-            onClick={() => setTab(t)}
+            onClick={() => onTab(t)}
           >
             {labels[t]}
           </button>

@@ -125,7 +125,7 @@ creator ──POST /api/campaigns──▶ campaign + membership (gm) ──▶ 
 GM: invite.create ──▶ code (shown once) ──▶ QR / link  /invite/<code>
 /invite/<code> ──POST /api/invites/:code/accept──▶ membership (signed in) | guest token + Set-Cookie wg_token
 GM: token.issue ──▶ guest token ──▶ QR code  /join/<token> ──POST /api/join──▶ Set-Cookie wg_token ──303──▶ /c/<id>
-/c/<id> (Server Component) ──GET /api/campaigns/:id/me──▶ { campaignId, role, characterId, userId, admin } ──▶ GM app | player app
+/c/<id>/… ((table) layout, once) ──GET /api/campaigns/:id/me──▶ { campaignId, role, characterId, userId, admin } ──▶ GM app | player app
 socket handshake { campaignId } + cookies ──▶ middleware resolves ctx before the connection is accepted
 ```
 
@@ -148,8 +148,9 @@ socket handshake { campaignId } + cookies ──▶ middleware resolves ctx befo
 ## One app, two views
 
 The GM board and the player view are one Next app with two routes: `/` is the lobby, and `/c/<campaignId>` is a
-table. `app/c/[campaignId]/page.tsx` asks `/api/campaigns/:id/me` for the caller's seat, and the seat decides the view:
-`GmApp` for the GM, `PlayerApp` for a player. The code trees are separate (`components/gm/`, `components/player/`), and Next loads only the
+table. `app/c/[campaignId]/(table)/layout.tsx` asks `/api/campaigns/:id/me` for the caller's seat, once per load, and
+the seat decides the view: `GmApp` for the GM (every GM tab, entry and editor is a route under it, frontend.md §1.1),
+`PlayerApp` for a player. The code trees are separate (`components/gm/`, `components/player/`), and Next loads only the
 client code for the view it rendered.
 
 The two aren't separate apps because the separation that matters is in the **data**: the server redacts every player

@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 
 import { rankOf, type ActionResult, type Character, type LiveState, type MutationTable } from "@wg/shared";
@@ -37,9 +38,9 @@ export function AdvanceTab({ character: c, state, mutations, send, onResult }: A
         </button>
         {/* The one editor (issue #18): name, portrait, detail, build and the GM's overrides. A draft a player sent
             opens there too: the GM ticks what only the GM judges, and saves it. */}
-        <a className={`btn ${c.draft ? "primary" : ""}`} href={`/c/${state.campaign.id}/build/${c.id}`}>
+        <Link className={`btn ${c.draft ? "primary" : ""}`} href={`/c/${state.campaign.id}/build/${c.id}`}>
           {c.draft ? "OPEN DRAFT" : "EDIT"}
-        </a>
+        </Link>
         <SheetDialog me={c} tier={state.campaign.tier} table={{ state, send }} />
       </div>
       {mutating && <MutationRoll character={c} tables={mutations} send={send} onResult={onResult} />}

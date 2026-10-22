@@ -19,8 +19,8 @@ seat.
 | `/` | `app/page.tsx` | Server Component | The lobby for a signed-in user, a redirect to a returning guest's table, or a sign-in landing |
 | `/admin` | `app/admin/page.tsx` | Server Component | The admin page (USERS, GAMES, the latest admin events): asks `/api/admin/*` and sends a non-admin to `/` |
 | `/c/new` | `app/c/new/page.tsx` | Server Component | CREATE NEW CAMPAIGN's steps before the campaign exists: asks `/api/frameworks` (a creator's only, so it is the gate too) and renders `NewCampaign` |
-| `/c/<campaignId>` | `app/c/[campaignId]/page.tsx` | Server Component | Asks `/api/campaigns/:id/me` for the caller's seat, and renders `GmApp`, `PlayerApp` or a `StatusScreen`. `?tab=setup` (any GM tab) opens the GM app there |
-| `/c/<campaignId>/setup` | `app/c/[campaignId]/setup/page.tsx` | Server Component | CREATE NEW CAMPAIGN's steps after CREATE, for the GM only: loads the places, faction presets and scene presets, and renders `CampaignSetup` |
+| `/c/<campaignId>` and every GM route under it | `app/c/[campaignId]/(table)/layout.tsx` | Server Component (layout) | Asks `/api/campaigns/:id/me` for the caller's seat, and renders `GmApp` (with the route as its children), `PlayerApp`, the table screen or a `StatusScreen`. The GM's URLs are in §1.1 |
+| `/c/<campaignId>/start` | `app/c/[campaignId]/start/page.tsx` | Server Component | CREATE NEW CAMPAIGN's steps after CREATE, for the GM only: loads the places, faction presets and scene presets, and renders `CampaignSetup` |
 | `/invite/<code>` | `app/invite/[code]/page.tsx` | Server Component | Previews an invite and renders `InviteAccept` |
 | `/sign-in`, `/sign-up` | `app/sign-in/[[...sign-in]]/page.tsx`, `app/sign-up/[[...sign-up]]/page.tsx` | Server Component | Clerk's `<SignIn />` and `<SignUp />` |
 | `/library/<characterId>` | `app/library/[characterId]/page.tsx` | Server Component | The builder on a character in the signed-in user's own library (issue #14): no campaign, no seat |
@@ -91,9 +91,9 @@ moment any link is tapped, since every page fetches from the api first.
 4. **NAME**: the name and a review of every step, each with EDIT.
 
 CREATE NEW CAMPAIGN POSTs everything to `/api/campaigns` from the browser in one go, so leaving half-way stores
-nothing, then replaces the page with `/c/<campaignId>/setup`. A refusal shows inline.
+nothing, then replaces the page with `/c/<campaignId>/start`. A refusal shows inline.
 
-### `/c/<campaignId>/setup`: `app/c/[campaignId]/setup/page.tsx`
+### `/c/<campaignId>/start`: `app/c/[campaignId]/start/page.tsx`
 
 `CampaignSetup` (`components/campaign-setup/`) opens the table socket (`useTable`) and walks the last three steps,
 each saved as it goes through CODEX's and PARTY's own pieces:
@@ -102,9 +102,13 @@ each saved as it goes through CODEX's and PARTY's own pieces:
 6. **FACTIONS**: `FactionPicker` (open), or a typed name (`codex.save` kind `faction`).
 7. **PLAYERS**: `RoomInvite`, PARTY's ROOM QR.
 
-OPEN THE CAMPAIGN pushes `/c/<campaignId>?tab=setup`, where the checklist lists what's left.
+OPEN THE CAMPAIGN pushes `/c/<campaignId>/setup`, the SETUP tab, where the checklist lists what's left.
 
-### `/c/<campaignId>`: `app/c/[campaignId]/page.tsx`
+### `/c/<campaignId>`: `app/c/[campaignId]/(table)/layout.tsx`
+
+A layout, not a page: it runs once when the table opens, and every GM route under it reuses its seat check, its
+catalogues and the shell's socket (layouts don't re-render on navigation). `build/` and `start/` sit outside the
+`(table)` group, so they get neither; each opens its own socket, as before.
 
 | Condition | Renders |
 |---|---|
@@ -132,6 +136,40 @@ catalogue), fetched in parallel; failure gives `[]` and the form takes typed ent
 name, gist and text, a kind filter, one `<details>` per entry: the gist on the collapsed row, the verbatim text inside); failure gives `[]` and the tab says the archive is unreachable. Both apps also wrap their screens in
 `RulesProvider` with the same rules, so a weapon trait or Condition shown anywhere opens its entry in place (§5,
 `RuleLink`). Nothing new is fetched and the book text stays behind the seat check.
+
+### 1.1 The GM's URLs: `app/c/[campaignId]/(table)/`
+
+Every GM tab, entry and editor has its own URL, so a refresh, Back or a bookmark lands where the GM was. Links and
+pushes go through `gmPath` (`lib/gm-path`), never a hand-built string.
+
+| URL under `/c/<id>` | Opens |
+|---|---|
+| (none) | SCENE while a session is open (its fight while one is live), else STORY. `?tab=<tab>` from an old link opens that tab (`asGmTab`: `track` → SCENE, `prep` → STORY) |
+| `scene`, `scene/fight` | The play home, or its FIGHT layer |
+| `story` | The board of the scene being played's adventure, else the first adventure's |
+| `story/<adventure>`, `story/<adventure>/<scene>` | An adventure's BOARD, a scene's PAGE |
+| `story/<adventure>/<scene>/edit`, `…/edit/<section>` | The scene editor, whole or one `BEAT_SECTIONS` part (`goal`, `tests`, `cast`, `fight`…): a STORY pencil |
+| `story/<adventure>/new`, `story/<adventure>/from-table` | + NEW SCENE, + SCENE FROM A TABLE |
+| `codex`, `codex/<kinds>` | A kind's list (`npcs`, `locations`, `handouts`, `factions`, `items`; `CODEX_SEGMENTS`), NPCs by default |
+| `codex/<kinds>/<entry>` | That row opened and scrolled to: a peek's GO TO lands here, and so does SAVE |
+| `codex/<kinds>/<entry>/edit`, `codex/<kinds>/new` | The entry's editor, a new entry |
+| `codex/threats`, `codex/threats/<slug>/edit` | Custom threats, one being edited. A new one (CLONE, BLANK, QUICK) starts from a draft only the tablet holds, so it has no URL |
+| `party`, `party/respite` | The roster, RESPITE's sheet |
+| `party/<character>`, `party/<character>/<tab>` | An Agent's dossier on STATUS, or on `gear`, `advance`, `seat` (a tab tap replaces the URL, so Back closes the sheet) |
+| `rules`, `books`, `setup` | Those tabs. SETUP's GO TO adds the panel as a `#anchor` (`/party#ascend`): the shell opens its fold and scrolls to it |
+
+- **A tab's layout draws it.** `scene/`, `story/`, `codex/` and `party/` each have a client `layout.tsx` that renders the
+  tab's component from `useParams()` and `useSelectedLayoutSegments()`; their `page.tsx` files only give a URL its shape
+  and return `null`. So the tab stays mounted across its own routes: the tracker keeps its selection across the FIGHT
+  switch, CODEX its search and PRINT ticks across an editor, PARTY's line of news reaches the open dossier.
+- **Unknown names are a 404, unknown ids fall back.** A bad section, kind or dossier tab is `notFound()` in its page. An
+  id the live codex doesn't hold (a deleted scene, NPC or Agent) replaces the URL with the list or board above it.
+- **What has no URL:** SCENE's read-only preview of another scene, the codex search, PRINT ticks, the tracker's
+  selection, MORE's disclosure. They are passing states, not places to come back to.
+- **Leaving an editor drops its draft**, by Back or by a rail tap alike. A rail tap opens the tab's own URL, so it also
+  leaves a CODEX sub-tab, a STORY page or a dossier for the tab's start.
+- **Closing replaces, opening pushes.** An editor's SAVE, CANCEL or DELETE, a sheet's CLOSE and a dossier tab replace the
+  URL, so Back goes to where the GM was before opening it, never back into what they just closed.
 
 ### `/c/<campaignId>/build/<characterId>`: `app/c/[campaignId]/build/[characterId]/page.tsx`
 
@@ -350,11 +388,13 @@ prep, and the fight is a layer inside SCENE.
   spend requests are no longer an always-on bar.
 - **Tabs** (`.tabs.rail`): `GM_TABS` in `gm-app/constants.ts` = SCENE, STORY, CODEX, PARTY, RULES, BOOKS, SETUP. SETUP is
   `.tab.foot` at the rail's foot: it is used before a campaign, not during one. `TAB_NUMERALS` draws I to VI behind the
-  first six. The selected tab is local state. With nothing picked it is SCENE while a session is open (a
-  `codex.sessions` row with no `endedAt`), else STORY. `?tab=` (`asGmTab`, any case) picks one; NEW CAMPAIGN's last step
-  opens SETUP, and the retired `track` and `prep` open SCENE and STORY, so old links still work.
-- **GO TO** (issue #198) and SCENE's EDIT open STORY on that scene's page: `GmApp` keeps the scene id and bumps `visit`,
-  which remounts STORY (and CODEX) on it.
+  first six. Each tab is a `Link` to its URL (§1.1), and the open one has `aria-current="page"`
+  (`useSelectedLayoutSegment`). SCENE links to its fight while one is live.
+- **`useGm()`** (`gm-app/gm-context.ts`): what the routes read from the shell: the synced `state` and `codex`, `send`,
+  the catalogues the layout loaded, `bookServer`, and `begun` (the last scene begin, so STORY's RUN keeps its UNDO on
+  SCENE).
+- **GO TO** (issue #198) pushes the entry's URL: a scene's PAGE in STORY, or the row in CODEX. SCENE's EDIT pushes the
+  scene's PAGE.
 
 | Tab | Component | Files |
 |---|---|---|
@@ -387,8 +427,9 @@ rest.
 - **Scene strip** (`SceneStrip`, with a scene): this adventure's scenes as numbered tabs, the current one crimson, played
   ones ticked. A tap on another scene previews it (`ScenePreview`: PREVIEW · SCENE nn · TYPE · STATUS, its GOAL and READ
   ALOUD, nothing else); BEGIN THIS SCENE begins it, BACK or a tap on the current tab leaves. Nothing changes until BEGIN.
-- **Layer switch** (`.scene-layers`, only while an encounter is live): THE SCENE | FIGHT · ROUND n. `Scene` opens on FIGHT
-  when it mounts with a fight live, and START FIGHT moves it there. When the fight ends the scene shows again, whatever the
+- **Layer switch** (`.scene-layers`, only while an encounter is live): THE SCENE | FIGHT · ROUND n. Each is a URL
+  (`scene`, `scene/fight`); the rail, `/c/<id>` and STORY's RUN open on FIGHT while a fight is live, and START FIGHT
+  moves there. When the fight ends the scene shows again, whatever the
   switch said. The FIGHT layer is the `Tracker` (§3.1).
 - **THE SCENE** is two columns (`.scene-cols`, stacked under 860px):
   - `ScenePage`, as the book prints a scene, in order: `SCENE nn · TYPE · PLACE` with EDIT, the title, GOAL, READ ALOUD,
@@ -633,8 +674,8 @@ SCENE; the code keeps `beat`. STORY is prep as a storyboard: you flip scene by s
   mission). Picking one goes back to its BOARD and closes any open editor. The inline NEW ADVENTURE form sends
   `codex.save { kind: "adventure" }` and switches to the new adventure using `r.id`. EDIT ADVENTURE (title, BRIEF,
   PREMISE / GM NOTES on a closed plate), the mission status select and SHOWN / HIDDEN TO THE PARTY (the mission log, issue #196) sit under it.
-- **Views** (`STORY_VIEWS`): a BOARD | PAGE toggle beside `<ADVENTURE> · SCENES`. STORY opens on BOARD, or on PAGE when a
-  peek's GO TO or SCENE's EDIT names a scene (`initialSceneId`).
+- **Views** (`STORY_VIEWS`): a BOARD | PAGE toggle beside `<ADVENTURE> · SCENES`. The URL says which (§1.1): PAGE when
+  it names a scene, so a peek's GO TO or SCENE's EDIT opens that scene's page.
 - **BOARD** (`components/scene-board`): the scenes in story order hung on an iron spine (`ol.story-spine`), with the
   selected scene's glance panel beside it (`SceneGlance`, sticky; under the spine at 900px and narrower). A card is one
   button that SELECTS its scene (`aria-pressed`, a crimson outline and a SELECTED chip; the selection is the scene PAGE
@@ -674,8 +715,8 @@ SCENE; the code keeps `beat`. STORY is prep as a storyboard: you flip scene by s
     320). A spend the pool can't pay is disabled (`canSpend`): the server floors at 0 and would undercharge
 - **Controls** under the spread:
   - ▶ RUN THIS SCENE (▶ BACK TO THIS SCENE once it is the active one) sends `beat.begin`, reports
-    `<TITLE> BEGUN · n REVEALED`, and on success `onRun(begun)` hands the begin to `GmApp`, which opens SCENE with its
-    SCENE BEGUN notice and UNDO (none when the scene was already being played).
+    `<TITLE> BEGUN · n REVEALED`, and on success `onRun(begun)` hands the begin to the shell (`useGm().setBegun`, from
+    STORY's layout) and opens SCENE with its SCENE BEGUN notice and UNDO (none when the scene was already being played).
   - EDIT opens the whole `BeatEditor`.
   - ↑ / ↓ swap the scene with its neighbour and send the full `ids` order as `beat.reorder`.
   - DONE and SKIP set the status to done or skipped. Only `beat.begin` makes a scene active.
@@ -991,14 +1032,14 @@ else. The sheet shows every refusal in its `Refusal` banner. See
 | `threat-picker/threat-picker.tsx` `ThreatPicker` | `bestiary: Threat[]`, `tier`, `onPick`, `value?`, `label?` (`+ THREAT…`), `className?`, `disabled?` | The way into the bestiary, GM only: the trigger names the picked threat, and opens a native modal `dialog.picker` with a search over the name and keywords, faction chips, T/E/A/M chips for the class printed at this campaign's Tier (Core p.323) and a book select (`sourceName`, so a custom threat reads "Custom"). Only facets the loaded bestiary holds get a chip. The trigger disables itself with no bestiary loaded, and when the caller can't act on a pick (the custom-threat editor at its cap, issue #43). Each row shows the name, a class chip, the faction (`FACTION_LABEL`) and `threatCite`; a tap picks and closes. At most `PICK_LIMIT` (50, `constants.ts`) rows, then "N more, narrow the search", and "Nothing matches." when none do. Used by the FIGHT layer's add row and by every beat-editor encounter row |
 | `threat-builder/threat-builder.tsx` `ThreatBuilder` | `start` (`{ slug, draft }`, slug null for a new one), `wargear`, `ruinActions`, `send`, `onSaved(threatId)`, `onCancel` | One custom stat block being written (issue #43), mounted fresh per open: `ThreatForm` (its child, `components/threat-form`), the refusal line, CREATE or SAVE (busy while `threat.save` is in flight, CANCEL with it) and CANCEL. Checks `CustomThreatData` first (`useFieldErrors`, NAME and KEYWORDS marked), then `onSaved(customThreatId(slug))`. Beside it, `constants.ts` holds `ThreatDraft` and the drafts (`blankDraft`, `cloneDraft`, `draftOf`, `quickDraft`), `ruinAbility` and `RUIN_ACTIONS_TABLE`, and `hints.ts` holds `threatHints`. Used by CODEX › THREATS and a scene's + NEW CUSTOM THREAT |
 | `threat-starts/threat-starts.tsx` `ThreatStarts` | `bestiary`, `tier`, `disabled` (the cap), `onStart(draft)` | The three ways to start a custom stat block, as a fragment for the caller's row: CLONE FROM BESTIARY (a `ThreatPicker`, `cloneDraft` with the source's cite), BLANK, and QUICK (TIER n) from `quickRow` |
-| `gm/codex/components/threat-editor/threat-editor.tsx` `ThreatEditor` | `customThreats`, `bestiary`, `wargear`, `ruinActions`, `tier`, `send` | The THREATS sub-tab of CODEX (issue #43): the campaign's own stat blocks with EDIT, CLONE and DELETE, a `PrintPick` tick on each row and PRINT N for the ticked ones (§5.1), and two ways to start one — CLONE FROM BESTIARY (the picker, filling the form with a copy whose `note` records the source) BLANK, or QUICK (Tier N), which fills the eight derived numbers from Core p.326's row (`quickDraft`, `quickRow`) and leaves the Attributes to the GM (§11.110). `ThreatForm` is the stat block in printed order (TA p.5) with a `–` toggle on every field that may print one (Core p.323) and weapons filled from the catalogue through `threatWeapon`; `threatHints` warns and never blocks (§11.109). Under the abilities, `+ RUIN: …` adds one of Threat Assessment p.7's five Additional Ruin Actions as a RUIN ability with its cite (`ruinAbility`), from the pool table GmApp already holds (`RUIN_ACTIONS_TABLE` on `/scene-presets`), so no second copy of the text exists. The three starts are `ui/threat-starts`, and the form, its refusal line and CREATE/SAVE are `ui/threat-builder` (rows below); a scene's + NEW CUSTOM THREAT shares both. Saving sends `threat.save`, which re-parses it server-side and returns the slug (`customThreatId`) |
+| `gm/codex/components/threat-editor/threat-editor.tsx` `ThreatEditor` | `editSlug`, `onEdit`, `customThreats`, `bestiary`, `wargear`, `ruinActions`, `tier`, `send` | The THREATS sub-tab of CODEX (issue #43): the campaign's own stat blocks with EDIT (its URL, `codex/threats/<slug>/edit`), CLONE and DELETE, a `PrintPick` tick on each row and PRINT N for the ticked ones (§5.1), and two ways to start one — CLONE FROM BESTIARY (the picker, filling the form with a copy whose `note` records the source) BLANK, or QUICK (Tier N), which fills the eight derived numbers from Core p.326's row (`quickDraft`, `quickRow`) and leaves the Attributes to the GM (§11.110). `ThreatForm` is the stat block in printed order (TA p.5) with a `–` toggle on every field that may print one (Core p.323) and weapons filled from the catalogue through `threatWeapon`; `threatHints` warns and never blocks (§11.109). Under the abilities, `+ RUIN: …` adds one of Threat Assessment p.7's five Additional Ruin Actions as a RUIN ability with its cite (`ruinAbility`), from the pool table GmApp already holds (`RUIN_ACTIONS_TABLE` on `/scene-presets`), so no second copy of the text exists. The three starts are `ui/threat-starts`, and the form, its refusal line and CREATE/SAVE are `ui/threat-builder` (rows below); a scene's + NEW CUSTOM THREAT shares both. Saving sends `threat.save`, which re-parses it server-side and returns the slug (`customThreatId`) |
 | `threat-scale/threat-scale.tsx` `ThreatScale` | `threat?: Threat`, `tier`, `agents`, `asMob?`, `profiles`, `scale`, `onChange` | The GM's two levers on a threat before it joins: a chip per Tier 5 Threat Profile (`PROFILE_CHIP` in `constants.ts`: STRENGTH, CUNNING, WITHIN, with the full name, cite and effect in each title, VoA p.126) and a SCALE toggle that prints what it would add (`scaleBy`, Core p.326) and says beside itself that it adds nothing on a Troop or a Mob, while still showing a tick the GM has set there (§11.107). Used by the beat editor's encounter rows and the FIGHT layer's add row |
 | `attitude-chip/attitude-chip.tsx` `AttitudeChip`, `attitudeLabel` | `attitude: Attitude` | An NPC's Attitude with its DN modifier ("HOSTILE · +4 DN", Core p.168); none for Neutral, red when it raises the DN. On the GM's NPC rows and the player's KNOWN PERSONS (rules-flow §11.89) |
 | `budget-lines/budget-lines.tsx` `BudgetLines` | `tally: RosterTally`, `budget: EncounterBudget` | A roster against Building Encounters (Threat Assessment p.8): TROOPS, OF THOSE IN MOBS (a target of one reads as needing 2, Core p.324), ELITE OR ADVERSARY, MONSTROUS (no target in the book) and ENEMIES ("N tracked · M models"), each with UNDER / ON TARGET / OVER in words as well as colour, plus a note for entries the loaded bestiary can't class |
 | `rule-item/rule-item.tsx` `RuleItem` | `r: RuleEntry`, `open?` | One rules entry as a `<details>`: name (a stat's `abbr` first), kind · cite, gist, and the book text inside. Used by the RULES tab, the stat legend and the rule dialog; `open` starts it expanded |
 | `rules-provider/rules-provider.tsx` `RulesProvider`, `useRules()` | `rules: RuleEntry[]`, `children` | Wraps `GmApp` and `PlayerApp`. Builds a `ruleKey` → entries map once, over `LINKED_RULE_KINDS` only (Conditions, weapon and armour traits; not actions or stat block terms). It owns one native modal `<dialog>` that shows the entries as `RuleItem open` with CLOSE. Esc or a backdrop tap closes it, and focus returns to the tapped word. `useRules()` returns `{ find(name), open(entries) }` and throws outside the provider |
 | `rule-link/rule-link.tsx` `RuleLink` | `name`, `children?` (defaults to `name`) | A trait or Condition as the data spells it (`Blast (6)`, `Inflicts (On Fire)`). If `find` resolves it, it's a `button.rule-link` (dotted underline, 32px hit area, `aria-label="Rule: <name>"`) that opens the dialog; otherwise it renders as plain text. `RuleIdLink` (`id`, `children`) does the same for an entry that isn't a trait, by id (the scene Tests' DN TABLE, SHIFTING, FAIL FORWARD). Needs a `RulesProvider` above it |
-| `mentions/mentions-provider.tsx` `MentionsProvider`, `useMentions()` | `codex`, `missing` (`(removed)` on the GM's tablet, `(unknown)` on a phone), `onGoTo?` (the GM's only), `children` | Codex mentions (issue #200, campaign-model.md §Mentions). Wraps `GmApp` and `PlayerApp` over the seat's own snapshot. Lists every linkable entry (NPCs first, so an NPC wins a shared name), builds the auto-linker once (`nameLinker`) and owns one `dialog.rule-dialog` that peeks at an entry (`components/peek`: its CODEX fields, GM-only ones on a plate). A link inside the peek swaps the entry in place. With `onGoTo` the peek has GO TO (issue #198): `GmApp` opens the entry's tab remounted on it (CODEX on its kind, search cleared and places unfolded; STORY on the scene's page, `initialSceneId`), then opens and scrolls to its `#entry-<id>` row |
+| `mentions/mentions-provider.tsx` `MentionsProvider`, `useMentions()` | `codex`, `missing` (`(removed)` on the GM's tablet, `(unknown)` on a phone), `onGoTo?` (the GM's only), `children` | Codex mentions (issue #200, campaign-model.md §Mentions). Wraps `GmApp` and `PlayerApp` over the seat's own snapshot. Lists every linkable entry (NPCs first, so an NPC wins a shared name), builds the auto-linker once (`nameLinker`) and owns one `dialog.rule-dialog` that peeks at an entry (`components/peek`: its CODEX fields, GM-only ones on a plate). A link inside the peek swaps the entry in place. With `onGoTo` the peek has GO TO (issue #198): `GmApp` pushes the entry's URL (§1.1), a scene's PAGE in STORY or `codex/<kinds>/<entry>`, which opens and scrolls to its `#entry-<id>` row |
 | `mentions/mentions.tsx` `Mentions` | `text`, `self?` (the entry the text belongs to) | A codex text with its `@[kind:id]` tokens and plain entry names as `button.rule-link`s showing the live name. An unresolved token shows `missing`, and an unrevealed entry gets `(HIDDEN)`. The caller keeps its `<pre>`. Used by SCENE, STORY, CODEX and INTEL |
 | `mention-field/mention-field.tsx` `MentionField` | `value`, `onChange(value)`, `multiline?`, `id?`, `placeholder?`, `useFieldErrors` marks | A codex text input or textarea. `@` plus letters lists up to `PICK_LIMIT` (8) matching entries under it (`fold`, names that start with the letters first). A tap, or Enter once a letter follows the `@`, writes the token (a bare `@` or an IME composition keeps Enter), and Escape closes the list. Used by CODEX's editor, the scene editor (all but TITLE) and END SESSION's recap |
 | `codex-search/codex-search.tsx` `CodexSearch` | `query`, `onQuery(q)` | The codex search (issue #198): one `type="search"` box ("Search the codex") over the seat's `useMentions().entries`, so the GM finds everything and a phone only what its `toPlayerCodex` holds (blanked GM fields never match). `utils.ts` `searchEntries` folds the query (`lib/fold`) and matches the name, then the Peek's fields (`PEEK_FIELDS`) with mention tokens spelled out as names (`plainMentions`); a body hit carries a one-line snippet around the match. Name hits first, then by name; the hits are grouped by kind with a count, the first `LIST_LIMIT` shown. A hit opens the Peek. `/` focuses the box unless an input has focus. CODEX shows it under the sub-tabs over a list (never over an open editor, whose draft it would drop) and INTEL at the top; while it holds text the hits replace the list below |
@@ -1170,7 +1211,7 @@ The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.
   Native file inputs get a `.btn`-style `::file-selector-button`.
 - Chips: `.chip`, with `.warn` and `.bad`; `.now-chip` (the tracker's "▶ X ACTING").
 - Tabs: `.tabs` / `.tab`, an iron strip; `[aria-selected="true"]` is crimson with a bright top stroke. `.tabs.rail` is
-  the GM's right-edge chapter rail (the open tab on a torn crimson stroke, `data-n` numerals behind the rest; a top
+  the GM's right-edge chapter rail, of links (the open one is `[aria-current="page"]`; the open tab on a torn crimson stroke, `data-n` numerals behind the rest; a top
   strip under 900px). `.tabs.sub` is an underlined in-screen strip (codex kinds, rule kinds) that scrolls sideways
   when it doesn't fit.
 - Bands: `.band` (iron, bone text; `.btn`, `.dim` and `.label` inside it switch to their on-iron colours) and
@@ -1261,7 +1302,9 @@ This section summarises the binding rules. The full text is in
    a matching numeral to `TAB_NUMERALS`. `GmTab`, the rail and `?tab=` pick it up.
 2. Create `components/gm/<name>/<name>.tsx`: a `"use client"` component with typed props. It takes what it needs
    from `state`, `codex` and `send`, and `bestiary` if it adds threats.
-3. Render it in `GmApp`'s `<main>`: `{tab === "<NAME>" && <Name … />}`.
+3. Give it a route: `app/c/[campaignId]/(table)/<name>/page.tsx`, a `"use client"` page that reads `useGm()` and renders
+   it. A screen inside it (an entry, an editor) gets a folder and a `gmPath` builder; once there are several, move the
+   component into the folder's `layout.tsx` and leave the pages returning `null` (§1.1).
 4. Show refusals with one of the patterns in §6. Use a message line for a form-heavy tab, and `Refusal` for a
    tab with only a few buttons.
 

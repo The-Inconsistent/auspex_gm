@@ -162,8 +162,10 @@ apps/api/test/      smoke.test.ts: end-to-end GM, player, guest and invite sessi
 apps/api/scripts/   seed.ts (load a content pack, --owner <clerk user id> as GM)
 apps/web/proxy.ts   authMiddleware(), protects nothing, skips /api and /socket.io
 apps/web/app/       page.tsx (lobby, guest redirect, sign-in landing), c/new/page.tsx (CREATE NEW CAMPAIGN before the campaign exists),
-                    c/[campaignId]/page.tsx (seat → GM or player app; ?tab= opens a GM tab),
-                    c/[campaignId]/setup/page.tsx (CREATE NEW CAMPAIGN after CREATE: setting, factions, players),
+                    c/[campaignId]/(table)/layout.tsx (seat → GM or player app, once; GmApp is the shell and every GM
+                    tab, entry and editor is a route under it: scene/fight, story/<adv>/<scene>/edit/<section>,
+                    codex/<kinds>/<entry>/edit, party/<character>/<tab>; links via lib/gm-path, docs/frontend.md §1.1),
+                    c/[campaignId]/start/page.tsx (CREATE NEW CAMPAIGN after CREATE: setting, factions, players),
                     c/[campaignId]/build/[characterId]/page.tsx (character builder; `new` for a new one),
                     library/[characterId]/page.tsx (the builder without a campaign),
                     invite/[code]/page.tsx, sign-in, sign-up, join/[token]/route.ts (guest token → cookie),
@@ -173,7 +175,7 @@ apps/web/components/new-campaign/  the CREATE NEW CAMPAIGN steps before CREATE: 
 apps/web/components/campaign-setup/  its steps after CREATE: setting, factions, players (CODEX's pickers, PARTY's RoomInvite)
 apps/web/components/invite/  invite-accept
 apps/web/components/admin/   admin-view (the /admin page: users-tab, games-tab with game-card, events-log; lib/admin has its calls)
-apps/web/components/gm/      gm-app (rail: SCENE · STORY · CODEX · PARTY · RULES · BOOKS, SETUP at the foot), scene (the play home:
+apps/web/components/gm/      gm-app (the shell, useGm(); rail: SCENE · STORY · CODEX · PARTY · RULES · BOOKS, SETUP at the foot), scene (the play home:
                              reveals, CALL, exits, the FIGHT layer), tracker (the FIGHT layer: four-button key bar, delta pad),
                              story (prep as a storyboard: board and page), prep (the scene editor and scene parts STORY and
                              SCENE reuse), header (seal pads, CALL A TEST, SPEND ASKED), setup (checklist, framework, export),

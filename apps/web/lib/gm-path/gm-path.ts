@@ -3,7 +3,7 @@ import type { GmTab } from "@/components/gm/gm-app/constants";
 import { DOSSIER_TABS, type DossierTab } from "@/components/gm/party/constants";
 import { BEAT_SECTIONS, type BeatSection } from "@/components/gm/prep/components/beat-editor/constants";
 
-// Every GM screen has a URL under /c/<id> (docs/frontend.md §4.1), so a refresh, Back or a bookmark lands on the same
+// Every GM screen has a URL under /c/<id> (docs/frontend.md §1.1), so a refresh, Back or a bookmark lands on the same
 // tab, entry or editor. These build them; the folders under app/c/[campaignId]/(table)/ are the same shapes.
 
 // CODEX's sub-tabs read as plurals in the URL: /codex/npcs, /codex/locations…

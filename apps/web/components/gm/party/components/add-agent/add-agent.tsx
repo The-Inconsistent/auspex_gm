@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState, type FormEvent } from "react";
 
 import { CharacterName, type ActionResult } from "@wg/shared";
@@ -38,9 +39,9 @@ export function AddAgent({ campaignId, send, onResult }: AddAgentProps) {
           {...fields.marks()}
         />
         <button className="btn">ADD AGENT</button>
-        <a className="btn" href={`/c/${campaignId}/build/${NEW_CHARACTER}`}>
+        <Link className="btn" href={`/c/${campaignId}/build/${NEW_CHARACTER}`}>
           NEW FROM BUILDER
-        </a>
+        </Link>
       </form>
       <FieldError {...fields.reason()} />
     </div>

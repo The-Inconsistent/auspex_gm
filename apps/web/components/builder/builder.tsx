@@ -24,6 +24,7 @@ import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { useTable, type Send } from "@/hooks/use-table/use-table";
+import { gmPath } from "@/lib/gm-path/gm-path";
 
 import { BuilderContext, type BuilderValue, type Draft, type Lookups } from "./builder-context";
 import { ArchetypeStep } from "./components/archetype-step/archetype-step";
@@ -128,6 +129,9 @@ function TableBench({
   const xpEarned = character?.xp;
   // A new character's id once its build saved, so a retry after a failed overrides save updates it, not a second one.
   const created = useRef<string | null>(null);
+  // Back (or saved): the GM returns to PARTY, on this Agent's dossier when there is one; a player to their phone.
+  const tableHref =
+    role === "gm" ? gmPath.party({ campaignId, characterId: characterId ?? undefined }) : `/c/${campaignId}`;
   const bench = useMemo(
     (): Bench => ({
       tier,
@@ -217,20 +221,13 @@ function TableBench({
       canImport: true, // a seat at a table can take a copy from the caller's own library (issue #14 step 4)
       gmLater: false, // the table's GM is here to tick
       sentDraft: !!character?.draft,
-      backHref: `/c/${campaignId}`,
+      backHref: tableHref,
       backLabel: "Back to the table",
       banner: online ? null : "NO SIGNAL · RECONNECTING",
     }),
-    [tier, state.campaign.homebrew, role, character, xpEarned, campaignId, characterId, send, online],
+    [tier, state.campaign.homebrew, role, character, xpEarned, campaignId, characterId, send, online, tableHref],
   );
-  return (
-    <Workshop
-      bench={bench}
-      payload={payload}
-      initialStep={initialStep}
-      onSaved={() => router.push(`/c/${campaignId}`)}
-    />
-  );
+  return <Workshop bench={bench} payload={payload} initialStep={initialStep} onSaved={() => router.push(tableHref)} />;
 }
 
 type LibraryBuilderProps = { entry: LibraryEntry; payload: CreationPayload; rules: RuleEntry[] };
