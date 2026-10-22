@@ -71,7 +71,7 @@ async function loadFlavour(campaignId: string): Promise<FlavourTable[]> {
 }
 
 // One table: the GM board, the player view or the table screen, by the caller's seat (membership or guest QR). A
-// layout, so the seat check, the catalogues and the GM's socket outlive every route under it (docs/frontend.md §4.1).
+// layout, so the seat check, the catalogues and the GM's socket outlive every route under it (docs/frontend.md §1.1).
 export default async function Table({ params, children }: TableProps) {
   const campaignId = encodeURIComponent((await params).campaignId);
   let me: Me;
