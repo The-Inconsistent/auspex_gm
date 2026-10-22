@@ -1145,6 +1145,10 @@ dialog.picker {
   border: 0;
   background: transparent;
   color: var(--ink);
+  /* Links, since every chapter has a URL: centred like the buttons they were. */
+  display: grid;
+  place-items: center;
+  text-decoration: none;
 }
 /* Faint chapter numeral behind each tab. */
 .tabs.rail .tab::before {
@@ -1159,11 +1163,11 @@ dialog.picker {
   opacity: 0.16;
 }
 /* The open chapter sits on a torn crimson brush stroke. */
-.tabs.rail .tab[aria-selected="true"] {
+.tabs.rail .tab[aria-current="page"] {
   background: transparent;
   color: var(--bone);
 }
-.tabs.rail .tab[aria-selected="true"]::before {
+.tabs.rail .tab[aria-current="page"]::before {
   content: "";
   inset: 8px 4px;
   opacity: 1;
@@ -1418,10 +1422,10 @@ dialog.picker {
     color: var(--bone-2);
   }
   .tabs.rail .tab::before,
-  .tabs.rail .tab[aria-selected="true"]::before {
+  .tabs.rail .tab[aria-current="page"]::before {
     content: none;
   }
-  .tabs.rail .tab[aria-selected="true"] {
+  .tabs.rail .tab[aria-current="page"] {
     background: var(--red-fill);
     color: var(--bone);
   }

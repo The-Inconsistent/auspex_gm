@@ -15,13 +15,13 @@ import {
 import { FactionPicker } from "@/components/gm/codex/components/faction-picker/faction-picker";
 import { HulkGenerator } from "@/components/gm/codex/components/hulk-generator/hulk-generator";
 import { PlacePicker } from "@/components/gm/codex/components/place-picker/place-picker";
-import { TAB_PARAM } from "@/components/gm/gm-app/constants";
 import { RoomInvite } from "@/components/gm/party/components/room-invite/room-invite";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { STEP_LABELS } from "@/components/ui/wizard-steps/constants";
 import { WizardSteps } from "@/components/ui/wizard-steps/wizard-steps";
 import { useTable } from "@/hooks/use-table/use-table";
+import { gmPath } from "@/lib/gm-path/gm-path";
 
 import { AddByName } from "./components/add-by-name/add-by-name";
 import { AFTER_CREATE, type SetupStep } from "./constants";
@@ -58,7 +58,7 @@ export function CampaignSetup({ campaignId, places, factionPresets, spaceHulk, h
   };
 
   // OPEN THE CAMPAIGN: the SETUP tab, which lists the steps still to do.
-  const open = () => startTransition(() => router.push(`/c/${campaignId}?${TAB_PARAM}=setup`));
+  const open = () => startTransition(() => router.push(gmPath.tab(campaignId, "SETUP")));
 
   return (
     <div className="bld">

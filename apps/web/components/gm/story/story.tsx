@@ -1,13 +1,16 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
 import type { ActionResult, BeatStatus, Codex, LiveState, ScenePresets, Threat, Wargear } from "@wg/shared";
 import { agentsInFight } from "@wg/shared";
 
 import { BeatEditor } from "@/components/gm/prep/components/beat-editor/beat-editor";
+import type { BeatSection } from "@/components/gm/prep/components/beat-editor/constants";
 import { ScenePicker } from "@/components/gm/prep/components/scene-picker/scene-picker";
 import { stripBeat } from "@/components/gm/prep/utils";
 import type { Send } from "@/hooks/use-table/use-table";
+import { gmPath, type NewScene } from "@/lib/gm-path/gm-path";
 import { currentScene } from "@/lib/scene/scene";
 import type { Begun } from "@/lib/scene-reveal/scene-reveal";
 
@@ -25,25 +28,55 @@ type StoryProps = {
   presets: ScenePresets;
   wargear: Wargear[]; // for a scene's + NEW CUSTOM THREAT
   onRun: (begun: Begun | null) => void; // a scene has begun: the shell keeps its UNDO and switches to SCENE
-  initialSceneId?: string; // a peek's GO TO (issue #198): open on that scene's page
+  // From the URL (/story/<adventure>/<scene>/edit/<section>): none of them is the board of the default adventure.
+  adventureId?: string;
+  sceneId?: string; // its page, else the adventure's board
+  editing?: Editing; // what replaces the spread
 };
 
 // STORY: prep as a storyboard you flip scene by scene. BOARD hangs the adventure's scenes on a spine; PAGE opens one as a
-// book spread. Everything PREP did is reachable from here.
-export function Story({ state, codex, send, bestiary, presets, wargear, onRun, initialSceneId }: StoryProps) {
-  // A GO TO opens that scene's page; otherwise STORY opens on the scene being played, in its adventure.
-  const startId = initialSceneId ?? currentScene(codex)?.beat.id;
-  const opened = codex.adventures.find((a) => a.beats.some((b) => b.id === startId));
-  const [advId, setAdvId] = useState<string | null>(() => opened?.id ?? codex.adventures[0]?.id ?? null);
-  const [sceneId, setSceneId] = useState<string | null>(startId ?? null);
-  const [view, setView] = useState<StoryView>(initialSceneId && opened ? "page" : "board");
-  const [editing, setEditing] = useState<Editing | null>(null);
+// book spread. Everything PREP did is reachable from here, and every view and editor has a URL, so every button here
+// navigates.
+export function Story({
+  state,
+  codex,
+  send,
+  bestiary,
+  presets,
+  wargear,
+  onRun,
+  adventureId,
+  sceneId,
+  editing,
+}: StoryProps) {
+  const router = useRouter();
+  const campaignId = state.campaign.id;
+  // With no adventure in the URL, STORY opens on the scene being played, in its adventure.
+  const playing = currentScene(codex);
+  const adv =
+    (adventureId ? codex.adventures.find((a) => a.id === adventureId) : (playing?.adventure ?? codex.adventures[0])) ??
+    null;
+  const found = sceneId ? (adv?.beats.findIndex((b) => b.id === sceneId) ?? -1) : -1;
+  const index = Math.max(found, 0);
+  const scene = found >= 0 ? adv!.beats[found]! : null; // found in adv just above
+  const view: StoryView = sceneId ? "page" : "board";
+  // The board's highlighted scene (RUN FROM HERE runs it, PAGE opens it): the last one tapped or opened, else the one
+  // being played, else the first. A scene opened by URL (GO TO, ‹ ›) becomes it, while rendering, so BOARD then PAGE
+  // comes back to the same scene.
+  const [selected, setSelected] = useState(sceneId ?? playing?.beat.id ?? null);
+  const [shownId, setShownId] = useState(sceneId);
+  if (sceneId !== shownId) {
+    setShownId(sceneId);
+    if (sceneId) setSelected(sceneId);
+  }
+  const selectedId = adv?.beats.find((b) => b.id === selected)?.id ?? adv?.beats[0]?.id ?? null;
   const [msg, setMsg] = useState<string | null>(null);
-  const adv = codex.adventures.find((a) => a.id === advId) ?? null;
-  // The open scene: the one asked for, else the first (a deleted or never-picked scene).
-  const found = adv?.beats.findIndex((b) => b.id === sceneId) ?? -1;
-  const index = found >= 0 ? found : 0;
-  const scene = adv?.beats[index] ?? null;
+  // A link to an adventure or a scene that's gone (deleted, or another campaign's): back to the board above it.
+  const lost = (!!adventureId && !adv) || (!!sceneId && !scene);
+  // External system: the browser's URL, through Next's router.
+  useEffect(() => {
+    if (lost) router.replace(gmPath.story({ campaignId, adventureId: adv?.id }));
+  }, [lost, router, campaignId, adv?.id]);
   // Only active Agents join a fight (`beat.startEncounter` adds those), so they are who the encounter budget is for
   // and whose number scales a Threat (Core p.326, §11.106).
   const agents = agentsInFight(state);
@@ -54,24 +87,36 @@ export function Story({ state, codex, send, bestiary, presets, wargear, onRun, i
     setMsg(r.ok ? [ok, ...(r.notices ?? [])].join(" · ") : `! ${r.error}`); // notices: a Mutation Test owed
 
   // A scene card or tab: opens that scene's page.
-  const openScene = (id: string) => {
-    setSceneId(id);
-    setView("page");
-  };
+  const openScene = (id: string) => router.push(gmPath.story({ campaignId, adventureId: adv?.id, sceneId: id }));
+
+  // An editor is done: back to the scene's page, or to the board after a new one. It takes the editor's place in
+  // the history, so Back doesn't reopen it.
+  const closeEditor = () =>
+    router.replace(
+      gmPath.story({ campaignId, adventureId: adv?.id, sceneId: editing?.mode === "scene" ? scene?.id : undefined }),
+    );
+
+  // A pencil (one section) or EDIT (all of them): the open scene's editor.
+  const editScene = (section?: BeatSection) =>
+    scene && router.push(gmPath.story({ campaignId, adventureId: adv?.id, sceneId: scene.id, edit: section ?? "all" }));
+
+  // + NEW SCENE or + SCENE FROM A TABLE, in this adventure.
+  const addScene = (from: NewScene) => adv && router.push(gmPath.newScene({ campaignId, adventureId: adv.id, from }));
 
   // The ScenePicker is done: close it and show what it made.
   const donePicking = (done: string) => {
-    setEditing(null);
+    closeEditor();
     if (done) setMsg(done);
   };
 
-  // Adventure tab: switch adventure, back to its board, and close any open editor.
-  const pickAdventure = (id: string) => {
-    setAdvId(id);
-    setSceneId(null);
-    setView("board");
-    setEditing(null);
-  };
+  // Adventure tab: its board, which closes any open editor.
+  const pickAdventure = (id: string) => router.push(gmPath.story({ campaignId, adventureId: id }));
+
+  // BOARD / PAGE: the board, or the page of the scene highlighted on it.
+  const pickView = (v: StoryView) =>
+    router.push(
+      gmPath.story({ campaignId, adventureId: adv?.id, sceneId: v === "page" ? (selectedId ?? undefined) : undefined }),
+    );
 
   // ↑ / ↓: swaps the scene with its neighbour and saves the new order.
   const move = async (dir: -1 | 1) => {
@@ -118,11 +163,11 @@ export function Story({ state, codex, send, bestiary, presets, wargear, onRun, i
 
   const newScenes = (
     <div className="keys">
-      <button className="btn primary" onClick={() => setEditing({ mode: "new" })}>
+      <button className="btn primary" onClick={() => addScene("new")}>
         + NEW SCENE
       </button>
       {presets.tables.length > 0 && (
-        <button className="btn" onClick={() => setEditing({ mode: "table" })}>
+        <button className="btn" onClick={() => addScene("from-table")}>
           + SCENE FROM A TABLE
         </button>
       )}
@@ -145,7 +190,7 @@ export function Story({ state, codex, send, bestiary, presets, wargear, onRun, i
                   key={v}
                   className={`btn ${view === v ? "primary" : ""}`}
                   aria-pressed={view === v}
-                  onClick={() => setView(v)}
+                  onClick={() => pickView(v)}
                 >
                   {STORY_VIEWS[v]}
                 </button>
@@ -158,8 +203,8 @@ export function Story({ state, codex, send, bestiary, presets, wargear, onRun, i
                 adv={adv}
                 codex={codex}
                 threatNames={threatNames}
-                selectedId={scene?.id ?? null}
-                onSelect={setSceneId}
+                selectedId={selectedId}
+                onSelect={setSelected}
                 onOpen={openScene}
                 onRun={runFromBoard}
               />
@@ -178,8 +223,8 @@ export function Story({ state, codex, send, bestiary, presets, wargear, onRun, i
                 bestiary={bestiary}
                 presets={presets}
                 threatNames={threatNames}
-                onOpen={setSceneId}
-                onEdit={(section) => setEditing({ mode: "scene", section })}
+                onOpen={openScene}
+                onEdit={editScene}
                 onRun={() => run(scene)}
                 onMove={move}
                 onStatus={setStatus}
@@ -214,7 +259,7 @@ export function Story({ state, codex, send, bestiary, presets, wargear, onRun, i
           poolTables={presets.pools}
           hazardTables={presets.hazards}
           wargear={wargear}
-          onDone={() => setEditing(null)}
+          onDone={closeEditor}
         />
       )}
     </div>

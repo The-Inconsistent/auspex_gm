@@ -1,8 +1,9 @@
+import type { ReactNode } from "react";
+
 import { FlavourTable, FrameworkCatalogue, Me, NpcPreset, Threat, Wargear } from "@wg/shared";
 
 import { JOIN_ERRORS, NO_ACCESS } from "@/app/constants";
 import { apiGet, loadFactionPresets, loadPlaces, loadRules, loadScenePresets } from "@/app/server-api";
-import { asGmTab, TAB_PARAM } from "@/components/gm/gm-app/constants";
 import { GmApp } from "@/components/gm/gm-app/gm-app";
 import { PlayerApp } from "@/components/player/player-app/player-app";
 import { TableScreen } from "@/components/screen/table-screen/table-screen";
@@ -10,7 +11,7 @@ import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 
 type TableProps = {
   params: Promise<{ campaignId: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  children: ReactNode; // the GM route; the player and the screen have one screen each and drop it
 };
 
 // GM bestiary for the add-threat pickers, sorted by name. Empty on failure; the pickers just show nothing.
@@ -69,10 +70,10 @@ async function loadFlavour(campaignId: string): Promise<FlavourTable[]> {
   }
 }
 
-// One table: the GM board, the player view or the table screen, by the caller's seat (membership or guest QR).
-export default async function Table({ params, searchParams }: TableProps) {
-  const [p, query] = await Promise.all([params, searchParams]);
-  const campaignId = encodeURIComponent(p.campaignId);
+// One table: the GM board, the player view or the table screen, by the caller's seat (membership or guest QR). A
+// layout, so the seat check, the catalogues and the GM's socket outlive every route under it (docs/frontend.md §4.1).
+export default async function Table({ params, children }: TableProps) {
+  const campaignId = encodeURIComponent((await params).campaignId);
   let me: Me;
   try {
     const res = await apiGet(`/api/campaigns/${campaignId}/me`);
@@ -110,8 +111,9 @@ export default async function Table({ params, searchParams }: TableProps) {
         flavour={flavour}
         places={places}
         admin={me.admin}
-        initialTab={asGmTab(query[TAB_PARAM])}
-      />
+      >
+        {children}
+      </GmApp>
     );
   }
   // The TV in the middle of the table: a guest "screen" seat, read-only, no character.

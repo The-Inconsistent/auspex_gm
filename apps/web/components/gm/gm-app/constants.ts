@@ -2,7 +2,7 @@
 // campaign, not during it.
 export const GM_TABS = ["SCENE", "STORY", "CODEX", "PARTY", "RULES", "BOOKS", "SETUP"] as const;
 export type GmTab = (typeof GM_TABS)[number];
-// `?tab=setup` opens on that tab: NEW CAMPAIGN's last step lands on SETUP, which lists what's left.
+// Every tab has its own URL now (/c/<id>/setup); `/c/<id>?tab=setup`, from an old link or bookmark, still opens it.
 export const TAB_PARAM = "tab";
 // The tabs before SCENE and STORY, so an old link or bookmark still opens their successor.
 const RENAMED: Record<string, GmTab> = { TRACK: "SCENE", PREP: "STORY" };

@@ -41,7 +41,7 @@ export default defineConfig([
   },
   {
     // Server components: the try/catch guards the api fetch, and the JSX returned from it is a status screen.
-    files: ["apps/web/app/**/page.tsx"],
+    files: ["apps/web/app/**/page.tsx", "apps/web/app/**/layout.tsx"],
     rules: { "react-hooks/error-boundaries": "off" },
   },
   // Last, so formatting rules never fight Prettier.
