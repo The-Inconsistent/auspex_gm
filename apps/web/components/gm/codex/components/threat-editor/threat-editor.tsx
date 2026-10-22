@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   CUSTOM_PREFIX,
@@ -22,6 +22,8 @@ import type { Send } from "@/hooks/use-table/use-table";
 import { toggleIn } from "@/lib/toggle-set/toggle-set";
 
 type ThreatEditorProps = {
+  editSlug?: string; // from the URL (/codex/threats/<slug>/edit): the saved one being edited
+  onEdit: (slug: string | null) => void; // EDIT's URL, or back to the list
   customThreats: Threat[];
   bestiary: Threat[]; // the books' stat blocks plus the customs, as GmApp merges them
   wargear: Wargear[];
@@ -33,19 +35,40 @@ type ThreatEditorProps = {
 // A stat block the GM writes for their table (issue #43): the customs this campaign holds, and the three ways to start
 // a new one (ThreatStarts) — CLONE FROM BESTIARY, BLANK or QUICK. Saving sends `threat.save`, which re-parses it server-side and sets the id,
 // the source and the page.
-export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, tier, send }: ThreatEditorProps) {
-  // `slug` is null for one not saved yet; the server returns the slug it made.
-  const [editing, setEditing] = useState<{ slug: string | null; draft: ThreatDraft } | null>(null);
+export function ThreatEditor({
+  editSlug,
+  onEdit,
+  customThreats,
+  bestiary,
+  wargear,
+  ruinActions,
+  tier,
+  send,
+}: ThreatEditorProps) {
+  // A new one (CLONE, BLANK, QUICK) starts from a draft only this tablet holds, so it stays here; `slug` is null for one
+  // not saved yet, and the server returns the slug it made. A saved one is edited at its own URL.
+  const [drafting, setDrafting] = useState<{ slug: string | null; draft: ThreatDraft } | null>(null);
+  const saved = editSlug ? customThreats.find((t) => t.id === CUSTOM_PREFIX + editSlug) : undefined;
+  const routed = useMemo(() => saved && editSlug && { slug: editSlug, draft: draftOf(saved) }, [saved, editSlug]);
+  const editing = drafting ?? routed ?? null;
+  // A link to a custom threat that's gone: back to the list. External system: the browser's URL, through Next's router.
+  const lost = !!editSlug && !saved;
+  useEffect(() => {
+    if (lost) onEdit(null);
+  }, [lost, onEdit]);
   const [error, setError] = useState<string | null>(null);
   const full = customThreats.length >= CUSTOM_THREAT_CAP;
   const { print } = usePrint();
   const [picked, setPicked] = useState<ReadonlySet<string>>(new Set()); // ticked for PRINT N (#203)
   const toPrint = customThreats.filter((t) => picked.has(t.id)).map((t) => t.id); // a deleted one drops out
 
-  const start = (draft: ThreatDraft, slug: string | null = null) => {
+  const start = (draft: ThreatDraft) => {
     setError(null);
-    setEditing({ slug, draft });
+    setDrafting({ slug: null, draft });
   };
+
+  // SAVE or CANCEL: a draft just closes, a saved one goes back to the list's URL.
+  const done = () => (drafting ? setDrafting(null) : onEdit(null));
 
   // CLONE on a saved one: a second copy, which takes its own slug from the name.
   const clone = (t: Threat) => start(cloneDraft(t, threatCite(t)));
@@ -58,12 +81,13 @@ export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, ti
   if (editing)
     return (
       <ThreatBuilder
+        key={editing.slug ?? "new"} // its draft is read once: another threat's URL starts afresh
         start={editing}
         wargear={wargear}
         ruinActions={ruinActions}
         send={send}
-        onSaved={() => setEditing(null)}
-        onCancel={() => setEditing(null)}
+        onSaved={done}
+        onCancel={done}
       />
     );
 
@@ -99,7 +123,7 @@ export function ThreatEditor({ customThreats, bestiary, wargear, ruinActions, ti
             <div className="stack">
               <StatBlock t={t} tier={tier} />
               <div className="keys">
-                <button className="btn sm" onClick={() => start(draftOf(t), t.id.slice("custom-".length))}>
+                <button className="btn sm" onClick={() => onEdit(t.id.slice(CUSTOM_PREFIX.length))}>
                   EDIT
                 </button>
                 {/* CLONE makes a second copy, which takes its own slug from the name. */}
