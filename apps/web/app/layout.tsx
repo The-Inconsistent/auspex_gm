@@ -12,6 +12,7 @@ import "./css/fight.css";
 import "./css/header.css";
 import "./css/party.css";
 import "./css/player.css";
+import "./css/scene.css";
 
 // Cinzel stands in for the books' Priori Serif, Crimson Pro for Caxton; Plex Mono is only for in-world print-outs.
 const display = Cinzel({ subsets: ["latin"], variable: "--font-display" });
