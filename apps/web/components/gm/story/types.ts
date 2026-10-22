@@ -3,5 +3,5 @@ import type { BeatSection } from "@/components/gm/prep/components/beat-editor/co
 
 export type Adventure = Codex["adventures"][number];
 
-// What replaces the spread: the new-scene editor, the book-table picker, or the open scene's editor (one section, or all).
+// What replaces the spread: the new-scene editor, the book-table picker, or the open scene's editor (at a section or the top).
 export type Editing = { mode: "new" } | { mode: "table" } | { mode: "scene"; section?: BeatSection };

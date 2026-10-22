@@ -1,0 +1,384 @@
+/* STORY's scene editor (BeatEditor) and the codex quick-edit sheet: docs/scene-first-design.md, canvas Flow-Editor*. */
+
+/* A peek's EDIT: the entry's form as a sheet from the right, the screen it came from still beside it. */
+dialog.rule-dialog.sheet {
+  width: min(560px, 100vw);
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0 0 0 auto;
+  border: 0;
+  border-left: 3px solid var(--ink-2);
+  box-shadow: -14px 0 28px -12px var(--shade-50);
+}
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.sheet .panel {
+  border: 0;
+  padding: 0;
+  background: none;
+}
+.sheet-foot {
+  justify-content: space-between;
+}
+
+/* A quiet action written as a link: OPEN IN CODEX, REMOVE, DELETE SCENE. */
+.lnk {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.lnk.red {
+  color: var(--red);
+}
+
+/* The editor's frame: one scrolling form between a sticky jump strip and a sticky save bar. */
+.ed {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+/* The GM header's torn edge stays over the editor's sticky strip as the form scrolls under it. */
+.gm-head.band.torn {
+  z-index: 5;
+}
+.ed-strip {
+  position: sticky;
+  top: -12px; /* .gm-body's padding-top, which the strip fills, so nothing shows through above it */
+  padding-top: 12px;
+  z-index: 3;
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  margin: 0 -16px;
+  padding-right: 16px;
+  padding-left: 16px;
+  background: var(--vellum-3);
+  border-bottom: 1px solid var(--line);
+}
+.ed-strip a {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  border-bottom: 2px solid transparent;
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--ink-2);
+  text-decoration: none;
+}
+.ed-strip a[aria-current="true"] {
+  color: var(--red);
+  border-bottom-color: var(--red);
+}
+.ed-strip a span {
+  color: var(--ink-3);
+}
+.ed-sec {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-margin-top: 56px; /* clears the sticky strip when a pencil or a strip link lands here */
+}
+.ed-sec [id] {
+  scroll-margin-top: 56px;
+}
+.ed-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 260px);
+  gap: 14px;
+}
+.ed-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 -16px;
+  padding: 6px 16px;
+  background: var(--vellum-3);
+  border-top: 1px solid var(--line);
+}
+.ed-bar .ed-state {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+.ed-bar .ed-state.red {
+  color: var(--red);
+}
+.ed-named {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--ink-3);
+}
+.ed-named b {
+  font-family: var(--display);
+  font-style: normal;
+  font-size: 12px;
+  color: var(--red);
+}
+
+/* A list the scene holds: one row per pick (PLACE, NPCS, HANDOUTS, ITEMS). */
+.ed-pick {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+}
+.ed-pick .ed-name {
+  min-width: 0;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--ink);
+  text-align: left;
+  overflow-wrap: anywhere;
+  text-decoration: underline dotted var(--ink-3);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.ed-pick .leader {
+  flex: 1;
+  min-width: 12px;
+  border-bottom: 1.5px dotted var(--line);
+}
+
+/* Repeating things (Tests, spends, fight entries): one line each, one open at a time. */
+.ed-rows {
+  display: flex;
+  flex-direction: column;
+}
+.ed-row {
+  border-bottom: 1px solid var(--line);
+}
+.ed-row.open {
+  background: var(--vellum-2);
+  border: 1px solid var(--ink-2);
+}
+.ed-row-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+}
+.ed-row-head .ed-sum {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px 0 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.ed-row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 14px 14px 50px;
+}
+.drag {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink-3);
+  cursor: grab;
+  touch-action: none; /* the finger drags the row, not the page */
+}
+
+/* One choice of a few, drawn as joined buttons (WHO ROLLS, DN, POOL, WHAT PLAYERS SEE). */
+.seg {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+.seg > .btn {
+  box-shadow: none;
+}
+.seg > .btn + .btn {
+  margin-left: -1px;
+}
+
+/* Find or name (components/ui/find-field). */
+.find {
+  position: relative;
+}
+.find-input::placeholder {
+  font-style: italic;
+}
+.find-pop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 2px);
+  z-index: 4;
+  background: var(--vellum);
+  border: 1px solid var(--ink-2);
+  box-shadow: 0 10px 24px -8px var(--shade-50);
+  max-height: min(320px, 45dvh); /* scrolls rather than run under the save bar or off the screen */
+  overflow-y: auto;
+}
+.find-row {
+  width: 100%;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 12px;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.find-row[aria-selected="true"] {
+  background: var(--red-tint);
+  box-shadow: inset 3px 0 0 var(--red);
+}
+.find-name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.find-new {
+  border-top: 1px solid var(--line);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--red);
+}
+.find-note {
+  padding: 6px 12px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-3);
+}
+
+/* people-props: PLACE and NPCS side by side on a wide screen */
+.ed-people {
+  display: grid;
+  gap: 18px;
+}
+@media (min-width: 900px) {
+  .ed-people {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+/* ruin-glory */
+.rg-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rg-line > .input {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+}
+.rg-amt {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 700;
+}
+.rg-amt .input {
+  width: 56px !important; /* NumberInput sets 70px inline */
+  font: inherit;
+  text-align: center;
+  color: inherit;
+}
+.rg-amt.ruin {
+  color: var(--red);
+}
+.rg-amt.glory {
+  color: var(--brass);
+}
+
+/* fight-entries */
+.ed-count {
+  font-family: var(--display);
+  font-size: 20px;
+}
+.ed-sum .ed-count {
+  min-width: 1.2em;
+  text-align: right;
+}
+.ed-sum .ed-threat {
+  font-family: var(--display);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+.ed-sum .chip {
+  flex: none;
+}
+.ed-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-family: var(--display);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+.ed-swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  padding: 0;
+  cursor: pointer;
+}
+.ed-swatch[aria-pressed="true"] {
+  border-color: var(--ink);
+  box-shadow:
+    0 0 0 2px var(--vellum),
+    0 0 0 4px var(--ink);
+}

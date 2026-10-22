@@ -1,16 +1,16 @@
 "use client";
-import { useState, type ChangeEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   BeatType,
   CodexSave,
-  CUSTOM_THREAT_CAP,
-  Marker,
+  parseMentions,
   type BeatExit,
   type BeatStatus,
   type BeatTest,
   type Codex,
   type HazardTable,
+  type MentionKind,
   type PoolPresetTable,
   type SkillDn,
   type Threat,
@@ -19,24 +19,25 @@ import {
 
 import { FieldError } from "@/components/ui/field-error/field-error";
 import { MentionField } from "@/components/ui/mention-field/mention-field";
-import { RUIN_ACTIONS_TABLE, type ThreatDraft } from "@/components/ui/threat-builder/constants";
-import { ThreatBuilder } from "@/components/ui/threat-builder/threat-builder";
-import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
-import { ThreatScale } from "@/components/ui/threat-scale/threat-scale";
-import { ThreatStarts } from "@/components/ui/threat-starts/threat-starts";
-import { VisibilitySelect } from "@/components/ui/visibility-select/visibility-select";
+import { useMentions } from "@/components/ui/mentions/mentions-provider";
 import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
-import { hazardView } from "@/lib/hazards/hazards";
-import { placeOptions } from "@/lib/places/places";
 
 import type { Beat, EncounterEntry, PoolDrafts } from "../../types";
 import { savedPools, stripBeat } from "../../utils";
-import { BudgetPanel } from "./components/budget-panel/budget-panel";
 import { Exits } from "./components/exits/exits";
+import { FightEntries } from "./components/fight-entries/fight-entries";
+import { PeopleProps } from "./components/people-props/people-props";
 import { RuinGlory } from "./components/ruin-glory/ruin-glory";
 import { Tests } from "./components/tests/tests";
-import { BEAT_TEXT_FIELDS, type BeatSection, type BeatTextField } from "./constants";
+import {
+  BEAT_TEXT_FIELDS,
+  EDITOR_GROUPS,
+  SECTION_GROUP,
+  type BeatSection,
+  type BeatTextField,
+  type EditorGroup,
+} from "./constants";
 
 type BeatEditorProps = {
   adventureId: string;
@@ -51,15 +52,45 @@ type BeatEditorProps = {
   hazardTables: HazardTable[]; // to name the place's book hazards (issue #49)
   wargear: Wargear[]; // + NEW CUSTOM THREAT's weapons, as CODEX › THREATS has them
   onDone: () => void;
-  section?: BeatSection; // STORY's pencil: show only this part of the scene (every part when absent)
+  section?: BeatSection; // STORY's pencil: the part the editor opens scrolled to
 };
 
 // The beat as the editor holds it: a Ruin or Glory amount, or a spend's cost, may be empty until the GM sets it.
-type Draft = Omit<ReturnType<typeof stripBeat>, keyof PoolDrafts> & PoolDrafts;
+export type Draft = Omit<ReturnType<typeof stripBeat>, keyof PoolDrafts> & PoolDrafts;
 
-// Adds `id` to the list, or removes it if already there.
-const toggled = (list: string[], id: string) => (list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
+// A codex entry a scene can hold, by the list that holds it (a place is the one locationId).
+const HELD: Partial<Record<MentionKind, "npcIds" | "handoutIds" | "itemIds">> = {
+  npc: "npcIds",
+  handout: "handoutIds",
+  item: "itemIds",
+};
 
+const blank = (adventureId: string): Draft => ({
+  adventureId,
+  title: "",
+  goal: "",
+  type: "social" as BeatType,
+  status: "planned" as BeatStatus,
+  readAloud: "",
+  gmNotes: "",
+  outcome: "",
+  locationId: null,
+  npcIds: [],
+  handoutIds: [],
+  itemIds: [],
+  encounter: [] as EncounterEntry[],
+  exits: [] as BeatExit[],
+  tests: [] as BeatTest[],
+  ruin: [],
+  glory: [],
+  spends: [],
+  hazards: [],
+  onEntry: [],
+});
+
+// The scene editor (canvas Flow-Editor*): one page you scroll, a strip that jumps between its parts, and one save bar.
+// A STORY pencil opens it scrolled to its part. Lists of codex entries find or name them in place, and a name opens
+// its quick-edit sheet; Tests, spends and fight entries are rows that open one at a time.
 export function BeatEditor({
   adventureId,
   beat,
@@ -75,48 +106,105 @@ export function BeatEditor({
   onDone,
   section,
 }: BeatEditorProps) {
-  const shows = (part: BeatSection) => !section || section === part;
-  const [b, setB] = useState<Draft>(() =>
-    beat
-      ? stripBeat(beat)
-      : {
-          adventureId,
-          title: "",
-          goal: "",
-          type: "social" as BeatType,
-          status: "planned" as BeatStatus,
-          readAloud: "",
-          gmNotes: "",
-          outcome: "",
-          locationId: null as string | null,
-          npcIds: [] as string[],
-          handoutIds: [] as string[],
-          itemIds: [] as string[],
-          encounter: [] as EncounterEntry[],
-          exits: [] as BeatExit[],
-          tests: [] as BeatTest[],
-          ruin: [],
-          glory: [],
-          spends: [],
-          hazards: [],
-          onEntry: [] as string[],
-        },
-  );
+  const [initial] = useState<Draft>(() => (beat ? stripBeat(beat) : blank(adventureId)));
+  const [b, setB] = useState<Draft>(initial);
   const [error, setError] = useState<string | null>(null);
+  const [drafting, setDrafting] = useState(false); // a custom threat is being written: its CREATE adds to this fight
   const fieldErrors = useFieldErrors("b-"); // each text field's input is b-<key>
-  // + NEW CUSTOM THREAT: closed, choosing how to start (clone, blank, quick), or writing that draft.
-  const [building, setBuilding] = useState<"start" | ThreatDraft | null>(null);
-  // Counted from the merged bestiary: nothing outside CODEX › THREATS reads codex.customThreats (issue #43).
-  const customsFull = bestiary.filter((t) => t.source === "custom").length >= CUSTOM_THREAT_CAP;
-  const drafting = building !== null && building !== "start"; // a stat block is being written
-
-  const setEntry = (i: number, patch: Partial<EncounterEntry>) =>
-    setB({ ...b, encounter: b.encounter.map((e, j) => (j === i ? { ...e, ...patch } : e)) });
+  const { link } = useMentions();
   const scenes = codex.adventures.find((a) => a.id === adventureId)?.beats ?? [];
+  // Functional either way: a codex save (a + NEW in a list) may land after other edits, which it must not undo.
+  const patch = (p: Partial<Draft> | ((d: Draft) => Partial<Draft>)) =>
+    setB((d) => ({ ...d, ...(typeof p === "function" ? p(d) : p) }));
 
-  // SAVE SCENE: creates or updates the beat, then closes the editor. Blank exit rows, Shift rungs and Ruin and Glory
-  // lines go, and an exit target deleted while the editor was open (its select shows —) is dropped rather than refused
-  // by the server. A Ruin or Glory line with no amount, or a spend with no cost, holds the save.
+  // The strip follows the part on screen; a pencil's part is where the editor opens.
+  const [group, setGroup] = useState<EditorGroup>(section ? SECTION_GROUP[section] : "story");
+  // A strip tap marks its part at once; the scroll it starts mustn't mark the parts it passes (or, at the page's end,
+  // the part above one too short to reach the top).
+  const tapped = useRef(0);
+  // External system: the DOM. Scrolls once to the pencil's part, then watches which part is on screen.
+  useEffect(() => {
+    if (section) {
+      const text = section in BEAT_TEXT_FIELDS;
+      document
+        .getElementById(text ? `b-${section}` : `ed-${SECTION_GROUP[section]}`)
+        ?.scrollIntoView({ block: "start" });
+    }
+    // The part on screen is the last one whose heading has passed under the strip.
+    const follow = () => {
+      if (Date.now() - tapped.current < 1000) return;
+      const line = (document.querySelector(".ed-strip")?.getBoundingClientRect().bottom ?? 0) + 8;
+      const passed = EDITOR_GROUPS.filter(
+        (g) => (document.getElementById(`ed-${g.id}`)?.getBoundingClientRect().top ?? Infinity) <= line,
+      );
+      setGroup(passed.at(-1)?.id ?? "story");
+    };
+    // Capture: the scroll happens in the GM body, and a scroll event doesn't bubble.
+    document.addEventListener("scroll", follow, { capture: true, passive: true });
+    return () => document.removeEventListener("scroll", follow, { capture: true });
+  }, [section]);
+
+  // What the strip counts per part.
+  const counts: Record<EditorGroup, number | null> = {
+    story: null,
+    people: (b.locationId ? 1 : 0) + b.npcIds.length + b.handoutIds.length + b.itemIds.length,
+    tests: b.tests.length,
+    pools: b.ruin.length + b.glory.length + b.spends.length,
+    fight: b.encounter.reduce((n, e) => n + e.count, 0),
+    exits: b.exits.length,
+  };
+
+  // How many of the scene's fields differ from what it was opened with.
+  const changed = (Object.keys(b) as (keyof Draft)[]).filter(
+    (k) => JSON.stringify(b[k]) !== JSON.stringify(initial[k]),
+  ).length;
+  // A Ruin or Glory line with no amount, or a spend with no cost, holds the save: the app never invents one (§11.78).
+  const unset =
+    [...b.ruin, ...b.glory].filter((l) => l.text.trim() && l.amount === null).length +
+    b.spends.filter((s) => s.name.trim() && s.cost === null).length;
+
+  // Named in the scene's text but not in it: one tap puts them all in (a place only when the scene has none).
+  const named = [b.goal, b.readAloud, b.gmNotes]
+    .flatMap((text) =>
+      parseMentions(text).flatMap((part) =>
+        "kind" in part ? [part] : link({ text: part.text }).filter((p) => "kind" in p),
+      ),
+    )
+    .filter((m): m is { kind: MentionKind; id: string } => "kind" in m)
+    .filter((m, i, all) => all.findIndex((x) => x.id === m.id) === i)
+    .filter((m) => {
+      const list = HELD[m.kind];
+      return list ? !b[list].includes(m.id) : m.kind === "location" && !b.locationId;
+    })
+    .slice(0, 6);
+  const nameOf = (kind: MentionKind, id: string) => {
+    const list =
+      kind === "npc" ? codex.npcs : kind === "location" ? codex.locations : kind === "item" ? codex.items : [];
+    return kind === "handout" ? codex.handouts.find((h) => h.id === id)?.title : list.find((e) => e.id === id)?.name;
+  };
+  const addNamed = () =>
+    setB((d) => {
+      const next = { ...d };
+      for (const m of named) {
+        const list = HELD[m.kind];
+        if (list) next[list] = [...next[list], m.id];
+        else if (m.kind === "location" && !next.locationId) next.locationId = m.id;
+      }
+      return next;
+    });
+
+  // EXITS' → NEW SCENE: a scene by that title, saved now in this adventure, so the exit can point at it.
+  const newScene = async (title: string) => {
+    const r = await send({ type: "codex.save", kind: "beat", data: { adventureId, title } });
+    if (!r.ok) {
+      setError(r.error);
+      return null;
+    }
+    return r.id ?? null;
+  };
+
+  // SAVE SCENE: creates or updates the beat, then closes the editor. Blank exits, Shifts and Ruin and Glory lines go,
+  // and an exit target deleted while the editor was open (its select shows —) is dropped rather than refused.
   const save = async () => {
     setError(null);
     const pools = savedPools(b);
@@ -128,23 +216,13 @@ export function BeatEditor({
     // The editor has no status field: send the scene's live one, not the draft's (a begin may have landed meanwhile).
     const data = { ...b, status: beat?.status ?? b.status, exits, tests, ...pools };
     // CodexSave first: a nameless scene can't be listed or picked, so TITLE is marked on the field.
-    if (!fieldErrors.check(CodexSave.beat, data)) return;
+    if (!fieldErrors.check(CodexSave.beat, data)) return document.getElementById("b-title")?.focus();
     const r = await send({ type: "codex.save", kind: "beat", ...(beat ? { id: beat.id } : {}), data });
     if (!r.ok) return setError(r.error);
     onDone();
   };
 
-  const place = codex.locations.find((l) => l.id === b.locationId);
-  // A hazard chip: the scene picks one of its place's hazards, unspotted, or drops it.
-  const toggleHazard = (id: string) =>
-    setB({
-      ...b,
-      hazards: b.hazards.some((x) => x.id === id)
-        ? b.hazards.filter((x) => x.id !== id)
-        : [...b.hazards, { id, spotted: false }],
-    });
-
-  // DELETE: removes the beat, then closes the editor; a refusal stays open with the reason.
+  // DELETE SCENE: removes the beat, then closes the editor; a refusal stays open with the reason.
   const handleDelete = async () => {
     if (!beat) return;
     const r = await send({ type: "codex.delete", kind: "beat", id: beat.id });
@@ -152,36 +230,7 @@ export function BeatEditor({
     onDone();
   };
 
-  // + THREAT: the picker names the threat, so the new entry is one model of it.
-  // Functional, because + NEW CUSTOM THREAT adds after the save's round trip, and the scene may have changed meanwhile.
-  const addEntry = (threatId: string) =>
-    setB((p) => ({
-      ...p,
-      encounter: [...p.encounter, { threatId, count: 1, asMob: false, profiles: [], scale: false }],
-    }));
-
-  // + NEW CUSTOM THREAT: opens or closes START FROM. A stat block being written closes only by its own CANCEL, so a stray
-  // tap can't drop it; START FROM always closes, even once the cap is reached from another tablet.
-  const handleToggleBuilder = () => setBuilding(building === "start" ? null : "start");
-
-  // + NEW CUSTOM THREAT › CREATE: the new stat block joins this scene's encounter; it's in CODEX › THREATS too.
-  const handleThreatBuilt = (threatId: string) => {
-    addEntry(threatId);
-    setBuilding(null);
-  };
-
-  // ×: removes encounter entry i.
-  const removeEntry = (i: number) => setB({ ...b, encounter: b.encounter.filter((_, j) => j !== i) });
-
-  // Count: digits only, at least 1.
-  const handleCountChange = (i: number, e: ChangeEvent<HTMLInputElement>) =>
-    setEntry(i, { count: Math.max(1, Number(e.target.value.replace(/\D/g, "")) || 1) });
-
-  // Marker: the empty option clears it.
-  const handleMarkerChange = (i: number, e: ChangeEvent<HTMLSelectElement>) =>
-    setEntry(i, { marker: Marker.safeParse(e.target.value).data });
-
-  const textField = ({ key }: { key: BeatTextField }) => {
+  const textField = (key: BeatTextField) => {
     const { label, area, hint } = BEAT_TEXT_FIELDS[key];
     return (
       <div className="field">
@@ -195,7 +244,7 @@ export function BeatEditor({
             {...fieldErrors.marks(key)}
             className="input"
             value={b[key]}
-            onChange={(e) => setB({ ...b, [key]: e.target.value })}
+            onChange={(e) => patch({ [key]: e.target.value })}
           />
         ) : (
           <MentionField
@@ -203,7 +252,7 @@ export function BeatEditor({
             {...fieldErrors.marks(key)}
             multiline={area}
             value={b[key]}
-            onChange={(v) => setB({ ...b, [key]: v })}
+            onChange={(v) => patch({ [key]: v })}
           />
         )}
         <FieldError {...fieldErrors.reason(key)} />
@@ -216,260 +265,150 @@ export function BeatEditor({
     );
   };
 
+  const fault = error ?? fieldErrors.elsewhere(Object.keys(BEAT_TEXT_FIELDS));
+  const state = drafting
+    ? "FINISH OR CANCEL THE CUSTOM THREAT TO SAVE"
+    : unset
+      ? `SET ${unset} ${unset === 1 ? "AMOUNT OR COST" : "AMOUNTS OR COSTS"} TO SAVE`
+      : changed
+        ? `${changed} UNSAVED ${changed === 1 ? "CHANGE" : "CHANGES"}`
+        : "NO CHANGES";
+
   return (
-    <div className="panel pad stack">
-      {!section && textField({ key: "title" })}
-      {!section && (
-        <div className="field">
-          <label className="label" htmlFor="b-type">
-            TYPE
-          </label>
-          <select
-            id="b-type"
-            className="input"
-            value={b.type}
-            onChange={(e) => setB({ ...b, type: BeatType.parse(e.target.value) })}
+    <>
+      <nav className="ed-strip" aria-label="Parts of this scene">
+        {EDITOR_GROUPS.map((g) => (
+          <a
+            key={g.id}
+            href={`#ed-${g.id}`}
+            aria-current={group === g.id ? "true" : undefined}
+            onClick={() => {
+              tapped.current = Date.now();
+              setGroup(g.id);
+            }}
           >
-            {BeatType.options.map((t) => (
-              <option key={t} value={t}>
-                {t.toUpperCase()}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
-      {shows("goal") && textField({ key: "goal" })}
-      {shows("readAloud") && textField({ key: "readAloud" })}
-      {shows("gmNotes") && textField({ key: "gmNotes" })}
-      {shows("exits") && <Exits exits={b.exits} scenes={scenes} onChange={(exits) => setB({ ...b, exits })} />}
-      {shows("place") && (
-        <>
-          <div className="field">
-            <label className="label" htmlFor="b-loc">
-              LOCATION
-            </label>
-            <select
-              id="b-loc"
-              className="input"
-              value={b.locationId ?? ""}
-              onChange={(e) => setB({ ...b, locationId: e.target.value || null, hazards: [] })}
-            >
-              <option value="">—</option>
-              {placeOptions(codex.locations).map(([id, label]) => (
-                <option key={id} value={id}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </div>
-          {place && place.hazardList.length > 0 && (
-            <div className="field plate">
-              <span className="label">HAZARDS AT THIS PLACE · PICK WHAT APPLIES</span>
-              <div className="keys" role="group" aria-label="Hazards in this scene">
-                {place.hazardList.map((h) => {
-                  const on = b.hazards.some((x) => x.id === h.id);
-                  const name = hazardView({ entry: h, tables: hazardTables, tier })?.name ?? "Unknown hazard";
-                  return (
-                    <button
-                      key={h.id}
-                      className={`btn sm ${on ? "primary" : ""}`}
-                      aria-pressed={on}
-                      onClick={() => toggleHazard(h.id)}
-                    >
-                      {name}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </>
-      )}
-      {shows("cast") && (
-        <>
-          <div className="field">
-            <span className="label">NPCS PRESENT</span>
-            <div className="keys" role="group" aria-label="NPCs present">
-              {codex.npcs.map((n) => (
-                <button
-                  key={n.id}
-                  className={`btn sm ${b.npcIds.includes(n.id) ? "primary" : ""}`}
-                  aria-pressed={b.npcIds.includes(n.id)}
-                  onClick={() => setB({ ...b, npcIds: toggled(b.npcIds, n.id) })}
-                >
-                  {n.name}
-                </button>
-              ))}
-              {codex.npcs.length === 0 && <span className="dim">Add NPCs in CODEX.</span>}
-            </div>
-          </div>
-          <div className="field">
-            <span className="label">HANDOUTS / CLUES</span>
-            <div className="keys" role="group" aria-label="Handouts and clues">
-              {codex.handouts.map((h) => (
-                <button
-                  key={h.id}
-                  className={`btn sm ${b.handoutIds.includes(h.id) ? "primary" : ""}`}
-                  aria-pressed={b.handoutIds.includes(h.id)}
-                  onClick={() => setB({ ...b, handoutIds: toggled(b.handoutIds, h.id) })}
-                >
-                  {h.title}
-                </button>
-              ))}
-              {codex.handouts.length === 0 && <span className="dim">Add handouts in CODEX.</span>}
-            </div>
-          </div>
-          <div className="field">
-            <span className="label">ITEMS TO FIND</span>
-            <div className="keys" role="group" aria-label="Items to find">
-              {codex.items.map((it) => (
-                <button
-                  key={it.id}
-                  className={`btn sm ${b.itemIds.includes(it.id) ? "primary" : ""}`}
-                  aria-pressed={b.itemIds.includes(it.id)}
-                  onClick={() => setB({ ...b, itemIds: toggled(b.itemIds, it.id) })}
-                >
-                  {it.name}
-                </button>
-              ))}
-              {codex.items.length === 0 && <span className="dim">Add items in CODEX.</span>}
-            </div>
-            <span className="dim">
-              <i>What the Agents can find in this scene. Hand one over with GIVE on the scene, in SCENE or STORY.</i>
-            </span>
-          </div>
-        </>
-      )}
+            {g.label}
+            {counts[g.id] !== null && <span>{counts[g.id]}</span>}
+          </a>
+        ))}
+      </nav>
 
-      {shows("tests") && <Tests tests={b.tests} skillDns={skillDns} onChange={(tests) => setB({ ...b, tests })} />}
-      {shows("pools") && <RuinGlory lines={b} tables={poolTables} onChange={(lines) => setB({ ...b, ...lines })} />}
-
-      {shows("fight") && (
-        <div className="field">
-          <span className="label">PREPARED ENCOUNTER</span>
-          <BudgetPanel entries={b.encounter} agents={agents} bestiary={bestiary} tier={tier} />
-          {b.encounter.map((e, i) => (
-            <div key={i} className="keys" style={{ alignItems: "center" }}>
-              <ThreatPicker
-                bestiary={bestiary}
-                tier={tier}
-                value={e.threatId}
-                onPick={(t) => setEntry(i, { threatId: t.id })}
-              />
-              <input
-                className="input"
-                style={{ width: 70 }}
-                aria-label="Count"
-                inputMode="numeric"
-                value={e.count}
-                onChange={(ev) => handleCountChange(i, ev)}
-              />
-              <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                <input type="checkbox" checked={e.asMob} onChange={(ev) => setEntry(i, { asMob: ev.target.checked })} />{" "}
-                MOB
+      <div className="ed">
+        <section id="ed-story" className="ed-sec" aria-labelledby="ed-story-h">
+          <div className="rule" id="ed-story-h">
+            STORY
+          </div>
+          <div className="ed-pair">
+            {textField("title")}
+            <div className="field">
+              <label className="label" htmlFor="b-type">
+                TYPE
               </label>
               <select
+                id="b-type"
                 className="input"
-                style={{ width: 110 }}
-                aria-label="Marker"
-                value={e.marker ?? ""}
-                onChange={(ev) => handleMarkerChange(i, ev)}
+                value={b.type}
+                onChange={(e) => patch({ type: BeatType.parse(e.target.value) })}
               >
-                <option value="">MARKER</option>
-                {Marker.options.map((m) => (
-                  <option key={m} value={m}>
-                    {m.toUpperCase()}
+                {BeatType.options.map((t) => (
+                  <option key={t} value={t}>
+                    {t.toUpperCase()}
                   </option>
                 ))}
               </select>
-              <VisibilitySelect
-                className="input"
-                value={e.visibility ?? "bars"}
-                onChange={(visibility) => setEntry(i, { visibility })}
-              />
-              <button
-                className="btn sm danger"
-                aria-label={`Remove encounter entry ${i + 1}`}
-                onClick={() => removeEntry(i)}
-              >
-                ×
-              </button>
-              {/* Profiles and scaling fold under the row: four more controls beside the picker would shrink the 44px
-                tap targets this tablet needs. */}
-              <div style={{ flexBasis: "100%" }}>
-                <ThreatScale
-                  threat={bestiary.find((t) => t.id === e.threatId)}
-                  tier={tier}
-                  agents={agents}
-                  asMob={e.asMob && e.count > 1}
-                  profiles={e.profiles}
-                  scale={e.scale}
-                  onChange={(next) => setEntry(i, next)}
-                />
-              </div>
             </div>
-          ))}
-          <div className="keys" style={{ alignItems: "center" }}>
-            <ThreatPicker
-              bestiary={bestiary}
-              tier={tier}
-              onPick={(t) => addEntry(t.id)}
-              label="+ THREAT"
-              className="btn sm"
-            />
-            {/* Writing one here keeps the scene open; leaving for CODEX › THREATS would drop its unsaved changes. */}
-            <button
-              className={`btn sm ${building ? "primary" : ""}`}
-              aria-expanded={building !== null}
-              disabled={drafting || (building === null && customsFull)}
-              onClick={handleToggleBuilder}
-            >
-              + NEW CUSTOM THREAT
-            </button>
-            {/* The picker disables itself with nothing to show; say why, because a failed load looks like an empty book. */}
-            {!bestiary.length && <span className="dim">No bestiary loaded.</span>}
-            {customsFull && <span className="dim">Custom threats are full ({CUSTOM_THREAT_CAP}).</span>}
           </div>
-          {building === "start" && (
-            <div className="keys" style={{ alignItems: "center" }}>
-              <span className="label">START FROM</span>
-              <ThreatStarts bestiary={bestiary} tier={tier} disabled={customsFull} onStart={setBuilding} />
+          {textField("goal")}
+          {textField("readAloud")}
+          <div className="plate stack">{textField("gmNotes")}</div>
+          {named.length > 0 && (
+            <div className="ed-named">
+              Named here, not in the scene:{" "}
+              {named.map((m, i) => (
+                <b key={m.id}>
+                  {i > 0 && "· "}
+                  {nameOf(m.kind, m.id)}
+                </b>
+              ))}
+              <button className="btn sm" onClick={addNamed}>
+                + ADD {named.length === 1 ? "" : named.length === 2 ? "BOTH" : `ALL ${named.length}`}
+              </button>
             </div>
           )}
-          {drafting && (
-            <i className="dim">CREATE saves it to CODEX › THREATS straight away, whatever happens to this scene.</i>
+          {textField("outcome")}
+        </section>
+
+        <section id="ed-people" className="ed-sec" aria-labelledby="ed-people-h">
+          <div className="rule" id="ed-people-h">
+            PEOPLE & PROPS
+          </div>
+          <PeopleProps draft={b} codex={codex} send={send} hazardTables={hazardTables} tier={tier} onChange={patch} />
+        </section>
+
+        <section id="ed-tests" className="ed-sec" aria-labelledby="ed-tests-h">
+          <div className="rule" id="ed-tests-h">
+            TESTS · {b.tests.length}
+          </div>
+          <Tests tests={b.tests} skillDns={skillDns} onChange={(tests) => patch({ tests })} />
+        </section>
+
+        <section id="ed-pools" className="ed-sec" aria-labelledby="ed-pools-h">
+          <div className="rule" id="ed-pools-h">
+            RUIN & GLORY
+          </div>
+          <RuinGlory lines={b} tables={poolTables} onChange={(lines) => patch(lines)} />
+        </section>
+
+        <section id="ed-fight" className="ed-sec" aria-labelledby="ed-fight-h">
+          <div className="rule" id="ed-fight-h">
+            FIGHT IF IT BREAKS OUT
+          </div>
+          <FightEntries
+            entries={b.encounter}
+            agents={agents}
+            tier={tier}
+            bestiary={bestiary}
+            wargear={wargear}
+            poolTables={poolTables}
+            send={send}
+            onChange={(encounter) => patch({ encounter })}
+            onDrafting={setDrafting}
+          />
+        </section>
+
+        <section id="ed-exits" className="ed-sec" aria-labelledby="ed-exits-h">
+          <div className="rule" id="ed-exits-h">
+            EXITS
+          </div>
+          <Exits
+            exits={b.exits}
+            scenes={scenes}
+            current={beat?.id}
+            onChange={(exits) => patch({ exits })}
+            onNewScene={newScene}
+          />
+          {beat && (
+            <div>
+              <button className="lnk red" onClick={handleDelete}>
+                DELETE SCENE
+              </button>
+            </div>
           )}
-          {building && building !== "start" && (
-            <ThreatBuilder
-              start={{ slug: null, draft: building }}
-              wargear={wargear}
-              ruinActions={poolTables.find((t) => t.id === RUIN_ACTIONS_TABLE) ?? null}
-              send={send}
-              onSaved={handleThreatBuilt}
-              onCancel={() => setBuilding(null)}
-            />
-          )}
-        </div>
-      )}
-      {shows("outcome") && textField({ key: "outcome" })}
-      {(error ?? fieldErrors.elsewhere(Object.keys(BEAT_TEXT_FIELDS))) && (
-        <div className="red">! {error ?? fieldErrors.elsewhere(Object.keys(BEAT_TEXT_FIELDS))}</div>
-      )}
-      {drafting && <div className="dim">Finish or cancel the custom threat to save the scene.</div>}
-      <div className="keys">
-        {/* Not while a custom threat is open: its CREATE adds to this encounter, so the scene waits for it or CANCEL. */}
-        <button className="btn primary" disabled={drafting} onClick={save}>
-          SAVE SCENE
-        </button>
+        </section>
+      </div>
+
+      <div className="ed-bar">
+        <span className={`ed-state ${fault || unset || drafting || changed ? "red" : ""}`} role="status">
+          {fault ? `! ${fault}` : state}
+        </span>
         <button className="btn" onClick={onDone}>
           CANCEL
         </button>
-        {beat && !section && (
-          <button className="btn danger" onClick={handleDelete}>
-            DELETE
-          </button>
-        )}
+        {/* Not while a custom threat is open: its CREATE adds to this fight, so the scene waits for it or CANCEL. */}
+        <button className="btn primary" disabled={drafting || unset > 0} onClick={save}>
+          SAVE SCENE
+        </button>
       </div>
-    </div>
+    </>
   );
 }

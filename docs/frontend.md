@@ -692,8 +692,8 @@ SCENE; the code keeps `beat`. STORY is prep as a storyboard: you flip scene by s
   title, the status and readiness chips with the fixes, GOAL, READ ALOUD, GM NOTES (closed on a plate), OUTCOME. The right
   leaf is who and what is in it: PLACE, CAST, HANDOUTS, ITEMS, TESTS, RUIN & GLORY, HAZARDS (only for a scene with a place
   and picks), FIGHT (`entryLine`: an entry's name, count, Profiles and "scaled", never the id) and EXITS (`→ 04 · THE
-  DEAL`, or `→ NO SCENE YET`). Each part is a `StorySection` with a ✎ pencil that opens the `BeatEditor` on just that
-  part, and a part with nothing yet still shows, so it can be started from the page. The pencils: GOAL, READ ALOUD, GM
+  DEAL`, or `→ NO SCENE YET`). Each part is a `StorySection` with a ✎ pencil that opens the `BeatEditor` scrolled to
+  that part, and a part with nothing yet still shows, so it can be started from the page. The pencils: GOAL, READ ALOUD, GM
   NOTES, OUTCOME, EXITS, TESTS, RUIN & GLORY, FIGHT; PLACE and HAZARDS open `place`, and CAST, HANDOUTS and ITEMS open
   `cast`.
   - **ON ENTRY**: the place, each NPC and each handout shows a `REVEALED` / `HIDDEN` chip and an ON ENTRY tick. A tick
@@ -728,46 +728,46 @@ SCENE; the code keeps `beat`. STORY is prep as a storyboard: you flip scene by s
 - **Moved from PREP.** RUN SCENE (start the prepared encounter, then the tracker) is now START FIGHT in SCENE's IN THIS
   SCENE. SET ACTIVE is RUN THIS SCENE, or BEGIN on SCENE. The scene list is the BOARD. Hazards and the Ruin & Glory taps are
   also on SCENE's page, and Tests are called from its TESTS rows.
-- **`BeatEditor`** is reached from EDIT (every part) or a pencil, which passes `section` (`BEAT_SECTIONS`): the editor then
-  shows only that part, with no TITLE or type and no DELETE (SAVE SCENE and CANCEL stay), and `Story` remounts it per scene
-  and section. Its fields:
-  - title
-  - type (`BeatType.options`)
-  - goal, read aloud, GM notes and outcome (`BEAT_TEXT_FIELDS`, each with its hint and page)
-  - exits (`components/exits/exits.tsx`): a label and a scene select per row (this adventure's scenes, or —), up
-    to `MAX_EXITS`; SAVE drops rows with neither
-  - tests (`components/tests/tests.tsx`), between handouts and the prepared encounter. Per Test:
-    - a KIND select (`retypeTest` keeps the pool, DN and Shifts that still fit)
-    - a Skill and/or Attribute select by `TEST_POOL`
-    - ONE / EACH, and PURPOSE
-    - DN chips from `DN_TABLE` with their modifier inline, "5 CHALLENGING (+2)" (`CORRUPTION_DNS` for Corruption)
-    - a DN field (`components/ui/number-input`): it keeps the text as typed while editing, counts a DN from 1 to 20 at
-      once, and clamps on blur; emptied, it leaves the DN for the GM to set (§11.75)
-    - the book's example for that Skill at that DN (`skillDns` from `GmApp`'s `presets`, Core pp.122–126)
-    - a DN under 3 hint (Core p.122)
-    - the Shift ladder, up to `MAX_SHIFTS`. Chips add the uses on pp.165–166, with +1 Glory only once per Test
-      (p.166), and the Attitude step (p.168) when the Test names a social Skill (`SOCIAL_SKILLS`, p.167)
-    - ON SUCCESS, and ON FAILURE with the p.319 chips
-    - ↑ / ↓ / ×
-
-    An Opposed Test shows a NO DN note and no Shift ladder: Shifting is defined against a DN (p.165). Up to
-    `MAX_TESTS` Tests; SAVE drops blank Shift rungs
-  - Ruin and Glory (`components/ruin-glory/ruin-glory.tsx`, issue #40): RUIN · WHAT EARNS IT HERE and GLORY · AWARDS,
-    an amount (a `NumberInput` up to `MAX_POOL_STEP`) and a line each; SPENDS · PLANNED, a RUIN / GLORY toggle, a
-    cost, a name and its effect. Up to `MAX_POOL_LINES` each. SAVE drops blank lines (`savedPools`), and holds the
-    save while a line has no amount or a spend no cost. ADD FROM BOOK (`components/pool-picker`, shown when
-    `presets.pools` has any) picks a book and one of its lists, shows its HOW TO USE THIS LIST notes, and ADD copies a
-    row with `presetLine` into the right list (a cost the book doesn't print stays empty)
-  - location, then HAZARDS AT THIS PLACE: toggle chips over the location's `hazardList`, stored as the scene's
-    `hazards` picks (issue #49). Changing the location clears the picks
-  - NPC and handout toggle chips (`aria-pressed`)
-  - the prepared encounter entries: the threat through a `ThreatPicker` (§5), count (at least 1), a MOB checkbox, a marker and a `VisibilitySelect` (hidden for ambushers and reinforcements). + THREAT adds a row through the same picker, and + NEW CUSTOM THREAT offers `ThreatStarts` (CLONE FROM BESTIARY, BLANK, QUICK) and then `ThreatBuilder` inside the scene: on CREATE the stat block joins CODEX › THREATS and this encounter, and the scene's unsaved changes stay. While a stat block is open, SAVE SCENE and the button itself wait for its CREATE or CANCEL. Disabled at `CUSTOM_THREAT_CAP`
-
-  Above the entries, `BudgetPanel` (`components/budget-panel/`) draws `BudgetLines` (§5) for the prepared roster
-  (`rosterTally`). It is sized for the Agents a fight would actually add — the active ones, which `Story` passes as
-  `agents` (`agentsInFight(state)`: the seated ones, else every character) with the campaign's Tier — and a
-  FORTIFIED toggle doubles every target (Threat Assessment p.8, rules-flow §11.82). FORTIFIED is editor state, not
-  stored on the beat.
+- **`BeatEditor`** (canvas row "The scene editor, streamlined", Flow-Editor*) is one page you scroll, reached from EDIT
+  (at the top) or a pencil, which passes `section` (`BEAT_SECTIONS`): the editor opens scrolled to that part
+  (`SECTION_GROUP`; a text field's own `b-<key>`), and `Story` remounts it per scene and section.
+  - **Frame:** a sticky jump strip (`EDITOR_GROUPS`: STORY · PEOPLE & PROPS · TESTS · RUIN & GLORY · FIGHT · EXITS,
+    each with its count) that marks the part whose heading has passed under it, and a sticky save bar: the state
+    (`n UNSAVED CHANGES`, counted per changed field, `SET n AMOUNTS OR COSTS TO SAVE`, or the custom-threat wait), CANCEL
+    and SAVE SCENE (disabled while an amount or cost is unset or a stat block is open). DELETE SCENE is a red link at
+    the form's end. Styles: `app/css/editor.css`.
+  - **STORY:** TITLE and TYPE on one row; goal, read aloud, GM notes (on a plate) and outcome (`BEAT_TEXT_FIELDS`).
+    When the goal, read aloud or GM notes name codex entries (a token, or a plain name `useMentions().link` finds) the
+    scene doesn't hold, one line lists them with `+ ADD` / `+ ADD BOTH` / `+ ADD ALL n` (a place only when there is none).
+  - **PEOPLE & PROPS** (`components/people-props`): PLACE (one), NPCS, HANDOUTS and ITEMS as lists of what the scene
+    holds: the name (opens its quick-edit sheet, `useMentions().edit`), a handout's reach chip, an ON ENTRY tick (not
+    items) and ×, which also drops the ON ENTRY tick. Under each, a `FindField` (`components/ui/find-field`) finds an
+    entry the scene doesn't hold, or `+ NEW <KIND> “x”` saves a bare codex entry, adds it and opens its sheet. A new
+    place replaces the old, its ON ENTRY tick and hazard picks; HAZARDS AT THIS PLACE stays under PLACE (issue #49).
+  - **TESTS** (`components/tests`): one row per Test (`DN 5 · <testTitle> · <purpose>`, ONE/EACH), one open at a time,
+    dragged by its handle (`hooks/use-reorder`). The open row keeps every field: KIND (`retypeTest`), the Skill or
+    Attribute by `TEST_POOL`, WHO ROLLS, PURPOSE, the DN ladder (`DN_TABLE` numbers, `CORRUPTION_DNS` for Corruption, the
+    name and modifier in the label) with a `NumberInput` for any other DN (§11.75), the book's example (`skillDns`, Core
+    pp.122–126), the DN under 3 hint (p.122), the Shift ladder (one field per Shift and a blank one that adds the next, up
+    to `MAX_SHIFTS`; the use chips of pp.165–166, +1 Glory once, the Attitude step for a social Skill, p.168), ON
+    SUCCESS, ON FAILURE with the p.319 chips, and REMOVE. An Opposed Test shows a NO DN note and no Shift ladder (p.165).
+    `+ Find a Skill…` adds a Test at DN 3 and opens it, up to `MAX_TESTS`; SAVE drops blank Shifts.
+  - **RUIN & GLORY** (`components/ruin-glory`, issue #40): RUIN · WHAT EARNS IT HERE and GLORY · AWARDS as rows of an
+    amount (`NumberInput` up to `MAX_POOL_STEP`) and a line; SPENDS · PLANNED as rows that open one at a time (POOL,
+    COST, NAME, WHAT IT DOES, the cite, REMOVE), dragged by their handle. Each list ends in a `FindField` over the
+    books' rows of that kind (`presetLine`, which leaves a cost the book doesn't print empty) or a line of the GM's own.
+    HOW TO USE THE BOOKS' LISTS keeps the tables' `gm` notes. Up to `MAX_POOL_LINES` each; SAVE drops blank lines
+    (`savedPools`) and waits for every amount and cost.
+  - **FIGHT** (`components/fight-entries`): `BudgetPanel` (`BudgetLines` for the prepared roster, sized for the Agents a
+    fight would add, `agentsInFight(state)`, with the campaign's Tier and a FORTIFIED toggle that doubles every target,
+    Threat Assessment p.8, rules-flow §11.82; FORTIFIED is editor state), then one row per entry (count, name, chips),
+    one open at a time and dragged by its handle: the threat (`ThreatPicker`), a count stepper (at least 1), AS A MOB,
+    WHAT PLAYERS SEE, the marker colours, `ThreatScale` and REMOVE. `+ Find a threat…` searches the bestiary, and
+    `+ NEW CUSTOM THREAT “x”` opens `ThreatStarts` then `ThreatBuilder` in place: on CREATE the stat block joins
+    CODEX › THREATS and this fight, and the scene's unsaved changes stay. Not past `CUSTOM_THREAT_CAP`.
+  - **EXITS** (`components/exits`): an `If they…` field and a target per row (this adventure's scenes by number, or
+    `→ NEW SCENE “<label>”`, which saves a scene by that title now and points the exit at it), one blank row waiting at
+    the end, up to `MAX_EXITS`. SAVE drops rows with neither text nor target, and a target deleted meanwhile.
 - **`ScenePicker`** (`components/scene-picker/scene-picker.tsx`, + SCENE FROM A TABLE beside + NEW SCENE, shown when
   `presets.tables` has any), issue #39:
   - The GM picks a book (`BOOKS[source].name`) and one of its tables. The cite, the dice and any printed default DN
@@ -1039,7 +1039,7 @@ else. The sheet shows every refusal in its `Refusal` banner. See
 | `rule-item/rule-item.tsx` `RuleItem` | `r: RuleEntry`, `open?` | One rules entry as a `<details>`: name (a stat's `abbr` first), kind · cite, gist, and the book text inside. Used by the RULES tab, the stat legend and the rule dialog; `open` starts it expanded |
 | `rules-provider/rules-provider.tsx` `RulesProvider`, `useRules()` | `rules: RuleEntry[]`, `children` | Wraps `GmApp` and `PlayerApp`. Builds a `ruleKey` → entries map once, over `LINKED_RULE_KINDS` only (Conditions, weapon and armour traits; not actions or stat block terms). It owns one native modal `<dialog>` that shows the entries as `RuleItem open` with CLOSE. Esc or a backdrop tap closes it, and focus returns to the tapped word. `useRules()` returns `{ find(name), open(entries) }` and throws outside the provider |
 | `rule-link/rule-link.tsx` `RuleLink` | `name`, `children?` (defaults to `name`) | A trait or Condition as the data spells it (`Blast (6)`, `Inflicts (On Fire)`). If `find` resolves it, it's a `button.rule-link` (dotted underline, 32px hit area, `aria-label="Rule: <name>"`) that opens the dialog; otherwise it renders as plain text. `RuleIdLink` (`id`, `children`) does the same for an entry that isn't a trait, by id (the scene Tests' DN TABLE, SHIFTING, FAIL FORWARD). Needs a `RulesProvider` above it |
-| `mentions/mentions-provider.tsx` `MentionsProvider`, `useMentions()` | `codex`, `missing` (`(removed)` on the GM's tablet, `(unknown)` on a phone), `onGoTo?` (the GM's only), `children` | Codex mentions (issue #200, campaign-model.md §Mentions). Wraps `GmApp` and `PlayerApp` over the seat's own snapshot. Lists every linkable entry (NPCs first, so an NPC wins a shared name), builds the auto-linker once (`nameLinker`) and owns one `dialog.rule-dialog` that peeks at an entry (`components/peek`: its CODEX fields, GM-only ones on a plate). A link inside the peek swaps the entry in place. With `onGoTo` the peek has GO TO (issue #198): `GmApp` pushes the entry's URL (§1.1), a scene's PAGE in STORY or `codex/<kinds>/<entry>`, which opens and scrolls to its `#entry-<id>` row |
+| `mentions/mentions-provider.tsx` `MentionsProvider`, `useMentions()` | `codex`, `missing` (`(removed)` on the GM's tablet, `(unknown)` on a phone), `onGoTo?` and `editor?` (the GM's only), `children` | Codex mentions (issue #200, campaign-model.md §Mentions). Wraps `GmApp` and `PlayerApp` over the seat's own snapshot. Lists every linkable entry (NPCs first, so an NPC wins a shared name), builds the auto-linker once (`nameLinker`) and owns one `dialog.rule-dialog` that peeks at an entry (`components/peek`: its CODEX fields, GM-only ones on a plate). A link inside the peek swaps the entry in place. With `onGoTo` the peek has GO TO (issue #198): `GmApp` pushes the entry's URL (§1.1), a scene's PAGE in STORY or `codex/<kinds>/<entry>`, which opens and scrolls to its `#entry-<id>` row. With `editor` the peek has EDIT: the dialog becomes a sheet from the right (`app/css/editor.css`) with the entry's `CodexEditor` (`sheet`: DONE and OPEN IN CODEX; not for a scene), and a tap outside or Esc can't drop the draft, only its × can. `edit(kind, id)` opens straight into the sheet (the scene editor's lists), and DONE then closes it; from the peek, DONE goes back to the peek |
 | `mentions/mentions.tsx` `Mentions` | `text`, `self?` (the entry the text belongs to) | A codex text with its `@[kind:id]` tokens and plain entry names as `button.rule-link`s showing the live name. An unresolved token shows `missing`, and an unrevealed entry gets `(HIDDEN)`. The caller keeps its `<pre>`. Used by SCENE, STORY, CODEX and INTEL |
 | `mention-field/mention-field.tsx` `MentionField` | `value`, `onChange(value)`, `multiline?`, `id?`, `placeholder?`, `useFieldErrors` marks | A codex text input or textarea. `@` plus letters lists up to `PICK_LIMIT` (8) matching entries under it (`fold`, names that start with the letters first). A tap, or Enter once a letter follows the `@`, writes the token (a bare `@` or an IME composition keeps Enter), and Escape closes the list. Used by CODEX's editor, the scene editor (all but TITLE) and END SESSION's recap |
 | `codex-search/codex-search.tsx` `CodexSearch` | `query`, `onQuery(q)` | The codex search (issue #198): one `type="search"` box ("Search the codex") over the seat's `useMentions().entries`, so the GM finds everything and a phone only what its `toPlayerCodex` holds (blanked GM fields never match). `utils.ts` `searchEntries` folds the query (`lib/fold`) and matches the name, then the Peek's fields (`PEEK_FIELDS`) with mention tokens spelled out as names (`plainMentions`); a body hit carries a one-line snippet around the match. Name hits first, then by name; the hits are grouped by kind with a count, the first `LIST_LIMIT` shown. A hit opens the Peek. `/` focuses the box unless an input has focus. CODEX shows it under the sub-tabs over a list (never over an open editor, whose draft it would drop) and INTEL at the top; while it holds text the hits replace the list below |
