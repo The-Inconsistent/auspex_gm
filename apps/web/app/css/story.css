@@ -265,3 +265,93 @@ b.story-exit {
   background: var(--vellum);
   box-shadow: 0 -10px 12px -12px var(--shade-40);
 }
+
+/* BOARD with its glance panel: the spine on the left, the selected scene's panel on the right; stacked on a narrow screen. */
+.story-board {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .story-board {
+    grid-template-columns: 1fr;
+  }
+}
+.story-card[aria-pressed="true"] {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+.story-picked {
+  color: var(--red);
+  border-color: var(--red);
+}
+.story-glance {
+  position: sticky;
+  top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+}
+@media (max-width: 900px) {
+  .story-glance {
+    position: static;
+  }
+}
+.story-glance-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 20px;
+  letter-spacing: 0.05em;
+}
+.story-glance-goal,
+.story-glance-entry {
+  margin: 0;
+}
+.story-glance-counts {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.story-glance-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.story-glance-row dt,
+.story-glance-ready b,
+.story-glance-goal b,
+.story-glance-entry b {
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.story-glance-row dd {
+  order: 2;
+  margin: 0;
+  font-weight: 700;
+}
+/* The dotted leader: a rule that fills the gap between a count's name and its number. */
+.story-glance-row::before {
+  content: "";
+  order: 1;
+  flex: 1;
+  border-bottom: 2px dotted var(--line);
+}
+.story-glance-ready {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.story-glance-ready ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.story-glance-fix {
+  color: var(--red);
+  font-weight: 700;
+}

@@ -408,12 +408,14 @@ rest.
 - **WHERE NEXT** (`WhereNext`, below the columns): one button per exit, its label in italic and `→ nn TITLE`, which ends
   this scene and begins that one (`beat.begin`); an exit with no scene is disabled and reads NO SCENE YET. OTHER SCENE…
   lists the adventure's other scenes, each a preview.
-- **SCENE BEGUN** (`BegunNotice`, one line under the strip, after any begin): `SCENE BEGUN · shown on entry: <names>` (or
-  `nothing`), UNDO and ×. UNDO sends, in order, and stops at the first refusal: with a scene before it, `beat.begin { id:
-  <that scene>, leave: "planned", reveal: false }` (it is current again and the begun one is planned, nothing revealed); with
-  none, `codex.save` of the begun beat with `status: "planned"`; then, for each entry the begin revealed (the ack's
-  `revealed`), a whole-entry `codex.save` with `revealed: false` (`undoBegin`). On success the notice goes and the line says
-  `SCENE BEGUN, TAKEN BACK`. The notice is client-only: a reload or another begin drops it.
+- **SCENE BEGUN** (`BegunNotice`, one line under the strip, after any begin here or STORY's RUN): `SCENE BEGUN · shown on
+  entry: <names>` (or that nothing was ticked), UNDO and ×. `GmApp` holds it (`begun`, a `Begun` from `lib/scene-reveal`),
+  so a begin from STORY arrives on SCENE with its UNDO. UNDO sends, in order, and stops at the first refusal: with a scene
+  before it, `beat.begin { id: <that scene>, leave: "planned", reveal: false }` (it is current again, nothing revealed),
+  then a `codex.save` putting the begun scene back to the status it had when that wasn't planned; with none, a
+  `codex.save` of the begun beat with that status; then, for each entry the begin revealed (the ack's `revealed`), a
+  whole-entry `codex.save` with `revealed: false` (`undoBegin`). On success the notice goes and the line says
+  `SCENE BEGUN, TAKEN BACK`. The notice is client-only: a reload drops it, another begin replaces it.
 
 ### 3.1 FIGHT: the live combat tracker
 
@@ -633,12 +635,17 @@ SCENE; the code keeps `beat`. STORY is prep as a storyboard: you flip scene by s
   PREMISE / GM NOTES on a closed plate), the mission status select and SHOWN / HIDDEN TO THE PARTY (the mission log, issue #196) sit under it.
 - **Views** (`STORY_VIEWS`): a BOARD | PAGE toggle beside `<ADVENTURE> · SCENES`. STORY opens on BOARD, or on PAGE when a
   peek's GO TO or SCENE's EDIT names a scene (`initialSceneId`).
-- **BOARD** (`components/scene-board`): the scenes in story order hung on an iron spine (`ol.story-spine`). A card is one
-  button that opens that scene's PAGE: number, title, a tagline (`tagline`: type, the cast, `FIGHT:` and the entries), a
+- **BOARD** (`components/scene-board`): the scenes in story order hung on an iron spine (`ol.story-spine`), with the
+  selected scene's glance panel beside it (`SceneGlance`, sticky; under the spine at 900px and narrower). A card is one
+  button that SELECTS its scene (`aria-pressed`, a crimson outline and a SELECTED chip; the selection is the scene PAGE
+  would open, else the first): number, title, a tagline (`tagline`: type, the cast, `FIGHT:` and the entries), a
   readiness chip (`readiness`: `READY ✓` or `n TO FIX`, the fixes in its title: `NO GOAL`, `NO READ-ALOUD`, `n EXITS WITH
   NO SCENE`, from `sceneFixes`) and a status chip unless planned (amber when active). Its exits sit beside it as tags,
-  `→ 04`, or `→ NO SCENE YET` in crimson. Under the board, + NEW SCENE, and + SCENE FROM A TABLE when `presets.tables`
-  has any.
+  `→ 04`, or `→ NO SCENE YET` in crimson. The glance panel: `SCENE nn · TYPE · PLACE`, the title, GOAL, counts with
+  dotted leaders (CAST, HANDOUTS with `m PRIVATE`, ITEMS, TESTS, FIGHT IF IT BREAKS OUT, EXITS), SHOWN ON ENTRY (the
+  `onEntry` names, or nothing ticked), READY FOR THE TABLE (`READY ✓` or a crimson ✕ line per fix), then OPEN SCENE nn
+  (the PAGE) and ▶ RUN FROM HERE (as RUN THIS SCENE; BEING PLAYED for the active scene). Under the board, + NEW SCENE, and
+  + SCENE FROM A TABLE when `presets.tables` has any.
 - **PAGE** (`components/scene-page`): one scene as a book spread. ‹ › and a numbered tab per scene flip between scenes.
   The left leaf is what you say and what is going on: the label line (`SCENE nn · TYPE · PLACE`, or NO PLACE YET), the
   title, the status and readiness chips with the fixes, GOAL, READ ALOUD, GM NOTES (closed on a plate), OUTCOME. The right
@@ -667,7 +674,8 @@ SCENE; the code keeps `beat`. STORY is prep as a storyboard: you flip scene by s
     320). A spend the pool can't pay is disabled (`canSpend`): the server floors at 0 and would undercharge
 - **Controls** under the spread:
   - ▶ RUN THIS SCENE (▶ BACK TO THIS SCENE once it is the active one) sends `beat.begin`, reports
-    `<TITLE> BEGUN · n REVEALED`, and on success `onRun` switches to SCENE.
+    `<TITLE> BEGUN · n REVEALED`, and on success `onRun(begun)` hands the begin to `GmApp`, which opens SCENE with its
+    SCENE BEGUN notice and UNDO (none when the scene was already being played).
   - EDIT opens the whole `BeatEditor`.
   - ↑ / ↓ swap the scene with its neighbour and send the full `ids` order as `beat.reorder`.
   - DONE and SKIP set the status to done or skipped. Only `beat.begin` makes a scene active.
@@ -1183,7 +1191,9 @@ The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.
 
 **Layout:**
 - **GM:** tablet-first. `.gm` is a full-height grid: the header band and the scrolling body on the left, the
-  112px chapter rail on the right. The tracker is a two-column grid: the main list, plus a 300px side panel. SCENE's
+  112px chapter rail on the right. The tracker is a two-column grid: the main list, plus a 300px side panel, side by side
+  down to 1100px wide, so a landscape tablet keeps the stat block beside the table (its rows drop CLASS, DEF and RES under
+  801px, `fight.css`); narrower, the side panel goes under the list. SCENE's
   `.scene-cols` and STORY's `.story-spread` are two columns that stack under 860px.
 - **`@media (max-width: 900px)`** is the app-wide breakpoint (`scene.css` adds 520px for SCENE's phone tweaks):
   - The GM shell becomes one scrolling page instead of fixed-height panes, and the rail becomes a top tab strip that

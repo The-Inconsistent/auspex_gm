@@ -78,7 +78,7 @@ STORY. Switching tabs starts the new tab at its top.
 - **IN THIS SCENE:** place, cast, handouts (a private one names its Agents), items. The name opens the peek; one toggle
   shows the state (SHOWN / SEALED) and its aria-label the action. Items keep GIVE. START FIGHT starts the prepared fight.
 - **WHERE NEXT:** one button per exit; it begins the target scene (the scene left is played). OTHER SCENE… for the rest.
-- **SCENE BEGUN** notice after a begin, with UNDO: the scene before is current again, the begun one gets its old status
+- **SCENE BEGUN** notice after a begin, here or from STORY (the GM shell holds it), with UNDO: the scene before is current again, the begun one gets its old status
   back, and what the begin revealed is sealed again (`lib/scene-reveal`).
 - The page is keyed by scene, so moving on starts with GM NOTES closed and no stale FEAR ticks; a double tap sends once.
 
@@ -91,12 +91,16 @@ STORY. Switching tabs starts the new tab at its top.
 - **PLAYERS SEE chip** per Threat: one tap toggles HIDDEN ↔ BARS only; FULL (the stat block, book content) is set only
   from MORE, so a stray tap never shows a stat block.
 - Numbers show what is **left** (13/18), as the bars do; the same on PARTY.
+- On a landscape tablet the side panel (the selected one's stat block, the vox log) stays beside the table; the rows drop
+  CLASS, DEF and RES, which the stat block shows.
 
 ### STORY (`components/gm/story/`), prep as a storyboard
 
 - **Adventure bar** as PREP had (switch, new, edit, mission status, SHOWN TO THE PARTY, premise).
-- **BOARD:** scenes on an iron spine, each card one button (number, title, a tagline, `READY ✓` or `n TO FIX`: no goal,
-  no read-aloud, an exit with no scene), exit tags beside each card. + NEW SCENE, + SCENE FROM A TABLE.
+- **BOARD:** scenes on an iron spine, each card one button that selects it (number, title, a tagline, `READY ✓` or
+  `n TO FIX`: no goal, no read-aloud, an exit with no scene), exit tags beside each card, and beside the spine the
+  selected scene at a glance: its goal, what it holds, what shows on entry, READY FOR THE TABLE, OPEN SCENE and RUN FROM
+  HERE. + NEW SCENE, + SCENE FROM A TABLE.
 - **PAGE:** one scene as a book spread, flipped with ‹ › and scene tabs; story on the left, toolkit on the right, an
   **ON ENTRY** tick on each place, person and handout (saved at once, disabled while saving). A pencil per section opens
   the scene editor on just that section (`BeatEditor`'s `section` prop). ▶ RUN THIS SCENE, EDIT, ↑ ↓, DONE, SKIP, PRINT
@@ -161,9 +165,8 @@ of the private Imperial Manuscript canvas: https://claude.ai/artifact/LRBEbp8Ghg
 
 ## 8. Known gaps
 
-- STORY's board has no at-a-glance side panel for the selected scene (the mock-up has one).
-- In SCENE the tracker's stat block stacks below the table instead of beside it.
-- Beginning a scene from STORY (RUN THIS SCENE) shows no SCENE BEGUN notice or UNDO; only SCENE's begins do.
+None open. The three left after the merge (the board's glance panel, the stat block's place on a landscape tablet, a
+begin from STORY without its notice) were fixed in the follow-up to #264.
 
 ## 9. Sources
 

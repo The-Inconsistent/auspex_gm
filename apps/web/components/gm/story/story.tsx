@@ -9,12 +9,13 @@ import { ScenePicker } from "@/components/gm/prep/components/scene-picker/scene-
 import { stripBeat } from "@/components/gm/prep/utils";
 import type { Send } from "@/hooks/use-table/use-table";
 import { currentScene } from "@/lib/scene/scene";
+import type { Begun } from "@/lib/scene-reveal/scene-reveal";
 
 import { AdventureBar } from "./components/adventure-bar/adventure-bar";
 import { SceneBoard } from "./components/scene-board/scene-board";
 import { ScenePage } from "./components/scene-page/scene-page";
 import { STORY_VIEWS, type StoryView } from "./constants";
-import type { Editing } from "./types";
+import type { Adventure, Editing } from "./types";
 
 type StoryProps = {
   state: LiveState;
@@ -23,7 +24,7 @@ type StoryProps = {
   bestiary: Threat[];
   presets: ScenePresets;
   wargear: Wargear[]; // for a scene's + NEW CUSTOM THREAT
-  onRun: () => void; // a scene has begun: the lead switches to SCENE
+  onRun: (begun: Begun | null) => void; // a scene has begun: the shell keeps its UNDO and switches to SCENE
   initialSceneId?: string; // a peek's GO TO (issue #198): open on that scene's page
 };
 
@@ -90,16 +91,29 @@ export function Story({ state, codex, send, bestiary, presets, wargear, onRun, i
     report(r, `${scene.title.toUpperCase()} → ${status.toUpperCase()}`);
   };
 
-  // ▶ RUN THIS SCENE: begins it (the scene left goes to DONE and this scene's ON ENTRY picks reach the phones), then
-  // the lead switches to SCENE.
-  const run = async () => {
-    if (!scene) return;
-    const r = await send({ type: "beat.begin", id: scene.id });
+  // ▶ RUN THIS SCENE (the page) or RUN FROM HERE (the board): begins it (the scene left goes to DONE and its ON ENTRY
+  // picks reach the phones), then SCENE opens with the SCENE BEGUN notice and its UNDO. A scene already being played
+  // just goes back to SCENE.
+  const run = async (target: Adventure["beats"][number]) => {
+    const before = currentScene(codex)?.beat.id ?? null;
+    const r = await send({ type: "beat.begin", id: target.id });
     report(
       r,
-      `${scene.title.toUpperCase()} BEGUN${r.ok && r.revealed?.length ? ` · ${r.revealed.length} REVEALED` : ""}`,
+      `${target.title.toUpperCase()} BEGUN${r.ok && r.revealed?.length ? ` · ${r.revealed.length} REVEALED` : ""}`,
     );
-    if (r.ok) onRun();
+    if (!r.ok) return;
+    // A scene already being played begins nothing new, so there is nothing to take back.
+    onRun(
+      target.status === "active"
+        ? null
+        : { begun: target.id, before, status: target.status, revealed: r.revealed ?? [] },
+    );
+  };
+
+  // The board's RUN FROM HERE: the selected scene.
+  const runFromBoard = async (id: string) => {
+    const target = adv?.beats.find((b) => b.id === id);
+    if (target) await run(target);
   };
 
   const newScenes = (
@@ -140,7 +154,15 @@ export function Story({ state, codex, send, bestiary, presets, wargear, onRun, i
           </div>
           {view === "board" && (
             <>
-              <SceneBoard adv={adv} codex={codex} threatNames={threatNames} onOpen={openScene} />
+              <SceneBoard
+                adv={adv}
+                codex={codex}
+                threatNames={threatNames}
+                selectedId={scene?.id ?? null}
+                onSelect={setSceneId}
+                onOpen={openScene}
+                onRun={runFromBoard}
+              />
               {newScenes}
             </>
           )}
@@ -158,7 +180,7 @@ export function Story({ state, codex, send, bestiary, presets, wargear, onRun, i
                 threatNames={threatNames}
                 onOpen={setSceneId}
                 onEdit={(section) => setEditing({ mode: "scene", section })}
-                onRun={run}
+                onRun={() => run(scene)}
                 onMove={move}
                 onStatus={setStatus}
                 onReport={report}

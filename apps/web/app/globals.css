@@ -1370,9 +1370,10 @@ dialog.picker {
   outline-offset: 2px;
 } /* the input's own outline is off; ring the bar */
 
-/* The full row (css/fight.css) needs ~800px (its floors, gaps, padding and border). Beside the rail and a 300px side panel
-   that takes ~1245px, so tablets in landscape put the side panel (stat block, vox log) under the table instead. */
-@media (max-width: 1260px) {
+/* SCENE's FIGHT layer keeps the side panel (stat block, vox log) beside the table on a landscape tablet: the row drops
+   CLASS, DEF and RES under 801px of its own (css/fight.css; the selected one's stat block shows them). Narrower than
+   that, a portrait tablet, the side panel goes under the table. */
+@media (max-width: 1100px) {
   .tracker {
     display: block;
     height: auto;

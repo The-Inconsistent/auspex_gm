@@ -1,4 +1,4 @@
-import { threatProfile, type Codex } from "@wg/shared";
+import { onEntryIds, threatProfile, type Codex } from "@wg/shared";
 
 type Beat = Codex["adventures"][number]["beats"][number];
 type Entry = Beat["encounter"][number];
@@ -47,3 +47,22 @@ export function exitNumber(beatId: string | null, order: string[]) {
 
 // The ids after ticking or unticking one ON ENTRY pick.
 export const toggleId = (ids: string[], id: string) => (ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]);
+
+// How many of a scene's handouts go to named Agents only (an audience), for the glance's "n PRIVATE".
+export const privateHandouts = (
+  beat: Pick<Beat, "handoutIds">,
+  handouts: Pick<Codex["handouts"][number], "id" | "audience">[],
+) => handouts.filter((h) => beat.handoutIds.includes(h.id) && h.audience.length).length;
+
+// The names of what ticking ON ENTRY will show the phones when the scene begins: its place, people and handouts.
+export function onEntryNames(
+  beat: Pick<Beat, "onEntry" | "locationId" | "npcIds" | "handoutIds">,
+  codex: Pick<Codex, "locations" | "npcs" | "handouts">,
+) {
+  const names = new Map<string, string>([
+    ...codex.locations.map((l) => [l.id, l.name] as const),
+    ...codex.npcs.map((n) => [n.id, n.name] as const),
+    ...codex.handouts.map((h) => [h.id, h.title] as const),
+  ]);
+  return onEntryIds(beat).flatMap((id) => names.get(id) ?? []);
+}

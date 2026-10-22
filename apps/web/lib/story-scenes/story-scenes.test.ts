@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { exitNumber, readiness, sceneFixes, tagline, toggleId } from "./story-scenes.ts";
+import { exitNumber, onEntryNames, privateHandouts, readiness, sceneFixes, tagline, toggleId } from "./story-scenes.ts";
 
 const beat = (over: object) => ({ goal: "g", readAloud: "r", exits: [], ...over }) as never;
 
@@ -37,4 +37,15 @@ test("exitNumber is the target's two-digit place, null when it leads nowhere", (
 test("toggleId adds a missing id and drops a present one", () => {
   assert.deepEqual(toggleId(["a"], "b"), ["a", "b"]);
   assert.deepEqual(toggleId(["a", "b"], "a"), ["b"]);
+});
+
+test("the glance counts private handouts and names only the linked ON ENTRY picks", () => {
+  const handouts = [
+    { id: "h1", title: "Writ", audience: [] },
+    { id: "h2", title: "Note", audience: ["c1"] },
+  ];
+  const b = { handoutIds: ["h1", "h2"], npcIds: ["n1"], locationId: "l1", onEntry: ["l1", "n1", "h2", "gone"] };
+  assert.equal(privateHandouts(b, handouts as never), 1);
+  const codex = { locations: [{ id: "l1", name: "Dig" }], npcs: [{ id: "n1", name: "Vex" }], handouts };
+  assert.deepEqual(onEntryNames(b, codex as never), ["Dig", "Vex", "Note"]);
 });

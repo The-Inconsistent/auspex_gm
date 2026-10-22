@@ -2,6 +2,10 @@ import type { ActionInput, Codex } from "@wg/shared";
 
 type Beat = Codex["adventures"][number]["beats"][number];
 
+// What the one-line SCENE BEGUN notice needs to take a begin back (undoBegin). The GM shell holds it, so a scene begun
+// from STORY arrives on SCENE with its UNDO.
+export type Begun = { begun: string; before: string | null; status: Beat["status"]; revealed: string[] };
+
 // The codex kinds a scene reveals on entry (Beat.onEntry holds place, NPC and handout ids), each with its collection.
 const REVEALABLE = [
   ["npc", "npcs"],
@@ -40,19 +44,7 @@ export function revealAction({
 // What a beat.begin changed, taken back (the SCENE BEGUN notice's UNDO): the scene left is current again and the begun one
 // back to the status it had (OTHER SCENE can begin a done or skipped one); with no scene before, the begun one is saved
 // back to that status. Then every entry the begin revealed is sealed.
-export function undoBegin({
-  codex,
-  begun,
-  before,
-  status,
-  revealed,
-}: {
-  codex: Codex;
-  begun: string;
-  before: string | null;
-  status: Beat["status"];
-  revealed: string[];
-}): ActionInput[] {
+export function undoBegin({ codex, begun, before, status, revealed }: Begun & { codex: Codex }): ActionInput[] {
   const beat = codex.adventures.flatMap((a) => a.beats).find((b) => b.id === begun);
   const restore = beat ? [saveBeatStatus(beat, status)] : [];
   // beat.begin leaves the begun scene planned, so only another status needs the save after it.

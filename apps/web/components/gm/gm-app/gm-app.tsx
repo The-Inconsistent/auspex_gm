@@ -41,6 +41,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { RUIN_ACTIONS_TABLE } from "@/components/ui/threat-builder/constants";
 import { useBookServer } from "@/hooks/use-book-server/use-book-server";
 import { useTable } from "@/hooks/use-table/use-table";
+import type { Begun } from "@/lib/scene-reveal/scene-reveal";
 
 import { GM_TABS, TAB_NUMERALS, type GmTab } from "./constants";
 
@@ -82,6 +83,7 @@ export function GmApp({
   const [visit, setVisit] = useState(0); // bumped by GO TO, so the target tab remounts on the entry
   const [poolError, setPoolError] = useState<string | null>(null);
   const [deleted, setDeleted] = useState(false); // DELETE GAME went through: the server drops the room next
+  const [begun, setBegun] = useState<Begun | null>(null); // the last scene begin, for SCENE's notice and UNDO, from SCENE or STORY
   // The books' stat blocks plus the ones the GM wrote (issue #43), by name. Every picker, the NPC stat source and the
   // stat block already read this one list, so nothing else needs to know about customs. Above the early return, since
   // hooks run in the same order every render.
@@ -125,6 +127,12 @@ export function GmApp({
   };
 
   const players = state.characters.length;
+
+  // STORY's RUN: SCENE opens on the scene just begun, with its notice and UNDO (none when it was already being played).
+  const runScene = (b: Begun | null) => {
+    if (b) setBegun(b);
+    setTab("SCENE");
+  };
 
   // SCENE's EDIT: the scene's page in STORY.
   const editScene = (id: string) => {
@@ -198,6 +206,8 @@ export function GmApp({
                       bestiary={allThreats}
                       presets={presets}
                       onEdit={editScene}
+                      notice={begun}
+                      onNotice={setBegun}
                     />
                   )}
                   {tab === "SETUP" && (
@@ -220,7 +230,7 @@ export function GmApp({
                       bestiary={allThreats}
                       presets={presets}
                       wargear={wargear}
-                      onRun={() => setTab("SCENE")}
+                      onRun={runScene}
                     />
                   )}
                   {tab === "CODEX" && (
