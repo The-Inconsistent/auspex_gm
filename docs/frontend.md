@@ -567,7 +567,8 @@ The tests are in `lib/command/command.test.ts`.
   - EDIT opens the beat editor.
   - RUN SCENE, shown when the beat has a prepared encounter, sends `beat.startEncounter` and jumps to TRACK through
     `onRun`.
-  - SET ACTIVE, shown when there is no prepared encounter, sets the status to active.
+  - SET ACTIVE, shown when there is no prepared encounter, sends `beat.begin`: the scene becomes the one being played,
+    the one before is marked done, and its ON ENTRY picks reach the phones.
   - DONE and SKIP set the status to done or skipped.
   - PRINT CARDS (§5.1) prints tents for the fielded Agents (`fieldedAgentIds`) and every prepared combatant, a Threat
     card per encounter row, and the scene's items. PRINT HANDOUTS, shown when the scene has handouts, prints them as

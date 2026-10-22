@@ -97,7 +97,15 @@ export async function importCampaign({
 }) {
   const { codex: c } = file;
   // Beats belong to the adventure they're filed under, whatever their own adventureId says.
-  const beats = c.adventures.flatMap((a) => a.beats.map((b) => ({ ...b, adventureId: a.id })));
+  // One scene is played at a time (beat_one_active): a file from before that rule keeps its first active scene.
+  const playing = c.adventures.flatMap((a) => a.beats).find((b) => b.status === "active");
+  const beats = c.adventures.flatMap((a) =>
+    a.beats.map((b) => ({
+      ...b,
+      adventureId: a.id,
+      status: b.status === "active" && b !== playing ? ("planned" as const) : b.status,
+    })),
+  );
   // Same check as codex.save, but the campaign doesn't exist yet, so it runs against the bestiary plus the file's own
   // custom threats (issue #43) rather than through `loadThreats`.
   const customs = c.customThreats;
@@ -256,6 +264,7 @@ export async function importCampaign({
             npcIds: refs(b.npcIds),
             handoutIds: refs(b.handoutIds),
             itemIds: refs(b.itemIds),
+            onEntry: refs(b.onEntry),
             hazards: b.hazards.filter((h) => b.locationId && listed.get(b.locationId)?.has(h.id)),
             exits: b.exits.map((e) => ({
               ...e,

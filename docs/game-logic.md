@@ -375,7 +375,8 @@ A beat's `encounter` is a list of
    combatant; reserve Agents stay out. Their number is also "the number of players" that scaling reads (§11.106).
 4. Each entry: `asMob && count > 1` → one Mob row with `mobCount = count`. Otherwise `count` separate rows, labelled
    `Name 1…N` when `count > 1`. `profiles` and `scale` are applied to the stat block as each row is snapshotted.
-5. The beat is set to `active`.
+5. The beat begins as `beat.begin` does: it becomes the one `active` scene, the one before is `done`, and its
+   `onEntry` picks are revealed.
 
 **`MAX_ENCOUNTER_ROWS` = 60** (`codex.ts`) is an **app limit, not a rule**: it bounds the inserts one transaction runs.
 `codex.save` refuses a beat whose rows exceed it; a Mob counts as one row whatever its size. Also capped: 30 entries

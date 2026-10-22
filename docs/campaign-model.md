@@ -18,7 +18,8 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
  │   └─ Beat     order, type, title, goal, status (planned | active | done | skipped),
  │               readAloud (player-facing), gmNotes (secret), locationId, npcIds[],
  │               clueIds[], encounter (prepared roster), exits[], tests[], ruin[], glory[], spends[],
- │               hazards[] (picks from its location's list, each spotted or not), outcome
+ │               hazards[] (picks from its location's list, each spotted or not), outcome,
+ │               onEntry[] (its place, NPCs and handouts shown when it begins; at most one scene is active)
  ├─ Location     name, parentId (planet → site → chamber; never a loop, `wouldCycle`), description, gmNotes,
  │               hazards (free-text notes), hazardList[] (book rows from Threat Assessment, the Core
  │               Rulebook, Darktide and Redacted Records, or the GM's own), revealed, picture
@@ -34,6 +35,9 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
                  objectives rolled (core p.43)
 ```
 
+- **One scene is played at a time.** `beat.begin` makes a scene `active` (the `beat_one_active` index allows one per
+  campaign), marks the scene left `done`, and reveals its `onEntry` picks that were still hidden; a save can't make a scene
+  active. A scene's fight (`beat.startEncounter`) begins it the same way.
 - **The UI says SCENE.** The GM reads SCENE everywhere; code, actions (`beat.reorder`, `beat.startEncounter`), the
   `beat` table, packs and export files keep `beat`.
 - **Pictures** (issue #199): an NPC, place or handout can carry one picture the GM uploads, as `imageId`, and

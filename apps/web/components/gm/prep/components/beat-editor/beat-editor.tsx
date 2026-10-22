@@ -96,6 +96,7 @@ export function BeatEditor({
           glory: [],
           spends: [],
           hazards: [],
+          onEntry: [] as string[],
         },
   );
   const [error, setError] = useState<string | null>(null);

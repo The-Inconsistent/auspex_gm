@@ -1394,7 +1394,7 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
     "new beat goes last",
   );
   // Exits lead to a scene of the same adventure (issue #38). Deleting the target keeps the label, so the source scene's
-  // DONE and SET ACTIVE, which re-send the whole beat, still save.
+  // DONE and SKIP, which re-send the whole beat, still save.
   const elsewhere = await gm.send({ type: "codex.save", kind: "adventure", data: { title: "Elsewhere" } });
   assert.ok(elsewhere.ok && elsewhere.id);
   const away = await gm.send({ type: "codex.save", kind: "beat", data: { adventureId: elsewhere.id, title: "Away" } });
@@ -1435,7 +1435,35 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   );
   const { id: _id, order: _order, ...kept } = gm.codex()!.adventures[0]!.beats.find((x) => x.id === b1.id)!;
   assert.equal(kept.goal, "Learn what Vex wants");
-  assert.ok((await gm.send({ type: "codex.save", kind: "beat", id: b1.id, data: { ...kept, status: "active" } })).ok);
+  // One scene is played at a time (beat.begin): a save can't start one, beginning moves it, and only the ON ENTRY picks
+  // the scene still links, and that were hidden, reach the phones.
+  assert.deepEqual(
+    await gm.send({ type: "codex.save", kind: "beat", id: b1.id, data: { ...kept, status: "active" } }),
+    { ok: false, error: "Begin the scene to play it" },
+  );
+  const writ = await gm.send({ type: "codex.save", kind: "handout", data: { title: "The Writ" } });
+  assert.ok(writ.ok && writ.id);
+  const entry = { ...kept, handoutIds: [writ.id], onEntry: [writ.id, vex.id, b2.id] };
+  assert.ok((await gm.send({ type: "codex.save", kind: "beat", id: b1.id, data: entry })).ok);
+  const [one, two] = [b1.id, b2.id]; // narrowed here; a closure would lose it
+  const statusOf = (id: string) => gm.codex()?.adventures[0]?.beats.find((x) => x.id === id)?.status;
+  assert.deepEqual(await gm.send({ type: "beat.begin", id: b1.id }), { ok: true, id: b1.id, revealed: [writ.id] });
+  await eventually(
+    () => player.codex()?.handouts.some((h) => h.id === writ.id) === true,
+    "ON ENTRY reaches the phones",
+  );
+  assert.deepEqual(
+    gm.codex()?.adventures[0]?.beats.find((x) => x.id === b1.id)?.onEntry,
+    [writ.id, vex.id],
+    "an unlinked pick is dropped",
+  );
+  assert.ok((await gm.send({ type: "beat.begin", id: b2.id })).ok);
+  await eventually(() => statusOf(one) === "done" && statusOf(two) === "active", "the scene left is played");
+  // UNDO: the scene left comes back, and the one undone goes back to planned.
+  assert.ok((await gm.send({ type: "beat.begin", id: b1.id, leave: "planned", reveal: false })).ok);
+  await eventually(() => statusOf(one) === "active" && statusOf(two) === "planned", "undo of a begin");
+  for (const id of [crypto.randomUUID(), theirs.id])
+    assert.deepEqual(await gm.send({ type: "beat.begin", id }), { ok: false, error: "Scene not found" });
   assert.equal(player.codex()?.adventures.length, 0, "scenes never reach a phone");
   // Scene Tests (issue #39): the kind sets the pool, and a combination the book doesn't have is refused.
   const tested = await gm.send({
@@ -1494,11 +1522,32 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   );
 
   // A prepared beat starts an encounter with the active Agents (only B holds a guest token) and its threats.
+  // The scene's fight begins the scene too (beat.begin's rules): the scene played moves on to done, and ON ENTRY goes out.
+  const map = await gm.send({ type: "codex.save", kind: "handout", data: { title: "The Ambush Map" } });
+  assert.ok(map.ok && map.id);
+  const { id: _b2id, order: _b2order, ...ambush } = gm.codex()!.adventures[0]!.beats.find((x) => x.id === b2.id)!;
+  assert.ok(
+    (
+      await gm.send({
+        type: "codex.save",
+        kind: "beat",
+        id: b2.id,
+        data: { ...ambush, handoutIds: [map.id], onEntry: [map.id] },
+      })
+    ).ok,
+  );
+  assert.ok((await gm.send({ type: "beat.begin", id: b1.id })).ok);
+  await eventually(() => statusOf(one) === "active", "a scene is being played before the fight");
   assert.ok((await gm.send({ type: "beat.startEncounter", id: b2.id })).ok);
   await gm.until(
     (s) =>
       s.encounter?.combatants.filter((x) => x.kind === "threat").length === 2 &&
       s.encounter.combatants.flatMap((x) => (x.kind === "pc" ? [x.characterId] : [])).join() === b.id,
+  );
+  await eventually(() => statusOf(one) === "done" && statusOf(two) === "active", "the fight begins its scene");
+  await eventually(
+    () => player.codex()?.handouts.some((h) => h.id === map.id) === true,
+    "the fight's ON ENTRY reaches the phones",
   );
 });
 
@@ -3530,7 +3579,7 @@ test("admin: acts as GM without a seat, housekeeping over REST, archive and dele
 });
 
 test("spend requests: a player asks, the GM's ACCEPT is the spend (rules-flow §11.122–124)", async (t) => {
-  const gm = await newCampaign("Spend requests", 2);
+  const gm = await newCampaign("Spend requests", 2, "10.19.9.1"); // its own address, under the per-IP connect limit
   t.after(() => gm.socket.close());
   const a = await gm.send({ type: "character.create", name: "A" });
   const b = await gm.send({ type: "character.create", name: "B" });
@@ -3538,7 +3587,7 @@ test("spend requests: a player asks, the GM's ACCEPT is the spend (rules-flow §
   const seat = async (characterId: string) => {
     const issued = await gm.send({ type: "token.issue", characterId });
     assert.ok(issued.ok && issued.token);
-    const p = connect({ auth: { token: issued.token } });
+    const p = connect({ auth: { token: issued.token }, headers: { "cf-connecting-ip": "10.19.9.1" } });
     t.after(() => p.socket.close());
     await p.until((s) => s.characters.length === 2);
     return p;

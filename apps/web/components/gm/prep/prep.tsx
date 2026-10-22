@@ -116,9 +116,12 @@ export function Prep({ state, codex, send, bestiary, presets, wargear, onRun, in
     if (!r.ok) setMsg(`! ${r.error}`);
   };
 
-  // SET ACTIVE / DONE / SKIP: saves the beat with its new status.
+  // DONE / SKIP: saves the beat with its new status. SET ACTIVE begins it (beat.begin), which only the server may do.
   const setStatus = async (b: Beat, status: BeatStatus) => {
-    const r = await send({ type: "codex.save", kind: "beat", id: b.id, data: { ...stripBeat(b), status } });
+    const r =
+      status === "active"
+        ? await send({ type: "beat.begin", id: b.id })
+        : await send({ type: "codex.save", kind: "beat", id: b.id, data: { ...stripBeat(b), status } });
     report(r, `${b.title.toUpperCase()} → ${status.toUpperCase()}`);
   };
 

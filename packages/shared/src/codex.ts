@@ -256,6 +256,9 @@ export const CodexInput = {
     glory: z.array(PoolEntry).max(MAX_POOL_LINES).default([]),
     spends: z.array(PoolSpend).max(MAX_POOL_LINES).default([]),
     hazards: z.array(BeatHazard).max(MAX_HAZARDS).default([]),
+    // Its place, NPCs and handouts that reach the phones the moment the scene begins (beat.begin). A save keeps only
+    // ids the scene still links (onEntryIds).
+    onEntry: z.array(id).max(101).default([]),
   }),
   location: z.object({
     name: text(200),
@@ -345,6 +348,12 @@ export type Codex = {
   // Stat blocks the GM wrote or cloned for this table (issue #43). Book text, so GM sockets only: `toPlayerCodex`
   // sends none, and the GM's app merges them into the bestiary every picker already reads.
   customThreats: Threat[];
+};
+
+// A scene's ON ENTRY picks that it still links: a place, NPC or handout taken off the scene drops out.
+export const onEntryIds = (b: Pick<Row<"beat">, "onEntry" | "locationId" | "npcIds" | "handoutIds">) => {
+  const linked = new Set([b.locationId, ...b.npcIds, ...b.handoutIds]);
+  return [...new Set(b.onEntry)].filter((x) => linked.has(x));
 };
 
 // What one player's phone gets (null: a player without a character): revealed NPCs, locations and handouts, without GM

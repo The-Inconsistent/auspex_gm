@@ -1,5 +1,15 @@
 import { sql } from "drizzle-orm";
-import { boolean, integer, jsonb, pgTable, text, timestamp, uuid, type AnyPgColumn } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  integer,
+  jsonb,
+  pgTable,
+  text,
+  timestamp,
+  uniqueIndex,
+  uuid,
+  type AnyPgColumn,
+} from "drizzle-orm/pg-core";
 import type { z } from "zod";
 import type { AdventureStatus, Attitude, BeatStatus, BeatType, FactionStance, HandoutStyle } from "@wg/shared";
 import { owned } from "../campaign/campaign.schema.ts";
@@ -41,31 +51,41 @@ export const adventure = pgTable("adventure", {
   brief: body(),
 });
 
-export const beat = pgTable("beat", {
-  ...owned(),
-  adventureId: uuid()
-    .notNull()
-    .references(() => adventure.id, { onDelete: "cascade" }),
-  order: integer().notNull().default(0),
-  title: text().notNull(),
-  goal: body(),
-  type: text().$type<BeatType>().notNull().default("social"),
-  status: text().$type<BeatStatus>().notNull().default("planned"),
-  readAloud: body(),
-  gmNotes: body(),
-  outcome: body(),
-  locationId: uuid().references(() => location.id, { onDelete: "set null" }),
-  npcIds: ids(),
-  handoutIds: ids(),
-  itemIds: ids(), // codex.delete clears a deleted item
-  encounter: jsonb().$type<unknown[]>().notNull().default([]),
-  exits: jsonb().$type<unknown[]>().notNull().default([]), // BeatExit[]; codex.delete clears a deleted target
-  tests: jsonb().$type<unknown[]>().notNull().default([]), // BeatTest[]
-  ruin: jsonb().$type<unknown[]>().notNull().default([]), // PoolEntry[]
-  glory: jsonb().$type<unknown[]>().notNull().default([]), // PoolEntry[]
-  spends: jsonb().$type<unknown[]>().notNull().default([]), // PoolSpend[]
-  hazards: jsonb().$type<unknown[]>().notNull().default([]), // BeatHazard[]: picks from its location's hazardList
-});
+export const beat = pgTable(
+  "beat",
+  {
+    ...owned(),
+    adventureId: uuid()
+      .notNull()
+      .references(() => adventure.id, { onDelete: "cascade" }),
+    order: integer().notNull().default(0),
+    title: text().notNull(),
+    goal: body(),
+    type: text().$type<BeatType>().notNull().default("social"),
+    status: text().$type<BeatStatus>().notNull().default("planned"),
+    readAloud: body(),
+    gmNotes: body(),
+    outcome: body(),
+    locationId: uuid().references(() => location.id, { onDelete: "set null" }),
+    npcIds: ids(),
+    handoutIds: ids(),
+    itemIds: ids(), // codex.delete clears a deleted item
+    encounter: jsonb().$type<unknown[]>().notNull().default([]),
+    exits: jsonb().$type<unknown[]>().notNull().default([]), // BeatExit[]; codex.delete clears a deleted target
+    tests: jsonb().$type<unknown[]>().notNull().default([]), // BeatTest[]
+    ruin: jsonb().$type<unknown[]>().notNull().default([]), // PoolEntry[]
+    glory: jsonb().$type<unknown[]>().notNull().default([]), // PoolEntry[]
+    spends: jsonb().$type<unknown[]>().notNull().default([]), // PoolSpend[]
+    hazards: jsonb().$type<unknown[]>().notNull().default([]), // BeatHazard[]: picks from its location's hazardList
+    onEntry: ids(), // its place, NPCs and handouts that reach the phones when it begins (beat.begin)
+  },
+  // One scene is being played at a time: beat.begin moves it, and an import keeps only one.
+  (t) => [
+    uniqueIndex("beat_one_active")
+      .on(t.campaignId)
+      .where(sql`${t.status} = 'active'`),
+  ],
+);
 
 export const location = pgTable("location", {
   ...owned(),
