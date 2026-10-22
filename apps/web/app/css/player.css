@@ -1,0 +1,16 @@
+/* player: the scene-first redesign. Loaded after globals.css (app/layout.tsx), so a rule here wins a tie. */
+
+/* NEW: a reveal the phone hasn't left INTEL since (lib/seen). */
+.pl-tab-new {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--red-on-iron);
+}
+.tab[aria-selected="true"] .pl-tab-new {
+  color: var(--bone);
+}
+.pl-new {
+  margin-right: 8px;
+  vertical-align: middle;
+}

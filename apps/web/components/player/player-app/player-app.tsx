@@ -15,7 +15,9 @@ import { Sheet } from "@/components/ui/sheet/sheet";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { TurnActions } from "@/components/ui/turn-actions/turn-actions";
+import { useSeen } from "@/hooks/use-seen/use-seen";
 import { useTable } from "@/hooks/use-table/use-table";
+import { freshCount } from "@/lib/seen/seen";
 
 import { Fight } from "./components/fight/fight";
 import { Intel } from "./components/intel/intel";
@@ -27,6 +29,7 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
   const { state, codex, online, send, books, requestPage } = useTable(campaignId);
 
   const [tab, setTab] = useState<PlayerTab>("SHEET");
+  const { fresh, markSeen } = useSeen(campaignId, codex);
   const me = state?.characters.find((c) => c.id === characterId);
   const enc = state?.encounter ?? null;
   const myCombatant = enc?.combatants.find((c) => c.kind === "pc" && c.characterId === characterId);
@@ -47,9 +50,17 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
     wasMyTurn.current = myTurn;
   }, [myTurn]);
 
+  // A tab tap. INTEL lists everything inline, so an entry can't be opened one by one: leaving INTEL is what marks what it
+  // showed as seen.
+  const handleTab = (t: PlayerTab) => {
+    if (tab === "INTEL" && t !== "INTEL") markSeen();
+    setTab(t);
+  };
+
   if (!state || !codex) return <StatusScreen text="SYNCING…" />;
   if (!me) return <StatusScreen text="CHARACTER NOT FOUND. ASK YOUR GM." />;
 
+  const newCount = freshCount(codex, fresh);
   const names = new Map(state.characters.map((c) => [c.id, c.name]));
   const current = enc?.combatants.find((c) => c.id === enc.currentId);
   const currentName = current
@@ -109,13 +120,21 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                 )}
                 {tab === "SHEET" && <Sheet me={me} tier={state.campaign.tier} table={{ state, send }} requests />}
                 {tab === "FIGHT" && <Fight state={state} legend={rules.filter((r) => r.kind === "stat")} />}
-                {tab === "INTEL" && <Intel codex={codex} state={state} />}
+                {tab === "INTEL" && <Intel codex={codex} state={state} fresh={fresh} />}
                 {tab === "RULES" && <RulesRef rules={rules} />}
               </div>
               <nav className="tabs pl-tabs" role="tablist">
                 {PLAYER_TABS.map((t) => (
-                  <button key={t} role="tab" className="tab" aria-selected={tab === t} onClick={() => setTab(t)}>
+                  <button
+                    key={t}
+                    role="tab"
+                    className="tab"
+                    aria-selected={tab === t}
+                    aria-label={t === "INTEL" && newCount > 0 ? `INTEL, ${newCount} new` : undefined}
+                    onClick={() => handleTab(t)}
+                  >
                     {t}
+                    {t === "INTEL" && newCount > 0 && <span className="pl-tab-new">{newCount} NEW</span>}
                   </button>
                 ))}
               </nav>

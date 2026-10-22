@@ -7,6 +7,9 @@ import { THEME_SCRIPT } from "@/components/ui/theme-toggle/constants";
 import { TOKENS } from "@/lib/tokens/tokens";
 
 import "./globals.css";
+// The scene-first redesign, one file per screen, after the base so a rule there wins a tie.
+import "./css/header.css";
+import "./css/player.css";
 
 // Cinzel stands in for the books' Priori Serif, Crimson Pro for Caxton; Plex Mono is only for in-world print-outs.
 const display = Cinzel({ subsets: ["latin"], variable: "--font-display" });

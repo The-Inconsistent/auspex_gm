@@ -9,10 +9,11 @@ import { CodexSearch } from "@/components/ui/codex-search/codex-search";
 import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
 import { Mentions } from "@/components/ui/mentions/mentions";
 import { nextSessionLine } from "@/lib/next-session/next-session";
+import { isFresh } from "@/lib/seen/seen";
 
 import { MISSION_GROUPS } from "./constants";
 
-type IntelProps = { codex: Codex; state: LiveState };
+type IntelProps = { codex: Codex; state: LiveState; fresh: ReadonlySet<string> }; // fresh: keys not yet seen (lib/seen)
 
 // The codex search (issue #198) over what this phone was shown; its hits replace the page below.
 export function Intel(props: IntelProps) {
@@ -25,7 +26,7 @@ export function Intel(props: IntelProps) {
   );
 }
 
-function IntelPage({ codex, state }: IntelProps) {
+function IntelPage({ codex, state, fresh }: IntelProps) {
   const handouts = [...codex.handouts].sort((a, b) => (b.revealedAt ?? "").localeCompare(a.revealedAt ?? ""));
   // Every recap, newest first (issue #195, §11.151): the latest open, the rest folded for a player catching up.
   const [last, ...older] = codex.sessions.filter((s) => s.recap).reverse();
@@ -99,6 +100,7 @@ function IntelPage({ codex, state }: IntelProps) {
       {handouts.map((h) => (
         <div key={h.id} className="handout stack" style={{ gap: 8 }}>
           <span className="label">
+            {isFresh({ fresh, kind: "handout", entry: h }) && <NewChip />}
             {h.title.toUpperCase()}
             {/* toPlayerCodex leaves the viewer alone in a private handout's audience. */}
             {h.audience.length > 0 && " · FOR YOUR EYES ONLY"}
@@ -109,6 +111,7 @@ function IntelPage({ codex, state }: IntelProps) {
       <div className="rule">KNOWN PERSONS</div>
       {codex.npcs.map((n) => (
         <div key={n.id} className="item">
+          {isFresh({ fresh, kind: "npc", entry: n }) && <NewChip />}
           <b>{n.name.toUpperCase()}</b> <AttitudeChip attitude={n.attitude} />
           {n.role && <span className="dim">{n.role}</span>}
           {/* Only once the GM shows it: toPlayerCodex drops a held-back picture's id (issue #199). */}
@@ -124,6 +127,7 @@ function IntelPage({ codex, state }: IntelProps) {
       {/* Nested as the GM files them (issue #50); a place under a hidden one comes top-level (toPlayerCodex). */}
       {flatTree(placeTree(codex.locations)).map(({ row: l, depth }) => (
         <div key={l.id} className="item" style={{ marginLeft: depth * 18 }}>
+          {isFresh({ fresh, kind: "location", entry: l }) && <NewChip />}
           <b>{l.name.toUpperCase()}</b>
           {l.imageId && <CodexPicture imageId={l.imageId} alt={l.name} />}
           {l.description && (
@@ -135,4 +139,9 @@ function IntelPage({ codex, state }: IntelProps) {
       ))}
     </>
   );
+}
+
+// A word, not just a colour: this was revealed since the phone last left INTEL.
+function NewChip() {
+  return <span className="chip warn pl-new">NEW</span>;
 }
