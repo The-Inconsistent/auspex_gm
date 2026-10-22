@@ -20,6 +20,7 @@ Start with [architecture.md](architecture.md), then read the doc for the part yo
 | --- | --- |
 | [rules-flow.md](rules-flow.md) | The game flow as the core rulebook defines it. It's the spec, with house decisions (§11) and gap status (§12) |
 | [campaign-model.md](campaign-model.md) | The campaign and codex model: adventures, beats, NPCs, locations, handouts, factions |
+| [scene-first-design.md](scene-first-design.md) | Why the GM flow is scene-first (Oct 2026): the ask, principles and sources, IA, each screen, data, rulings, where the code is, known gaps |
 
 ## Rules for these docs
 
