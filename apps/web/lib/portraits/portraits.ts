@@ -24,6 +24,9 @@ import kommandoGrot from "@/assets/ops/kom/kommando-grot.webp";
 import kommandoRokkitBoy from "@/assets/ops/kom/kommando-rokkit-boy.webp";
 import kommandoSlashaBoy from "@/assets/ops/kom/kommando-slasha-boy.webp";
 import kommandoSnipaBoy from "@/assets/ops/kom/kommando-snipa-boy.webp";
+import yaegirRiflekyn from "@/assets/ops/hernkyn-yaegirs/yaegir-riflekyn.webp";
+import yaegirTheyn from "@/assets/ops/hernkyn-yaegirs/yaegir-theyn.webp";
+import yaegirWarrior from "@/assets/ops/hernkyn-yaegirs/yaegir-warrior.webp";
 
 // Miniature photos by slug (= file basename), the value of a character's `detail.portrait`.
 // ponytail: GW's copyrighted photos ship as static assets: hashed URLs nobody guesses, but not seat-gated like book
@@ -51,6 +54,9 @@ export const PORTRAITS = {
   "kommando-rokkit-boy": kommandoRokkitBoy,
   "kommando-slasha-boy": kommandoSlashaBoy,
   "kommando-snipa-boy": kommandoSnipaBoy,
+  "yaegir-riflekyn": yaegirRiflekyn,
+  "yaegir-theyn": yaegirTheyn,
+  "yaegir-warrior": yaegirWarrior,
 } satisfies Record<string, StaticImageData>;
 type PortraitSlug = keyof typeof PORTRAITS;
 
@@ -64,6 +70,10 @@ const THREAT_PORTRAITS: Record<string, PortraitSlug> = {
   "kommando-slasha-boy": "kommando-slasha-boy",
   "kommando-snipa-boy": "kommando-snipa-boy",
   "kommando-dakka-boy": "kommando-dakka-boy",
+  // Custom threats keep their id through an import (the slug is the row's identity).
+  "custom-yaegir-theyn": "yaegir-theyn",
+  "custom-yaegir-riflekyn": "yaegir-riflekyn",
+  "custom-yaegir-warrior": "yaegir-warrior",
 };
 
 // Object.hasOwn: slugs come from the server, and "constructor" must not find Object.prototype's.
