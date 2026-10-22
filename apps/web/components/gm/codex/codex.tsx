@@ -1,6 +1,7 @@
 "use client";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { Fragment, useMemo, useState, type MouseEvent } from "react";
+import { useRouter } from "next/navigation";
+import { Fragment, useEffect, useMemo, useState, type MouseEvent } from "react";
 
 import {
   parseCite,
@@ -33,6 +34,8 @@ import { usePrint } from "@/components/ui/print-dialog/print-dialog";
 import { PrintPick } from "@/components/ui/print-pick/print-pick";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
+import { revealAnchor } from "@/lib/anchor/anchor";
+import { gmPath } from "@/lib/gm-path/gm-path";
 import { toggleIn } from "@/lib/toggle-set/toggle-set";
 
 import { CodexEditor } from "./components/codex-editor/codex-editor";
@@ -53,10 +56,16 @@ import type { Row } from "./types";
 type Place = Row & { parentId: string | null };
 
 type CodexViewProps = {
+  campaignId: string;
   codex: Codex;
   characters: Character[];
   send: Send;
-  initialKind?: CodexKind;
+  // From the URL (/codex/<kinds>/<entry>/edit): the sub-tab, the entry opened on it, the one being edited ("new" for a
+  // new one) and the custom threat being edited.
+  sub: SubTab;
+  openId?: string;
+  editId?: string;
+  threatSlug?: string;
   factionPresets: FactionPresets;
   npcPresets: NpcPreset[];
   places: PlaceSummary[]; // the books' places, for ADD FROM BOOK (issue #50)
@@ -73,7 +82,7 @@ type CodexViewProps = {
 };
 
 // THREATS isn't a codex kind - it has its own action and no revealed flag - so the sub-tabs are the kinds plus it.
-type SubTab = CodexKind | "threats";
+export type SubTab = CodexKind | "threats";
 
 const rowsFor = (kind: CodexKind, c: Codex): Row[] => c[CODEX_KINDS[kind].collection] as unknown as Row[];
 const titleOf = (r: Row) => String(r.name ?? r.title ?? "?");
@@ -90,10 +99,14 @@ const only = (fn: () => void) => (e: MouseEvent) => {
 };
 
 export function CodexView({
+  campaignId,
   codex,
   characters,
   send,
-  initialKind = "npc",
+  sub,
+  openId,
+  editId,
+  threatSlug,
   factionPresets,
   npcPresets,
   places,
@@ -108,12 +121,18 @@ export function CodexView({
   loot,
   relics,
 }: CodexViewProps) {
-  const [sub, setSub] = useState<SubTab>(initialKind);
+  const router = useRouter();
   const [query, setQuery] = useState(""); // the codex search (issue #198): its hits replace the sub-tab's list
-  const [editing, setEditing] = useState<Row | "new" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const kind: CodexKind = sub === "threats" ? "npc" : sub;
   const rows = rowsFor(kind, codex);
+  const editing: Row | "new" | null = editId === "new" ? "new" : (rows.find((r) => r.id === editId) ?? null);
+  // A link to an entry that's gone (deleted, or another campaign's): back to the list.
+  const lost = (!!editId && !editing) || (!!openId && !rows.some((r) => r.id === openId));
+  // External system: the browser's URL, through Next's router.
+  useEffect(() => {
+    if (lost) router.replace(gmPath.codex({ campaignId, kind }));
+  }, [lost, router, campaignId, kind]);
   const factionById = useMemo(() => new Map(codex.factions.map((f) => [f.id, f])), [codex.factions]);
   const npcById = useMemo(() => new Map(codex.npcs.map((n) => [n.id, n])), [codex.npcs]);
   const itemById = useMemo(() => new Map(codex.items.map((i) => [i.id, i])), [codex.items]);
@@ -124,12 +143,23 @@ export function CodexView({
   const itemsToPrint = codex.items.filter((i) => picked.has(i.id)).map((i) => i.id);
   const handoutsToPrint = codex.handouts.filter((h) => picked.has(h.id)).map((h) => h.id);
 
-  // Sub-tab: switch lists, close any open editor and clear the search.
+  // Sub-tab: another list's URL (which closes any open editor), and the search cleared.
   const pickKind = (k: SubTab) => {
-    setSub(k);
-    setEditing(null);
     setQuery("");
+    router.push(k === "threats" ? gmPath.threats({ campaignId }) : gmPath.codex({ campaignId, kind: k }));
   };
+
+  // EDIT on a row: its editor's URL.
+  const editEntry = (r: Row) => router.push(gmPath.codex({ campaignId, kind, entryId: r.id, edit: true }));
+
+  // The editor is done (SAVE, CANCEL, DELETE): the entry's row, or the list after a new one. It takes the editor's place
+  // in the history, so Back doesn't reopen it; a deleted entry's row is gone, and the lost check above goes to the list.
+  const closeEditor = () =>
+    router.replace(gmPath.codex({ campaignId, kind, entryId: editing === "new" ? undefined : editing?.id }));
+
+  // A custom threat's EDIT opens its URL; closing one (or a link to one that's gone) takes the editor's place.
+  const editThreat = (slug: string | null) =>
+    slug ? router.push(gmPath.threats({ campaignId, slug })) : router.replace(gmPath.threats({ campaignId }));
 
   // Saves the whole entry with one flag changed.
   const saveWith = async (r: Row, change: Partial<Row>) => {
@@ -148,6 +178,20 @@ export function CodexView({
 
   // LOCATIONS is a tree (issue #50): a place's "N INSIDE" button folds the places inside it.
   const [folded, setFolded] = useState<ReadonlySet<string>>(new Set());
+  // An entry's own URL (a peek's GO TO, issue #198, or back from its editor) draws every row first: the search is
+  // cleared and the places unfolded, while rendering, so the row is there for the reveal below.
+  const [shownId, setShownId] = useState(openId);
+  if (openId !== shownId) {
+    setShownId(openId);
+    if (openId) {
+      setQuery("");
+      setFolded(new Set());
+    }
+  }
+  // Then its row, opened and scrolled to. External system: the DOM.
+  useEffect(() => {
+    if (openId) revealAnchor(`entry-${openId}`, "start"); // start: a long row's title stays on screen
+  }, [openId]);
   const tree = useMemo(() => (kind === "location" ? placeTree(rows as Place[]) : []), [kind, rows]);
   // N INSIDE: fold or unfold one place.
   const toggleFold = (id: string) =>
@@ -201,7 +245,7 @@ export function CodexView({
               {r.revealed ? "REVEALED" : "HIDDEN"}
             </button>
           )}
-          <button className="btn sm" onClick={only(() => setEditing(r))}>
+          <button className="btn sm" onClick={only(() => editEntry(r))}>
             EDIT
           </button>
         </summary>
@@ -287,8 +331,11 @@ export function CodexView({
       <div className="pad stack">
         {/* Over the lists only: hiding an open editor (THREATS keeps its own) would drop its draft. */}
         {sub !== "threats" && !editing && <CodexSearch query={query} onQuery={setQuery} />}
-        {query.trim() ? null : sub === "threats" ? (
+        {/* The search's hits replace the list, never an open editor (Back can land on one with a search typed). */}
+        {query.trim() && !editing ? null : sub === "threats" ? (
           <ThreatEditor
+            editSlug={threatSlug}
+            onEdit={editThreat}
             customThreats={codex.customThreats}
             bestiary={bestiary}
             wargear={wargear}
@@ -310,12 +357,12 @@ export function CodexView({
             flavour={flavour}
             hazards={hazards}
             wargear={wargear}
-            onDone={() => setEditing(null)}
+            onDone={closeEditor}
           />
         ) : (
           <>
             <div>
-              <button className="btn primary" onClick={() => setEditing("new")}>
+              <button className="btn primary" onClick={() => router.push(gmPath.newEntry(campaignId, kind))}>
                 + NEW {kind.toUpperCase()}
               </button>
               {kind === "item" && (
