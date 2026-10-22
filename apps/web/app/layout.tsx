@@ -10,6 +10,7 @@ import "./globals.css";
 // The scene-first redesign, one file per screen, after the base so a rule there wins a tie.
 import "./css/fight.css";
 import "./css/header.css";
+import "./css/party.css";
 import "./css/player.css";
 
 // Cinzel stands in for the books' Priori Serif, Crimson Pro for Caxton; Plex Mono is only for in-world print-outs.

@@ -8,11 +8,11 @@ import { shareOrigin } from "@/lib/share-origin/share-origin";
 import { ROOM_INVITE_HOURS } from "../../constants";
 import { QrDialog, type JoinQr } from "../qr-dialog/qr-dialog";
 
-type RoomInviteProps = { send: Send; onError: (error: string) => void };
+type RoomInviteProps = { send: Send; onError: (error: string) => void; compact?: boolean }; // compact: just the button
 
 // ROOM QR: one code for the whole table tonight; each player claims an open agent or starts a new one. PARTY and NEW
 // CAMPAIGN's PLAYERS step both offer it.
-export function RoomInvite({ send, onError }: RoomInviteProps) {
+export function RoomInvite({ send, onError, compact }: RoomInviteProps) {
   const [qr, setQr] = useState<JoinQr | null>(null);
 
   const handleInvite = async () => {
@@ -29,14 +29,20 @@ export function RoomInvite({ send, onError }: RoomInviteProps) {
 
   return (
     <>
-      <div className="keys" style={{ paddingTop: 0 }}>
-        <button className="btn primary" onClick={handleInvite}>
+      {compact ? (
+        <button className="btn" onClick={handleInvite}>
           ROOM QR
         </button>
-        <span className="dim">
-          Players scan it, sign in or join as a guest, and claim an agent. Live {ROOM_INVITE_HOURS} h.
-        </span>
-      </div>
+      ) : (
+        <div className="keys" style={{ paddingTop: 0 }}>
+          <button className="btn primary" onClick={handleInvite}>
+            ROOM QR
+          </button>
+          <span className="dim">
+            Players scan it, sign in or join as a guest, and claim an agent. Live {ROOM_INVITE_HOURS} h.
+          </span>
+        </div>
+      )}
       {qr && <QrDialog qr={qr} onClose={() => setQr(null)} />}
     </>
   );

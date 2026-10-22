@@ -1,50 +1,27 @@
 "use client";
-import Image from "next/image";
-import { Fragment, useState, type ChangeEvent, type FormEvent } from "react";
+import { useState } from "react";
 
 import {
   activeCharacterIds,
-  AMMO_TYPES,
-  CharacterName,
-  CONDITIONS,
-  CharacterStats,
-  corruptionLevel,
-  deriveStats,
-  pcStatus,
-  rankOf,
-  SessionTitle,
   type ActionResult,
   type Character,
   type Codex,
   type LiveState,
-  type Member,
   type MutationTable,
   type Wargear,
 } from "@wg/shared";
 
-import { NEW_CHARACTER } from "@/components/builder/constants";
-import { ConfirmAction } from "@/components/ui/confirm-action/confirm-action";
-import { CorruptionTest } from "@/components/ui/corruption-test/corruption-test";
-import { FieldError } from "@/components/ui/field-error/field-error";
-import { MentionField } from "@/components/ui/mention-field/mention-field";
-import { usePrint } from "@/components/ui/print-dialog/print-dialog";
-import { SheetDialog } from "@/components/ui/sheet-dialog/sheet-dialog";
-import { StatusChips } from "@/components/ui/status-chips/status-chips";
-import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
-import { portrait } from "@/lib/portraits/portraits";
-import { qrImage } from "@/lib/qr/qr";
-import { shareOrigin } from "@/lib/share-origin/share-origin";
 
+import { AgentCard } from "./components/agent-card/agent-card";
+import { Dossier } from "./components/dossier/dossier";
 import { AscendPanel } from "./components/ascend-panel/ascend-panel";
-import { MutationRoll } from "./components/mutation-roll/mutation-roll";
-import { NextSession } from "./components/next-session/next-session";
-import { ObjectivesEditor } from "./components/objectives-editor/objectives-editor";
-import { QrDialog, type JoinQr } from "./components/qr-dialog/qr-dialog";
-import { RequisitionForm } from "./components/requisition-form/requisition-form";
+import { MorePanel } from "./components/more-panel/more-panel";
+import { RespiteSheet } from "./components/respite-sheet/respite-sheet";
 import { RoomInvite } from "./components/room-invite/room-invite";
+import { SessionBand } from "./components/session-band/session-band";
 import { SessionHistory } from "./components/session-history/session-history";
-import { CHARACTER_INVITE_HOURS, DEFAULT_XP, XP_AWARDS } from "./constants";
+import type { PartyMsg } from "./constants";
 
 type PartyProps = {
   state: LiveState;
@@ -54,514 +31,119 @@ type PartyProps = {
   mutations: MutationTable[];
 };
 
+// PARTY: the session band, the Agents as one-button cards, and one dossier side sheet for the Agent tapped. What PARTY
+// does rarely sits behind MORE; the session journal folds below the roster.
 export function Party({ state, codex, send, wargear, mutations }: PartyProps) {
-  const [name, setName] = useState("");
-  const [qr, setQr] = useState<JoinQr | null>(null);
-  const [importFor, setImportFor] = useState<string | null>(null);
-  const [reqFor, setReqFor] = useState<string | null>(null);
-  const [mutFor, setMutFor] = useState<string | null>(null); // whose MUTATIONS panel is open
-  const [json, setJson] = useState("");
-  const [msg, setMsg] = useState<string | null>(null);
-  const agentFields = useFieldErrors("new-agent"); // ADD AGENT's name
-  const sessionFields = useFieldErrors("start-title"); // START SESSION's title
-  const { print } = usePrint();
-  const [xp, setXp] = useState<number>(DEFAULT_XP);
-  const [recap, setRecap] = useState("");
-  const [title, setTitle] = useState(""); // the next session's name, sent with START SESSION (issue #175)
+  const [msg, setMsg] = useState<PartyMsg | null>(null);
+  const [dossierId, setDossierId] = useState<string | null>(null); // the Agent whose dossier is open
+  const [resting, setResting] = useState(false); // RESPITE…'s sheet
+  const [more, setMore] = useState(false); // MORE's disclosure
   const open = codex.sessions.find((s) => !s.endedAt);
-  const { members, invites } = state.access;
-  const seatOf = (characterId: string) => members.find((m) => m.characterId === characterId);
+  const { members } = state.access;
   const active = activeCharacterIds(state.access);
-  const isActive = (id: string) => active.has(id);
-  const groups = [
-    ["ACTIVE AGENTS", state.characters.filter((c) => isActive(c.id))],
-    ["IN RESERVE", state.characters.filter((c) => !isActive(c.id))],
-  ] as const;
-  const nameOf = (characterId: string | null) => state.characters.find((c) => c.id === characterId)?.name ?? "?";
+  const agents = state.characters.filter((c) => active.has(c.id));
+  const reserve = state.characters.filter((c) => !active.has(c.id));
+  const dossier = state.characters.find((c) => c.id === dossierId);
+  const seatOf = (id: string) => ({
+    member: members.find((m) => m.characterId === id)?.name ?? null,
+    active: active.has(id),
+  });
 
   // A refusal, or what the action did. An ack may also carry `notices`: lines only the server can know, because they
   // compare before with after — who crossed a Rank on `session.end`, whether the group may Ascend (Core pp.146–147).
   const report = (r: ActionResult, ok: string) =>
-    setMsg(r.ok ? [ok, ...(r.notices ?? [])].join(" · ") : `! ${r.error}`);
+    setMsg((m) => ({
+      text: r.ok ? [ok, ...(r.notices ?? [])].join(" · ") : `! ${r.error}`,
+      id: (m?.id ?? 0) + 1,
+    }));
 
   // DELETE LAST SESSION's line: the server's notice says what it removed and that the XP stays.
   const sessionReport = (r: ActionResult, ok: string) =>
-    setMsg(r.ok ? (r.notices?.length ? r.notices.join(" · ") : ok) : `! ${r.error}`);
+    report(r, r.ok && r.notices?.length ? r.notices.join(" · ") : ok);
 
-  // Renders a join URL as a full-screen QR code.
-  const showCode = async ({ title, url }: { title: string; url: string }) => {
-    try {
-      setQr({ title, url, img: await qrImage(url) });
-    } catch (e) {
-      setMsg(`! QR code failed: ${e instanceof Error ? e.message : "unknown error"}`);
-    }
-  };
-
-  // GUEST QR: a no-account join token for one character (the phone keeps it in a cookie).
-  const showGuestQr = async (c: Character) => {
-    const r = await send({ type: "token.issue", characterId: c.id });
-    if (!r.ok || !r.token) return report(r, "");
-    await showCode({ title: c.name, url: `${shareOrigin(window.location)}/join/${r.token}` });
-  };
-
-  // TABLE SCREEN: a read-only guest seat for the TV in the middle of the table; its browser keeps the token in a cookie.
-  const showScreenQr = async () => {
-    const r = await send({ type: "screen.issue" });
-    if (!r.ok || !r.token) return report(r, "");
-    await showCode({ title: "Table screen", url: `${shareOrigin(window.location)}/join/${r.token}` });
-  };
-
-  // REVOKE SCREENS: every table screen token dies and the TVs disconnect.
-  const revokeScreens = async () => report(await send({ type: "screen.revoke" }), "TABLE SCREENS REVOKED");
-
-  // INVITE: a single-use link for one character; the player signs in (or joins as a guest) and takes that seat.
-  const inviteCharacter = async (c: Character) => {
-    const r = await send({
-      type: "invite.create",
-      mode: "character",
-      characterId: c.id,
-      hours: CHARACTER_INVITE_HOURS,
-    });
-    if (!r.ok || !r.token) return report(r, "");
-    await showCode({ title: `${c.name} invite`, url: `${shareOrigin(window.location)}/invite/${r.token}` });
-  };
-
-  // REVOKE (invite): the link stops working; anyone already seated keeps their seat.
-  const revokeInvite = async (id: string) => report(await send({ type: "invite.revoke", id }), "INVITE REVOKED");
-
-  // REMOVE (member): takes away their seat and disconnects them.
-  const removeMember = async (m: Member) =>
-    report(await send({ type: "member.remove", userId: m.userId }), `${m.name.toUpperCase()} REMOVED`);
-
-  // LOAD: validates the pasted stats JSON and saves it on the character.
-  const importStats = async (id: string) => {
-    try {
-      const stats = CharacterStats.parse(JSON.parse(json));
-      report(await send({ type: "character.update", id, stats }), "STATS LOADED");
-      setImportFor(null);
-      setJson("");
-    } catch (e) {
-      setMsg(`! Invalid stats JSON: ${e instanceof Error ? e.message.slice(0, 200) : "parse error"}`);
-    }
-  };
-
-  // REQUISITION: opens the requisition form for this character, or closes it.
-  const toggleReq = (id: string) => setReqFor(reqFor === id ? null : id);
-
-  // A recorded requisition closes its form.
-  const requisitioned = (r: ActionResult, ok: string) => {
-    report(r, ok);
-    if (r.ok) setReqFor(null);
-  };
-
-  // XP input: digits only.
-  const handleXpChange = (e: ChangeEvent<HTMLInputElement>) => setXp(Number(e.target.value.replace(/\D/g, "")) || 0);
-
-  // LOAD STATS (JSON): opens the import box for this character, or closes it.
-  const toggleImport = (id: string) => setImportFor(importFor === id ? null : id);
-
-  // CANCEL (import box): closes it and drops the pasted JSON.
-  const cancelImport = () => {
-    setImportFor(null);
-    setJson("");
-  };
-
-  // END SESSION: awards XP to everyone and saves the recap.
-  const endSession = async () =>
-    report(await send({ type: "session.end", xp, recap }), `SESSION ENDED · +${xp} XP EACH`);
-
-  // END SESSION WITHOUT XP: closes a session that was never played or left open; no XP, no Rank notices, pools as they are.
-  const abandonSession = async () => report(await send({ type: "session.abandon" }), "SESSION ENDED · NO XP");
-
-  // START SESSION: resets the pools per the rules.
-  const startSession = async () => {
-    const named = sessionFields.check(SessionTitle, title);
-    if (named === null) return;
-    const r = await send({ type: "session.start", title: named });
-    report(r, "SESSION STARTED · POOLS RESET");
-    if (r.ok) setTitle("");
-  };
-
-  // RESPITE: a 6h rest; Wounds and Shock → 0, Wrath → 2.
-  const respite = async (c: Character) =>
-    report(await send({ type: "character.respite", id: c.id }), `${c.name.toUpperCase()} RESPITE`);
-
-  // ±1 WEALTH: the GM's adventure award or loot (p.206); players spend their own from the sheet but never add.
-  const adjWealth = async (c: Character, wealth: number) =>
-    report(
-      await send({ type: "character.supply", id: c.id, wealth }),
-      `${c.name.toUpperCase()} WEALTH ${wealth > 0 ? "+" : ""}${wealth}`,
-    );
-
-  // ±1 CORRUPTION: a Corrupting weapon or a GM fix (Core p.286); a failed Test is CorruptionTest.
-  const adjCorruption = async (c: Character, delta: number) =>
-    report(
-      await send({ type: "character.corrupt", id: c.id, delta }),
-      `${c.name.toUpperCase()} CORRUPTION ${delta > 0 ? "+" : ""}${delta}`,
-    );
-
-  // ±1 AMMO: loot or an award of one type (§11.57), starting the type if it's new; −1 takes back a slip, and at 0
-  // drops the type. The type stays typed for repeat taps.
-  const adjAmmo = async (e: FormEvent<HTMLFormElement>, c: Character) => {
-    e.preventDefault();
-    const kind = String(new FormData(e.currentTarget).get("kind") ?? "").trim();
-    const delta = (e.nativeEvent as SubmitEvent).submitter?.getAttribute("value") === "-1" ? -1 : 1;
-    if (!kind) return;
-    report(
-      await send({ type: "character.supply", id: c.id, ammo: { kind, delta } }),
-      `${c.name.toUpperCase()} ${delta > 0 ? "+" : ""}${delta} ${kind.toUpperCase()} AMMO`,
-    );
-  };
-
-  // ±COND: toggles a Condition on the character, in or out of a fight (the tracker reaches only combatants).
-  const handleConditionPick = async (e: ChangeEvent<HTMLSelectElement>, c: Character) => {
-    const k = e.target.value;
-    const on = !c.conditions.includes(k);
-    report(
-      await send({
-        type: "character.update",
-        id: c.id,
-        conditions: on ? [...c.conditions, k] : c.conditions.filter((x) => x !== k),
-      }),
-      `${c.name.toUpperCase()} ${on ? "+" : "−"}${k.toUpperCase()}`,
-    );
-  };
-
-  // REVOKE GUEST QR: kills every guest token (and guest socket) for the character; signed-in members keep their seat.
-  const revoke = async (c: Character) =>
-    report(await send({ type: "token.revoke", characterId: c.id }), `${c.name.toUpperCase()} GUEST LINKS REVOKED`);
-
-  // ADD AGENT: creates a character with the typed name.
-  const handleAddCharacter = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const named = agentFields.check(CharacterName, name);
-    if (named === null) return;
-    report(await send({ type: "character.create", name: named }), `${named.toUpperCase()} ADDED`);
-    setName("");
-  };
+  const card = (c: Character) => (
+    <AgentCard
+      key={c.id}
+      character={c}
+      tier={state.campaign.tier}
+      seat={seatOf(c.id)}
+      onOpen={() => setDossierId(c.id)}
+    />
+  );
 
   return (
     <div className="pad stack">
-      {msg && <div className={msg.startsWith("!") ? "red" : "accent"}>{msg}</div>}
+      {msg && (
+        <div className={msg.text.startsWith("!") ? "red" : "accent"} role="status">
+          {msg.text}
+        </div>
+      )}
 
-      <div id="session" className="panel pad stack">
-        <div className="rule">SESSION</div>
-        {open ? (
-          <>
-            <div>{[`SESSION ${open.number}`, open.title.toUpperCase(), "IN PROGRESS"].filter(Boolean).join(" · ")}</div>
-            <div className="field">
-              <label className="label" htmlFor="xp">
-                XP EACH (8 / 10 / 12, p.321)
-              </label>
-              <div style={{ display: "flex", gap: 6 }} role="group" aria-label="XP each">
-                {XP_AWARDS.map((n) => (
-                  <button
-                    key={n}
-                    className={`btn ${xp === n ? "primary" : ""}`}
-                    aria-pressed={xp === n}
-                    onClick={() => setXp(n)}
-                  >
-                    {n}
-                  </button>
-                ))}
-                <input
-                  id="xp"
-                  className="input"
-                  style={{ width: 80 }}
-                  inputMode="numeric"
-                  value={xp}
-                  onChange={handleXpChange}
-                />
-              </div>
-            </div>
-            <div className="field">
-              <label className="label" htmlFor="recap">
-                RECAP (players see this)
-              </label>
-              <MentionField
-                id="recap"
-                multiline
-                value={recap}
-                onChange={setRecap}
-                placeholder="Previously in Wrath & Glory…"
-              />
-            </div>
-            <div className="keys" style={{ alignItems: "center", paddingTop: 0 }}>
-              <button className="btn primary" onClick={endSession}>
-                END SESSION
-              </button>
-              <ConfirmAction
-                label="END SESSION WITHOUT XP"
-                prompt="End this session with no XP and no recap?"
-                onConfirm={abandonSession}
-              />
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="dim">
-              Starting a session resets per the rules (p.162): every Wrath → 2, Glory → 0, Ruin →{" "}
-              {state.characters.length} (players).
-            </div>
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              <input
-                id="start-title"
-                className="input"
-                aria-label="Session title"
-                style={{ flex: 1, minWidth: 160 }}
-                placeholder="TITLE (optional)"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                {...sessionFields.marks()}
-              />
-              <button className="btn primary" onClick={startSession}>
-                START SESSION {codex.sessions.length + 1}
-              </button>
-            </div>
-            <FieldError {...sessionFields.reason()} />
-          </>
+      <SessionBand
+        campaign={state.campaign}
+        sessions={codex.sessions}
+        players={state.characters.length}
+        send={send}
+        msg={msg}
+        onResult={report}
+      />
+
+      <div id="agents" className="stack">
+        <div className="party-head">
+          <div className="rule">ACTIVE AGENTS · {agents.length}</div>
+          <div className="keys" style={{ paddingTop: 0 }}>
+            <RoomInvite compact send={send} onError={(e) => report({ ok: false, error: e }, "")} />
+            <button className="btn" disabled={!agents.length} onClick={() => setResting(true)}>
+              RESPITE…
+            </button>
+            <button className="btn" aria-expanded={more} aria-controls="party-more" onClick={() => setMore(!more)}>
+              MORE
+            </button>
+          </div>
+        </div>
+        {more && (
+          <MorePanel state={state} active={active} send={send} onResult={report} onClose={() => setMore(false)} />
         )}
-        <NextSession
-          key={`${state.campaign.nextSessionAt}|${state.campaign.nextSessionPlace}`}
-          campaign={state.campaign}
+        <div className="party-grid">{agents.map(card)}</div>
+        {reserve.length > 0 && (
+          <details className="party-fold" open={!agents.length || undefined}>
+            <summary className="rule">IN RESERVE · {reserve.length}</summary>
+            <div className="party-grid">{reserve.map(card)}</div>
+          </details>
+        )}
+      </div>
+
+      {/* Always on the page, folded: SETUP's Tier step scrolls to #ascend and opens it. */}
+      <details className="party-fold">
+        <summary className="rule">ASCENSION</summary>
+        <AscendPanel characters={state.characters} tier={state.campaign.tier} send={send} onResult={report} />
+      </details>
+
+      {codex.sessions.length > 0 && (
+        <details className="party-fold">
+          <summary className="rule">SESSION JOURNAL · {codex.sessions.length}</summary>
+          <SessionHistory sessions={codex.sessions} send={send} onResult={sessionReport} />
+        </details>
+      )}
+
+      {dossier && (
+        <Dossier
+          key={dossier.id}
+          character={dossier}
+          state={state}
+          seat={seatOf(dossier.id)}
+          sessionId={open?.id ?? null}
+          wargear={wargear}
+          mutations={mutations}
           send={send}
+          msg={msg}
           onResult={report}
+          onClose={() => setDossierId(null)}
         />
-        <SessionHistory sessions={codex.sessions} send={send} onResult={sessionReport} />
-      </div>
-
-      <AscendPanel characters={state.characters} tier={state.campaign.tier} send={send} onResult={report} />
-
-      <section className="panel pad stack">
-        <div className="rule">TABLE ACCESS</div>
-        <RoomInvite send={send} onError={(e) => setMsg(`! ${e}`)} />
-        {invites.length > 0 && (
-          <div className="list">
-            {invites.map((i) => (
-              <div key={i.id} className="item" style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-                <span style={{ flex: 1 }}>
-                  {i.mode === "room" ? "ROOM" : nameOf(i.characterId).toUpperCase()} · {i.uses} USED
-                  {i.allowGuests ? "" : " · ACCOUNTS ONLY"}
-                </span>
-                <span className="dim">UNTIL {new Date(i.expiresAt).toLocaleString()}</span>
-                <button className="btn sm danger" onClick={() => revokeInvite(i.id)}>
-                  REVOKE
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-        <div className="label">SIGNED IN</div>
-        {members.map((m) => (
-          <div key={m.userId} style={{ display: "flex", gap: 10, alignItems: "center" }}>
-            <span style={{ flex: 1 }}>
-              {m.name.toUpperCase()} ·{" "}
-              {m.role === "gm" ? "GM" : m.characterId ? nameOf(m.characterId).toUpperCase() : "NO AGENT"}
-            </span>
-            {m.role === "player" && (
-              <button className="btn sm danger" onClick={() => removeMember(m)}>
-                REMOVE
-              </button>
-            )}
-          </div>
-        ))}
-      </section>
-      <div id="agents" className="list">
-        {groups.map(([title, list]) => (
-          <Fragment key={title}>
-            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-              <div className="rule" style={{ flex: 1 }}>
-                {title} ({list.length})
-              </div>
-              {/* Fold-over name cards to stand behind each Agent's miniature (#203). */}
-              {list.length > 0 && (
-                <button className="btn sm" onClick={() => print({ agents: list.map((c) => c.id) })}>
-                  PRINT TENTS
-                </button>
-              )}
-            </div>
-            {list.map((c) => {
-              const d = deriveStats({ stats: c.stats, overrides: c.overrides, tier: state.campaign.tier });
-              const pic = portrait(c.detail.portrait);
-              return (
-                <div key={c.id} className="item">
-                  {pic && <Image src={pic} alt="" height={192} className="portrait" />}
-                  <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-                    <b style={{ flex: 1 }}>{c.name.toUpperCase()}</b>
-                    <span className="dim">{c.stats.archetype || "NO STATS YET"}</span>
-                    <StatusChips items={pcStatus(c, d)} />
-                    {/* Rank follows this character's own XP (Core p.146); what is left to spend is what advancement
-                        hasn't bought yet, so the GM can nudge people between sessions. */}
-                    <span className="dim">
-                      XP {c.xp} · RANK {rankOf(c.xp)}
-                    </span>
-                    {c.build && c.xp > c.xpSpent && <span className="accent">{c.xp - c.xpSpent} XP TO SPEND</span>}
-                  </div>
-                  <div className="dim">
-                    {seatOf(c.id)
-                      ? `PLAYED BY ${seatOf(c.id)!.name.toUpperCase()}`
-                      : isActive(c.id)
-                        ? "PLAYED BY A GUEST"
-                        : "OPEN SEAT"}
-                  </div>
-                  <div className="dim">
-                    WEALTH {c.stats.wealth} · AMMO{" "}
-                    {Object.entries(c.stats.ammo)
-                      .map(([k, n]) => `${n} ${k}`)
-                      .join(", ") || "NONE"}
-                    {c.conditions.length > 0 && ` · ${c.conditions.join(", ").toUpperCase()}`}
-                  </div>
-                  <div className="dim">
-                    CORRUPTION {c.stats.corruption} · {corruptionLevel(c.stats.corruption).name.toUpperCase()}
-                  </div>
-                  <div className="dim">
-                    WND {c.wounds}/{d.maxWounds} · SHK {c.shock}/{d.maxShock} · WRATH {c.wrath} · DEF {d.defence} · RES{" "}
-                    {d.resilience}
-                  </div>
-                  <div className="keys">
-                    {/* The one editor (issue #18): name, portrait, detail, build and the GM's overrides. A draft a player
-                        sent opens there too: the GM ticks what only the GM judges, and saves it. */}
-                    <a className={`btn sm ${c.draft ? "primary" : ""}`} href={`/c/${state.campaign.id}/build/${c.id}`}>
-                      {c.draft ? "OPEN DRAFT" : "EDIT"}
-                    </a>
-                    <SheetDialog me={c} tier={state.campaign.tier} table={{ state, send }} />
-                    <button className="btn sm" onClick={() => inviteCharacter(c)}>
-                      INVITE
-                    </button>
-                    <button className="btn sm" onClick={() => showGuestQr(c)}>
-                      GUEST QR
-                    </button>
-                    <button className="btn sm" aria-expanded={importFor === c.id} onClick={() => toggleImport(c.id)}>
-                      LOAD STATS (JSON)
-                    </button>
-                    <button className="btn sm" onClick={() => respite(c)}>
-                      RESPITE
-                    </button>
-                    <button className="btn sm" aria-expanded={reqFor === c.id} onClick={() => toggleReq(c.id)}>
-                      REQUISITION
-                    </button>
-                    <button className="btn sm" onClick={() => adjWealth(c, 1)}>
-                      +1 WEALTH
-                    </button>
-                    <button className="btn sm" onClick={() => adjWealth(c, -1)}>
-                      −1 WEALTH
-                    </button>
-                    <button className="btn sm" onClick={() => adjCorruption(c, 1)}>
-                      +1 CORRUPTION
-                    </button>
-                    <button className="btn sm" onClick={() => adjCorruption(c, -1)}>
-                      −1 CORRUPTION
-                    </button>
-                    <button
-                      className="btn sm"
-                      aria-expanded={mutFor === c.id}
-                      onClick={() => setMutFor(mutFor === c.id ? null : c.id)}
-                    >
-                      MUTATIONS{c.stats.mutations.length ? ` (${c.stats.mutations.length})` : ""}
-                    </button>
-                    <button className="btn sm danger" onClick={() => revoke(c)}>
-                      REVOKE GUEST QR
-                    </button>
-                  </div>
-                  <form style={{ display: "flex", gap: 6, flexWrap: "wrap" }} onSubmit={(e) => adjAmmo(e, c)}>
-                    <input
-                      className="input"
-                      name="kind"
-                      list="ammo-types"
-                      aria-label={`Ammo type for ${c.name}`}
-                      placeholder="AMMO TYPE"
-                    />
-                    <button className="btn sm" value="1">
-                      +1 AMMO
-                    </button>
-                    <button className="btn sm" value="-1">
-                      −1 AMMO
-                    </button>
-                    <select
-                      className="btn sm"
-                      aria-label={`Toggle condition on ${c.name}`}
-                      value=""
-                      onChange={(e) => handleConditionPick(e, c)}
-                    >
-                      <option value="">±COND</option>
-                      {CONDITIONS.map((k) => (
-                        <option key={k} value={k}>
-                          {c.conditions.includes(k) ? `− ${k}` : `+ ${k}`}
-                        </option>
-                      ))}
-                    </select>
-                  </form>
-                  <CorruptionTest characters={[c]} send={send} onReport={report} />
-                  {mutFor === c.id && <MutationRoll character={c} tables={mutations} send={send} onResult={report} />}
-                  <ObjectivesEditor character={c} send={send} onResult={report} />
-                  {reqFor === c.id && (
-                    <RequisitionForm
-                      character={c}
-                      catalogue={wargear}
-                      influence={d.influence}
-                      sessionId={open?.id ?? null}
-                      send={send}
-                      onResult={requisitioned}
-                      onCancel={() => setReqFor(null)}
-                    />
-                  )}
-                  {importFor === c.id && (
-                    <div className="stack">
-                      <textarea
-                        className="input"
-                        aria-label="Stats JSON"
-                        value={json}
-                        onChange={(e) => setJson(e.target.value)}
-                        placeholder='{"species":"Primaris Astartes","attributes":{…}}'
-                      />
-                      <div className="keys">
-                        <button className="btn primary" onClick={() => importStats(c.id)}>
-                          LOAD
-                        </button>
-                        <button className="btn" onClick={cancelImport}>
-                          CANCEL
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </Fragment>
-        ))}
-      </div>
-      <datalist id="ammo-types">
-        {AMMO_TYPES.map((t) => (
-          <option key={t} value={t} />
-        ))}
-      </datalist>
-      <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-        <span className="label">TABLE SCREEN</span>
-        <button className="btn sm" onClick={showScreenQr}>
-          SCREEN QR
-        </button>
-        <button className="btn sm danger" onClick={revokeScreens}>
-          REVOKE SCREENS
-        </button>
-      </div>
-      <form style={{ display: "flex", gap: 8 }} onSubmit={handleAddCharacter}>
-        <input
-          id="new-agent"
-          className="input"
-          aria-label="New character name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="NEW AGENT NAME"
-          {...agentFields.marks()}
-        />
-        <button className="btn">ADD AGENT</button>
-        <a className="btn" href={`/c/${state.campaign.id}/build/${NEW_CHARACTER}`}>
-          NEW FROM BUILDER
-        </a>
-      </form>
-      <FieldError {...agentFields.reason()} />
-
-      {qr && <QrDialog qr={qr} onClose={() => setQr(null)} />}
+      )}
+      {resting && (
+        <RespiteSheet characters={agents} send={send} msg={msg} onResult={report} onClose={() => setResting(false)} />
+      )}
     </div>
   );
 }

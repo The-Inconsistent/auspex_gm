@@ -1,6 +1,14 @@
-import { QR_SIZE } from "@/lib/qr/qr";
+import { QR_SIZE, qrImage } from "@/lib/qr/qr";
 
 export type JoinQr = { title: string; url: string; img: string };
+
+// A join URL drawn as a code: the one place a QR for PARTY is made.
+export const joinQr = async ({ title, url }: { title: string; url: string }): Promise<JoinQr> => ({
+  title,
+  url,
+  img: await qrImage(url),
+});
+
 type QrDialogProps = { qr: JoinQr; onClose: () => void };
 
 // Full-screen join code (a guest QR, a character invite or the room invite) for phones to scan.

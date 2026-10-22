@@ -24,6 +24,8 @@ export function SetupPanel({ steps, onTab }: SetupPanelProps) {
     if (!anchor) return;
     requestAnimationFrame(() => {
       const el = document.getElementById(anchor);
+      const fold = el?.closest("details"); // a panel kept in a fold (PARTY's ASCENSION) opens first
+      if (fold) fold.open = true;
       el?.scrollIntoView({ behavior: "smooth", block: "center" });
       if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) el.focus({ preventScroll: true });
     });
