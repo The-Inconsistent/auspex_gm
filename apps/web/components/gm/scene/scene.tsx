@@ -13,7 +13,7 @@ import {
 import { Tracker } from "@/components/gm/tracker/tracker";
 import type { Send } from "@/hooks/use-table/use-table";
 import { currentScene } from "@/lib/scene/scene";
-import { undoBegin } from "@/lib/scene-reveal/scene-reveal";
+import { undoBegin, type Begun } from "@/lib/scene-reveal/scene-reveal";
 
 import { BegunNotice } from "./components/begun-notice/begun-notice";
 import { InThisScene } from "./components/in-this-scene/in-this-scene";
@@ -23,7 +23,7 @@ import { ScenePreview } from "./components/scene-preview/scene-preview";
 import { SceneStrip } from "./components/scene-strip/scene-strip";
 import { WhereNext } from "./components/where-next/where-next";
 import type { SceneLayer } from "./constants";
-import type { Begun, Report, SceneBeat } from "./types";
+import type { Report, SceneBeat } from "./types";
 
 type SceneProps = {
   state: LiveState;
@@ -32,15 +32,16 @@ type SceneProps = {
   bestiary: Threat[];
   presets: ScenePresets;
   onEdit: (beatId: string) => void; // opens that scene in STORY
+  notice: Begun | null; // the last begin, held by the GM shell so one from STORY keeps its UNDO here
+  onNotice: (notice: Begun | null) => void;
 };
 
 // SCENE: the GM's play home. The scene being played as the book prints it (the page, what is in it, where next), and
 // while a fight is live a switch to the tracker. One scene is played at a time (beat.begin); its ON ENTRY picks reach the
 // phones when it begins, and a one-line notice can take that back.
-export function Scene({ state, codex, send, bestiary, presets, onEdit }: SceneProps) {
+export function Scene({ state, codex, send, bestiary, presets, onEdit, notice, onNotice }: SceneProps) {
   const [layer, setLayer] = useState<SceneLayer>(state.encounter ? "fight" : "scene");
   const [previewId, setPreviewId] = useState<string | null>(null); // another scene, read-only
-  const [notice, setNotice] = useState<Begun | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
   const current = currentScene(codex);
   const seated = activeCharacterIds(state.access); // whose phones a called Test reaches
@@ -73,7 +74,7 @@ export function Scene({ state, codex, send, bestiary, presets, onEdit }: ScenePr
       if (!r.ok) return setMsg(`! ${r.error}`);
       setMsg(null);
       setPreviewId(null);
-      setNotice({ begun: id, before, status, revealed: r.revealed ?? [] });
+      onNotice({ begun: id, before, status, revealed: r.revealed ?? [] });
     });
 
   // UNDO: the scene before is current again, then what the begin revealed is sealed; stops at the first refusal.
@@ -87,7 +88,7 @@ export function Scene({ state, codex, send, bestiary, presets, onEdit }: ScenePr
           const r = await send(step);
           if (!r.ok) return setMsg(`! ${r.error}`);
         }
-        setNotice(null);
+        onNotice(null);
         setMsg("SCENE BEGUN, TAKEN BACK");
       } finally {
         setUndoing(false);
@@ -126,7 +127,7 @@ export function Scene({ state, codex, send, bestiary, presets, onEdit }: ScenePr
           revealed={notice.revealed}
           busy={undoing}
           onUndo={undo}
-          onDismiss={() => setNotice(null)}
+          onDismiss={() => onNotice(null)}
         />
       )}
       {state.encounter && (
@@ -164,7 +165,7 @@ export function Scene({ state, codex, send, bestiary, presets, onEdit }: ScenePr
         <>
           <div className="scene-cols">
             <ScenePage
-              key={current.beat.id} // a new scene starts with GM NOTES and the folds closed, and no FEAR ticks
+              key={`page-${current.beat.id}`} // a new scene starts with GM NOTES and the folds closed, and no FEAR ticks
               state={state}
               codex={codex}
               beat={current.beat}
@@ -177,7 +178,7 @@ export function Scene({ state, codex, send, bestiary, presets, onEdit }: ScenePr
               onEdit={onEdit}
             />
             <InThisScene
-              key={current.beat.id}
+              key={`cast-${current.beat.id}`}
               codex={codex}
               characters={state.characters}
               beat={current.beat}
