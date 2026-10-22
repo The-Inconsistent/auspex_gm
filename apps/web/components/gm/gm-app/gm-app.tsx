@@ -17,6 +17,7 @@ import {
   type Wargear,
 } from "@wg/shared";
 
+import { CodexEditor } from "@/components/gm/codex/components/codex-editor/codex-editor";
 import { CallTestButton } from "@/components/gm/header/call-test-button/call-test-button";
 import { SealButton } from "@/components/gm/header/seal-button/seal-button";
 import { SpendBadge } from "@/components/gm/header/spend-badge/spend-badge";
@@ -152,6 +153,27 @@ export function GmApp({
     router.push(gmPath.story({ campaignId, adventureId: adventure?.id, sceneId: adventure && id }));
   };
 
+  // A peek's EDIT: the entry's CODEX form, in the peek, wherever the GM tapped the name (STORY, SCENE, a mention).
+  const editor = (entry: MentionEntry, done: () => void) =>
+    entry.kind !== "scene" && (
+      <CodexEditor
+        key={`${entry.kind}:${entry.id}`}
+        kind={entry.kind}
+        codex={codex}
+        characters={state.characters}
+        send={send}
+        row={{ ...entry.row, id: entry.id }}
+        keywords={factionPresets.keywords}
+        bestiary={allThreats}
+        tier={state.campaign.tier}
+        flavour={flavour}
+        hazards={presets.hazards}
+        wargear={wargear}
+        onDone={done}
+        sheet={{ codexHref: gmPath.codex({ campaignId, kind: entry.kind, entryId: entry.id, edit: true }) }}
+      />
+    );
+
   // A rail tab's URL. SCENE opens on its fight while one is live, unless the GM is already on SCENE (its own switch
   // picks the layer there).
   const tabHref = (t: GmTab) =>
@@ -163,7 +185,7 @@ export function GmApp({
         <RulesProvider rules={rules}>
           <PrintProvider source={{ state, codex, threats: allThreats, wargear }}>
             <PictureProvider campaignId={campaignId}>
-              <MentionsProvider codex={codex} missing="(removed)" onGoTo={goTo}>
+              <MentionsProvider codex={codex} missing="(removed)" onGoTo={goTo} editor={editor}>
                 <div className="gm">
                   <header className="gm-head band torn">
                     {!online && <div className="badge-offline">NO SIGNAL · RECONNECTING</div>}

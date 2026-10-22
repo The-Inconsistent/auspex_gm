@@ -103,8 +103,21 @@ STORY. Switching tabs starts the new tab at its top.
   HERE. + NEW SCENE, + SCENE FROM A TABLE.
 - **PAGE:** one scene as a book spread, flipped with ‹ › and scene tabs; story on the left, toolkit on the right, an
   **ON ENTRY** tick on each place, person and handout (saved at once, disabled while saving). A pencil per section opens
-  the scene editor on just that section (`BeatEditor`'s `section` prop). ▶ RUN THIS SCENE, EDIT, ↑ ↓, DONE, SKIP, PRINT
+  the scene editor scrolled to that section (`BeatEditor`'s `section` prop). ▶ RUN THIS SCENE, EDIT, ↑ ↓, DONE, SKIP, PRINT
   pinned at the foot. STORY opens on the scene being played.
+- **The scene editor** (canvas row "The scene editor, streamlined", Flow-Editor*; asked for 2026-10-23: "GMs cannot
+  quick add or quick edit a part like Scene Handouts, Locations, NPCs"). The GM likes a separate editing page, so it
+  stays one page with SAVE SCENE, and its inside follows the same rules as the rest:
+  - one scrolling form between a sticky jump strip (STORY · PEOPLE & PROPS · TESTS · RUIN & GLORY · FIGHT · EXITS) and
+    a sticky save bar that says what's unsaved or what holds the save; DELETE SCENE is a link at the end;
+  - lists of what the scene holds instead of chip walls of the whole codex, each ending in one find-or-name field
+    (Notion's relation picker; a wiki's link to a missing page): a match is added, a new name makes the codex entry;
+  - quick edit: a name opens that entry's CODEX form as a sheet over the editor (DONE saves the entry, not the scene);
+  - names written in the read-aloud or GM notes that the scene doesn't hold are offered with one `+ ADD`;
+  - Tests, spends and fight entries are rows that open one at a time, moved by a drag handle, removed by a REMOVE link
+    inside; Shifts, Ruin and Glory lines and exits are dropped by clearing them, so no × anywhere but the lists;
+  - book presets (Skill DNs, Ruin and Glory lists, the bestiary) are found from the same fields.
+  A "write in place, no editor page" direction was drawn first and rejected.
 
 ### PARTY (`components/gm/party/`)
 

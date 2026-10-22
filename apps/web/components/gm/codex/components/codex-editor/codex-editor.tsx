@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 
 import {
@@ -54,6 +55,8 @@ type CodexEditorProps = {
   hazards: HazardTable[]; // the books' hazard tables, for a place's hazard list (issue #49)
   wargear: Wargear[]; // the catalogue an item's NAME searches (issue #51)
   onDone: () => void;
+  // In a quick-edit sheet (a peek's EDIT): DONE saves, and the full editor is a link away; the sheet's × cancels.
+  sheet?: { codexHref: string };
 };
 
 const upperOptions = (values: readonly string[]): Option[] => values.map((v) => [v, v.toUpperCase()]);
@@ -178,6 +181,7 @@ export function CodexEditor({
   hazards,
   wargear,
   onDone,
+  sheet,
 }: CodexEditorProps) {
   const fields = fieldsFor({ kind, codex, characters, id: row?.id });
   const [draft, setDraft] = useState<Record<string, unknown>>(() => {
@@ -416,19 +420,30 @@ export function CodexEditor({
       {(error ?? fieldErrors.elsewhere(fields.map((f) => f.key))) && (
         <div className="red">! {error ?? fieldErrors.elsewhere(fields.map((f) => f.key))}</div>
       )}
-      <div className="keys">
-        <button className="btn primary" onClick={save}>
-          SAVE
-        </button>
-        <button className="btn" onClick={onDone}>
-          CANCEL
-        </button>
-        {row && (
-          <button className="btn danger" onClick={handleDelete}>
-            {inside && armed === inside ? `DELETE · ${inside} INSIDE GO TOP-LEVEL` : "DELETE"}
+      {sheet ? (
+        <div className="keys sheet-foot">
+          <button className="btn primary" onClick={save}>
+            DONE
           </button>
-        )}
-      </div>
+          <Link className="lnk" href={sheet.codexHref}>
+            OPEN IN CODEX
+          </Link>
+        </div>
+      ) : (
+        <div className="keys">
+          <button className="btn primary" onClick={save}>
+            SAVE
+          </button>
+          <button className="btn" onClick={onDone}>
+            CANCEL
+          </button>
+          {row && (
+            <button className="btn danger" onClick={handleDelete}>
+              {inside && armed === inside ? `DELETE · ${inside} INSIDE GO TOP-LEVEL` : "DELETE"}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
