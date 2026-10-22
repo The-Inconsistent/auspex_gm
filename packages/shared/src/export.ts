@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
+import { Clock, ClockName, Countdown, MAX_CLOCKS, MAX_COUNTDOWN_LABEL, tickClock } from "./clock.ts";
 import { CodexInput, ImageMime } from "./codex.ts";
 import { CUSTOM_THREAT_CAP, CustomThreat } from "./threat.ts";
 import { CharacterDetail, CharacterStats, Objectives, Overrides, TableLines, Tier } from "./state.ts";
@@ -29,6 +30,15 @@ export const CampaignExport = z.object({
     // Files from before issue #197 have no next session. A date that doesn't parse is dropped, not the file.
     nextSessionAt: z.iso.datetime({ offset: true }).nullable().catch(null),
     nextSessionPlace: z.string().max(200).default(""),
+    // The GM's clocks and countdown (issue #210); files from before have none. A clock fuller than its pie is filled
+    // to the brim, not refused.
+    clocks: z
+      .array(Clock.extend({ name: ClockName }).transform((clock) => tickClock({ clock, delta: 0 })))
+      .max(MAX_CLOCKS)
+      .default([]),
+    countdown: Countdown.extend({ label: z.string().max(MAX_COUNTDOWN_LABEL) })
+      .nullable()
+      .default(null),
   }),
   characters: z
     .array(
@@ -107,14 +117,24 @@ export type CampaignExport = z.infer<typeof CampaignExport>;
 // The biggest file IMPORT GAME takes: the api's parser, Next's proxy buffer and Cloudflare's free plan all stop here.
 export const IMPORT_MAX_BYTES = 100 * 1024 * 1024;
 
-// The same campaign for a new group: no sessions and no date for the next, empty pools, nothing revealed, every Agent
+// The same campaign for a new group: no sessions and no date for the next, no clocks, empty pools, nothing revealed, every Agent
 // rested, and no kind of game or limits, which the new table agrees for itself (Core p.316, rules-flow §11.79). Sheets, builds and XP stay, since a
 // build's XP ledger is spent against `xp`. Given items stay given, because the sheets keep their gear.
 export function freshStart(e: CampaignExport): CampaignExport {
   const { codex: c } = e;
   return {
     ...e,
-    campaign: { ...e.campaign, glory: 0, ruin: 0, kind: [], limits: [], nextSessionAt: null, nextSessionPlace: "" },
+    campaign: {
+      ...e.campaign,
+      glory: 0,
+      ruin: 0,
+      kind: [],
+      limits: [],
+      nextSessionAt: null,
+      nextSessionPlace: "",
+      clocks: [],
+      countdown: null,
+    },
     characters: e.characters.map((ch) => ({
       ...ch,
       wounds: 0,

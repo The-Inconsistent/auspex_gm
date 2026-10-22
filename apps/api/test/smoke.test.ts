@@ -985,6 +985,62 @@ test("the next session: a date for every seat, an .ics, cleared when it starts (
   assert.equal((await get(ics, cookie)).status, 404);
 });
 
+test("clocks and the countdown: the GM's, a phone sees only the shown ones, taps add up (issue #210)", async (t) => {
+  const gm = await newCampaign("Clocks", 1, "10.21.0.1"); // its own address, under the per-IP connect limit
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  assert.ok(a.ok && a.id);
+  const issued = await gm.send({ type: "token.issue", characterId: a.id });
+  assert.ok(issued.ok && issued.token);
+  const p = connect({ auth: { token: issued.token }, headers: { "cf-connecting-ip": "10.21.0.1" } });
+  t.after(() => p.socket.close());
+  await p.until((s) => s.characters.length === 1);
+
+  assert.equal((await p.send({ type: "clock.save", name: "Mine", segments: 4 })).ok, false, "GM only");
+  assert.equal((await gm.send({ type: "clock.save", name: "Odd", segments: 5 as 4 })).ok, false, "4, 6 or 8");
+  const made = await gm.send({ type: "clock.save", name: " Hive guard ", segments: 6 });
+  assert.ok(made.ok && made.id);
+  const id = made.id;
+  const hidden = await gm.until((s) => s.clocks.length === 1);
+  assert.deepEqual(hidden.clocks[0], { id, name: "Hive guard", segments: 6, filled: 0, visible: false });
+  assert.equal((await p.send({ type: "clock.tick", id, delta: 1 })).ok, false, "GM only");
+  // Two taps sent together both land.
+  const taps = await Promise.all([
+    gm.send({ type: "clock.tick", id, delta: 1 }),
+    gm.send({ type: "clock.tick", id, delta: 1 }),
+  ]);
+  assert.ok(taps.every((r) => r.ok));
+  await gm.until((s) => s.clocks[0]?.filled === 2);
+  assert.ok((await gm.send({ type: "clock.tick", id, delta: 8 })).ok);
+  await gm.until((s) => s.clocks[0]?.filled === 6); // full is full, and does nothing
+  assert.equal((await gm.send({ type: "clock.tick", id: crypto.randomUUID(), delta: 1 })).ok, false, "no such clock");
+
+  assert.ok((await gm.send({ type: "countdown.set", label: "Airlock", seconds: 300, visible: false })).ok);
+  await gm.until((s) => s.countdown?.label === "Airlock");
+  const before = await p.until((s) => s.characters.length === 1);
+  assert.deepEqual([before.clocks, before.countdown], [[], null], "hidden ones never reach a phone");
+
+  assert.ok((await gm.send({ type: "clock.save", id, name: "Hive guard", segments: 4, visible: true })).ok);
+  const shown = await p.until((s) => s.clocks.length === 1);
+  assert.equal(shown.clocks[0]!.filled, 4, "a smaller pie keeps what fits");
+  assert.ok((await gm.send({ type: "countdown.set", label: "Airlock", seconds: 300 })).ok);
+  const counting = await p.until((s) => s.countdown !== null);
+  const left = counting.countdown!.endsAt - counting.serverNow;
+  assert.ok(left > 290_000 && left <= 300_000, "the end is on the server's clock");
+
+  for (const name of ["B", "C", "D", "E", "F"])
+    assert.ok((await gm.send({ type: "clock.save", name, segments: 4 })).ok);
+  assert.equal((await gm.send({ type: "clock.save", name: "G", segments: 4 })).ok, false, "at most 6");
+
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.ok((await gm.send({ type: "session.end", xp: 0 })).ok);
+  const after = await gm.until((s) => s.clocks.length === 6);
+  assert.ok(after.countdown, "a session's end leaves them");
+  assert.ok((await gm.send({ type: "clock.delete", id })).ok);
+  assert.ok((await gm.send({ type: "countdown.clear" })).ok);
+  await p.until((s) => s.clocks.length === 0 && s.countdown === null);
+});
+
 test("the mission log: a shown adventure reaches phones with its brief, never its premise or scenes (issue #196)", async (t) => {
   const gm = await newCampaign("Mission log", 1);
   t.after(() => gm.socket.close());

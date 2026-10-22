@@ -106,6 +106,18 @@ test("a file from before the next session has none, and a fresh start drops it (
   assert.deepEqual([freshStart(set).campaign.nextSessionAt, freshStart(set).campaign.nextSessionPlace], [null, ""]);
 });
 
+test("a file from before clocks has none, and a fresh start drops them (issue #210)", () => {
+  assert.deepEqual([file.campaign.clocks, file.campaign.countdown], [[], null]);
+  const clock = { id: "k", name: "Hive guard", segments: 6, filled: 9, visible: true };
+  const set = CampaignExport.parse({
+    ...file,
+    campaign: { ...file.campaign, clocks: [clock], countdown: { label: "Airlock", endsAt: 1000, visible: true } },
+  });
+  assert.equal(set.campaign.clocks[0]!.filled, 6, "a clock fuller than its pie is full");
+  assert.equal(set.campaign.countdown?.label, "Airlock");
+  assert.deepEqual([freshStart(set).campaign.clocks, freshStart(set).campaign.countdown], [[], null]);
+});
+
 test("a file from before handout styles loads them plain, with no header (issue #204)", () => {
   const [h] = file.codex.handouts;
   assert.deepEqual([h!.style, h!.header], ["plain", ""]);

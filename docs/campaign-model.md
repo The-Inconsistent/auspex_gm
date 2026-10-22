@@ -13,6 +13,8 @@ text, notes and handouts. Build order: combat tracker plus this campaign core fi
 Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sheet p.374),
  │           patron, kind[] and limits[] (core p.316, rules-flow §11.79), party keywords,
  │           nextSessionAt + nextSessionPlace (issue #197: UTC, cleared by session.start; INTEL and next.ics)
+ │           clocks[] (≤ 6: name, 4/6/8 segments, filled, visible) and one countdown (label, endsAt,
+ │           visible): the GM's pacing, not a rule (issue #210); session.end keeps them, a fresh start drops them
  ├─ Faction      name, keywords[], stance (ally | neutral | rival | enemy), notes, secrets
  ├─ Adventure    title, premise, status (planned | running | done | failed), shown + brief (the mission log, #196)
  │   └─ Beat     order, type, title, goal, status (planned | active | done | skipped),

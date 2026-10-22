@@ -136,6 +136,11 @@ function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promis
     case "campaign.archive":
     case "campaign.unarchive":
     case "campaign.delete":
+    case "clock.save":
+    case "clock.tick":
+    case "clock.delete":
+    case "countdown.set":
+    case "countdown.clear":
       return applyCampaignAction(tx, { ctx, action });
 
     case "spend.request":

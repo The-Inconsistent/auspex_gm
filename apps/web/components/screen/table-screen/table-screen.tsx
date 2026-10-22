@@ -11,6 +11,7 @@ import {
 } from "@wg/shared";
 
 import { Bar } from "@/components/ui/bar/bar";
+import { ClockStrip } from "@/components/ui/clock-strip/clock-strip";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { Track } from "@/components/ui/track/track";
@@ -117,6 +118,7 @@ export function TableScreen({ campaignId }: TableScreenProps) {
           </div>
         </div>
       </header>
+      <ClockStrip state={state} size={120} />
       {enc && (
         <div className="ts-cols">
           {Side.options.map((side) => (

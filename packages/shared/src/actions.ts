@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
+import { ClockName, ClockSegments, MAX_COUNTDOWN_LABEL, MAX_COUNTDOWN_SECONDS } from "./clock.ts";
 import { BeatTest, CodexInput, MAX_HAZARDS } from "./codex.ts";
 import { CORRUPTION_DNS, MAX_ICONS, isCorruptionDn } from "./dn.ts";
 import { MAX_HULK_ORIGINS, MAX_PLACES_PER_ADD } from "./places.ts";
@@ -113,6 +114,26 @@ export const Action = z.union([
       spentWrath: z.boolean().optional(),
     }),
     z.object({ type: z.literal("test.close") }),
+
+    // Clocks and the countdown (issue #210): the GM's, never a rule. A new clock starts hidden (decision 2); `id` edits
+    // one. A tick moves `filled` by delta inside the pie, so taps add up.
+    z.object({
+      type: z.literal("clock.save"),
+      id: id.optional(),
+      name: ClockName,
+      segments: ClockSegments,
+      visible: z.boolean().default(false),
+    }),
+    z.object({ type: z.literal("clock.tick"), id, delta: z.number().int().min(-8).max(8) }),
+    z.object({ type: z.literal("clock.delete"), id }),
+    // Starts (or restarts) the one countdown, `seconds` from now on the server's clock.
+    z.object({
+      type: z.literal("countdown.set"),
+      label: z.string().trim().max(MAX_COUNTDOWN_LABEL).default(""),
+      seconds: z.number().int().min(1).max(MAX_COUNTDOWN_SECONDS),
+      visible: z.boolean().default(true),
+    }),
+    z.object({ type: z.literal("countdown.clear") }),
 
     // Session start (p.162): Wrath 2 each, Glory 0, Ruin = players. End (p.321): XP to everyone.
     // `title` names the new session up front (issue #175); session.edit can change it later.

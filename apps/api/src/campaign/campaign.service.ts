@@ -73,7 +73,7 @@ export async function exportCampaign(campaignId: string, { pictures = true } = {
     format: "auspex-campaign",
     version: 1,
     exportedAt: new Date().toISOString(),
-    campaign: camp,
+    campaign: { ...camp, clocks: state.clocks, countdown: state.countdown },
     // A saved build passed CharacterBuild on its way in; the state type only keeps it loose.
     characters: state.characters.map(({ draft: _, build, ...c }) => ({
       ...c,

@@ -794,6 +794,11 @@ underneath. The code is returned only once, so a closed dialog can't be reopened
   from `testPool`, the Icon, Wrath Die and Wrath reroll reminders as `RuleIdLink`s (and Fear's or Corruption's cost),
   then PASSED / FAILED (`test.report`; the pressed one is what the GM has, and a re-tap changes it). FAILED on a
   Corruption Test first asks for ICONS ROLLED, COMPLICATION, WRATH CRITICAL and SPENT 1 WRATH.
+- **Clocks** (`components/ui/clock-strip/clock-strip.tsx`, issue #210), a slim strip at the top of every tab: each
+  clock the GM shows as an SVG pie (`ClockPie`, one `<path>` per segment, `role="img"`, "Hive guard, 3 of 6") with its
+  name, and the countdown as `mm:ss` (`Countdown`: `endsAt` against this device's clock plus the snapshot's
+  `serverNow` skew, one `setInterval(1000)`, stops at 00:00). No strip when the GM shows nothing. The table screen
+  draws the same strip, larger; the GM runs them from the CLOCKS card in TRACK and PREP (`components/gm/clocks`).
 
 | Tab | File | Shows | The player can change |
 |---|---|---|---|

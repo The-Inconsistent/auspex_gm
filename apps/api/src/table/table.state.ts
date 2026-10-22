@@ -2,6 +2,8 @@ import { Logger } from "@nestjs/common";
 import { and, asc, eq, gt, inArray, isNull, or, sql } from "drizzle-orm";
 import {
   CharacterDetail,
+  Clock,
+  Countdown,
   EncounterEntry,
   CharacterStats,
   Objectives,
@@ -224,6 +226,10 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
           createdAt: call.createdAt.toISOString(),
         }
       : null,
+    // Only the clock actions write these, through the same schemas; a hand-edited row reads as none, not a dead table.
+    clocks: Clock.array().catch([]).parse(c.clocks),
+    countdown: Countdown.nullable().catch(null).parse(c.countdown),
+    serverNow: Date.now(),
     access: {
       members,
       invites: invites.map((i) => ({

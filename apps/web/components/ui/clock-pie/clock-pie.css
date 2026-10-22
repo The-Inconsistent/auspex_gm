@@ -1,0 +1,59 @@
+/* Clocks and the countdown (issue #210): pies on the GM's CLOCKS card, the phones' strip and the table screen. */
+.clock-pie {
+  flex: none;
+}
+.clock-pie path {
+  fill: var(--field);
+  stroke: var(--ink);
+  stroke-width: 1.5px;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.clock-pie path.on {
+  fill: var(--red-fill);
+}
+.clock-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px 16px;
+}
+.clock-strip figure {
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  max-width: 96px;
+  min-width: 0;
+}
+.clock-strip figcaption {
+  font-size: 12px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.countdown {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+}
+.countdown-time {
+  font-variant-numeric: tabular-nums;
+  font-size: 28px;
+  line-height: 1;
+}
+.countdown-time.out {
+  color: var(--red);
+}
+/* The table screen: the same strip, in type a table can read across the room. */
+.ts .clock-strip {
+  gap: clamp(16px, 2vw, 40px);
+}
+.ts .clock-strip figure {
+  max-width: none;
+}
+.ts .clock-strip figcaption {
+  font-size: clamp(14px, 1.4vw, 28px);
+}
+.ts .countdown-time {
+  font-size: clamp(36px, 6vw, 120px);
+}
