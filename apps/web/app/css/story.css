@@ -1,0 +1,267 @@
+/* story: the scene-first redesign. Loaded after globals.css (app/layout.tsx), so a rule here wins a tie. */
+
+/* STORY header: the adventure's rule beside the BOARD | PAGE toggle. */
+.story-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.story-bar .rule {
+  flex: 1 1 240px;
+}
+
+/* BOARD: scenes hung on an iron pipe (Traitor's Hymn p.26), CSS only. A stub joins each card to the pipe. */
+.story-spine {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0 8px 36px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.story-spine::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  background: linear-gradient(90deg, var(--iron-2), var(--iron) 45%, var(--iron-2) 55%, var(--iron));
+  box-shadow: 0 0 0 1px var(--shade-35);
+}
+.story-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.story-row::before {
+  content: "";
+  position: absolute;
+  left: -28px;
+  top: 50%;
+  width: 28px;
+  height: 8px;
+  margin-top: -4px;
+  background: var(--iron-2);
+}
+.story-card {
+  flex: 0 1 460px;
+  min-width: 0;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 14px;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  background: var(--vellum-2);
+  border: 1px solid var(--line);
+  box-shadow:
+    inset 0 0 22px var(--ink-shadow-soft),
+    0 9px 14px -10px var(--ink-shadow);
+  cursor: pointer;
+}
+.story-card:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+.story-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.story-num {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--red);
+}
+.story-card-title {
+  font-family: var(--display);
+  font-size: 15px;
+  letter-spacing: 0.05em;
+}
+.story-tagline {
+  font-size: 15px;
+  color: var(--ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.story-card-foot {
+  display: flex;
+  gap: 6px;
+}
+.story-exits {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.story-exit {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 8px;
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  background: var(--vellum);
+  border: 1.5px solid var(--brass);
+}
+.story-exit.none {
+  color: var(--red);
+  border-color: var(--red);
+}
+b.story-exit {
+  min-height: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+}
+
+/* PAGE: flip bar, then a two-leaf spread that folds to one leaf on a phone. */
+.story-flip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.story-arrow {
+  min-width: 44px;
+  font-size: 20px;
+}
+.story-tabs {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto; /* more scenes than the bar is wide: scroll the strip, not the page */
+  scrollbar-width: none;
+}
+.story-tab {
+  flex: none;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 8px;
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+.story-tab[aria-current="page"] {
+  color: var(--red);
+  border-bottom-color: var(--red);
+}
+.story-spread {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--vellum);
+  box-shadow:
+    inset 0 0 26px var(--ink-shadow-soft),
+    0 1px 0 var(--line);
+}
+.story-leaf {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 20px;
+  min-width: 0;
+}
+.story-leaf + .story-leaf {
+  border-left: 1px solid var(--line);
+  box-shadow: inset 12px 0 14px -12px var(--ink-shadow);
+}
+@media (max-width: 860px) {
+  .story-spread {
+    grid-template-columns: 1fr;
+  }
+  .story-leaf + .story-leaf {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    box-shadow: none;
+  }
+}
+.story-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 24px;
+  letter-spacing: 0.05em;
+}
+/* A part of the spread; the pencil sits in its corner, so the text keeps clear of it. */
+.story-sec {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 44px;
+}
+.story-pencil {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.story-read {
+  margin: 0;
+  padding: 10px 14px;
+  font-style: italic;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--red);
+  background: var(--field);
+}
+.story-read .text {
+  font-style: italic;
+}
+.story-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.story-entry-wrap {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.story-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+.story-entry input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--red-fill);
+}
+.story-controls .btn {
+  min-width: 44px;
+}
+
+/* RUN THIS SCENE and the page's other controls stay in reach at the foot of the screen on a long page. */
+.story-controls {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  padding: 10px 0;
+  background: var(--vellum);
+  box-shadow: 0 -10px 12px -12px var(--shade-40);
+}

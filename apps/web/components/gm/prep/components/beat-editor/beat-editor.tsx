@@ -36,7 +36,7 @@ import { BudgetPanel } from "./components/budget-panel/budget-panel";
 import { Exits } from "./components/exits/exits";
 import { RuinGlory } from "./components/ruin-glory/ruin-glory";
 import { Tests } from "./components/tests/tests";
-import { BEAT_TEXT_FIELDS, type BeatTextField } from "./constants";
+import { BEAT_TEXT_FIELDS, type BeatSection, type BeatTextField } from "./constants";
 
 type BeatEditorProps = {
   adventureId: string;
@@ -51,6 +51,7 @@ type BeatEditorProps = {
   hazardTables: HazardTable[]; // to name the place's book hazards (issue #49)
   wargear: Wargear[]; // + NEW CUSTOM THREAT's weapons, as CODEX › THREATS has them
   onDone: () => void;
+  section?: BeatSection; // STORY's pencil: show only this part of the scene (every part when absent)
 };
 
 // The beat as the editor holds it: a Ruin or Glory amount, or a spend's cost, may be empty until the GM sets it.
@@ -72,7 +73,9 @@ export function BeatEditor({
   hazardTables,
   wargear,
   onDone,
+  section,
 }: BeatEditorProps) {
+  const shows = (part: BeatSection) => !section || section === part;
   const [b, setB] = useState<Draft>(() =>
     beat
       ? stripBeat(beat)
@@ -122,7 +125,8 @@ export function BeatEditor({
       .map((e) => ({ ...e, beatId: scenes.some((s) => s.id === e.beatId) ? e.beatId : null }))
       .filter((e) => e.label.trim() || e.beatId);
     const tests = b.tests.map((t) => ({ ...t, shifts: t.shifts.filter((s) => s.trim()) }));
-    const data = { ...b, exits, tests, ...pools };
+    // The editor has no status field: send the scene's live one, not the draft's (a begin may have landed meanwhile).
+    const data = { ...b, status: beat?.status ?? b.status, exits, tests, ...pools };
     // CodexSave first: a nameless scene can't be listed or picked, so TITLE is marked on the field.
     if (!fieldErrors.check(CodexSave.beat, data)) return;
     const r = await send({ type: "codex.save", kind: "beat", ...(beat ? { id: beat.id } : {}), data });
@@ -214,228 +218,242 @@ export function BeatEditor({
 
   return (
     <div className="panel pad stack">
-      {textField({ key: "title" })}
-      <div className="field">
-        <label className="label" htmlFor="b-type">
-          TYPE
-        </label>
-        <select
-          id="b-type"
-          className="input"
-          value={b.type}
-          onChange={(e) => setB({ ...b, type: BeatType.parse(e.target.value) })}
-        >
-          {BeatType.options.map((t) => (
-            <option key={t} value={t}>
-              {t.toUpperCase()}
-            </option>
-          ))}
-        </select>
-      </div>
-      {textField({ key: "goal" })}
-      {textField({ key: "readAloud" })}
-      {textField({ key: "gmNotes" })}
-      <Exits exits={b.exits} scenes={scenes} onChange={(exits) => setB({ ...b, exits })} />
-      <div className="field">
-        <label className="label" htmlFor="b-loc">
-          LOCATION
-        </label>
-        <select
-          id="b-loc"
-          className="input"
-          value={b.locationId ?? ""}
-          onChange={(e) => setB({ ...b, locationId: e.target.value || null, hazards: [] })}
-        >
-          <option value="">—</option>
-          {placeOptions(codex.locations).map(([id, label]) => (
-            <option key={id} value={id}>
-              {label}
-            </option>
-          ))}
-        </select>
-      </div>
-      {place && place.hazardList.length > 0 && (
-        <div className="field plate">
-          <span className="label">HAZARDS AT THIS PLACE · PICK WHAT APPLIES</span>
-          <div className="keys" role="group" aria-label="Hazards in this scene">
-            {place.hazardList.map((h) => {
-              const on = b.hazards.some((x) => x.id === h.id);
-              const name = hazardView({ entry: h, tables: hazardTables, tier })?.name ?? "Unknown hazard";
-              return (
-                <button
-                  key={h.id}
-                  className={`btn sm ${on ? "primary" : ""}`}
-                  aria-pressed={on}
-                  onClick={() => toggleHazard(h.id)}
-                >
-                  {name}
-                </button>
-              );
-            })}
-          </div>
+      {!section && textField({ key: "title" })}
+      {!section && (
+        <div className="field">
+          <label className="label" htmlFor="b-type">
+            TYPE
+          </label>
+          <select
+            id="b-type"
+            className="input"
+            value={b.type}
+            onChange={(e) => setB({ ...b, type: BeatType.parse(e.target.value) })}
+          >
+            {BeatType.options.map((t) => (
+              <option key={t} value={t}>
+                {t.toUpperCase()}
+              </option>
+            ))}
+          </select>
         </div>
       )}
-      <div className="field">
-        <span className="label">NPCS PRESENT</span>
-        <div className="keys" role="group" aria-label="NPCs present">
-          {codex.npcs.map((n) => (
-            <button
-              key={n.id}
-              className={`btn sm ${b.npcIds.includes(n.id) ? "primary" : ""}`}
-              aria-pressed={b.npcIds.includes(n.id)}
-              onClick={() => setB({ ...b, npcIds: toggled(b.npcIds, n.id) })}
-            >
-              {n.name}
-            </button>
-          ))}
-          {codex.npcs.length === 0 && <span className="dim">Add NPCs in CODEX.</span>}
-        </div>
-      </div>
-      <div className="field">
-        <span className="label">HANDOUTS / CLUES</span>
-        <div className="keys" role="group" aria-label="Handouts and clues">
-          {codex.handouts.map((h) => (
-            <button
-              key={h.id}
-              className={`btn sm ${b.handoutIds.includes(h.id) ? "primary" : ""}`}
-              aria-pressed={b.handoutIds.includes(h.id)}
-              onClick={() => setB({ ...b, handoutIds: toggled(b.handoutIds, h.id) })}
-            >
-              {h.title}
-            </button>
-          ))}
-          {codex.handouts.length === 0 && <span className="dim">Add handouts in CODEX.</span>}
-        </div>
-      </div>
-      <div className="field">
-        <span className="label">ITEMS TO FIND</span>
-        <div className="keys" role="group" aria-label="Items to find">
-          {codex.items.map((it) => (
-            <button
-              key={it.id}
-              className={`btn sm ${b.itemIds.includes(it.id) ? "primary" : ""}`}
-              aria-pressed={b.itemIds.includes(it.id)}
-              onClick={() => setB({ ...b, itemIds: toggled(b.itemIds, it.id) })}
-            >
-              {it.name}
-            </button>
-          ))}
-          {codex.items.length === 0 && <span className="dim">Add items in CODEX.</span>}
-        </div>
-        <span className="dim">
-          <i>What the Agents can find in this scene. Hand one over with GIVE TO on the scene&apos;s card in PREP.</i>
-        </span>
-      </div>
-
-      <Tests tests={b.tests} skillDns={skillDns} onChange={(tests) => setB({ ...b, tests })} />
-      <RuinGlory lines={b} tables={poolTables} onChange={(lines) => setB({ ...b, ...lines })} />
-
-      <div className="field">
-        <span className="label">PREPARED ENCOUNTER</span>
-        <BudgetPanel entries={b.encounter} agents={agents} bestiary={bestiary} tier={tier} />
-        {b.encounter.map((e, i) => (
-          <div key={i} className="keys" style={{ alignItems: "center" }}>
-            <ThreatPicker
-              bestiary={bestiary}
-              tier={tier}
-              value={e.threatId}
-              onPick={(t) => setEntry(i, { threatId: t.id })}
-            />
-            <input
-              className="input"
-              style={{ width: 70 }}
-              aria-label="Count"
-              inputMode="numeric"
-              value={e.count}
-              onChange={(ev) => handleCountChange(i, ev)}
-            />
-            <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
-              <input type="checkbox" checked={e.asMob} onChange={(ev) => setEntry(i, { asMob: ev.target.checked })} />{" "}
-              MOB
+      {shows("goal") && textField({ key: "goal" })}
+      {shows("readAloud") && textField({ key: "readAloud" })}
+      {shows("gmNotes") && textField({ key: "gmNotes" })}
+      {shows("exits") && <Exits exits={b.exits} scenes={scenes} onChange={(exits) => setB({ ...b, exits })} />}
+      {shows("place") && (
+        <>
+          <div className="field">
+            <label className="label" htmlFor="b-loc">
+              LOCATION
             </label>
             <select
+              id="b-loc"
               className="input"
-              style={{ width: 110 }}
-              aria-label="Marker"
-              value={e.marker ?? ""}
-              onChange={(ev) => handleMarkerChange(i, ev)}
+              value={b.locationId ?? ""}
+              onChange={(e) => setB({ ...b, locationId: e.target.value || null, hazards: [] })}
             >
-              <option value="">MARKER</option>
-              {Marker.options.map((m) => (
-                <option key={m} value={m}>
-                  {m.toUpperCase()}
+              <option value="">—</option>
+              {placeOptions(codex.locations).map(([id, label]) => (
+                <option key={id} value={id}>
+                  {label}
                 </option>
               ))}
             </select>
-            <VisibilitySelect
-              className="input"
-              value={e.visibility ?? "bars"}
-              onChange={(visibility) => setEntry(i, { visibility })}
-            />
-            <button
-              className="btn sm danger"
-              aria-label={`Remove encounter entry ${i + 1}`}
-              onClick={() => removeEntry(i)}
-            >
-              ×
-            </button>
-            {/* Profiles and scaling fold under the row: four more controls beside the picker would shrink the 44px
-                tap targets this tablet needs. */}
-            <div style={{ flexBasis: "100%" }}>
-              <ThreatScale
-                threat={bestiary.find((t) => t.id === e.threatId)}
-                tier={tier}
-                agents={agents}
-                asMob={e.asMob && e.count > 1}
-                profiles={e.profiles}
-                scale={e.scale}
-                onChange={(next) => setEntry(i, next)}
-              />
+          </div>
+          {place && place.hazardList.length > 0 && (
+            <div className="field plate">
+              <span className="label">HAZARDS AT THIS PLACE · PICK WHAT APPLIES</span>
+              <div className="keys" role="group" aria-label="Hazards in this scene">
+                {place.hazardList.map((h) => {
+                  const on = b.hazards.some((x) => x.id === h.id);
+                  const name = hazardView({ entry: h, tables: hazardTables, tier })?.name ?? "Unknown hazard";
+                  return (
+                    <button
+                      key={h.id}
+                      className={`btn sm ${on ? "primary" : ""}`}
+                      aria-pressed={on}
+                      onClick={() => toggleHazard(h.id)}
+                    >
+                      {name}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </>
+      )}
+      {shows("cast") && (
+        <>
+          <div className="field">
+            <span className="label">NPCS PRESENT</span>
+            <div className="keys" role="group" aria-label="NPCs present">
+              {codex.npcs.map((n) => (
+                <button
+                  key={n.id}
+                  className={`btn sm ${b.npcIds.includes(n.id) ? "primary" : ""}`}
+                  aria-pressed={b.npcIds.includes(n.id)}
+                  onClick={() => setB({ ...b, npcIds: toggled(b.npcIds, n.id) })}
+                >
+                  {n.name}
+                </button>
+              ))}
+              {codex.npcs.length === 0 && <span className="dim">Add NPCs in CODEX.</span>}
             </div>
           </div>
-        ))}
-        <div className="keys" style={{ alignItems: "center" }}>
-          <ThreatPicker
-            bestiary={bestiary}
-            tier={tier}
-            onPick={(t) => addEntry(t.id)}
-            label="+ THREAT"
-            className="btn sm"
-          />
-          {/* Writing one here keeps the scene open; leaving for CODEX › THREATS would drop its unsaved changes. */}
-          <button
-            className={`btn sm ${building ? "primary" : ""}`}
-            aria-expanded={building !== null}
-            disabled={drafting || (building === null && customsFull)}
-            onClick={handleToggleBuilder}
-          >
-            + NEW CUSTOM THREAT
-          </button>
-          {/* The picker disables itself with nothing to show; say why, because a failed load looks like an empty book. */}
-          {!bestiary.length && <span className="dim">No bestiary loaded.</span>}
-          {customsFull && <span className="dim">Custom threats are full ({CUSTOM_THREAT_CAP}).</span>}
-        </div>
-        {building === "start" && (
-          <div className="keys" style={{ alignItems: "center" }}>
-            <span className="label">START FROM</span>
-            <ThreatStarts bestiary={bestiary} tier={tier} disabled={customsFull} onStart={setBuilding} />
+          <div className="field">
+            <span className="label">HANDOUTS / CLUES</span>
+            <div className="keys" role="group" aria-label="Handouts and clues">
+              {codex.handouts.map((h) => (
+                <button
+                  key={h.id}
+                  className={`btn sm ${b.handoutIds.includes(h.id) ? "primary" : ""}`}
+                  aria-pressed={b.handoutIds.includes(h.id)}
+                  onClick={() => setB({ ...b, handoutIds: toggled(b.handoutIds, h.id) })}
+                >
+                  {h.title}
+                </button>
+              ))}
+              {codex.handouts.length === 0 && <span className="dim">Add handouts in CODEX.</span>}
+            </div>
           </div>
-        )}
-        {drafting && (
-          <i className="dim">CREATE saves it to CODEX › THREATS straight away, whatever happens to this scene.</i>
-        )}
-        {building && building !== "start" && (
-          <ThreatBuilder
-            start={{ slug: null, draft: building }}
-            wargear={wargear}
-            ruinActions={poolTables.find((t) => t.id === RUIN_ACTIONS_TABLE) ?? null}
-            send={send}
-            onSaved={handleThreatBuilt}
-            onCancel={() => setBuilding(null)}
-          />
-        )}
-      </div>
-      {textField({ key: "outcome" })}
+          <div className="field">
+            <span className="label">ITEMS TO FIND</span>
+            <div className="keys" role="group" aria-label="Items to find">
+              {codex.items.map((it) => (
+                <button
+                  key={it.id}
+                  className={`btn sm ${b.itemIds.includes(it.id) ? "primary" : ""}`}
+                  aria-pressed={b.itemIds.includes(it.id)}
+                  onClick={() => setB({ ...b, itemIds: toggled(b.itemIds, it.id) })}
+                >
+                  {it.name}
+                </button>
+              ))}
+              {codex.items.length === 0 && <span className="dim">Add items in CODEX.</span>}
+            </div>
+            <span className="dim">
+              <i>
+                What the Agents can find in this scene. Hand one over with GIVE TO on the scene&apos;s card in PREP.
+              </i>
+            </span>
+          </div>
+        </>
+      )}
+
+      {shows("tests") && <Tests tests={b.tests} skillDns={skillDns} onChange={(tests) => setB({ ...b, tests })} />}
+      {shows("pools") && <RuinGlory lines={b} tables={poolTables} onChange={(lines) => setB({ ...b, ...lines })} />}
+
+      {shows("fight") && (
+        <div className="field">
+          <span className="label">PREPARED ENCOUNTER</span>
+          <BudgetPanel entries={b.encounter} agents={agents} bestiary={bestiary} tier={tier} />
+          {b.encounter.map((e, i) => (
+            <div key={i} className="keys" style={{ alignItems: "center" }}>
+              <ThreatPicker
+                bestiary={bestiary}
+                tier={tier}
+                value={e.threatId}
+                onPick={(t) => setEntry(i, { threatId: t.id })}
+              />
+              <input
+                className="input"
+                style={{ width: 70 }}
+                aria-label="Count"
+                inputMode="numeric"
+                value={e.count}
+                onChange={(ev) => handleCountChange(i, ev)}
+              />
+              <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                <input type="checkbox" checked={e.asMob} onChange={(ev) => setEntry(i, { asMob: ev.target.checked })} />{" "}
+                MOB
+              </label>
+              <select
+                className="input"
+                style={{ width: 110 }}
+                aria-label="Marker"
+                value={e.marker ?? ""}
+                onChange={(ev) => handleMarkerChange(i, ev)}
+              >
+                <option value="">MARKER</option>
+                {Marker.options.map((m) => (
+                  <option key={m} value={m}>
+                    {m.toUpperCase()}
+                  </option>
+                ))}
+              </select>
+              <VisibilitySelect
+                className="input"
+                value={e.visibility ?? "bars"}
+                onChange={(visibility) => setEntry(i, { visibility })}
+              />
+              <button
+                className="btn sm danger"
+                aria-label={`Remove encounter entry ${i + 1}`}
+                onClick={() => removeEntry(i)}
+              >
+                ×
+              </button>
+              {/* Profiles and scaling fold under the row: four more controls beside the picker would shrink the 44px
+                tap targets this tablet needs. */}
+              <div style={{ flexBasis: "100%" }}>
+                <ThreatScale
+                  threat={bestiary.find((t) => t.id === e.threatId)}
+                  tier={tier}
+                  agents={agents}
+                  asMob={e.asMob && e.count > 1}
+                  profiles={e.profiles}
+                  scale={e.scale}
+                  onChange={(next) => setEntry(i, next)}
+                />
+              </div>
+            </div>
+          ))}
+          <div className="keys" style={{ alignItems: "center" }}>
+            <ThreatPicker
+              bestiary={bestiary}
+              tier={tier}
+              onPick={(t) => addEntry(t.id)}
+              label="+ THREAT"
+              className="btn sm"
+            />
+            {/* Writing one here keeps the scene open; leaving for CODEX › THREATS would drop its unsaved changes. */}
+            <button
+              className={`btn sm ${building ? "primary" : ""}`}
+              aria-expanded={building !== null}
+              disabled={drafting || (building === null && customsFull)}
+              onClick={handleToggleBuilder}
+            >
+              + NEW CUSTOM THREAT
+            </button>
+            {/* The picker disables itself with nothing to show; say why, because a failed load looks like an empty book. */}
+            {!bestiary.length && <span className="dim">No bestiary loaded.</span>}
+            {customsFull && <span className="dim">Custom threats are full ({CUSTOM_THREAT_CAP}).</span>}
+          </div>
+          {building === "start" && (
+            <div className="keys" style={{ alignItems: "center" }}>
+              <span className="label">START FROM</span>
+              <ThreatStarts bestiary={bestiary} tier={tier} disabled={customsFull} onStart={setBuilding} />
+            </div>
+          )}
+          {drafting && (
+            <i className="dim">CREATE saves it to CODEX › THREATS straight away, whatever happens to this scene.</i>
+          )}
+          {building && building !== "start" && (
+            <ThreatBuilder
+              start={{ slug: null, draft: building }}
+              wargear={wargear}
+              ruinActions={poolTables.find((t) => t.id === RUIN_ACTIONS_TABLE) ?? null}
+              send={send}
+              onSaved={handleThreatBuilt}
+              onCancel={() => setBuilding(null)}
+            />
+          )}
+        </div>
+      )}
+      {shows("outcome") && textField({ key: "outcome" })}
       {(error ?? fieldErrors.elsewhere(Object.keys(BEAT_TEXT_FIELDS))) && (
         <div className="red">! {error ?? fieldErrors.elsewhere(Object.keys(BEAT_TEXT_FIELDS))}</div>
       )}
@@ -448,7 +466,7 @@ export function BeatEditor({
         <button className="btn" onClick={onDone}>
           CANCEL
         </button>
-        {beat && (
+        {beat && !section && (
           <button className="btn danger" onClick={handleDelete}>
             DELETE
           </button>
