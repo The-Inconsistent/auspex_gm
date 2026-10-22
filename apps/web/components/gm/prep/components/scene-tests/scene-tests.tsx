@@ -1,8 +1,8 @@
 "use client";
-import { dnLabel, isCorruptionDn, testTitle, type ActionResult, type BeatTest, type Character } from "@wg/shared";
+import { dnLabel, testTitle, type ActionResult, type BeatTest, type Character } from "@wg/shared";
 
-import { CorruptionTest } from "@/components/ui/corruption-test/corruption-test";
 import { RuleIdLink } from "@/components/ui/rule-link/rule-link";
+import { TestOutcomes } from "@/components/ui/test-outcomes/test-outcomes";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { TEST_RULES } from "../../constants";
@@ -17,7 +17,7 @@ type SceneTestsProps = {
   onReport: (r: ActionResult, ok: string) => void;
 };
 
-// A scene's Tests on its PREP card (issue #39): one line each, opening to its purpose, Shift ladder and outcomes. The
+// A scene's Tests on its STORY card (issue #39): one line each, opening to its purpose, Shift ladder and outcomes. The
 // dice stay on the table; this is what the GM has ready.
 export function SceneTests({ tests, characters, agents, send, onReport }: SceneTestsProps) {
   return (
@@ -53,24 +53,7 @@ export function SceneTests({ tests, characters, agents, send, onReport }: SceneT
                   <span className="label">PURPOSE</span> <i>{t.purpose}</i>
                 </div>
               )}
-              {t.shifts.map((s, j) => (
-                <div key={j}>
-                  <span className="label">SHIFT {j + 1}</span> {s}
-                </div>
-              ))}
-              {t.onSuccess && (
-                <div>
-                  <span className="label">SUCCESS</span> {t.onSuccess}
-                </div>
-              )}
-              {t.onFailure && (
-                <div>
-                  <span className="label">FAILURE</span> {t.onFailure}
-                </div>
-              )}
-              {t.kind === "corruption" && isCorruptionDn(t.dn) && characters.length > 0 && (
-                <CorruptionTest source={t.dn} characters={characters} send={send} onReport={onReport} />
-              )}
+              <TestOutcomes test={t} characters={characters} send={send} onReport={onReport} />
             </div>
           </details>
         );

@@ -1,0 +1,471 @@
+/* scene: the scene-first redesign. Loaded after globals.css (app/layout.tsx), so a rule here wins a tie. */
+
+.scene {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 16px 0;
+  min-width: 0;
+}
+
+/* The scene strip: this adventure's scenes as small tabs. The current one is crimson; played ones carry a tick. */
+.scene-strip {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--line);
+}
+.scene-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  background: transparent;
+  color: var(--ink-3);
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+.scene-tab.done {
+  background: var(--vellum-2);
+  color: var(--ink-2);
+}
+.scene-tab.peek {
+  border-color: var(--ink-2);
+  color: var(--ink);
+}
+.scene-tab[aria-current="step"] {
+  background: var(--red-fill);
+  border-color: var(--red-2);
+  color: var(--bone);
+}
+
+/* SCENE BEGUN: one iron line with UNDO. */
+.scene-notice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 4px 6px 4px 16px;
+  background: var(--iron);
+  color: var(--bone);
+}
+.scene-notice-tag {
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+}
+.scene-notice-text {
+  flex: 1;
+  min-width: 0;
+  color: var(--bone-2);
+}
+.scene-notice .btn:not(.primary) {
+  color: var(--bone);
+  border-color: var(--bone-2);
+}
+.scene-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--bone);
+  cursor: pointer;
+}
+
+/* THE SCENE | FIGHT · ROUND n: one segmented control, the pressed half filled. */
+.scene-layers {
+  display: flex;
+  align-self: flex-start;
+  border: 1px solid var(--ink-2);
+}
+.scene-layers > button {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+.scene-layers > button[aria-pressed="true"] {
+  background: var(--red-fill);
+  color: var(--bone);
+}
+
+/* Two columns on a tablet; they stack on a phone. */
+.scene-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
+  gap: 18px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .scene-cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.scene-page,
+.scene-preview,
+.scene-none {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+.scene-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.scene-fill {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.scene-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.scene-goal {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-size: 17px;
+}
+
+/* READ ALOUD: boxed and italic, with its tag on the rule, like the books' read-aloud panels. */
+.scene-read {
+  position: relative;
+  margin-top: 6px;
+  padding: 16px 22px 12px;
+  background: var(--vellum-2);
+  border: 1px solid var(--ink-2);
+  box-shadow:
+    inset 0 0 0 3px var(--vellum-2),
+    inset 0 0 0 4px var(--ink-2),
+    inset 0 0 22px var(--ink-shadow-soft);
+}
+.scene-read-tag {
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  padding: 2px 9px;
+  background: var(--iron-2);
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+.scene-read p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.4;
+  font-style: italic;
+  white-space: pre-wrap;
+}
+
+.scene-sect {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.scene-sect-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* A Test: one row, one tap to call it. */
+.scene-tests {
+  border-top: 1px solid var(--line);
+}
+.scene-test {
+  border-bottom: 1px solid var(--line);
+}
+.scene-test-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.scene-test-row {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 4px 12px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.scene-test-row:hover:not(:disabled) {
+  background: var(--red-tint);
+}
+.scene-test-row:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.scene-test-row[aria-expanded="true"] {
+  background: var(--red-tint);
+  box-shadow: inset 4px 0 0 var(--red);
+}
+.scene-test-more {
+  padding: 4px 12px 8px;
+}
+.scene-test-more summary {
+  cursor: pointer;
+}
+.scene-test-more .stack {
+  gap: 4px;
+  padding: 6px 0 0 18px;
+}
+.scene-test-why {
+  flex: 1;
+  min-width: 0;
+  color: var(--ink-2);
+}
+.scene-go {
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--red);
+  white-space: nowrap;
+}
+.scene-who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 8px;
+}
+
+/* IN THIS SCENE: the panel of what the scene holds. */
+.scene-in {
+  padding: 0;
+  gap: 0;
+  min-width: 0;
+}
+.scene-in-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 14px;
+  background: var(--iron);
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+.scene-in-head .label {
+  color: var(--bone-2);
+}
+.scene-in-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 10px 10px;
+}
+.scene-gh {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--ink-2);
+}
+.scene-gh::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.scene-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  border-bottom: 1px solid var(--line);
+}
+.scene-row.sealed .scene-peek {
+  color: var(--ink-2);
+  font-weight: 500;
+}
+.scene-peek {
+  min-width: 0;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: left;
+  text-decoration: underline dotted var(--ink-3);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.scene-leader {
+  flex: 1;
+  min-width: 8px;
+  border-bottom: 1.5px dotted var(--line);
+}
+.scene-holder {
+  font-size: 14px;
+}
+
+/* The state is the word; crimson only repeats it. */
+.scene-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-shrink: 0;
+  min-width: 96px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--ink-2);
+  background: transparent;
+  color: var(--ink-2);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+.scene-toggle.on {
+  border: 1.5px solid var(--red);
+  color: var(--red);
+  background: var(--red-tint);
+}
+
+.scene-fight {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.scene-fight-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+/* WHERE NEXT: the bar of exits under the scene. */
+.scene-next {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 -16px;
+  padding: 8px 16px 10px;
+  background: var(--vellum-3);
+  border-top: 3px double var(--ink-2);
+}
+.scene-next-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.scene-next-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.scene-exit {
+  flex: 0 1 280px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: 48px;
+  padding: 4px 14px;
+  background: var(--vellum);
+  white-space: normal;
+  text-align: left;
+}
+.scene-exit i {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+.scene-other {
+  margin-left: auto;
+}
+
+/* NO SCENE: each adventure's next scene to begin. */
+.scene-next-scene {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.scene-next-scene-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+@media (max-width: 520px) {
+  .scene {
+    padding: 8px 16px 0;
+  }
+  .scene-test-row {
+    flex-wrap: wrap;
+  }
+  .scene-exit {
+    flex-basis: 100%;
+  }
+  .scene-other {
+    margin-left: 0;
+  }
+  .scene-notice {
+    flex-wrap: wrap;
+  }
+}
+
+/* A long name wraps inside its peek button so the toggle keeps its place; an item row wraps its GIVE controls under it. */
+.scene-row.wraps {
+  flex-wrap: wrap;
+}
+.scene-row .scene-toggle {
+  flex-shrink: 0;
+}
