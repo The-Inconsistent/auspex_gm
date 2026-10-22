@@ -1,0 +1,64 @@
+/* header: the scene-first redesign. Loaded after globals.css (app/layout.tsx), so a rule here wins a tie. */
+
+/* Header popovers (components/gm/header): a button with a panel under it. */
+.hd-pop {
+  position: relative;
+}
+.hd-pop > .hd-pop-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  z-index: 5;
+  width: min(92vw, 440px);
+  padding: 10px 12px;
+  border: 1px solid var(--bone-line);
+  box-shadow: 0 6px 18px var(--ink-shadow);
+}
+.hd-pop > .hd-pop-panel.start {
+  left: 0;
+}
+.hd-pop > .hd-pop-panel.end {
+  right: 0;
+}
+.hd-pop-panel:focus {
+  outline: none; /* the panel is a focus target, not a control; its buttons show their own rings */
+}
+.hd-seal {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px 0 12px;
+  min-height: 48px;
+  background: transparent;
+  border: 1px solid var(--bone-line);
+  color: var(--bone);
+}
+.hd-seal.glory {
+  border-color: var(--brass);
+}
+.hd-seal.ruin {
+  border-color: var(--red-on-iron);
+  color: var(--red-on-iron);
+}
+.hd-pad {
+  display: grid;
+  gap: 8px;
+  width: min(80vw, 280px);
+}
+.hd-pad-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.hd-error {
+  margin-top: 6px;
+  color: var(--red-on-iron);
+}
+
+/* SETUP at the rail's foot: used before a campaign, not during it, so it sits apart and quieter. */
+.tabs.rail .tab.foot {
+  margin-top: auto;
+  min-height: 48px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
