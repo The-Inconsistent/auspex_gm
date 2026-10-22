@@ -2,8 +2,8 @@ import type { CodexKind } from "@/components/gm/codex/constants";
 import type { GmTab } from "@/components/gm/gm-app/constants";
 import type { SetupKey } from "@/lib/setup/constants";
 
-// Another GM tab (CODEX opens on the right kind).
-export type TabTarget = { tab: GmTab; kind?: CodexKind };
+// Another GM tab (CODEX opens on the right kind), and the panel there to scroll to.
+export type TabTarget = { tab: GmTab; kind?: CodexKind; anchor?: string };
 // Where a step is done: a tab, a panel by its element id (on SETUP itself when there's no tab), or both.
 export type GoTo = { label: string; tab?: GmTab; kind?: CodexKind; anchor?: string };
 

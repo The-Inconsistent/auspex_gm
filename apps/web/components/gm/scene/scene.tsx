@@ -32,6 +32,8 @@ type SceneProps = {
   bestiary: Threat[];
   presets: ScenePresets;
   onEdit: (beatId: string) => void; // opens that scene in STORY
+  layer: SceneLayer; // from the URL: /scene or /scene/fight
+  onLayer: (layer: SceneLayer) => void;
   notice: Begun | null; // the last begin, held by the GM shell so one from STORY keeps its UNDO here
   onNotice: (notice: Begun | null) => void;
 };
@@ -39,8 +41,7 @@ type SceneProps = {
 // SCENE: the GM's play home. The scene being played as the book prints it (the page, what is in it, where next), and
 // while a fight is live a switch to the tracker. One scene is played at a time (beat.begin); its ON ENTRY picks reach the
 // phones when it begins, and a one-line notice can take that back.
-export function Scene({ state, codex, send, bestiary, presets, onEdit, notice, onNotice }: SceneProps) {
-  const [layer, setLayer] = useState<SceneLayer>(state.encounter ? "fight" : "scene");
+export function Scene({ state, codex, send, bestiary, presets, onEdit, layer, onLayer, notice, onNotice }: SceneProps) {
   const [previewId, setPreviewId] = useState<string | null>(null); // another scene, read-only
   const [msg, setMsg] = useState<string | null>(null);
   const current = currentScene(codex);
@@ -103,7 +104,7 @@ export function Scene({ state, codex, send, bestiary, presets, onEdit, notice, o
       );
       if (!r.ok) return setMsg(`! ${r.error}`);
       setMsg(null);
-      setLayer("fight");
+      onLayer("fight");
     });
 
   return (
@@ -132,10 +133,10 @@ export function Scene({ state, codex, send, bestiary, presets, onEdit, notice, o
       )}
       {state.encounter && (
         <div className="scene-layers" role="group" aria-label="Layer">
-          <button type="button" aria-pressed={showing === "scene"} onClick={() => setLayer("scene")}>
+          <button type="button" aria-pressed={showing === "scene"} onClick={() => onLayer("scene")}>
             THE SCENE
           </button>
-          <button type="button" aria-pressed={showing === "fight"} onClick={() => setLayer("fight")}>
+          <button type="button" aria-pressed={showing === "fight"} onClick={() => onLayer("fight")}>
             FIGHT · ROUND {state.encounter.round}
           </button>
         </div>

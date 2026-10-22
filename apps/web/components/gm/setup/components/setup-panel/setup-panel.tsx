@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 
+import { revealAnchor } from "@/lib/anchor/anchor";
 import type { SetupStep } from "@/lib/setup/setup";
 
 import { SETUP_GO_TO, type GoTo, type TabTarget } from "./constants";
@@ -16,19 +17,12 @@ export function SetupPanel({ steps, onTab }: SetupPanelProps) {
   const next = steps.find((s) => s.done === false && !isOptional(s));
   const [folded, setFolded] = useState(!next);
 
-  // GO TO: another tab, then the panel the step is done in (a field there also takes the focus). A new tab renders on
-  // the next commit, so the scroll waits a frame for it.
+  // GO TO: another tab's URL, with the panel the step is done in as its #anchor (the shell opens and scrolls to it),
+  // or a panel here on SETUP (a field there also takes the focus).
   const goTo = (s: SetupStep) => {
     const { tab, kind, anchor }: GoTo = SETUP_GO_TO[s.key];
-    if (tab) onTab({ tab, kind });
-    if (!anchor) return;
-    requestAnimationFrame(() => {
-      const el = document.getElementById(anchor);
-      const fold = el?.closest("details"); // a panel kept in a fold (PARTY's ASCENSION) opens first
-      if (fold) fold.open = true;
-      el?.scrollIntoView({ behavior: "smooth", block: "center" });
-      if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) el.focus({ preventScroll: true });
-    });
+    if (tab) onTab({ tab, kind, anchor });
+    else if (anchor) revealAnchor(anchor);
   };
 
   const progress = `${done} OF ${steps.length} STEPS DONE`;

@@ -1,6 +1,6 @@
 "use client";
 import type { PDFDocumentLoadingTask, PDFDocumentProxy } from "pdfjs-dist";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { BOOKS, MAX_PAGE_BYTES, pdfPage, type BookReply, type ThreatSource } from "@wg/shared";
 
@@ -47,14 +47,15 @@ export function useBookServer(serveBooks: ServeBooks) {
   // picking another book doesn't tell the table "none" first, which would flicker every player's links.
   useEffect(() => () => serveBooks(null), [serveBooks]);
 
-  const pick = (source: ThreatSource, file: File | null) => {
+  const pick = useCallback((source: ThreatSource, file: File | null) => {
     void closeDoc(books.current.get(source)?.task);
     if (file) books.current.set(source, { file });
     else books.current.delete(source);
     setFiles((f) => ({ ...f, [source]: file ?? undefined }));
-  };
+  }, []);
 
-  return { files, pick, serving, setServing, served };
+  // One object while nothing changed: the GM shell's context carries it to BOOKS.
+  return useMemo(() => ({ files, pick, serving, setServing, served }), [files, pick, serving, served]);
 }
 
 // Frees a replaced book's parsed PDF. One that never opened has nothing to free.
