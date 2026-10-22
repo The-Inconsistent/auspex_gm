@@ -1,6 +1,6 @@
 import type { MentionKind } from "@wg/shared";
 
-// What a peek shows per kind, as the CODEX row or PREP scene shows it. A phone's snapshot has the GM-only fields blanked
+// What a peek shows per kind, as the CODEX row or STORY scene shows it. A phone's snapshot has the GM-only fields blanked
 // (toPlayerCodex), so they drop out there.
 export const PEEK_FIELDS: Record<MentionKind, readonly (readonly [key: string, label: string])[]> = {
   npc: [

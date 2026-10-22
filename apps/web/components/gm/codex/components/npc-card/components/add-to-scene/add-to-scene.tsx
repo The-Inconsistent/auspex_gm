@@ -58,7 +58,7 @@ export function AddToScene({ npc, adventures, send, onError }: AddToSceneProps) 
       </div>
     );
   if (adventures.every((a) => a.beats.length === 0))
-    return <div className="dim">Add a scene in PREP to field this NPC.</div>;
+    return <div className="dim">Add a scene in STORY to field this NPC.</div>;
   return (
     <div className="panel pad stack" style={{ gap: 8 }}>
       <span className="label">ADD TO SCENE</span>

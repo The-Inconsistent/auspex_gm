@@ -14,7 +14,7 @@ const conditionName = (id: string) =>
     .map((w) => w[0]!.toUpperCase() + w.slice(1))
     .join(" ");
 
-// A place's hazard on the CODEX list and the PREP card (issue #49): its Tests as chips, its Conditions as rule links, the
+// A place's hazard on the CODEX list and the STORY card (issue #49): its Tests as chips, its Conditions as rule links, the
 // Threats it brings with their stat blocks, and the printed result folded away. GM-only.
 export function HazardChips({ view, bestiary, tier }: HazardChipsProps) {
   return (

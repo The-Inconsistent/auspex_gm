@@ -17,7 +17,7 @@ export const SETUP_GO_TO = {
   factions: { label: "CODEX › FACTIONS", tab: "CODEX", kind: "faction" },
   characters: { label: "PARTY › AGENTS", tab: "PARTY", anchor: "agents" },
   npcs: { label: "CODEX › NPCS", tab: "CODEX", kind: "npc" },
-  scenes: { label: "PREP", tab: "PREP" },
-  combat: { label: "PREP › SCENES", tab: "PREP" },
+  scenes: { label: "STORY", tab: "STORY" },
+  combat: { label: "STORY › SCENES", tab: "STORY" },
   session: { label: "PARTY › SESSION", tab: "PARTY", anchor: "session" },
 } as const satisfies Record<SetupKey, GoTo>;
