@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
-import { BeatTest, CodexInput, MAX_HAZARDS } from "./codex.ts";
+import { BeatStatus, BeatTest, CodexInput, MAX_HAZARDS } from "./codex.ts";
 import { CORRUPTION_DNS, MAX_ICONS, isCorruptionDn } from "./dn.ts";
 import { MAX_HULK_ORIGINS, MAX_PLACES_PER_ADD } from "./places.ts";
 import { Rarity, RequisitionKind } from "./requisition.ts";
@@ -403,6 +403,15 @@ export const Action = z.union([
       enemy: rowId.optional(), // when the Power names an enemy
     }),
     z.object({ type: z.literal("beat.startEncounter"), id }),
+    // Makes a scene the one being played: the scene left goes to `leave` (played, or back to planned for UNDO), and with
+    // `reveal` its ON ENTRY place, NPCs and handouts reach the phones. The reply lists what it revealed, so UNDO can seal
+    // them again. A scene already being played is left as it is.
+    z.object({
+      type: z.literal("beat.begin"),
+      id,
+      leave: BeatStatus.extract(["done", "planned"]).default("done"),
+      reveal: z.boolean().default(true),
+    }),
   ]),
   ...codexSave,
 ]);
@@ -433,4 +442,5 @@ export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
 // one-off, like the vox log at the table, not state to render later.
 // `slug`: the slug `threat.save` created or kept, so the editor knows which custom threat it is now editing (issue #43).
 export type ActionResult =
-  { ok: true; id?: string; token?: string; slug?: string; notices?: string[] } | { ok: false; error: string };
+  | { ok: true; id?: string; token?: string; slug?: string; notices?: string[]; revealed?: string[] }
+  | { ok: false; error: string };

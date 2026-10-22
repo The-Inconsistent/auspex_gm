@@ -27,6 +27,7 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
     a.type === "codex.save" ||
     a.type === "codex.delete" ||
     a.type === "beat.reorder" ||
+    a.type === "beat.begin" || // the scene being played and its ON ENTRY reveals
     a.type === "codex.addPlaces" ||
     a.type === "codex.addHulk" ||
     a.type === "threat.save" ||
@@ -187,6 +188,7 @@ function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promis
     case "codex.save":
     case "codex.delete":
     case "beat.reorder":
+    case "beat.begin":
     case "codex.addPlaces":
     case "codex.addHulk":
     case "codex.addLoot":

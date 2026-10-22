@@ -17,6 +17,7 @@ import {
   TestKind,
   canSpend,
   flatTree,
+  onEntryIds,
   placeTree,
   wouldCycle,
   quickRow,
@@ -235,4 +236,14 @@ test("an encounter entry without the profile fields parses with them (#42)", () 
   assert.deepEqual(EncounterEntry.parse({ threatId: "x", profiles: ["xenos-cunning", "xenos-cunning"] }).profiles, [
     "xenos-cunning",
   ]);
+});
+
+test("a scene's ON ENTRY keeps only what it still links, once each", () => {
+  const scene = { locationId: "place", npcIds: ["vex"], handoutIds: ["writ"] };
+  assert.deepEqual(onEntryIds({ ...scene, onEntry: ["writ", "vex", "writ", "gone", "place"] }), [
+    "writ",
+    "vex",
+    "place",
+  ]);
+  assert.deepEqual(onEntryIds({ ...scene, locationId: null, onEntry: ["place"] }), []);
 });

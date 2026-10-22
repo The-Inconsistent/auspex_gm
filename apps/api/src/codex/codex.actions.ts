@@ -12,6 +12,7 @@ import {
   roll,
   wargearMatches,
   MAX_PLACES_PER_ADD,
+  onEntryIds,
   placeNotes,
   roomNotes,
   wouldCycle,
@@ -37,6 +38,7 @@ export type CodexAction = Extract<
       | "codex.save"
       | "codex.delete"
       | "beat.reorder"
+      | "beat.begin"
       | "codex.addPlaces"
       | "codex.addHulk"
       | "codex.addLoot"
@@ -86,6 +88,52 @@ export function checkHolder(i: { name: string; locationId: string | null; npcId:
   if (i.locationId && i.npcId) fail(`${i.name} lies in a place or is carried by an NPC, not both`);
 }
 
+// beat.begin (and a scene's fight): the one scene being played moves here (the beat_one_active index), the scene left
+// goes to `leave`, and with `reveal` its ON ENTRY place, NPCs and handouts reach the phones. The reply lists only what
+// was hidden before, so the GM's UNDO seals exactly that. A scene already being played is left as it is.
+export async function beginBeat(
+  tx: Tx,
+  {
+    campaignId,
+    id,
+    leave,
+    reveal,
+  }: { campaignId: string; id: string; leave: Extract<Action, { type: "beat.begin" }>["leave"]; reveal: boolean },
+): Promise<ActionResult> {
+  const [row] = await tx
+    .select()
+    .from(beat)
+    .where(and(eq(beat.id, id), eq(beat.campaignId, campaignId)));
+  const b = row ?? fail("Scene not found");
+  if (b.status === "active") return { ok: true, id, revealed: [] };
+  await tx
+    .update(beat)
+    .set({ status: leave })
+    .where(and(eq(beat.campaignId, campaignId), eq(beat.status, "active")));
+  await tx
+    .update(beat)
+    .set({ status: "active" })
+    .where(and(eq(beat.id, id), eq(beat.campaignId, campaignId)));
+  const on = reveal ? onEntryIds(b) : [];
+  if (!on.length) return { ok: true, id, revealed: [] };
+  const places = await tx
+    .update(location)
+    .set({ revealed: true })
+    .where(and(eq(location.campaignId, campaignId), inArray(location.id, on), eq(location.revealed, false)))
+    .returning({ id: location.id });
+  const people = await tx
+    .update(npc)
+    .set({ revealed: true })
+    .where(and(eq(npc.campaignId, campaignId), inArray(npc.id, on), eq(npc.revealed, false)))
+    .returning({ id: npc.id });
+  const props = await tx
+    .update(handout)
+    .set({ revealed: true, revealedAt: sql`coalesce(${handout.revealedAt}, now())` })
+    .where(and(eq(handout.campaignId, campaignId), inArray(handout.id, on), eq(handout.revealed, false)))
+    .returning({ id: handout.id });
+  return { ok: true, id, revealed: [...places, ...people, ...props].map((r) => r.id) };
+}
+
 export async function applyCodexAction(
   tx: Tx,
   { ctx, action: a }: { ctx: Ctx; action: CodexAction },
@@ -133,6 +181,18 @@ export async function applyCodexAction(
             .data?.map((h) => h.id),
         );
         data.hazards = b.hazards.filter((h, i) => listed.has(h.id) && b.hazards.findIndex((x) => x.id === h.id) === i);
+        data.onEntry = onEntryIds(b);
+        // Only beat.begin starts a scene, so one is played at a time and its ON ENTRY list goes out with it. A save that
+        // keeps a scene running (an edit while it plays) passes.
+        if (b.status === "active") {
+          const [was] = a.id
+            ? await tx
+                .select({ status: beat.status })
+                .from(beat)
+                .where(and(eq(beat.id, a.id), eq(beat.campaignId, cid)))
+            : [];
+          if (was?.status !== "active") fail("Begin the scene to play it");
+        }
         // An exit leads to a scene of the same adventure; checkRefs alone would accept one from another adventure.
         const targets = [...new Set(b.exits.flatMap((e) => (e.beatId ? [e.beatId] : [])))];
         if (targets.length) {
@@ -235,20 +295,32 @@ export async function applyCodexAction(
       if (a.kind === "npc")
         await tx
           .update(beat)
-          .set({ npcIds: sql`array_remove(${beat.npcIds}, ${a.id}::uuid)` })
+          .set({
+            npcIds: sql`array_remove(${beat.npcIds}, ${a.id}::uuid)`,
+            onEntry: sql`array_remove(${beat.onEntry}, ${a.id}::uuid)`,
+          })
           .where(eq(beat.campaignId, cid));
       if (a.kind === "handout")
         await tx
           .update(beat)
-          .set({ handoutIds: sql`array_remove(${beat.handoutIds}, ${a.id}::uuid)` })
+          .set({
+            handoutIds: sql`array_remove(${beat.handoutIds}, ${a.id}::uuid)`,
+            onEntry: sql`array_remove(${beat.onEntry}, ${a.id}::uuid)`,
+          })
+          .where(eq(beat.campaignId, cid));
+      // The location FK clears locationId; its ON ENTRY pick goes too.
+      if (a.kind === "location")
+        await tx
+          .update(beat)
+          .set({ onEntry: sql`array_remove(${beat.onEntry}, ${a.id}::uuid)` })
           .where(eq(beat.campaignId, cid));
       if (a.kind === "item")
         await tx
           .update(beat)
           .set({ itemIds: sql`array_remove(${beat.itemIds}, ${a.id}::uuid)` })
           .where(eq(beat.campaignId, cid));
-      // Exits name their target inside jsonb: keep the label, drop the target. PREP's DONE and SKIP re-send the whole
-      // beat, so a dangling id would make the save check refuse them.
+      // Exits name their target inside jsonb: keep the label, drop the target. The scene page's DONE and SKIP re-send
+      // the whole beat, so a dangling id would make the save check refuse them.
       if (a.kind === "beat")
         await tx
           .update(beat)
@@ -259,6 +331,9 @@ export async function applyCodexAction(
           .where(and(eq(beat.campaignId, cid), sql`${beat.exits} @> ${JSON.stringify([{ beatId: a.id }])}::jsonb`));
       return { ok: true };
     }
+
+    case "beat.begin":
+      return beginBeat(tx, { campaignId: cid, id: a.id, leave: a.leave, reveal: a.reveal });
 
     case "beat.reorder": {
       const rows = await tx

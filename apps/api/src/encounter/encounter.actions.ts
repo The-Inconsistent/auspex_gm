@@ -29,6 +29,7 @@ import { campaignTier } from "../campaign/campaign.actions.ts";
 import { campaign } from "../campaign/campaign.schema.ts";
 import { ownCharacter } from "../character/character.actions.ts";
 import { character } from "../character/character.schema.ts";
+import { beginBeat } from "../codex/codex.actions.ts";
 import { beat } from "../codex/codex.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
@@ -431,7 +432,8 @@ export async function applyEncounterAction(
               agents,
             });
       }
-      await tx.update(beat).set({ status: "active" }).where(eq(beat.id, b.id));
+      // The scene's fight begins the scene too: it becomes the one being played and its ON ENTRY list goes out.
+      await beginBeat(tx, { campaignId: cid, id: b.id, leave: "done", reveal: true });
       return { ok: true, id: encounterId };
     }
   }
