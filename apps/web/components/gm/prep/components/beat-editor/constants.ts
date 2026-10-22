@@ -19,3 +19,18 @@ export const BEAT_TEXT_FIELDS = {
   outcome: { label: "OUTCOME (fill in after play)", area: true, hint: "" },
 } as const;
 export type BeatTextField = keyof typeof BEAT_TEXT_FIELDS;
+
+// The parts of a scene STORY's pencils open on their own; EDIT shows them all.
+export const BEAT_SECTIONS = [
+  "goal",
+  "readAloud",
+  "gmNotes",
+  "outcome",
+  "exits",
+  "tests",
+  "pools",
+  "place",
+  "cast",
+  "fight",
+] as const;
+export type BeatSection = (typeof BEAT_SECTIONS)[number];
