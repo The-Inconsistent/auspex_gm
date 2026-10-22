@@ -190,18 +190,7 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
     }
   };
 
-  if (!enc)
-    return (
-      <div className="pad stack">
-        <div className="rule">NO ACTIVE ENCOUNTER</div>
-        <p className="dim">Start one here, or run a scene with a prepared encounter from PREP.</p>
-        <div>
-          <button className="btn primary" onClick={() => run({ type: "encounter.start" }, "ENCOUNTER STARTED")}>
-            START ENCOUNTER
-          </button>
-        </div>
-      </div>
-    );
+  if (!enc) return null; // SCENE mounts the tracker only while a fight is live, and starts one itself
 
   const current = enc.combatants.find((c) => c.id === enc.currentId) ?? null;
   const next = sideUpNext(state);

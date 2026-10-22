@@ -335,9 +335,7 @@ export function BeatEditor({
               {codex.items.length === 0 && <span className="dim">Add items in CODEX.</span>}
             </div>
             <span className="dim">
-              <i>
-                What the Agents can find in this scene. Hand one over with GIVE TO on the scene&apos;s card in PREP.
-              </i>
+              <i>What the Agents can find in this scene. Hand one over with GIVE on the scene, in SCENE or STORY.</i>
             </span>
           </div>
         </>

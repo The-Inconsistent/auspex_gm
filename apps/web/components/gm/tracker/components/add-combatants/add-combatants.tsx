@@ -37,7 +37,7 @@ export function AddCombatants({ state, run, bestiary }: AddCombatantsProps) {
   const missing = state.characters.filter((c) => active.has(c.id) && !inFight.has(c.id));
   const threat = bestiary.find((x) => x.id === threatId);
   const mobCount = Number(mob);
-  // The fight as it stands, against the same guideline PREP uses (Threat Assessment p.8). The class was resolved when
+  // The fight as it stands, against the same guideline STORY uses (Threat Assessment p.8). The class was resolved when
   // each threat joined, and a Mob's models are the members still standing. Anything out of the fight (`isOut`: a slain
   // threat, a dead Agent) has stopped being something to keep track of, so it leaves the tally even while its row waits
   // for the GM to remove it.
@@ -47,7 +47,7 @@ export function AddCombatants({ state, run, bestiary }: AddCombatantsProps) {
       c.kind === "threat" ? [{ cls: c.threatClass, count: c.mobCount ?? 1, asMob: c.mobCount !== null }] : [],
     ),
   );
-  // Sized for the Agents in the fight, falling back to the seated ones before + PARTY, as PREP does: a budget of 0
+  // Sized for the Agents in the fight, falling back to the seated ones before + PARTY, as STORY does: a budget of 0
   // Troops would read OVER against the first threat the GM places.
   const agents = standing.filter((c) => c.kind === "pc").length || agentsInFight(state);
   const budget = encounterBudget({ agents });

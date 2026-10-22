@@ -327,83 +327,169 @@ const { state, codex, online, send } = useTable(campaignId);
 
 ## 3. GM app: `components/gm/`
 
-`gm-app/gm-app.tsx` (`GmApp`) is the tablet shell. It shows `SYNCING COGITATOR…` until both snapshots arrive.
+`gm-app/gm-app.tsx` (`GmApp`) is the tablet shell. It shows `SYNCING COGITATOR…` until both snapshots arrive. The GM
+plays from the scene (the scene-first shell, [campaign-model.md](campaign-model.md)): SCENE is the play home, STORY is
+prep, and the fight is a layer inside SCENE.
 
-- **Header** (`.gm-head`):
-  - `AUSPEX // <CAMPAIGN> // T<tier>`.
+- **Header** (`.gm-head`; the pieces are in `header/`), left to right:
+  - `AUSPEX · <CAMPAIGN> · T<tier>`.
   - `RND nn` while an encounter is live.
-  - One `.pool` per `Pool.options` (Glory, Ruin). Each shows `current/max`, with the cap from `poolMax(p, players)`,
-    and has − / + buttons that send `pool.adjust` ±1. A refusal shows in the page's `Refusal` banner.
-- **Tabs:** `GM_TABS` in `gm-app/constants.ts` = TRACK, SETUP, PREP, CODEX, PARTY, RULES, BOOKS. The selected tab is
-  local state and starts on TRACK, or on `?tab=` (`asGmTab`; NEW CAMPAIGN's last step opens SETUP).
+  - `SpendBadge`: `n SPEND ASKED`, only while players have asked. It opens the request list (`SpendRequests`: ACCEPT or
+    DENY each, rules-flow §11.122).
+  - `CallTestButton`: CALL A TEST opens the call form (§3.0). While a call is open it reads TEST CALLED and is
+    disabled.
+  - Two `SealButton`s, one per `Pool.options` (Glory, Ruin): the `Seal` and `/max` (the cap from `poolMax(p, players)`).
+    A tap opens a pad: −1, `GLORY n / max`, +1 (each `pool.adjust` ±1, disabled at 0 and at the cap), then PLANNED HERE,
+    the current scene's planned spends from that pool (`currentScene(codex).beat.spends`): SPEND n · NAME sends
+    `pool.adjust` −cost, disabled while `canSpend` fails. Book spends are picked while building the scene, so no others
+    are offered. A refusal shows in the page's `Refusal` banner.
+  - The ADMIN chip when `me.admin` (§3.4b), `ThemeToggle` and `UserButton`.
+- The spend badge, CALL A TEST and the seals are `Popover`s (`header/popover`): the panel opens under the button, Escape or a tap outside
+  closes it, focus moves into the panel and back to the button on close. There are no −/+ pool buttons any more.
+- **Under the header** the `TestCall` tally renders while a call is open (`state.testCall`), and nothing otherwise. The
+  spend requests are no longer an always-on bar.
+- **Tabs** (`.tabs.rail`): `GM_TABS` in `gm-app/constants.ts` = SCENE, STORY, CODEX, PARTY, RULES, BOOKS, SETUP. SETUP is
+  `.tab.foot` at the rail's foot: it is used before a campaign, not during one. `TAB_NUMERALS` draws I to VI behind the
+  first six. The selected tab is local state. With nothing picked it is SCENE while a session is open (a
+  `codex.sessions` row with no `endedAt`), else STORY. `?tab=` (`asGmTab`, any case) picks one; NEW CAMPAIGN's last step
+  opens SETUP, and the retired `track` and `prep` open SCENE and STORY, so old links still work.
+- **GO TO** (issue #198) and SCENE's EDIT open STORY on that scene's page: `GmApp` keeps the scene id and bumps `visit`,
+  which remounts STORY (and CODEX) on it.
 
 | Tab | Component | Files |
 |---|---|---|
-| TRACK | `Tracker` | `tracker/tracker.tsx`, `tracker/constants.ts`, `tracker/types.ts`, `tracker/components/add-combatants/add-combatants.tsx` |
-| SETUP | `Setup` | `setup/setup.tsx`, `setup/components/setup-panel` (the checklist and its GO TO, `lib/setup`), `setup/components/framework-picker`, `ui/table-talk` |
-| PREP | `Prep` | `prep/prep.tsx`, `prep/types.ts`, `prep/utils.ts`, `prep/components/beat-editor/{beat-editor.tsx,constants.ts}`, `prep/components/scene-hazards` (a scene's picked hazards with SPOTTED, issue #49), `prep/components/hazard-chips` (a hazard's Tests, Conditions and Threats, shared with CODEX), `lib/hazards`; the scene editor's ITEMS TO FIND chips and the card's ITEMS TO FIND with `item-give` (issue #51) |
-| CODEX | `CodexView` | `codex/codex.tsx`, `codex/constants.ts`, `codex/types.ts`, `codex/components/codex-editor/{codex-editor.tsx,constants.ts}`, `codex/components/keyword-picker` (a faction's Keywords: chips plus a search over the books', `lib/keywords`), `codex/components/faction-card` (Keywords, NPCs, the §11.83 mixing hint), `codex/components/faction-picker` (ADD FROM BOOK: `presetFaction` per printed faction), `codex/components/stat-source-field` (an NPC's BESTIARY threat through `ThreatPicker`, QUICK Tier chips and a specialty Skill, or NONE; issue #47), `codex/components/npc-card` (the Attitude's DN, the `StatBlock`, or the Quick NPC row with the p.326 scaling lines; its `add-to-scene` child appends a bestiary NPC to a scene's prepared encounter with `lib/add-to-scene`, one `codex.save`), `codex/components/npc-picker` (ADD FROM BOOK: `presetNpc` per printed NPC, a name search and a book filter in BOOKS order), `codex/components/npc-roller` (ROLL NAME into NAME and ROLL LOOK onto DESCRIPTION, from GM-only `/flavour` through `rollOn` and `rollLook`; sends nothing until SAVE, issue #48), `codex/components/place-picker` (ADD FROM BOOK for places: each book's tree from GM-only `/places`, a name search, book chips in BOOKS order, INSIDE, and ADD TO CODEX sending `codex.addPlaces`; issue #50), `codex/components/hulk-generator` (the Space Hulk Generator: a `TableRoll` per stage, NEW HULK or ROOMS FOR A PLACE, WRITE TO CODEX sending `codex.addHulk`; issue #50 step 8), `codex/components/wargear-name` (an item's NAME: a native datalist over the catalogue, `lib/wargear-label`, shared with the requisition form; picking an entry links `wargearId`, issue #51), `codex/components/holder-field` (NOBODY / A PLACE / AN NPC), `ui/print-pick` (an item row's tick; PRINT N beside the ITEMS count prints the ticked ones as item cards, §5.1), `codex/components/item-card` (FROM THE CATALOGUE: kind, Value, Rarity, the profile with a relic's Powers applied, what GIVE makes), `ui/item-give` (GIVE TO an Agent or TAKE BACK, `holderOf`; shared by CODEX and PREP's scene card), `codex/components/loot-picker` (FROM LOOT TABLE: a book's table in BOOKS order, `TableRoll` or a tapped row, a search per catalogue `pick`, an optional fault, MAKE sending `codex.addLoot`), `codex/components/relic-wizard` (HOLY RELIC CREATOR: the hulk generator's `Stage` per table and the loot picker's `Pick` for the Form's catalogue entry, MAKE RELIC sending `codex.addRelic`) |
-| PARTY | `Party` | `party/party.tsx`, `party/constants.ts`, `party/components/qr-dialog/qr-dialog.tsx`, `party/components/room-invite` |
+| SCENE | `Scene` | `scene/scene.tsx`, `scene/constants.ts`, `scene/types.ts`, `scene/components/{no-scene,scene-strip,scene-preview,scene-page,test-rows,in-this-scene (with `reveal-row`),where-next,begun-notice}`, `lib/scene/scene.ts` (`currentScene`), `lib/scene-reveal` |
+| (FIGHT, a layer of SCENE) | `Tracker` | `tracker/tracker.tsx`, `tracker/constants.ts`, `tracker/types.ts`, `tracker/components/{key-bar,delta-pad,fight-row,add-combatants,crit-perils}`, `lib/fight-delta` |
+| STORY | `Story` | `story/story.tsx`, `story/constants.ts`, `story/types.ts`, `story/components/{adventure-bar,scene-board,scene-page,story-section}`, `lib/story-scenes`; reused from the retired PREP: `prep/types.ts`, `prep/utils.ts`, `prep/components/beat-editor/{beat-editor.tsx,constants.ts}`, `prep/components/scene-picker`, `prep/components/scene-tests` (with `call-test`), `prep/components/scene-pools`, `prep/components/scene-hazards` (a scene's picked hazards with SPOTTED, issue #49), `prep/components/hazard-chips` (a hazard's Tests, Conditions and Threats, shared with CODEX), `lib/hazards`; the scene editor's ITEMS TO FIND chips and the page's items with `item-give` (issue #51) |
 
 ### 3.0 A called Test: `components/gm/test-call/` (issue #191)
 
-Under the tabs, on every tab like the spend requests: with no call, a collapsed **CALL A TEST** (kind, Skill or
-Attribute, DN, FEAR on a Resolve Test, HIDE DN, which seated Agents); with a call, the tally: one row per Agent asked,
-PENDING / PASSED / FAILED as the phones report, SET PASSED / SET FAILED for a phone that's out, and on a failure the
-offer the book gives (rules-flow §11.145): **GAIN n CORRUPTION · +1 RUIN** (`character.corrupt` with the phone's roll)
-or **+1 RUIN** (`pool.adjust`), each gone once taken. CLOSE ends the call. PREP's planned Tests have **CALL TO THE
-PHONES** (`prep/components/scene-tests/components/call-test`): all seated Agents for an EACH Test, one for the rest.
+CALL A TEST is a header button (`CallTestButton`, above): its popover is the call form (kind, Skill or Attribute, DN,
+FEAR on a Resolve Test, HIDE DN, which seated Agents). With a call open, the button reads TEST CALLED and the tally
+renders under the header, on every tab: one row per Agent asked, PENDING / PASSED / FAILED as the phones report, SET
+PASSED / SET FAILED for a phone that's out, and on a failure the offer the book gives (rules-flow §11.145): **GAIN n
+CORRUPTION · +1 RUIN** (`character.corrupt` with the phone's roll) or **+1 RUIN** (`pool.adjust`), each gone once taken.
+CLOSE ends the call. SCENE's TESTS rows (§3.0a) and STORY's planned Tests (**CALL TO THE PHONES**,
+`prep/components/scene-tests/components/call-test`) call a prepared Test: all seated Agents for an EACH Test, one for the
+rest.
 
-### 3.1 TRACK: live combat tracker
+### 3.0a SCENE: the play home
 
-With no encounter live, the tab shows NO ACTIVE ENCOUNTER and a START ENCOUNTER button (`encounter.start`). A beat's
-prepared encounter can also be started from PREP.
+`Scene` (`components/gm/scene/`). One scene is played at a time: the active beat, which `currentScene(codex)`
+(`lib/scene`) finds (its adventure, the beat and its index). The scene being played is made by `beat.begin`
+([backend.md](backend.md), [campaign-model.md](campaign-model.md)); SCENE never edits one, EDIT leaves for STORY.
 
-**Status strip** (top panel):
+- **Message line** (`role="status"`): amber on success (`CALLED · <TEST>`, `SCENE BEGUN, TAKEN BACK`, a hazard's or a
+  Test's notice), red with `!` on a refusal.
+- **No scene** (`NoScene`): NO SCENE IS BEING PLAYED, then each adventure's first `planned` scene (the running
+  adventures first) with a BEGIN button (`beat.begin`), or "No scene is planned. Write one in STORY, or start a fight."
+  START A FIGHT sends `encounter.start`.
+- **Scene strip** (`SceneStrip`, with a scene): this adventure's scenes as numbered tabs, the current one crimson, played
+  ones ticked. A tap on another scene previews it (`ScenePreview`: PREVIEW · SCENE nn · TYPE · STATUS, its GOAL and READ
+  ALOUD, nothing else); BEGIN THIS SCENE begins it, BACK or a tap on the current tab leaves. Nothing changes until BEGIN.
+- **Layer switch** (`.scene-layers`, only while an encounter is live): THE SCENE | FIGHT · ROUND n. `Scene` opens on FIGHT
+  when it mounts with a fight live, and START FIGHT moves it there. When the fight ends the scene shows again, whatever the
+  switch said. The FIGHT layer is the `Tracker` (§3.1).
+- **THE SCENE** is two columns (`.scene-cols`, stacked under 860px):
+  - `ScenePage`, as the book prints a scene, in order: `SCENE nn · TYPE · PLACE` with EDIT, the title, GOAL, READ ALOUD,
+    GM NOTES (closed on a plate), HAZARDS (`SceneHazards`, when the scene has a place), TESTS and RUIN & GLORY
+    (`ScenePools`, when it has any lines). Outcome, exits and the fight are not on the page.
+  - TESTS (`TestRows`): a tap on a row calls that Test to the phones (`test.call` with the Test, `who` and `fear`, which
+    replaces an open call). An EACH Test, or any Test with one seated Agent, calls the seated Agents; a ONE Test asks WHO with a chip
+    per Agent. A Resolve Test has a FEAR toggle (Terror earns no Ruin, Core p.199). Only what it rolls is sent: Shifts and
+    outcomes stay with the GM (§11.143). With no seated Agent the rows are disabled.
+  - **IN THIS SCENE** (`InThisScene`, `aside`): PLACE, CAST, HANDOUTS and ITEMS the scene links. A name opens its peek
+    (§5 `MentionsProvider`). Each `RevealRow` has one toggle, SHOWN (eye) or SEALED (lock), whose accessible name says the
+    action: a whole-entry `codex.save` with `revealed` flipped (`revealAction`, `lib/scene-reveal`: the way CODEX's
+    REVEALED does), so a phone gets it at once. A private handout carries `<NAMES> ONLY`. An item has no toggle: the holder
+    and `ItemGive` (GIVE TO or TAKE BACK). Under them FIGHT: "A fight is under way", `n Threats prepared` or "none
+    prepared", and START FIGHT (or START A FIGHT with none prepared) while no fight is live: `beat.startEncounter` for a scene with prepared
+    entries (which also begins the scene), else `encounter.start`; then the FIGHT layer shows.
+- **WHERE NEXT** (`WhereNext`, below the columns): one button per exit, its label in italic and `→ nn TITLE`, which ends
+  this scene and begins that one (`beat.begin`); an exit with no scene is disabled and reads NO SCENE YET. OTHER SCENE…
+  lists the adventure's other scenes, each a preview.
+- **SCENE BEGUN** (`BegunNotice`, one line under the strip, after any begin): `SCENE BEGUN · shown on entry: <names>` (or
+  `nothing`), UNDO and ×. UNDO sends, in order, and stops at the first refusal: with a scene before it, `beat.begin { id:
+  <that scene>, leave: "planned", reveal: false }` (it is current again and the begun one is planned, nothing revealed); with
+  none, `codex.save` of the begun beat with `status: "planned"`; then, for each entry the begin revealed (the ack's
+  `revealed`), a whole-entry `codex.save` with `revealed: false` (`undoBegin`). On success the notice goes and the line says
+  `SCENE BEGUN, TAKEN BACK`. The notice is client-only: a reload or another begin drops it.
+
+### 3.1 FIGHT: the live combat tracker
+
+The FIGHT layer of SCENE (§3.0a): `Tracker` mounts only while an encounter is live. With none, SCENE offers START FIGHT
+(`beat.startEncounter` or `encounter.start`). A scene's prepared encounter can also be started from SCENE's IN THIS SCENE.
+
+**Status strip** (`.turn-strip`):
 - The turn state: `▶ <NAME> ACTING`, `AWAITING: <SIDE> PICK` (from `sideUpNext(state)`), or `ROUND COMPLETE`.
-- `NEXT: <side>` and `<SIDE> SEIZED`, when they apply.
-- The round, plus how many of each side have acted, as `AGENTS acted/total · THREATS acted/total`.
+- `Next: the <side> pick` and `<SIDE> SEIZED`, when they apply.
+- The round, plus how many of each side have acted, as `RND n · AGENTS acted/total · THREATS acted/total`.
 
-**Rows** are grouped by `Side.options` (agents, then threats). Each row is a `<button>` with `aria-pressed` set while it's
-selected, and tapping one toggles `selected`.
+**Rows** are grouped by `Side.options` (agents, then threats) under a `.tbar` with `acted/total ACTED`. A `FightRow` is a
+grid of cells for the eye, with a select button under them (`aria-pressed`, its label reads the whole row); the WOUNDS
+number, the SHOCK number and a threat's visibility chip are buttons over it. A tap on the row toggles `selected` and closes
+the delta pad.
 
 | Column | Content |
 |---|---|
 | STATE | A word, never colour alone: `▶ ACTING`, `DONE`, `AMBUSHED` (Round 1 only), `READY` |
-| DESIGNATION | The name, with a marker swatch for threats that have a marker |
-| CLASS | `AGENT`, or `THREAT_CLASS_LABEL[threatClass]` (TROOP / ELITE / ADVERSARY / MONSTROUS) |
-| WOUNDS | A `Bar` of Wounds left (red once damaged). Mobs show `×count OF start` instead |
-| SHOCK | A `Bar`, or `—` when max Shock is `null` |
+| DESIGNATION | A portrait slot (only when some combatant has one), the marker swatch of a threat that has one, the name, and the class (`AGENT`, or `THREAT_CLASS_LABEL[threatClass]`) |
+| WOUNDS | A `Track` of what's left and the number as `left/max`, a button that opens the delta pad. A Mob has no track and reads `×count/start` |
+| SHOCK | `left/max`, a button that opens the pad, or `—` when max Shock is `null` |
 | DEF / RES | PCs: from `deriveStats`. Threats: from the snapshotted `stats` |
-| STATUS | `StatusChips` from `pcStatus` / `threatStatus`, plus Condition chips |
-| PLAYERS | What the phones see (`VISIBILITY_LABEL`): `FULL`, or in red `BAR ONLY` / `HIDDEN` (not sent at all) |
+| STATUS | `StatusChips` from `pcStatus` / `threatStatus`, plus a chip per Condition |
+| PLAYERS SEE | Threat rows only: the visibility chip (below) |
 
 Row CSS classes: `.now` is the one acting (highlighted background), `.sel` is selected (fg border), and `.done` has
-acted (dimmed). Below 900px, the columns marked `.hide-sm` (CLASS, SHOCK, DEF, RES, PLAYERS) are hidden.
+acted (dimmed). The rows answer to the width `.tracker-main` actually gets (`@container tracker`): under 802px the `.hide-sm` cells (the
+class tag, DEF, RES, the portrait) go, and under 600px STATUS and PLAYERS SEE drop to a second line under the name.
 
-**Key bar** (`.keys`). Which buttons show depends on the encounter and the selection:
+**Key bar** (`KeyBar`, `.fight-keys`): at most four controls, so the tablet never shows a wall of buttons. The tracker keys
+it by the selected row, so a new selection starts with both panels folded.
 
-| Button | Shown when | Sends |
+| Control | Shown when | Sends |
 |---|---|---|
-| END TURN | Someone is acting | `turn.end` |
-| START TURN | Nobody is acting and `canAct(state, sel)` (so never for a Slain threat or a Dead PC) | `turn.start` |
-| SEIZE · 1 GLORY / 1 RUIN | As START TURN, and also `canSeize(state, side)` (hidden when that side is up next anyway) | `turn.seize` |
-| DMG / HEAL / SHOCK / RECOVER | A row is selected | Opens the amount pad |
-| ±COND select | A row is selected | Toggles one of `CONDITIONS` (`character.update` or `combatant.update` with the full list) |
-| PLAYERS: select (`VisibilitySelect`) | A threat is selected | `combatant.update { visibility }`: HIDDEN, BAR ONLY or FULL (rules-flow §11.56) |
-| AMBUSH / AWARE · cost | Round 1, and the selected row hasn't acted | `combatant.update { ambushed: true }` / `combatant.aware` |
-| REMOVE | A row is selected | `combatant.remove`, then clears the selection |
-| NEW ROUND, END ENC | Always | `encounter.newRound`, `encounter.end` |
+| The turn button | One at a time. `END TURN` when someone is acting; `START <NAME>'S TURN` when nobody is and `canAct(state, sel)` (so never for a Slain threat or a Dead PC); `NEW ROUND` when nobody `canAct`; else none | `turn.end` / `turn.start` / `encounter.newRound` |
+| `SEIZE · 1 GLORY` / `1 RUIN` | As START, and also `canSeize(state, side)` (hidden when that side is up next anyway) | `turn.seize` |
+| `+ CONDITION` | A row is selected | Opens CONDITIONS · NAME: a toggle chip per `CONDITIONS` entry, ticked when on (`character.update` or `combatant.update` with the full list) |
+| `MORE` | Always | Opens the panel below; its accessible name lists what's inside |
 
-The Seize and Aware cost label is `1 GLORY` when the selected combatant is an agent, and `1 RUIN` otherwise. The
+MORE holds, in this order:
+- `AMBUSH` / `AWARE · cost`, in Round 1 when the selected row hasn't acted (`combatant.update { ambushed: true }` /
+  `combatant.aware`).
+- PLAYERS SEE, a HIDDEN / BAR ONLY / FULL segment, when a threat is selected (`combatant.update { visibility }`,
+  rules-flow §11.56).
+- `NEW ROUND` (`encounter.newRound`), unless it is already the turn button.
+- `REMOVE`, when a row is selected: `combatant.remove`, then clears the selection.
+- `END FIGHT` (`encounter.end`), always.
+
+Each panel has its own CLOSE, one is open at a time, Escape closes it, and a tap on a control inside runs it and folds the
+panel. The Seize and Aware cost label is `1 GLORY` when the selected combatant is an agent, and `1 RUIN` otherwise. The
 server charges the cost; see [game-logic.md](game-logic.md).
 
-**Amount pad.** DMG, HEAL, SHOCK and RECOVER set `amountFor` to a `CounterAction` key. The key bar is then replaced by
-`AMOUNTS` (1 2 3 4 5 6 8 10) and CANCEL. A tap sends one delta built by `counterAction`:
+**Visibility chip.** Each threat row ends with a chip of what the phones see (`VISIBILITY_WORD`): `FULL`, or in a `.warn` chip
+`BARS` / `HIDDEN` (not sent at all). A tap cycles HIDDEN → BARS → FULL (`Visibility.options`) with one
+`combatant.update { visibility }`; its label says what a player sees.
 
+**Delta pad** (`DeltaPad`, `lib/fight-delta`). A tap on a row's WOUNDS or SHOCK number selects that row and opens one pad
+under it on that track (a second tap on the same number closes it). It holds:
+- a WOUNDS | SHOCK segment (SHOCK is disabled where the row has no Shock track) and a DEAL + | HEAL − segment (RECOVER −
+  for Shock; Wounds and Shock both count up, so DEAL is +);
+- the amounts `AMOUNTS` (1 2 3 4 5 6 8 10): one tap sends one delta;
+- a typed number: `-3` heals or recovers 3, `+2` deals 2, a bare `2` follows the DEAL | HEAL segment (`parseDelta`: whole
+  numbers 1–99, else "A whole number, 1 to 99."); Enter applies it;
+- CLOSE (Escape too), and a foot line `APPLIES TO: <NAME> · WOUNDS 13/18 LEFT`.
+
+A delta goes through `counterAction` and `run`, so the vox log, its notes and UNDO apply, and the pad closes. Log text is
+`<NAME> +3 WOUNDS`, worded by `COUNTER_ACTIONS` (`lib/command/constants.ts`, shared with the command line), which maps each
+key to a `field` and a `sign` (`counterKey`):
 - PCs send `character.adjust` on the character.
 - Threats send `combatant.adjust` on the row.
-- `COUNTER_ACTIONS` (`lib/command/constants.ts`, shared with the command line) maps each key to a `field` and a `sign`. Wounds count up, so HEAL is a negative Wounds delta.
+
+**Kept as it was:** the side panel, the vox log and undo, the Condition reminders, `AddCombatants` and the command line
+(§3.2). Only the old key bar moved: DMG / HEAL / SHOCK / RECOVER and the amount pad are the delta pad, ±COND is
++ CONDITION, and the PLAYERS select, AMBUSH / AWARE, REMOVE, NEW ROUND and END ENC are in MORE (END ENC is END FIGHT) or
+on the row.
 
 **Side panel** (`.tracker-side`):
 - A selected threat shows its class rule chips (`THREAT_CLASS_RULES`, pp.323–324), then its snapshotted `StatBlock`.
@@ -413,7 +499,6 @@ server charges the cost; see [game-logic.md](game-logic.md).
   +TRAUMATIC button (`character.adjust { traumatic: 1 }`); ANNIHILATED with a RESTORE button when set; and weapon
   lines.
 - Below either one sits the **vox log**.
-
 **Vox log and undo.**
 - `run(action, text)` (the `Run` type in `tracker/types.ts`) wraps `send`. On success it pushes a `LogEntry` to the
   top of the log, capped at `LOG_LIMIT` (40). On refusal it sets the tracker's error line.
@@ -446,7 +531,7 @@ handlers (`runCommand`), so they fire the same reminders. What the reminders say
 - ADD sends `combatant.addThreat`.
 - `+ PARTY (n)` sends one `combatant.addCharacter` for each character not yet in the fight, in order.
 - All of these go through `run`, so they are logged and their errors show on the tracker error line.
-- Under the add row, once the fight holds anything, `BudgetLines` (§5) checks it against the same guideline PREP uses
+- Under the add row, once the fight holds anything, `BudgetLines` (§5) checks it against the same guideline STORY uses
   (Threat Assessment p.8). The classes are the ones snapshotted when each threat joined (`threatClass`), a Mob counts as
   one tracked combatant with its surviving `mobCount` as models, and anything `isOut` (a slain threat, a dead Agent)
   leaves the tally even while its row waits to be removed. The budget is sized for the Agents in the fight, falling back
@@ -536,46 +621,67 @@ A command with neither a verb nor a Condition returns
 
 The tests are in `lib/command/command.test.ts`.
 
-### 3.3 PREP: adventures and scenes (beats)
+### 3.3 STORY: adventures and scenes (beats)
 
-`Prep`. The data model is in [campaign-model.md](campaign-model.md). Every visible string says SCENE; the code keeps
-`beat`.
+`Story`, which replaced PREP. The data model is in [campaign-model.md](campaign-model.md). Every visible string says
+SCENE; the code keeps `beat`. STORY is prep as a storyboard: you flip scene by scene, and a scene is played from SCENE
+(§3.0a).
 
-- **Adventures** show as a row of buttons. Picking one closes any open editor. The inline NEW ADVENTURE form sends
-  `codex.save { kind: "adventure" }` and switches to the new adventure using `r.id`.
-- **Each beat in the list** shows:
-  - its number (`sceneNumber`), title, type chip and status chip (amber when active)
-  - its GOAL, read-aloud text and GM notes (closed on a plate)
-  - its HAZARDS (`components/scene-hazards/scene-hazards.tsx`, issue #49), closed on a plate: the hazards the scene
-    picked from its location (rules-flow §11.95), each through `hazardView` and `HazardChips` (Tests as chips with
-    `testTitle` and `dnLabel`, a DN of the Tier plus n worked out from the campaign's Tier, Conditions as rule links,
-    Threats with their stat block in a fold, the book's notes, the printed text in a fold). SPOTTED saves the beat
-    (`stripBeat`, `hazards` with the flag flipped) and adds the "lower the DN" reminder: the app applies no number
-    (§11.92)
-  - its EXITS: each label, then `→ 04 · THE DEAL` for a target in this adventure, or `→ NO SCENE YET`
-  - its TESTS (`components/scene-tests/scene-tests.tsx`): the DN TABLE, SHIFTING and FAIL FORWARD rule links, then one
-    `<details>` per Test whose summary is what rolls (`testTitle`), the DN (`dnLabel`: NO DN on an Opposed Test, DN · GM SETS on one without a DN yet, §11.75), EACH, the Shift count and, on a
-    Fear or Corruption Test, the Ruin reminder (`ruinOnFailure`, Core p.320); inside are the purpose, SHIFT 1, 2… and
-    both outcomes
-  - its RUIN & GLORY (`components/scene-pools/scene-pools.tsx`, issue #40): the RUIN, GLORY, COMPLICATIONS and COMBAT
+- **Adventure bar** (`components/adventure-bar`): adventures show as a row of buttons (` · SHOWN` once the party has the
+  mission). Picking one goes back to its BOARD and closes any open editor. The inline NEW ADVENTURE form sends
+  `codex.save { kind: "adventure" }` and switches to the new adventure using `r.id`. EDIT ADVENTURE (title, BRIEF,
+  PREMISE / GM NOTES on a closed plate), the mission status select and SHOWN / HIDDEN TO THE PARTY (the mission log, issue #196) sit under it.
+- **Views** (`STORY_VIEWS`): a BOARD | PAGE toggle beside `<ADVENTURE> · SCENES`. STORY opens on BOARD, or on PAGE when a
+  peek's GO TO or SCENE's EDIT names a scene (`initialSceneId`).
+- **BOARD** (`components/scene-board`): the scenes in story order hung on an iron spine (`ol.story-spine`). A card is one
+  button that opens that scene's PAGE: number, title, a tagline (`tagline`: type, the cast, `FIGHT:` and the entries), a
+  readiness chip (`readiness`: `READY ✓` or `n TO FIX`, the fixes in its title: `NO GOAL`, `NO READ-ALOUD`, `n EXITS WITH
+  NO SCENE`, from `sceneFixes`) and a status chip unless planned (amber when active). Its exits sit beside it as tags,
+  `→ 04`, or `→ NO SCENE YET` in crimson. Under the board, + NEW SCENE, and + SCENE FROM A TABLE when `presets.tables`
+  has any.
+- **PAGE** (`components/scene-page`): one scene as a book spread. ‹ › and a numbered tab per scene flip between scenes.
+  The left leaf is what you say and what is going on: the label line (`SCENE nn · TYPE · PLACE`, or NO PLACE YET), the
+  title, the status and readiness chips with the fixes, GOAL, READ ALOUD, GM NOTES (closed on a plate), OUTCOME. The right
+  leaf is who and what is in it: PLACE, CAST, HANDOUTS, ITEMS, TESTS, RUIN & GLORY, HAZARDS (only for a scene with a place
+  and picks), FIGHT (`entryLine`: an entry's name, count, Profiles and "scaled", never the id) and EXITS (`→ 04 · THE
+  DEAL`, or `→ NO SCENE YET`). Each part is a `StorySection` with a ✎ pencil that opens the `BeatEditor` on just that
+  part, and a part with nothing yet still shows, so it can be started from the page. The pencils: GOAL, READ ALOUD, GM
+  NOTES, OUTCOME, EXITS, TESTS, RUIN & GLORY, FIGHT; PLACE and HAZARDS open `place`, and CAST, HANDOUTS and ITEMS open
+  `cast`.
+  - **ON ENTRY**: the place, each NPC and each handout shows a `REVEALED` / `HIDDEN` chip and an ON ENTRY tick. A tick
+    saves the scene at once (`codex.save { kind: "beat" }` with `onEntry` toggled, `stripBeat`), and `beat.begin` shows
+    the ticked entries to the phones when the scene begins ([backend.md](backend.md)). Items have no tick: `ItemGive` (GIVE
+    TO an Agent or TAKE BACK) sits on the row.
+  - HAZARDS (`components/scene-hazards/scene-hazards.tsx`, issue #49), closed on a plate: the hazards the scene picked from
+    its location (rules-flow §11.95), each through `hazardView` and `HazardChips` (Tests as chips with `testTitle` and
+    `dnLabel`, a DN of the Tier plus n worked out from the campaign's Tier, Conditions as rule links, Threats with their
+    stat block in a fold, the book's notes, the printed text in a fold). SPOTTED saves the beat (`stripBeat`, `hazards`
+    with the flag flipped) and adds the "lower the DN" reminder: the app applies no number (§11.92)
+  - TESTS (`components/scene-tests/scene-tests.tsx`): the DN TABLE, SHIFTING and FAIL FORWARD rule links, then one
+    `<details>` per Test whose summary is what rolls (`testTitle`), the DN (`dnLabel`: NO DN on an Opposed Test, DN · GM
+    SETS on one without a DN yet, §11.75), EACH, the Shift count and, on a Fear or Corruption Test, the Ruin reminder
+    (`ruinOnFailure`, Core p.320); inside are the purpose, SHIFT 1, 2… and both outcomes, and CALL TO THE PHONES (§3.0)
+  - RUIN & GLORY (`components/scene-pools/scene-pools.tsx`, issue #40): the RUIN, GLORY, COMPLICATIONS and COMBAT
     COMPLICATIONS rule links, then each Ruin and Glory line with a +N button and each spend with SPEND N. A tap sends
     `pool.adjust` and reports in the message line, with what was lost at the pool's maximum (`poolMax`, Core pp.164,
     320). A spend the pool can't pay is disabled (`canSpend`): the server floors at 0 and would undercharge
-  - a summary of its prepared encounter: an entry's label, or the threat's name from the bestiary, never the id
-- **Beat controls:**
-  - ↑ / ↓ swap a beat with its neighbour and send the full `ids` order as `beat.reorder`.
-  - EDIT opens the beat editor.
-  - RUN SCENE, shown when the beat has a prepared encounter, sends `beat.startEncounter` and jumps to TRACK through
-    `onRun`.
-  - SET ACTIVE, shown when there is no prepared encounter, sends `beat.begin`: the scene becomes the one being played,
-    the one before is marked done, and its ON ENTRY picks reach the phones.
-  - DONE and SKIP set the status to done or skipped.
+- **Controls** under the spread:
+  - ▶ RUN THIS SCENE (▶ BACK TO THIS SCENE once it is the active one) sends `beat.begin`, reports
+    `<TITLE> BEGUN · n REVEALED`, and on success `onRun` switches to SCENE.
+  - EDIT opens the whole `BeatEditor`.
+  - ↑ / ↓ swap the scene with its neighbour and send the full `ids` order as `beat.reorder`.
+  - DONE and SKIP set the status to done or skipped. Only `beat.begin` makes a scene active.
   - PRINT CARDS (§5.1) prints tents for the fielded Agents (`fieldedAgentIds`) and every prepared combatant, a Threat
     card per encounter row, and the scene's items. PRINT HANDOUTS, shown when the scene has handouts, prints them as
     props, one to a page (issue #204).
   - Each status change is a `codex.save { kind: "beat" }` with `stripBeat(b)`: the beat without `id` and `order`,
     which the server owns.
-- **`BeatEditor`** has these fields:
+- **Moved from PREP.** RUN SCENE (start the prepared encounter, then the tracker) is now START FIGHT in SCENE's IN THIS
+  SCENE. SET ACTIVE is RUN THIS SCENE, or BEGIN on SCENE. The scene list is the BOARD. Hazards and the Ruin & Glory taps are
+  also on SCENE's page, and Tests are called from its TESTS rows.
+- **`BeatEditor`** is reached from EDIT (every part) or a pencil, which passes `section` (`BEAT_SECTIONS`): the editor then
+  shows only that part, with no TITLE or type and no DELETE (SAVE SCENE and CANCEL stay), and `Story` remounts it per scene
+  and section. Its fields:
   - title
   - type (`BeatType.options`)
   - goal, read aloud, GM notes and outcome (`BEAT_TEXT_FIELDS`, each with its hint and page)
@@ -609,8 +715,8 @@ The tests are in `lib/command/command.test.ts`.
   - the prepared encounter entries: the threat through a `ThreatPicker` (§5), count (at least 1), a MOB checkbox, a marker and a `VisibilitySelect` (hidden for ambushers and reinforcements). + THREAT adds a row through the same picker, and + NEW CUSTOM THREAT offers `ThreatStarts` (CLONE FROM BESTIARY, BLANK, QUICK) and then `ThreatBuilder` inside the scene: on CREATE the stat block joins CODEX › THREATS and this encounter, and the scene's unsaved changes stay. While a stat block is open, SAVE SCENE and the button itself wait for its CREATE or CANCEL. Disabled at `CUSTOM_THREAT_CAP`
 
   Above the entries, `BudgetPanel` (`components/budget-panel/`) draws `BudgetLines` (§5) for the prepared roster
-  (`rosterTally`). It is sized for the Agents a fight would actually add — the active ones, which `Prep` passes as
-  `agents` (`activeCharacterIds(state.access).size || state.characters.length`) with the campaign's Tier — and a
+  (`rosterTally`). It is sized for the Agents a fight would actually add — the active ones, which `Story` passes as
+  `agents` (`agentsInFight(state)`: the seated ones, else every character) with the campaign's Tier — and a
   FORTIFIED toggle doubles every target (Threat Assessment p.8, rules-flow §11.82). FORTIFIED is editor state, not
   stored on the beat.
 - **`ScenePicker`** (`components/scene-picker/scene-picker.tsx`, + SCENE FROM A TABLE beside + NEW SCENE, shown when
@@ -624,7 +730,7 @@ The tests are in `lib/command/command.test.ts`.
   - Tapping an event previews it: its read-aloud, its GM notes with the cite, and its Tests as the scene will get
     them.
   - MAKE THIS SCENE sends `codex.save { kind: "beat" }` with `presetScene({ table, row })` and this adventure's id. The
-    scene goes last, and PREP shows SCENE CREATED.
+    scene goes last, and STORY shows `SCENE CREATED: <NAME>`.
   SAVE SCENE creates or updates the beat, and DELETE sends `codex.delete`. A refusal keeps the editor open with the
   error shown inline.
 
@@ -696,17 +802,18 @@ Skill or Attribute and a DN (`NumberInput`), and what happens. A book entry stor
   game's name, then DELETE FOREVER, `campaign.delete { name }`). A deleted game's ack makes `GmApp` show `GAME DELETED`
   and `router.push("/")`, which closes the socket before the server kicks the room (about 200 ms later), so the
   disconnect never shows as NO SIGNAL.
-- **PARTY › SESSION › NEXT SESSION** (`party/components/next-session`, issue #197): a native `datetime-local` (this
-  tablet's zone, sent as UTC by `fromLocalInput`) and PLACE, SAVE and CLEAR (the date only), all `campaign.update`.
-  PARTY keys it on the stored date and place, so a change from elsewhere (START SESSION clears the date) resets the form.
+- **PARTY › session band › NEXT SESSION** (`party/components/next-session`, issue #197): a dialog with a native
+  `datetime-local` (this tablet's zone, sent as UTC by `fromLocalInput`) and PLACE, SAVE and CLEAR (the date only), all
+  `campaign.update`. The band keys it on the stored date and place, so a change from elsewhere (START SESSION clears the
+  date) resets the form; a saved date closes it.
   Members' lobby cards show the date too, drawn only in the browser (`useSyncExternalStore`), since the server's zone
   isn't the viewer's.
-- **PARTY › SESSION:** an optional TITLE beside START SESSION names the session as it starts (`session.start { title }`,
-  checked with `SessionTitle`, issue #175). END SESSION WITHOUT XP (`session.abandon`, confirmed) sits beside END SESSION, and
-  `session-history` is the session journal (issue #195): every session, newest first, each with EDIT for its TITLE (issue #175, shown as
+- **PARTY › session band** (§3.5): an optional TITLE beside START SESSION names the session as it starts (`session.start {
+  title }`, checked with `SessionTitle`, issue #175). END SESSION WITHOUT XP (`session.abandon`, confirmed) is in END SESSION…'s
+  dialog, and `session-history`, under SESSION JOURNAL · n at the foot of PARTY, is the session journal (issue #195): every session, newest first, each with EDIT for its TITLE (issue #175, shown as
   `SESSION 3 · THE FORD` here, in the running session's line and on INTEL), its RECAP (once ended) and the GM's NOTES (`session.edit`, checked with `SessionJournal`; notes closed on a plate), and DELETE LAST
   SESSION (`session.delete`, confirmed; the server's notice, that the XP it awarded stays, is shown).
-- **ADMIN chip** in the GM header when `me.admin` (`GmApp`'s `admin` prop, from `/api/campaigns/:id/me`): a Clerk admin
+- **ADMIN chip** in the GM header, after the seals, when `me.admin` (`GmApp`'s `admin` prop, from `/api/campaigns/:id/me`): a Clerk admin
   acting as GM at a table where they hold no seat.
 - `ui/confirm-action` is the app's confirm for these: the button turns into the question with CONFIRM and CANCEL.
 
@@ -728,7 +835,7 @@ caller, or a 401 or 403 (not an admin), to `/`. `AdminView` has two tabs, USERS 
 
 `Setup`.
 - **SETUP checklist** (`SetupPanel`): the Core Rulebook's eleven set-up steps, each ticked from the campaign
-  (`lib/setup`, nothing stored). GO TO opens the tab a step is done in (CODEX on the right kind, PARTY for ASCEND,
+  (`lib/setup`, nothing stored). GO TO opens the tab a step is done in (CODEX on the right kind, STORY for scenes, PARTY for ASCEND,
   AGENTS and SESSION) and scrolls to its panel.
 - **NAME panel:** the campaign's name, RENAME sends `campaign.update { name }` (checked with `CampaignName`, issue
   #175). Every seat's header follows the state broadcast; DELETE FOREVER then asks for the new name.
@@ -739,43 +846,71 @@ caller, or a 401 or 403 (not an admin), to `/`. `AdminView` has two tabs, USERS 
   when they'd make one too big to import.
 - **ARCHIVE:** shelves the game, or deletes an archived one (§3.4b).
 
-### 3.5 PARTY: session, table access, kill team
+### 3.5 PARTY: session, kill team, table access
 
-`Party`.
-- **Session panel:**
-  - While a session is open: pick XP from `XP_AWARDS` (8 / 10 / 12, `DEFAULT_XP` 10) or type a number, write the
-    recap (players see it), then END SESSION (`session.end { xp, recap }`).
-  - Otherwise: START SESSION n (`session.start`).
+`Party`: the session band, the Agents as one-button cards, and one dossier sheet for the Agent tapped. What PARTY does
+rarely sits behind MORE. A message line at the top (`role="status"`, amber, red with `!` on a refusal) reports what each
+control did, with the server's `notices` (who crossed a Rank on `session.end`, whether the group may Ascend, Core pp.146–147).
+
+- **Session band** (`session-band`, `#session`), one wrapping row:
+  - `SESSION n · LIVE · <TITLE>`, or NO SESSION RUNNING with the reset reminder (Wrath → 2, Glory → 0, Ruin → the number of
+    players, p.162) and, until one starts, an optional TITLE field (`session.start { title }`, `SessionTitle`, issue #175).
+  - NEXT: `<date · place>` or NEXT SESSION: SET DATE, a quiet button that opens `next-session` in a dialog (§3.4b).
+  - The one primary. No session: START SESSION n (`session.start`). Open: END SESSION… opens a dialog with XP EACH from
+    `XP_AWARDS` (8 / 10 / 12, `DEFAULT_XP` 10) or typed, the RECAP (players see it), END SESSION (`session.end { xp, recap }`)
+    and END SESSION WITHOUT XP (confirmed, `session.abandon`).
   - What the pools reset to is covered in [game-logic.md](game-logic.md).
-- **TABLE ACCESS panel** (from `state.access`, which only the GM receives in full):
-  - ROOM QR (`RoomInvite`, also on NEW CAMPAIGN's PLAYERS step) sends `invite.create { mode: "room", hours:
-    ROOM_INVITE_HOURS }` (12) and shows `/invite/<code>` as a QR.
-    Players scan it, sign in or join as a guest, and claim an agent.
+- **ACTIVE AGENTS · n** (`.party-head`) has three buttons:
+  - ROOM QR (`RoomInvite compact`, also on NEW CAMPAIGN's PLAYERS step) sends `invite.create { mode: "room", hours:
+    ROOM_INVITE_HOURS }` (12) and shows `/invite/<code>` as a QR. Players scan it, sign in or join as a guest, and claim an
+    agent.
+  - RESPITE… (`respite-sheet`, Core p.197): every active Agent ticked, and APPLY · n AGENTS sends one `character.respite`
+    for each tick. The sheet closes only when every one was accepted; a refusal (a Dying Agent) names who.
+  - MORE (`more-panel`, with its own CLOSE): ADD AGENT (`character.create { name }`) and NEW FROM BUILDER; PRINT TENTS, with
+    ACTIVE · n and IN RESERVE · n (§5.1); TABLE SCREEN (SCREEN QR: `screen.issue`, a read-only guest seat for the screen in
+    the middle of the table; REVOKE SCREENS: `screen.revoke`); and TABLE ACCESS (a fold, below).
+- **TABLE ACCESS** (`table-access`, from `state.access`, which only the GM receives in full):
   - The open invites: ROOM or the character's name, uses, ACCOUNTS ONLY when guests aren't allowed, the expiry, and
     REVOKE (`invite.revoke`). Anyone already seated keeps their seat.
   - SIGNED IN: each member's name and seat (GM, the character, or NO AGENT). Players have REMOVE (`member.remove`),
     which takes the seat away and disconnects them.
-- **Kill team list:** for each character, the name, archetype, `pcStatus` chips, XP, PLAYED BY <member> or OPEN SEAT,
-  and a line of derived stats. The per-character buttons:
+- **Roster:** the active Agents as a grid of `AgentCard`s, IN RESERVE · n as a fold (open when nobody is active), the
+  ASCENSION fold (`AscendPanel`, always on the page: SETUP's Tier step scrolls to `#ascend` and opens the fold) and the
+  SESSION JOURNAL · n fold (§3.4b).
+- **Agent card** (`agent-card`): one button (`<NAME>, open dossier`) and nothing inside it is interactive. It shows the
+  portrait, name, archetype, the seat (`seatLine`: SEATED · ACCOUNT, SEATED · GUEST QR or OPEN SEAT), Wounds and Shock as
+  draining `Track`s with what's left `n/max` (as the tracker), WRATH, CORRUPTION, WEALTH, XP, a chip per Condition, the `pcStatus` chips and
+  `n OBJECTIVES · m DONE` (`lib/party-view`).
+- **Dossier** (`dossier`, a side sheet from the right edge through `PartyDialog`, a native modal `<dialog>`): the archetype,
+  seat and RANK, then four tabs whose labels carry a value (`STATUS`, `GEAR · WEALTH n`, `ADVANCE · n XP`, `SEAT`). It is
+  keyed by the Agent, so another one opens on STATUS. A refusal shows at the top of the sheet. Every control the old card
+  had is in a tab:
 
-| Button | Sends | Notes |
-|---|---|---|
-| INVITE | `invite.create { mode: "character", characterId, hours: CHARACTER_INVITE_HOURS }` (168) | A single-use link to `/invite/<code>` for that character, shown as a QR |
-| GUEST QR | `token.issue` | A no-account guest QR to `/join/<token>` |
-| LOAD STATS (JSON) | `character.update { stats }` | The pasted JSON goes through `CharacterStats.parse(JSON.parse(…))` in a `try`; a parse error shows on the message line |
-| RESPITE | `character.respite` | |
-| REQUISITION | `character.requisition` | Opens `RequisitionForm`: the ITEM field searches the catalogue (`<datalist>`); an exact name fills kind (`requisitionKindOf`), Value, Rarity and Keywords, shows the page and effect, and sends `wargearId`. Otherwise kind (WARGEAR / AMMO / GRENADES), item, Value, Rarity, item Keywords, a ranged weapon's ammo type. It shows the DN, the dice to roll (Influence + bonus dice), the matched Keywords, and refuses when there's no match or this session's Test is used. The GM enters the Icons, Wealth spent (only up to the shortfall) and a Complication, then RECORD |
-| +1 WEALTH / −1 WEALTH | `character.supply { wealth: ±1 }` | The GM's award (Core p.206). The line above the buttons shows Wealth, Ammo and Conditions |
-| +1 AMMO / −1 AMMO | `character.supply { ammo: { kind, delta: ±1 } }` | AMMO TYPE field with the `AMMO_TYPES` datalist; +1 starts a new type, −1 at 0 drops it (§11.57). The type stays filled for repeat taps |
-| ±COND | `character.update { conditions }` | Toggles a Condition on the character, also outside a fight (the tracker reaches only combatants) |
-| REVOKE GUEST QR | `token.revoke` | Revokes the character's guest tokens and kicks guest sockets; a signed-in member keeps their seat |
+| Tab | Control | Sends | Notes |
+|---|---|---|---|
+| STATUS | WOUNDS, SHOCK, WRATH | `character.adjust { wounds \| shock \| wrath: ±n }` | A tapped value (`TapValue`): Wounds and Shock show what's left, as on the card and the tracker. A tap opens a pad under it with two steps (`PAD_STEPS`: HEAL 1 / DEAL 1, RECOVER 1 / DEAL 1 for Shock, −1 / +1 for the rest) and a signed number (`+3` deals, `-2` heals; a bare number adds), APPLY and DONE. It stays open for repeat taps. The same damage rules as the tracker's taps (pp.193–199) |
+| STATUS | CORRUPTION | `character.corrupt { delta }` | The GM's plain change (Core p.286), a tapped value |
+| STATUS | CONDITIONS chips (× removes), + CONDITION | `character.update { conditions }` | Toggles a Condition on the character, also outside a fight |
+| STATUS | OBJECTIVES | `character.objectives` | The GM's private list for this Agent: the whole list is sent each time |
+| STATUS | CORRUPTION TEST | `character.corrupt` through `CorruptionTest` | A failed Test's Icons, the server adds the level modifier, the gain and +1 Ruin |
+| STATUS | RESPITE | `character.respite` | This Agent only |
+| GEAR | WEALTH | `character.supply { wealth: ±n }` | A tapped value: the GM's award (Core p.206) |
+| GEAR | AMMO TYPE field, +1 AMMO / −1 AMMO | `character.supply { ammo: { kind, delta: ±1 } }` | The `AMMO_TYPES` datalist; +1 starts a new type, −1 at 0 drops it (§11.57). The type stays filled for repeat taps. The line above lists what the Agent has |
+| GEAR | REQUISITION | `character.requisition` | Opens `RequisitionForm`: the ITEM field searches the catalogue (`<datalist>`); an exact name fills kind (`requisitionKindOf`), Value, Rarity and Keywords, shows the page and effect, and sends `wargearId`. Otherwise kind (WARGEAR / AMMO / GRENADES), item, Value, Rarity, item Keywords, a ranged weapon's ammo type. It shows the DN, the dice to roll (Influence + bonus dice), the matched Keywords, and refuses when there's no match or this session's Test is used. The GM enters the Icons, Wealth spent (only up to the shortfall) and a Complication, then RECORD |
+| GEAR | CARRIED | none | The gear list as written |
+| ADVANCE | XP, RANK, `n XP TO SPEND` | none | Rank follows this character's own XP (Core p.146); XP to spend is what advancement hasn't bought yet, shown once a build exists |
+| ADVANCE | MUTATIONS | `character.mutate` / `character.unmutate` | `MutationRoll` over the Mutation tables (`presets.mutations`) |
+| ADVANCE | EDIT (OPEN DRAFT when a player sent one) | a link to `/c/<id>/build/<characterId>` | The one editor (issue #18) |
+| ADVANCE | SHEET | `SheetDialog` | The play sheet exactly as the player sees it, live |
+| SEAT | INVITE | `invite.create { mode: "character", characterId, hours: CHARACTER_INVITE_HOURS }` (168) | A single-use link to `/invite/<code>` for that character, shown as a QR |
+| SEAT | GUEST QR | `token.issue` | A no-account guest QR to `/join/<token>` |
+| SEAT | REVOKE GUEST QR | `token.revoke` | Revokes the character's guest tokens and kicks guest sockets; a signed-in member keeps their seat |
+| SEAT | LOAD STATS (JSON) | `character.update { stats }` | The pasted JSON goes through `CharacterStats.parse(JSON.parse(…))` in a `try`; a parse error shows on the message line |
 
-Every code (room, invite, guest) becomes a `QR_SIZE` (320px) PNG through `qrImage` (`lib/qr`), built from `shareOrigin`
-with `qrcode`, using `TOKENS.ink` modules on `TOKENS.vellum`, and shows it full-screen in `QrDialog` with the URL written
-underneath. The code is returned only once, so a closed dialog can't be reopened; make a new one.
-
-- **ADD AGENT** sends `character.create { name }`.
-- **PRINT TENTS**, beside ACTIVE AGENTS and IN RESERVE, prints a tent card for each Agent in that group (§5.1).
+Every code (room, invite, guest, screen) becomes a `QR_SIZE` (320px) PNG through `qrImage` (`lib/qr`), built from
+`shareOrigin` with `qrcode`, using `TOKENS.ink` modules on `TOKENS.vellum`, and shows it full-screen in `QrDialog` with the
+URL written underneath (inside the dossier for SEAT's, since its modal covers the page). The code is returned only once, so
+a closed dialog can't be reopened; make a new one.
 
 ---
 
@@ -789,7 +924,19 @@ underneath. The code is returned only once, so a closed dialog can't be reopened
   - `RND nn · <NAME> ACTING` or `<SIDE> PICK`, with `· YOU: DONE` added once the player has acted
 - **Vibration:** when it becomes the player's turn, `navigator.vibrate(TURN_VIBRATION)` buzzes once. This is a
   `useEffect` on `myTurn`, with a ref so it fires only on the change.
-- **Tabs** (`PLAYER_TABS`: SHEET, FIGHT, INTEL) sit in a sticky bar at the bottom.
+- **Tabs** (`PLAYER_TABS`: SHEET, FIGHT, INTEL) sit in a sticky bar at the bottom. INTEL's reads `n NEW` (`.pl-tab-new`)
+  while anything on it is new.
+- **NEW** (`hooks/use-seen`, `lib/seen`): the badge and a `NEW` chip on each new row of INTEL.
+  - **What counts:** a handout, known person or known location in this phone's own snapshot (so only what the GM has
+    revealed) whose key (`handout:<id>`, `npc:<id>`, `location:<id>`) the phone hasn't seen. Its picture has its own key
+    (`picture:<imageId>`), so a picture the GM shows later on an entry already seen makes it new again; an entry with a new
+    picture counts once.
+  - **Memory:** the keys seen, per campaign, in `localStorage` (`wg:seen:<campaignId>`), read through
+    `useSyncExternalStore` so a second tab follows. Every read and write is guarded: with no storage the badge stays off.
+  - **First visit:** a device with no record of the campaign stores everything already revealed as seen (the baseline,
+    `shownKeys`), so a new phone isn't flooded.
+  - **Marked seen** when the player leaves INTEL for another tab (`markSeen` in `handleTab`): INTEL lists everything inline,
+    so an entry can't be opened one by one, and the chips stay for the whole visit.
 - **A called Test** (`components/player/test-prompt/test-prompt.tsx`, issue #191), over every tab while the GM's call
   names this Agent: the Test and its DN (unless hidden; a Corruption DN with this Agent's level modifier), YOUR POOL
   from `testPool`, the Icon, Wrath Die and Wrath reroll reminders as `RuleIdLink`s (and Fear's or Corruption's cost),
@@ -800,7 +947,7 @@ underneath. The code is returned only once, so a closed dialog can't be reopened
 |---|---|---|---|
 | SHEET | `components/sheet/sheet.tsx` (+ `components/vital/vital.tsx`) | Name; archetype, species and Tier; keywords; `pcStatus` chips; `Vital` cards for Wounds and Shock (`remaining`: what's left and a draining bar), Wrath and PARTY GLORY, all read-only; the GM's Ruin; derived traits (DEF RES RSLV CONV SPD INF PAS); Conditions, read-only (each name opens its rule); armament (`WeaponLine` with `effectiveStrength`, its traits open their rules) and armour, each with its `UpgradeRow` at a table (fit and remove, `host` weapon or armour) and the notes a fitted upgrade leaves to the GM; skill totals (`skillTotal`); abilities; talents; gear; SUPPLY (`SupplyRow` lines for Wealth and each Ammo type) | Spending their own Wealth and Ammo (−1, `character.supply`; × on an empty type removes it). Granting Wealth or Ammo, Conditions, Wounds, Shock, Wrath, Glory and RESPITE are GM only |
 | FIGHT | `components/fight/fight.tsx` | Two tables, as on the tracker: one per `Side.options`, each under a `.tbar` (crimson AGENTS, iron THREATS) with its `acted/total ACTED`. Every combatant is a card (`div.item.agents` / `div.item.threats`, outlined in `--side-agents` blue or `--side-threats` orange): `▶` and a crimson ring on the one acting, dimmed once done, a Wounds bar that drains as they're hurt, with no number (mobs show `×count OF start`), threat status chips, and Conditions (each a `RuleLink`). A threat card's header is a `button.item-head` with `aria-expanded` that toggles its `StatBlock`, or `DATA RESTRICTED BY GM.` while it's `bars`; a hidden threat isn't there at all. A PC card's header is plain | Nothing |
-| INTEL | `components/intel/intel.tsx` | The codex search box on top (`ui/codex-search`, issue #198), whose hits replace the page while it holds text, then NEXT SESSION once the GM has set one (`Sat 12 Oct, 18:00 · Mike's flat` in the phone's own zone, `lib/next-session`, with ADD TO CALENDAR to `next.ics`; issue #197), MISSION (framework and patron), PREVIOUSLY (every session with a recap, newest first: the latest open, older ones folded in a `<details>`; issue #195), handouts (newest `revealedAt` first, each drawn in its style by `HandoutDoc`), known persons, known locations (nested by `placeTree`, indented), each with its picture once the GM shows it (issue #199) | Nothing |
+| INTEL | `components/intel/intel.tsx` | The codex search box on top (`ui/codex-search`, issue #198), whose hits replace the page while it holds text, then NEXT SESSION once the GM has set one (`Sat 12 Oct, 18:00 · Mike's flat` in the phone's own zone, `lib/next-session`, with ADD TO CALENDAR to `next.ics`; issue #197), MISSION (framework and patron), PREVIOUSLY (every session with a recap, newest first: the latest open, older ones folded in a `<details>`; issue #195), handouts (newest `revealedAt` first, each drawn in its style by `HandoutDoc`), known persons, known locations (nested by `placeTree`, indented), each with its picture once the GM shows it (issue #199), and a `NEW` chip on whatever is new (above) | Nothing |
 
 **Hidden until the GM reveals it.** The filtering happens on the server (`toPlayerView` / `toPlayerCodex` in
 `@wg/shared`), not in these components:
@@ -833,21 +980,21 @@ else. The sheet shows every refusal in its `Refusal` banner. See
 | `seal/seal.tsx` `Seal` | `value`, `pool: Pool`, `size?` | A party pool as a wax seal (brass Glory, crimson Ruin), `role="img"` labelled `<value> <pool>` |
 | `theme-toggle/theme-toggle.tsx` `ThemeToggle` | `className?` | The day/night switch (§7): flips `data-theme` on `<html>` and stores it; `constants.ts` holds `THEME_KEY` and the pre-paint `THEME_SCRIPT` |
 | `stat-block/stat-block.tsx` `StatBlock` | `t: Threat`, `tier?` | A threat stat block laid out as printed: an iron title bar with the page cite (`threatCite` from `@wg/shared`), the Tier/Threat grid with `tier` highlighted, keywords, attributes, DEF/WND/SHK/RES/SPD, skills, then BONUSES, ABILITIES (with weapons), DETERMINATION, Conviction/Resolve/Size, Personal Ruin and OPTIONS bands |
-| `threat-picker/threat-picker.tsx` `ThreatPicker` | `bestiary: Threat[]`, `tier`, `onPick`, `value?`, `label?` (`+ THREAT…`), `className?`, `disabled?` | The way into the bestiary, GM only: the trigger names the picked threat, and opens a native modal `dialog.picker` with a search over the name and keywords, faction chips, T/E/A/M chips for the class printed at this campaign's Tier (Core p.323) and a book select (`sourceName`, so a custom threat reads "Custom"). Only facets the loaded bestiary holds get a chip. The trigger disables itself with no bestiary loaded, and when the caller can't act on a pick (the custom-threat editor at its cap, issue #43). Each row shows the name, a class chip, the faction (`FACTION_LABEL`) and `threatCite`; a tap picks and closes. At most `PICK_LIMIT` (50, `constants.ts`) rows, then "N more, narrow the search", and "Nothing matches." when none do. Used by TRACK's add row and by every beat-editor encounter row |
+| `threat-picker/threat-picker.tsx` `ThreatPicker` | `bestiary: Threat[]`, `tier`, `onPick`, `value?`, `label?` (`+ THREAT…`), `className?`, `disabled?` | The way into the bestiary, GM only: the trigger names the picked threat, and opens a native modal `dialog.picker` with a search over the name and keywords, faction chips, T/E/A/M chips for the class printed at this campaign's Tier (Core p.323) and a book select (`sourceName`, so a custom threat reads "Custom"). Only facets the loaded bestiary holds get a chip. The trigger disables itself with no bestiary loaded, and when the caller can't act on a pick (the custom-threat editor at its cap, issue #43). Each row shows the name, a class chip, the faction (`FACTION_LABEL`) and `threatCite`; a tap picks and closes. At most `PICK_LIMIT` (50, `constants.ts`) rows, then "N more, narrow the search", and "Nothing matches." when none do. Used by the FIGHT layer's add row and by every beat-editor encounter row |
 | `threat-builder/threat-builder.tsx` `ThreatBuilder` | `start` (`{ slug, draft }`, slug null for a new one), `wargear`, `ruinActions`, `send`, `onSaved(threatId)`, `onCancel` | One custom stat block being written (issue #43), mounted fresh per open: `ThreatForm` (its child, `components/threat-form`), the refusal line, CREATE or SAVE (busy while `threat.save` is in flight, CANCEL with it) and CANCEL. Checks `CustomThreatData` first (`useFieldErrors`, NAME and KEYWORDS marked), then `onSaved(customThreatId(slug))`. Beside it, `constants.ts` holds `ThreatDraft` and the drafts (`blankDraft`, `cloneDraft`, `draftOf`, `quickDraft`), `ruinAbility` and `RUIN_ACTIONS_TABLE`, and `hints.ts` holds `threatHints`. Used by CODEX › THREATS and a scene's + NEW CUSTOM THREAT |
 | `threat-starts/threat-starts.tsx` `ThreatStarts` | `bestiary`, `tier`, `disabled` (the cap), `onStart(draft)` | The three ways to start a custom stat block, as a fragment for the caller's row: CLONE FROM BESTIARY (a `ThreatPicker`, `cloneDraft` with the source's cite), BLANK, and QUICK (TIER n) from `quickRow` |
 | `gm/codex/components/threat-editor/threat-editor.tsx` `ThreatEditor` | `customThreats`, `bestiary`, `wargear`, `ruinActions`, `tier`, `send` | The THREATS sub-tab of CODEX (issue #43): the campaign's own stat blocks with EDIT, CLONE and DELETE, a `PrintPick` tick on each row and PRINT N for the ticked ones (§5.1), and two ways to start one — CLONE FROM BESTIARY (the picker, filling the form with a copy whose `note` records the source) BLANK, or QUICK (Tier N), which fills the eight derived numbers from Core p.326's row (`quickDraft`, `quickRow`) and leaves the Attributes to the GM (§11.110). `ThreatForm` is the stat block in printed order (TA p.5) with a `–` toggle on every field that may print one (Core p.323) and weapons filled from the catalogue through `threatWeapon`; `threatHints` warns and never blocks (§11.109). Under the abilities, `+ RUIN: …` adds one of Threat Assessment p.7's five Additional Ruin Actions as a RUIN ability with its cite (`ruinAbility`), from the pool table GmApp already holds (`RUIN_ACTIONS_TABLE` on `/scene-presets`), so no second copy of the text exists. The three starts are `ui/threat-starts`, and the form, its refusal line and CREATE/SAVE are `ui/threat-builder` (rows below); a scene's + NEW CUSTOM THREAT shares both. Saving sends `threat.save`, which re-parses it server-side and returns the slug (`customThreatId`) |
-| `threat-scale/threat-scale.tsx` `ThreatScale` | `threat?: Threat`, `tier`, `agents`, `asMob?`, `profiles`, `scale`, `onChange` | The GM's two levers on a threat before it joins: a chip per Tier 5 Threat Profile (`PROFILE_CHIP` in `constants.ts`: STRENGTH, CUNNING, WITHIN, with the full name, cite and effect in each title, VoA p.126) and a SCALE toggle that prints what it would add (`scaleBy`, Core p.326) and says beside itself that it adds nothing on a Troop or a Mob, while still showing a tick the GM has set there (§11.107). Used by the beat editor's encounter rows and TRACK's add row |
+| `threat-scale/threat-scale.tsx` `ThreatScale` | `threat?: Threat`, `tier`, `agents`, `asMob?`, `profiles`, `scale`, `onChange` | The GM's two levers on a threat before it joins: a chip per Tier 5 Threat Profile (`PROFILE_CHIP` in `constants.ts`: STRENGTH, CUNNING, WITHIN, with the full name, cite and effect in each title, VoA p.126) and a SCALE toggle that prints what it would add (`scaleBy`, Core p.326) and says beside itself that it adds nothing on a Troop or a Mob, while still showing a tick the GM has set there (§11.107). Used by the beat editor's encounter rows and the FIGHT layer's add row |
 | `attitude-chip/attitude-chip.tsx` `AttitudeChip`, `attitudeLabel` | `attitude: Attitude` | An NPC's Attitude with its DN modifier ("HOSTILE · +4 DN", Core p.168); none for Neutral, red when it raises the DN. On the GM's NPC rows and the player's KNOWN PERSONS (rules-flow §11.89) |
 | `budget-lines/budget-lines.tsx` `BudgetLines` | `tally: RosterTally`, `budget: EncounterBudget` | A roster against Building Encounters (Threat Assessment p.8): TROOPS, OF THOSE IN MOBS (a target of one reads as needing 2, Core p.324), ELITE OR ADVERSARY, MONSTROUS (no target in the book) and ENEMIES ("N tracked · M models"), each with UNDER / ON TARGET / OVER in words as well as colour, plus a note for entries the loaded bestiary can't class |
 | `rule-item/rule-item.tsx` `RuleItem` | `r: RuleEntry`, `open?` | One rules entry as a `<details>`: name (a stat's `abbr` first), kind · cite, gist, and the book text inside. Used by the RULES tab, the stat legend and the rule dialog; `open` starts it expanded |
 | `rules-provider/rules-provider.tsx` `RulesProvider`, `useRules()` | `rules: RuleEntry[]`, `children` | Wraps `GmApp` and `PlayerApp`. Builds a `ruleKey` → entries map once, over `LINKED_RULE_KINDS` only (Conditions, weapon and armour traits; not actions or stat block terms). It owns one native modal `<dialog>` that shows the entries as `RuleItem open` with CLOSE. Esc or a backdrop tap closes it, and focus returns to the tapped word. `useRules()` returns `{ find(name), open(entries) }` and throws outside the provider |
 | `rule-link/rule-link.tsx` `RuleLink` | `name`, `children?` (defaults to `name`) | A trait or Condition as the data spells it (`Blast (6)`, `Inflicts (On Fire)`). If `find` resolves it, it's a `button.rule-link` (dotted underline, 32px hit area, `aria-label="Rule: <name>"`) that opens the dialog; otherwise it renders as plain text. `RuleIdLink` (`id`, `children`) does the same for an entry that isn't a trait, by id (the scene Tests' DN TABLE, SHIFTING, FAIL FORWARD). Needs a `RulesProvider` above it |
-| `mentions/mentions-provider.tsx` `MentionsProvider`, `useMentions()` | `codex`, `missing` (`(removed)` on the GM's tablet, `(unknown)` on a phone), `onGoTo?` (the GM's only), `children` | Codex mentions (issue #200, campaign-model.md §Mentions). Wraps `GmApp` and `PlayerApp` over the seat's own snapshot. Lists every linkable entry (NPCs first, so an NPC wins a shared name), builds the auto-linker once (`nameLinker`) and owns one `dialog.rule-dialog` that peeks at an entry (`components/peek`: its CODEX fields, GM-only ones on a plate). A link inside the peek swaps the entry in place. With `onGoTo` the peek has GO TO (issue #198): `GmApp` opens the entry's tab remounted on it (CODEX on its kind, search cleared and places unfolded; PREP on a scene's adventure, `initialSceneId`), then opens and scrolls to its `#entry-<id>` row |
-| `mentions/mentions.tsx` `Mentions` | `text`, `self?` (the entry the text belongs to) | A codex text with its `@[kind:id]` tokens and plain entry names as `button.rule-link`s showing the live name. An unresolved token shows `missing`, and an unrevealed entry gets `(HIDDEN)`. The caller keeps its `<pre>`. Used by PREP, CODEX and INTEL |
+| `mentions/mentions-provider.tsx` `MentionsProvider`, `useMentions()` | `codex`, `missing` (`(removed)` on the GM's tablet, `(unknown)` on a phone), `onGoTo?` (the GM's only), `children` | Codex mentions (issue #200, campaign-model.md §Mentions). Wraps `GmApp` and `PlayerApp` over the seat's own snapshot. Lists every linkable entry (NPCs first, so an NPC wins a shared name), builds the auto-linker once (`nameLinker`) and owns one `dialog.rule-dialog` that peeks at an entry (`components/peek`: its CODEX fields, GM-only ones on a plate). A link inside the peek swaps the entry in place. With `onGoTo` the peek has GO TO (issue #198): `GmApp` opens the entry's tab remounted on it (CODEX on its kind, search cleared and places unfolded; STORY on the scene's page, `initialSceneId`), then opens and scrolls to its `#entry-<id>` row |
+| `mentions/mentions.tsx` `Mentions` | `text`, `self?` (the entry the text belongs to) | A codex text with its `@[kind:id]` tokens and plain entry names as `button.rule-link`s showing the live name. An unresolved token shows `missing`, and an unrevealed entry gets `(HIDDEN)`. The caller keeps its `<pre>`. Used by SCENE, STORY, CODEX and INTEL |
 | `mention-field/mention-field.tsx` `MentionField` | `value`, `onChange(value)`, `multiline?`, `id?`, `placeholder?`, `useFieldErrors` marks | A codex text input or textarea. `@` plus letters lists up to `PICK_LIMIT` (8) matching entries under it (`fold`, names that start with the letters first). A tap, or Enter once a letter follows the `@`, writes the token (a bare `@` or an IME composition keeps Enter), and Escape closes the list. Used by CODEX's editor, the scene editor (all but TITLE) and END SESSION's recap |
 | `codex-search/codex-search.tsx` `CodexSearch` | `query`, `onQuery(q)` | The codex search (issue #198): one `type="search"` box ("Search the codex") over the seat's `useMentions().entries`, so the GM finds everything and a phone only what its `toPlayerCodex` holds (blanked GM fields never match). `utils.ts` `searchEntries` folds the query (`lib/fold`) and matches the name, then the Peek's fields (`PEEK_FIELDS`) with mention tokens spelled out as names (`plainMentions`); a body hit carries a one-line snippet around the match. Name hits first, then by name; the hits are grouped by kind with a count, the first `LIST_LIMIT` shown. A hit opens the Peek. `/` focuses the box unless an input has focus. CODEX shows it under the sub-tabs over a list (never over an open editor, whose draft it would drop) and INTEL at the top; while it holds text the hits replace the list below |
-| `weapon-line/weapon-line.tsx` `WeaponLine` | `weapon`, `strength?` | `weaponProfile` (§`lib/`), then each trait as a `RuleLink`. Used by the sheet's ARMAMENT, the tracker's selected character and `StatBlock` (ability and option weapons) |
+| `weapon-line/weapon-line.tsx` `WeaponLine` | `weapon`, `strength?` | `weaponProfile` (§`lib/`), then each trait as a `RuleLink`. Used by the sheet's ARMAMENT, the FIGHT layer's selected character and `StatBlock` (ability and option weapons) |
 | `status-chips/status-chips.tsx` `StatusChips` | `items: string[]` | Upper-cased chips. Anything matching `Slain\|Dead\|Dying` is `.chip.bad` (red), everything else `.chip.warn` (crimson outline) |
 | `status-screen/status-screen.tsx` `StatusScreen` | `text` | Full-screen centred status line (`.center` + `.display`) for loading, access and error states |
 | `print-dialog/print-dialog.tsx` `PrintProvider`, `usePrint()` | `source` (`{ state, codex, threats, wargear }`), `children` | Printed cards and handouts (issues #203, #204, §5.1). Wraps `GmApp` only, so a print follows the screen's gates. `usePrint().print(job)` resolves a `PrintJob` of ids (`printCards`, or `printHandouts` for a job with `handouts`) and opens a modal `dialog.rule-dialog`: the count, the kind's PAPER choices (cards A4 / LETTER under `PAPER_KEY`, handouts A5 / A4 / LETTER under `HANDOUT_PAPER_KEY`, in `localStorage`), BUILD PDF, then DOWNLOAD PDF and OPEN as plain links (iPad Safari blocks a window opened after an `await`), and the "print at 100 %" hint. `utils.ts` `picturesOf` redraws each tent's WebP portrait as a PNG data URL (react-pdf embeds PNG and JPEG only). The blob URL is freed on close |
@@ -870,6 +1017,12 @@ with `bun test lib`.
 | `threat-filter/threat-filter.ts` | `filterThreats(bestiary, facets, tier)`, `ThreatFacets` | The bestiary narrowed for the `ThreatPicker`: the query folds away case and punctuation on both sides (so "tau" finds "T'au") and matches the name or any keyword, and the class facet is the one printed at that Tier (`threatClassAt`, Core p.323) |
 | `fold/fold.ts` | `fold(s)` | A search key: case, punctuation and accents dropped, letters kept (so "tau" finds "T'au" and "é" still narrows). Shared by every name search: the threat filter, the pickers, `@` mentions, `lib/keywords` and the codex search |
 | `command/command.ts` | `parseCommand`, `targetsOf`, `Parsed` | The tracker command line (§3.2) |
+| `scene/scene.ts` | `currentScene(codex)` | The scene being played: the one `active` beat (`beat.begin` keeps it to one), with its adventure and its index; `null` with none. Read by SCENE and the header's `SealButton` |
+| `scene-reveal/scene-reveal.ts` | `findRevealable`, `revealAction`, `undoBegin` | What SCENE sends to show or seal an entry: `revealAction` is a whole-entry `codex.save` with `revealed` set (id and `revealedAt` stripped), and `undoBegin` is the action list that takes a `beat.begin` back (§3.0a) |
+| `fight-delta/fight-delta.ts` | `parseDelta`, `counterKey`, `DIRECTIONS`, `DIRECTION_SIGN` | The delta pad's number: a signed `-3` or `+2`, or a bare one that follows DEAL or HEAL, whole 1–99, else `null`; and which `COUNTER_ACTIONS` key a field and delta are, for the log wording |
+| `story-scenes/story-scenes.ts` | `sceneFixes`, `readiness`, `entryName`, `entryLine`, `tagline`, `exitNumber`, `toggleId` | STORY's words: what a scene lacks (`NO GOAL`, `NO READ-ALOUD`, exits to nowhere) and its `READY ✓` / `n TO FIX`, a prepared entry as a name and count (with its Profiles and "scaled"), a card's tagline, an exit's `nn` and an ON ENTRY pick toggled |
+| `party-view/party-view.ts` | `PAD_FIELDS`, `padAction`, `seatLine`, `objectivesLine` | PARTY's: the action each tapped value sends (`character.adjust`, `character.corrupt` or `character.supply`), an Agent's seat as words and the objectives count on a card |
+| `seen/seen.ts` | `SEEN_KINDS`, `entryKeys`, `shownKeys`, `freshKeys`, `isFresh`, `freshCount` | The player's NEW badge (§4): the keys a snapshot shows, those a phone hasn't seen (none for a device with no record), and the count. `hooks/use-seen` keeps the seen keys in `localStorage` |
 | `vox-lines/vox-lines.ts` | `voxLines(body)`, `VoxLine` | A vox transcript's lines: one starting with a bracketed stamp of up to 24 characters (`[03:12] text`) splits it off; every other line stays as written (issue #204, Decision 3) |
 | `codex-image/codex-image.ts` | `fit`, `shrink`, `uploadImage`, `imageSrc` | A codex picture on its way up (issue #199). `fit` is the drawn size (at most 1024 px on the long side, never enlarged). `shrink` draws it on a canvas as WebP 0.85, or JPEG on vellum where `toBlob` can't make WebP. `uploadImage` posts the bytes and returns `{ id }` or `{ error }`. `imageSrc` is the seat-gated URL |
 | `toggle-set/toggle-set.ts` | `toggleIn(set, id)` | A new set with `id` added or removed, for picked-row state (CODEX's PRINT N ticks) |
@@ -921,11 +1074,11 @@ bundle doesn't carry them.
 |---|---|---|---|
 | Status screen | the `/`, `/c/<id>` and `/invite/<code>` pages, the apps before their first snapshot | A full-screen message (§1) | On navigation or reload |
 | Offline badge `.badge-offline` | `GmApp` and `CampaignSetup` (`NO SIGNAL · RECONNECTING`), `PlayerApp` (`NO SIGNAL`) | A red full-width row at the top of the header band while `!online`, in flow so it never covers the header's buttons; the last state stays on screen | On reconnect |
-| `Refusal` banner | `GmApp` (header pools), `CodexView` (the reveal toggle), `Sheet` (every player action) | A red alert bar fixed to the bottom, above the page's own bottom bar (`--bar-h`: the player tabs, the builder's XP bar) and the home indicator, `! <error>`, with an OK button | On OK, or on the next success |
-| Tracker error line | `Tracker` (`.red` above the key bar) | `! <error>` from command parse errors and from every `run` refusal (buttons, amount pad, add-combatants, undo) | On the next successful `run` |
-| Prep / Party message line | `Prep`, `Party` (top of the tab) | Amber on success (`ENCOUNTER LIVE`, `SESSION STARTED · POOLS RESET`…), red on refusal (starts with `!`) | Replaced by the next message |
+| `Refusal` banner | `GmApp` (the header's seals), `CodexView` (the reveal toggle), `Sheet` (every player action) | A red alert bar fixed to the bottom, above the page's own bottom bar (`--bar-h`: the player tabs, the builder's XP bar) and the home indicator, `! <error>`, with an OK button | On OK, or on the next success |
+| Tracker error line | `Tracker` (`.red` above the key bar) | `! <error>` from command parse errors and from every `run` refusal (buttons, delta pad, add-combatants, undo) | On the next successful `run` |
+| Scene / Story / Party message line | `Scene`, `Story`, `Party` (top of the tab) | Amber on success (`SCENE BEGUN, TAKEN BACK`, `<TITLE> BEGUN · 2 REVEALED`, `SESSION STARTED · POOLS RESET`…), red on refusal (starts with `!`) | Replaced by the next message |
 | Inline editor error | `BeatEditor`, `CodexEditor`, `ThreatBuilder` | `! <error>` above the buttons; the editor stays open with the draft intact | On the next save |
-| Refused field | Every CREATE, ADD and SAVE with a required field: NEW CAMPAIGN's NAME, `TableTalk`, `AddByName`, PREP's adventure, ADD AGENT, the codex and scene editors, the threat editor, YOUR OWN HAZARD, requisition | `useFieldErrors` parses with a shared zod schema (`CreateGame`, `CodexSave`, `CharacterName`, `CustomThreatData`…) before sending: each refused input gets `aria-invalid` (a red border on a red tint, `globals.css`), `FieldError` says why under it (`! Required.`, `! At most 100 characters.`, `sayIssue`), and the first takes the focus. A refusal on a field with no input of its own (an ability in a list) goes to the form's error line as `KEY: reason` | When that field is edited |
+| Refused field | Every CREATE, ADD and SAVE with a required field: NEW CAMPAIGN's NAME, `TableTalk`, `AddByName`, STORY's adventure, ADD AGENT, the codex and scene editors, the threat editor, YOUR OWN HAZARD, requisition | `useFieldErrors` parses with a shared zod schema (`CreateGame`, `CodexSave`, `CharacterName`, `CustomThreatData`…) before sending: each refused input gets `aria-invalid` (a red border on a red tint, `globals.css`), `FieldError` says why under it (`! Required.`, `! At most 100 characters.`, `sayIssue`), and the first takes the focus. A refusal on a field with no input of its own (an ability in a list) goes to the form's error line as `KEY: reason` | When that field is edited |
 | Inline form error | `NewCampaign` (CREATE), `LobbyView` (IMPORT GAME, which also marks the file input), `InviteAccept` | `! <error>` from the api's message, or `No signal` | On the next attempt |
 
 The error text is either the server's `ActionError` message or one of the two client strings from `send`
@@ -943,7 +1096,20 @@ charcoal bands with ragged ends), the sealed plate (the books' Optional Rule box
 GM-only content, and flat panels and tables so numbers read at arm's length. Warmth comes only from crimson and brass. None
 of it uses book art: everything is CSS, plus inline SVG masks and noise. The token names keep "vellum" from the first,
 warmer pass. Mock-ups and the design language: canvas `LRBEbp8GhgBAFeDk4pohVy`. Everything is plain CSS in `app/globals.css`, using short
-utility and component classes plus inline `style` for one-offs.
+utility and component classes plus inline `style` for one-offs, and the scene-first GM screens keep their own rules in
+per-screen files (below).
+
+**Per-screen CSS** (`app/css/`, imported after `globals.css` in `app/layout.tsx`, so a rule there wins a tie), one file for
+each scene-first screen:
+
+| File | Holds |
+|---|---|
+| `fight.css` | The FIGHT layer: `.fight-row` and its cells, `.fight-keys` and its panels, `.fight-pad` (the delta pad), `.fight-vis` |
+| `header.css` | The header's popovers (`.hd-pop*`), the seal buttons (`.hd-seal`, `.hd-pad`), and the rail's SETUP at its foot (`.tabs.rail .tab.foot`) |
+| `scene.css` | SCENE: `.scene`, the strip, the layer switch (`.scene-layers`), the two columns, IN THIS SCENE, WHERE NEXT, the SCENE BEGUN notice |
+| `story.css` | STORY: the spine and its cards, the spread (`.story-spread`, `.story-leaf`), sections and pencils |
+| `party.css` | PARTY: the session band, the agent cards, the dossier sheet (`dialog.party-dlg`), the tapped values |
+| `player.css` | The NEW badge: INTEL's `n NEW` (`.pl-tab-new`) and a row's chip (`.pl-new`) |
 
 **Themes.** `:root` is **vellum** (day). **Vigil** (night: soot page, bone ink, ember red) re-maps the same tokens
 under `:root[data-theme="vigil"]`, and under `prefers-color-scheme: dark` unless `data-theme="vellum"` is set.
@@ -1012,24 +1178,25 @@ The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.
   `dialog.picker` (a wide modal, framed like `dialog.legend` and `dialog.sheet`, with `.tp-facets` and `.tp-row` for
   the threat picker's facets and rows), `pre.text` (long text with its line breaks, in the serif; `.slate` for in-world print-outs in Plex Mono),
   `.setup-scroll` (a wide table that scrolls inside itself on a phone).
-- Shells: `.gm*` for the GM, `.tracker*`, `.turn-strip` and `.row*` for the tracker, `.cmd` for the command bar,
+- Shells: `.gm*` for the GM, `.tracker*`, `.turn-strip` and `.fight-*` for the tracker, `.cmd` for the command bar,
   `.pl*`, `.vitals`, `.vital` and `.traits` for the player app.
 
 **Layout:**
 - **GM:** tablet-first. `.gm` is a full-height grid: the header band and the scrolling body on the left, the
-  112px chapter rail on the right. The tracker is a two-column grid: the main list, plus a 300px side panel.
-- **`@media (max-width: 900px)`** is the only breakpoint:
+  112px chapter rail on the right. The tracker is a two-column grid: the main list, plus a 300px side panel. SCENE's
+  `.scene-cols` and STORY's `.story-spread` are two columns that stack under 860px.
+- **`@media (max-width: 900px)`** is the app-wide breakpoint (`scene.css` adds 520px for SCENE's phone tweaks):
   - The GM shell becomes one scrolling page instead of fixed-height panes, and the rail becomes a top tab strip that
     scrolls sideways inside itself and sticks to the top, like the player's bottom strip.
   - Header titles keep a row with the back button while there is room, then wrap.
-  - The pool controls stay 44px.
   - The tracker stacks, with the side panel below the list.
-  - `.row` drops to 4 columns with no minimum widths, so a row fits a 390px phone, and `.hide-sm` cells are hidden.
+  - The tracker's rows (`.fight-row`) don't use the media query: they pick their columns from the width `.tracker-main` gets
+    (`@container tracker`, `fight.css`), so a row fits a 390px phone (§3.1).
 - **Player:** phone-first single column, capped at 720px and centred on bigger screens (the banner and tabs stay full
   width). `.vitals` is 2 columns. `.cols` wraps at `minmax(280px, 1fr)`.
 - **Safe areas:** `viewport-fit=cover` (`app/layout.tsx`). `body` pads the left and right insets once; headers add
   the top inset, and fixed bars (`.refusal`, `.bld-xpbar`) and the player's sticky tabs add their own.
-- **Grid cells** get `min-width: 0` (`.row > *`) so bars shrink instead of spilling into the next column.
+- **Grid cells** get `min-width: 0` (`.fight-cell`) so bars shrink instead of spilling into the next column.
 
 ---
 
@@ -1053,10 +1220,9 @@ This section summarises the binding rules. The full text is in
   - Every caller checks `r.ok` and shows `r.error`.
   - Rules numbers (derived traits, pool caps, death states) come from `@wg/shared` and are never computed in the
     UI.
-- **`useEffect` only for external systems.** There are exactly three, and each is commented:
-  - the socket
-  - the wake lock
-  - `navigator.vibrate`
+- **`useEffect` only for external systems.** Each one is commented with the system it syncs: the socket, the wake
+  lock, `navigator.vibrate`, the book page relay, timers and focus, document listeners and the native `<dialog>` (the
+  header popovers, the delta pad, PARTY's sheets), and `localStorage` for INTEL's NEW marks.
 
   There's no client-side read. The browser `fetch` calls are REST writes: NEW CAMPAIGN's CREATE, the lobby's IMPORT
   GAME and library rows, and accepting an invite.
@@ -1081,7 +1247,8 @@ This section summarises the binding rules. The full text is in
 
 ### Add a GM tab or screen
 
-1. Add the name to `GM_TABS` in `components/gm/gm-app/constants.ts`. `GmTab` and the tab bar pick it up.
+1. Add the name to `GM_TABS` in `components/gm/gm-app/constants.ts`, before SETUP (which stays last, at the rail's foot), and
+   a matching numeral to `TAB_NUMERALS`. `GmTab`, the rail and `?tab=` pick it up.
 2. Create `components/gm/<name>/<name>.tsx`: a `"use client"` component with typed props. It takes what it needs
    from `state`, `codex` and `send`, and `bestiary` if it adds threats.
 3. Render it in `GmApp`'s `<main>`: `{tab === "<NAME>" && <Name … />}`.
@@ -1108,7 +1275,8 @@ The player app works the same way, through `PLAYER_TABS` in `components/player/p
 
 1. **Alias:** add `alias: "canonical"` entries to `VERBS` in `lib/command/command.ts`.
 2. **Counter verb** (a signed delta on a field the adjust actions already take): add it to `COUNTER_ACTIONS` in
-   `lib/command/constants.ts`. The command line, the key bar button and the amount pad all pick it up.
+   `lib/command/constants.ts`. The command line picks it up and the vox log words it (`counterKey`, `lib/fight-delta`). The
+   delta pad has only WOUNDS and SHOCK (`PAD_FIELDS`, `tracker/constants.ts`), so a new field needs a segment there too.
    If the field is new, add its difference to `preview()` in `tracker.tsx` too, or UNDO won't reverse it.
 3. **Any other verb:** add a `case` to the `switch` at the end of `parseCommand` that returns `{ actions: [...] }` or
    `{ error }`. Use `t.characterId` for character actions and `t.combatantId` for combatant actions.

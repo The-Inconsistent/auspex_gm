@@ -64,7 +64,7 @@ export async function loadCreationFor(homebrew: boolean): Promise<CreationPayloa
   }
 }
 
-// What PREP and CODEX get when the api can't serve the presets: every list empty, by the schema's own defaults.
+// What STORY, SCENE and CODEX get when the api can't serve the presets: every list empty, by the schema's own defaults.
 const NO_PRESETS = ScenePresets.parse({ skillDns: [], tables: [], pools: [] });
 
 // GM-only book data for building scenes (issue #39). Empty on failure; the scene editor then shows no examples.

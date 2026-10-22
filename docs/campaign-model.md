@@ -58,7 +58,7 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
   and failure bring. See [rules-flow.md](rules-flow.md) §7.
 - **Ruin and Glory** (issue #40): what earns the GM Ruin in this scene and what earns the Agents Glory (`PoolEntry`: a
   line and an amount, 1 to 10), and the spends the GM plans from either pool (`PoolSpend`: the pool, a name, a cost and
-  its effect). PREP turns each into a tap that moves the pool. Nothing records which lines were used. See
+  its effect). SCENE and STORY turn each into a tap that moves the pool, and a seal's pad offers the current scene's planned spends. Nothing records which lines were used. See
   [rules-flow.md](rules-flow.md) §2 and §11.77.
 - **Framework, Framework Bonus and patron** (issue #45): three player-visible text fields, typed by the GM. The
   Framework is "a sentence or two" (core p.18); the Bonus is its own field because the party sheet has one (p.374,
@@ -124,7 +124,7 @@ A codex text can name another entry (GitHub issue #200). The GM's rulings of 202
   - every long text in CODEX's editor;
   - the END SESSION recap.
 
-  Each shows as a link wherever it's read: PREP, CODEX, the player's INTEL, and inside a peek.
+  Each shows as a link wherever it's read: SCENE, STORY, CODEX, the player's INTEL, and inside a peek.
 - **Auto-link.** Plain text that spells an entry's full name also becomes a link. The match is exact and
   case-sensitive, a whole word, and the longest name wins. Names under 3 characters are skipped, and an entry
   never links itself.
@@ -157,8 +157,8 @@ these steps and ticks each one from what the campaign already holds; nothing is 
 | 6 | Factions and Keywords; who can work together | core pp.42–87, 167, 317, 375–378 | CODEX › FACTIONS | a faction |
 | 7 | Characters | core p.17 | PARTY › the builder | an Agent |
 | 8 | NPCs and locations, a few vivid features each | core pp.315, 317, 168, 326 | CODEX › NPCS, LOCATIONS | an NPC |
-| 9 | Scenes: set the scene, ask, listen, describe consequences, keep the plot moving; fail forward | core pp.317–319, 160–161, 165–166 | PREP | an adventure with a scene |
-| 10 | Combat. Budget: two Troops per Agent, half in a Mob, plus one Elite or Adversary | core p.176; Threat Assessment p.8 | PREP's prepared encounter, TRACK | a scene with a prepared encounter |
+| 9 | Scenes: set the scene, ask, listen, describe consequences, keep the plot moving; fail forward | core pp.317–319, 160–161, 165–166 | STORY | an adventure with a scene |
+| 10 | Combat. Budget: two Troops per Agent, half in a Mob, plus one Elite or Adversary | core p.176; Threat Assessment p.8 | STORY's prepared encounter, SCENE's FIGHT | a scene with a prepared encounter |
 | 11 | Session: Wrath 2, Glory 0, Ruin = players; Objective d6; recap; cliffhanger; XP 8, 10 or 12; Wealth every three or four sessions | core pp.30, 43, 162, 317, 320–321 | PARTY › START / END SESSION | a session started |
 
 ## Screens

@@ -15,7 +15,7 @@ type ScenePoolsProps = {
   onReport: (r: ActionResult, ok: string) => void;
 };
 
-// A scene's Ruin and Glory on its PREP card (issue #40): a tap moves the pool. An award at the maximum is lost (Core
+// A scene's Ruin and Glory on its STORY and SCENE pages (issue #40): a tap moves the pool. An award at the maximum is lost (Core
 // pp.164, 320), and a spend the pool can't pay stays disabled, since the server would floor it at 0 and undercharge.
 export function ScenePools({ beat, pools, players, send, onReport }: ScenePoolsProps) {
   const tap = async ({ pool, delta, what }: { pool: Pool; delta: number; what: string }) => {

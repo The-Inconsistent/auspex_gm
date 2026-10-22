@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 import { UserButton } from "@wg/auth/react";
 import {
   Pool,
-  poolMax,
   type FactionPresets,
   type FlavourTable,
   type NpcPreset,
@@ -20,13 +19,15 @@ import {
 import { Books } from "@/components/gm/books/books";
 import { CodexView } from "@/components/gm/codex/codex";
 import type { CodexKind } from "@/components/gm/codex/constants";
+import { CallTestButton } from "@/components/gm/header/call-test-button/call-test-button";
+import { SealButton } from "@/components/gm/header/seal-button/seal-button";
+import { SpendBadge } from "@/components/gm/header/spend-badge/spend-badge";
 import { Party } from "@/components/gm/party/party";
-import { Prep } from "@/components/gm/prep/prep";
+import { Scene } from "@/components/gm/scene/scene";
 import type { TabTarget } from "@/components/gm/setup/components/setup-panel/constants";
 import { Setup } from "@/components/gm/setup/setup";
-import { SpendRequests } from "@/components/gm/spend-requests/spend-requests";
+import { Story } from "@/components/gm/story/story";
 import { TestCall } from "@/components/gm/test-call/test-call";
-import { Tracker } from "@/components/gm/tracker/tracker";
 import { ArchivedBanner } from "@/components/ui/archived-banner/archived-banner";
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
 import { PictureProvider } from "@/components/ui/codex-picture/codex-picture";
@@ -35,7 +36,6 @@ import { PrintProvider } from "@/components/ui/print-dialog/print-dialog";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
-import { Seal } from "@/components/ui/seal/seal";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { RUIN_ACTIONS_TABLE } from "@/components/ui/threat-builder/constants";
@@ -71,14 +71,14 @@ export function GmApp({
   flavour,
   places,
   admin,
-  initialTab = "TRACK",
+  initialTab,
 }: GmAppProps) {
   const router = useRouter();
   const { state, codex, online, send, books, requestPage, serveBooks } = useTable(campaignId);
   const bookServer = useBookServer(serveBooks);
-  const [tab, setTab] = useState<GmTab>(initialTab);
+  const [picked, setTab] = useState<GmTab | undefined>(initialTab); // none yet: SCENE in a session, else STORY
   const [codexKind, setCodexKind] = useState<CodexKind>(); // the kind CODEX opens on, when SETUP sends it there
-  const [sceneId, setSceneId] = useState<string>(); // the scene PREP opens on, after a peek's GO TO
+  const [sceneId, setSceneId] = useState<string>(); // the scene STORY opens on, after a peek's GO TO or SCENE's EDIT
   const [visit, setVisit] = useState(0); // bumped by GO TO, so the target tab remounts on the entry
   const [poolError, setPoolError] = useState<string | null>(null);
   const [deleted, setDeleted] = useState(false); // DELETE GAME went through: the server drops the room next
@@ -92,6 +92,7 @@ export function GmApp({
   );
   if (deleted) return <StatusScreen text="GAME DELETED · BACK TO THE LOBBY…" />;
   if (!state || !codex) return <StatusScreen text="SYNCING COGITATOR…" />;
+  const tab = picked ?? (codex.sessions.some((s) => !s.endedAt) ? "SCENE" : "STORY");
 
   // SETUP's GO TO: opens a tab, and CODEX on the step's kind.
   const openTab = ({ tab: t, kind }: TabTarget) => {
@@ -101,11 +102,11 @@ export function GmApp({
   };
 
   // A peek's GO TO (issue #198): the entry's tab, remounted on it (CODEX on its kind with the search cleared and the
-  // places unfolded, PREP on the scene's adventure), then its row opened and scrolled to once it's drawn. Like a tab
-  // tap, it leaves whatever was open there (an editor, PRINT ticks): showing the row means closing the editor.
+  // places unfolded, STORY on the scene's page), then its row opened and scrolled to once it's drawn. Like a tab tap,
+  // it leaves whatever was open there (an editor, PRINT ticks): showing the row means closing the editor.
   const goTo = ({ kind, id }: MentionEntry) => {
     if (kind === "scene") {
-      openTab({ tab: "PREP" });
+      openTab({ tab: "STORY" });
       setSceneId(id);
     } else openTab({ tab: "CODEX", kind });
     setVisit((v) => v + 1);
@@ -125,28 +126,12 @@ export function GmApp({
 
   const players = state.characters.length;
 
-  // Pool − / +: moves Glory or Ruin by one; a refusal shows the server's reason.
-  const adjustPool = async (p: Pool, delta: number) => {
-    const r = await send({ type: "pool.adjust", pool: p, delta });
-    setPoolError(r.ok ? null : r.error);
+  // SCENE's EDIT: the scene's page in STORY.
+  const editScene = (id: string) => {
+    openTab({ tab: "STORY" });
+    setSceneId(id);
+    setVisit((v) => v + 1);
   };
-  const pool = (p: Pool) => (
-    <div key={p} className={`pool ${p}`}>
-      <span className="label" style={{ color: "inherit" }}>
-        {p}
-      </span>
-      <Seal value={state.campaign[p]} pool={p} size={40} />
-      <span className="dim" style={{ fontSize: 15 }}>
-        /{poolMax(p, players)}
-      </span>
-      <button className="btn sq" aria-label={`Spend ${p}`} onClick={() => adjustPool(p, -1)}>
-        −
-      </button>
-      <button className="btn sq" aria-label={`Add ${p}`} onClick={() => adjustPool(p, 1)}>
-        +
-      </button>
-    </div>
-  );
 
   return (
     <BooksProvider books={books} requestPage={requestPage}>
@@ -169,7 +154,11 @@ export function GmApp({
                   {state.encounter && (
                     <div className="display page-title">RND {String(state.encounter.round).padStart(2, "0")}</div>
                   )}
-                  {Pool.options.map(pool)}
+                  <SpendBadge state={state} send={send} />
+                  <CallTestButton state={state} send={send} />
+                  {Pool.options.map((p) => (
+                    <SealButton key={p} pool={p} state={state} codex={codex} send={send} onError={setPoolError} />
+                  ))}
                   {admin && (
                     <span className="chip bad" aria-label="Signed in as an admin, acting as GM">
                       ADMIN
@@ -183,7 +172,7 @@ export function GmApp({
                     <button
                       key={t}
                       role="tab"
-                      className="tab"
+                      className={t === "SETUP" ? "tab foot" : "tab"}
                       data-n={TAB_NUMERALS[i]}
                       aria-selected={tab === t}
                       onClick={() => openTab({ tab: t })}
@@ -192,9 +181,8 @@ export function GmApp({
                     </button>
                   ))}
                 </nav>
-                <SpendRequests state={state} send={send} />
                 <TestCall state={state} send={send} />
-                <main className="gm-body">
+                <main className="gm-body" key={tab /* a new tab starts at its top */}>
                   {state.campaign.archived && (
                     <ArchivedBanner text="READ ONLY. UNARCHIVE IT IN SETUP TO PLAY ON.">
                       <button className="btn sm" onClick={() => openTab({ tab: "SETUP" })}>
@@ -202,13 +190,14 @@ export function GmApp({
                       </button>
                     </ArchivedBanner>
                   )}
-                  {tab === "TRACK" && (
-                    <Tracker
+                  {tab === "SCENE" && (
+                    <Scene
                       state={state}
+                      codex={codex}
                       send={send}
                       bestiary={allThreats}
-                      lookups={presets.lookups}
-                      mutations={presets.mutations}
+                      presets={presets}
+                      onEdit={editScene}
                     />
                   )}
                   {tab === "SETUP" && (
@@ -221,8 +210,8 @@ export function GmApp({
                       onDeleted={handleDeleted}
                     />
                   )}
-                  {tab === "PREP" && (
-                    <Prep
+                  {tab === "STORY" && (
+                    <Story
                       key={visit}
                       initialSceneId={sceneId}
                       state={state}
@@ -231,7 +220,7 @@ export function GmApp({
                       bestiary={allThreats}
                       presets={presets}
                       wargear={wargear}
-                      onRun={() => setTab("TRACK")}
+                      onRun={() => setTab("SCENE")}
                     />
                   )}
                   {tab === "CODEX" && (

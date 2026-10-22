@@ -173,10 +173,13 @@ apps/web/components/new-campaign/  the CREATE NEW CAMPAIGN steps before CREATE: 
 apps/web/components/campaign-setup/  its steps after CREATE: setting, factions, players (CODEX's pickers, PARTY's RoomInvite)
 apps/web/components/invite/  invite-accept
 apps/web/components/admin/   admin-view (the /admin page: users-tab, games-tab with game-card, events-log; lib/admin has its calls)
-apps/web/components/gm/      gm-app, tracker, setup (checklist, framework, export), prep, codex, party (with ascend-panel), test-call (CALL A TEST
-                             and the tally, issue #191), spend-requests (kebab-case folders, children under
-                             components/)
-apps/web/components/player/  player-app (sheet, fight, intel), test-prompt (a called Test: pool, PASSED / FAILED; #191)
+apps/web/components/gm/      gm-app (rail: SCENE · STORY · CODEX · PARTY · RULES · BOOKS, SETUP at the foot), scene (the play home:
+                             reveals, CALL, exits, the FIGHT layer), tracker (the FIGHT layer: four-button key bar, delta pad),
+                             story (prep as a storyboard: board and page), prep (the scene editor and scene parts STORY and
+                             SCENE reuse), header (seal pads, CALL A TEST, SPEND ASKED), setup (checklist, framework, export),
+                             codex, party (one-button cards, the dossier sheet), test-call (the call form and tally, issue #191),
+                             spend-requests (kebab-case folders, children under components/)
+apps/web/components/player/  player-app (sheet, fight, intel with NEW marks), test-prompt (a called Test: pool, PASSED / FAILED; #191)
 apps/web/components/builder/ builder (draft, live resolveBuild, one screen per creation step, XP ledger; one Bench for a
                              campaign or the library, import-library for bringing a library character in)
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
@@ -190,11 +193,14 @@ apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-pro
 apps/web/components/print/   card-sheet (the react-pdf Document: tent, Threat and item cards on a 3 × 3 poker grid),
                              handout-sheet (handouts as printed props, one to a page), fonts.ts (registerFonts)
 apps/web/hooks/use-table/    socket + wake lock
+apps/web/hooks/use-seen/     what this phone has seen of the codex (localStorage), for INTEL's NEW
 apps/web/hooks/use-field-errors/  CREATE/ADD/SAVE check a shared zod schema first and mark refused fields (ui/field-error)
 apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values),
                              share-origin (QR and invite links carry an address a phone can reach), qr (a join link as a QR image),
                              print-cards (what a print holds, card sizes, the sheet layout), vox-lines (a vox handout's stamps),
-                             codex-image (shrink a picture in the browser, upload it, its seat-gated URL)
+                             codex-image (shrink a picture in the browser, upload it, its seat-gated URL), scene (currentScene),
+                             scene-reveal (a reveal's codex.save, UNDO of a begin), story-scenes (READY / TO FIX, taglines),
+                             fight-delta (the delta pad's signed number), party-view (the dossier's pad actions), seen (NEW)
 apps/web/public/fonts/       Cinzel, Crimson Pro and IBM Plex Mono static WOFF (SIL OFL) for the printed PDF
 packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, threat-scale.ts (Tier 5
                              profiles, Scaling Threats), state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts,

@@ -33,7 +33,7 @@ Rank from total XP earned: 0–39 = 1, 40–79 = 2, 80–99 = 3 (max 3); 100+ in
 Ruin is **visible to the players** (p.320), but [HOUSE] the app keeps it GM-only (§11.58).
 
 A scene can carry its own Ruin triggers, Glory awards and planned spends of either pool (GitHub issue #40). The GM taps
-one on the PREP card and it moves the pool through `pool.adjust`, capped as above.
+one on the SCENE page and it moves the pool through `pool.adjust`, capped as above.
 
 **Spends**
 
@@ -590,7 +590,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
     *(User ruling, 2026-10-02.)*
 75. **A scene Test may have no DN yet** (Core p.160; GitHub issue #39). "The Gamemaster is responsible for setting the
     Difficulty Number for each Test", and many book events print a Skill with no DN. So a prepared Test other than an
-    Opposed one may leave `dn` null: PREP shows "DN · GM SETS" and the GM sets it in the editor or at the table. An
+    Opposed one may leave `dn` null: STORY shows "DN · GM SETS" and the GM sets it in the editor or at the table. An
     Opposed Test still has none, because most Icons wins (p.170). A scene made from a book event takes the printed DN,
     else the table's printed default, else none.
     *(User ruling, 2026-10-02.)*
@@ -917,7 +917,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      fixed Keywords (ADEPTUS ASTARTES, ORK, [CHAPTER], [CLAN]…) always stand; its Keyword choices (a Human's any 2,
      IMPERIUM or CHAOS, ANHRATHE or ASURYANI) are asked only when no Faction is picked, the Faction's Keywords taking
      their place. *Proposed; awaiting the GM.*
-143. **One called Test at a time** (GitHub issue #191). The GM calls a Test from PREP or the strip, and a new call
+143. **One called Test at a time** (GitHub issue #191). The GM calls a Test from the header's CALL A TEST, and a new call
      replaces the open one; CLOSE, or a session's start or end, ends it. The dice stay physical (§7): the phone shows
      the pool and the reminders, and the player reports PASSED or FAILED. Only what the Test rolls reaches the phones,
      never the GM's purpose, Shifts or outcomes. *Approved by the GM, 2026-10-08.*
@@ -936,7 +936,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 148. **The mission log is the adventure's own status, plus FAILED** (GitHub issue #196). No book rule: the per-Agent
      Objective (Core p.30, its Wrath at p.164) stays the private one. An adventure the GM marks SHOWN reaches the phones
      with its title, brief and status (PLANNED, ACTIVE, DONE, FAILED); its premise and scenes never do. One status
-     serves PREP and the log. *Approved by the GM, 2026-10-08.*
+     serves STORY and the log. *Approved by the GM, 2026-10-08.*
 149. **A shown mission that is still planned reads OFFERED on the phones** (issue #196), so the GM can announce a job
      before it starts. *Approved by the GM, 2026-10-08.*
 150. **SHOWN needs a brief** (issue #196). `codex.save` refuses a shown adventure with an empty brief, so a phone never
@@ -965,6 +965,14 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      (p.323) and a Threat with no Shock never suffers it (p.324). Repeated Conditions stack (p.197): "Hindered (1)" on
      "Hindered" is "Hindered (2)"; an unrated Condition isn't listed twice. A typed dice total must lie within its dice.
      Area effects, effects behind a Test and durations stay with the GM. *Ruled on GitHub issue #183.*
+157. **Taking an exit marks the scene left as played.** `beat.begin` defaults `leave` to `done`, so SCENE's exit
+     closes the scene the table is leaving; UNDO on SCENE puts it back and the scene begun returns to planned. *Approved by
+     the GM, 2026-10-22.*
+158. **A reveal puts a NEW mark on the phone until the player has seen it.** The mark is on INTEL's tab and on the entry,
+     with no buzz. It is per device: a device that first opens a campaign counts everything already revealed as seen.
+     *Approved by the GM, 2026-10-22.*
+159. **A Ruin or Glory pool's ready-made spends from the books are picked while building a scene** (ADD FROM BOOK). At the
+     table a seal's pad offers only the current scene's planned spends. *Approved by the GM, 2026-10-22.*
 
 ---
 
@@ -1000,10 +1008,10 @@ Implementation details: [game-logic.md](game-logic.md).
 | Wargear upgrades on armour | done | The sheet's `armour` carries `wargearId`, `upgrades` and `fitted` like a weapon; `withUpgrades` applies `ar` and Trait mods and prints the rest as notes, under the same cap of three and one per slot (`host: "armour"` on `character.fitUpgrade` / `removeUpgrade`, and the fit control on the sheet's armour line). 13 entries are armour's alone and the Suspensor Crystal fits either host through `slotOn` (§11.64–§11.65) |
 | Per-class rule chips | done | `THREAT_CLASS_RULES` in the tracker side panel (pp.323-324); `combatant.update` refuses Fear, Pinned, Staggered on Monstrous Creatures (`MONSTROUS_IMMUNE`) |
 | Custom threats | done | `custom_threat` + `threat.save` / `threat.delete`, `loadThreats` (bestiary + this campaign's own), `Codex.customThreats` (GM sockets only), export, import and packs; CODEX › THREATS clones a book entry, starts blank or starts from the Quick row, and hints never block (§11.109, §11.111). QUICK (Tier N) starts one from Core p.326's row through `quickRow` and leaves the Attributes to the GM (§11.110); the five Additional Ruin Actions (TA p.7) are offered as RUIN abilities from the Ruin pool table `/scene-presets` already serves (`ruinAbility`) |
-| Threat profiles and scaling | done | `THREAT_PROFILES`, `applyProfile`, `scaleBy`, `scaleThreat`, `prepareThreat` (`threat-scale.ts`, VoA p.126, Core p.326); `EncounterEntry.profiles` / `.scale` and the same two fields on `combatant.addThreat`, applied in `addThreat()` before the snapshot with the seated Agents as the count; `ThreatScale` chips and the SCALE toggle in the beat editor and TRACK, and the profiles named on the scene card (§11.103–§11.108) |
+| Threat profiles and scaling | done | `THREAT_PROFILES`, `applyProfile`, `scaleBy`, `scaleThreat`, `prepareThreat` (`threat-scale.ts`, VoA p.126, Core p.326); `EncounterEntry.profiles` / `.scale` and the same two fields on `combatant.addThreat`, applied in `addThreat()` before the snapshot with the seated Agents as the count; `ThreatScale` chips and the SCALE toggle in STORY's scene editor and SCENE's FIGHT layer, and the profiles named on the scene card (§11.103–§11.108) |
 | Encounter budget | done | `encounterBudget`, `tallyByClass`, `rosterTally` (`threat.ts`) against Building Encounters (TA p.8); `BudgetLines` prints Troops, Mob, Elite/Adversary, Monstrous and enemies ("N tracked · M models"), with a FORTIFIED toggle that doubles every target; `BudgetPanel` under the beat editor, sized by the active Agents (§11.82) |
 | Quick NPCs and Attitude | done | `QUICK_NPC`, `quickRow` (Tier 5 → Tier 4, §11.86), `quickScaling` (p.326, §11.88) and `ATTITUDE_DN` (p.168) in `codex.ts`; `StatSource` quick takes a `specialty` (§11.87); Attitude reaches phones (§11.89); CODEX's `StatSourceField` and `NpcCard`, `AttitudeChip` on both sides; ADD TO SCENE (`addNpcToBeat`) for bestiary NPCs only; ADD FROM BOOK (`NpcPreset`, `/npc-presets`) |
-| Location hazards | done | `HazardTable` and `HazardRow` in `scene-presets.ts` (Tests with a printed or Tier DN, Conditions, Threats, intensities); `scene-presets/hazards/<source>.json` for Threat Assessment pp.9–21, Core pp.201–202, Darktide pp.14–27 and RR1 p.11, served on `/scene-presets`; `location.hazardList` with `checkHazards`, a scene's `beat.hazards` picks with SPOTTED (§11.92–95); the CODEX editor's HAZARDS list and the PREP card's HAZARDS fold |
+| Location hazards | done | `HazardTable` and `HazardRow` in `scene-presets.ts` (Tests with a printed or Tier DN, Conditions, Threats, intensities); `scene-presets/hazards/<source>.json` for Threat Assessment pp.9–21, Core pp.201–202, Darktide pp.14–27 and RR1 p.11, served on `/scene-presets`; `location.hazardList` with `checkHazards`, a scene's `beat.hazards` picks with SPOTTED (§11.92–95); the CODEX editor's HAZARDS list and the STORY card's HAZARDS fold |
 | Location tree and places from the books | done | `wouldCycle`, `placeTree`, `flatTree` in `codex.ts`; the `codex.save` and import guards; CODEX LOCATIONS as a tree, tree-ordered selects, the phone's nested KNOWN LOCATIONS; `Place` and `placeNotes` in `places.ts`, `places/<source>.json`, GM-only `/places`, `codex.addPlaces`, the `PlacePicker` (§11.96–100); the Space Hulk Generator (RR1 pp.6–11): `SpaceHulkGenerator`, `hulkNotes`, `roomNotes`, `scene-presets/space-hulk.json` on `/scene-presets`, `codex.addHulk`, the `HulkGenerator` (§11.101–102) |
 | NPC name and look | done | `rollOn` reads a flavour table's shape (a name list, Element columns, a Features grid, 2d6 and d66 rows; "roll twice") with `roll`/`rowsFor`; `rollLook` and `LOOK` (Core p.32: Aeldari +3, capped, §11.90; Orks blood-red, no hair) in `flavour.ts`; ROLL NAME and ROLL LOOK in CODEX › NPCS, fed by GM-only `/flavour`, write NAME and DESCRIPTION without saving (§11.91) |
 | Items | done | `CodexInput.item` (a catalogue `wargearId` or a custom name, a place or an NPC, a relic's `mods`), server-owned `givenTo`, `beat.itemIds`; `character.giveItem` on the session's Wargear Test and `character.takeItem` through `grantWargear` (§11.112–105, 109); `Weapon.mods` applied by `withUpgrades` (§11.116); CODEX ITEMS with GIVE TO / TAKE BACK, the scene's ITEMS TO FIND |

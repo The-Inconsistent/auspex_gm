@@ -10,7 +10,7 @@ import { SPEND_POOLS } from "./constants";
 
 type RuinGloryProps = { lines: PoolDrafts; tables: PoolPresetTable[]; onChange: (lines: PoolDrafts) => void };
 
-// What earns Ruin and Glory in this scene, and the spends the GM plans (issue #40). PREP turns each line into a tap.
+// What earns Ruin and Glory in this scene, and the spends the GM plans (issue #40). SCENE turns each line into a tap.
 export function RuinGlory({ lines, tables, onChange }: RuinGloryProps) {
   const setLine = (list: Pool, i: number, patch: Partial<PoolDrafts[Pool][number]>) =>
     onChange({ ...lines, [list]: lines[list].map((l, j) => (j === i ? { ...l, ...patch } : l)) });
