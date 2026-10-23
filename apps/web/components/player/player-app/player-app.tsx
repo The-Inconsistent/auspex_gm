@@ -1,5 +1,7 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { BookOpen, ChevronLeft, EllipsisVertical, RadioTower, ScrollText, Swords, type LucideIcon } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Show, UserButton } from "@wg/auth/react";
 import { UNSEEN_ID, type RuleEntry } from "@wg/shared";
@@ -9,6 +11,7 @@ import { ArchivedBanner } from "@/components/ui/archived-banner/archived-banner"
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
 import { PictureProvider } from "@/components/ui/codex-picture/codex-picture";
 import { MentionsProvider } from "@/components/ui/mentions/mentions-provider";
+import { PendingSpends } from "@/components/ui/request-spend/request-spend";
 import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
 import { Sheet } from "@/components/ui/sheet/sheet";
@@ -21,14 +24,23 @@ import { freshCount } from "@/lib/seen/seen";
 
 import { Fight } from "./components/fight/fight";
 import { Intel } from "./components/intel/intel";
-import { PLAYER_TABS, TURN_VIBRATION, type PlayerTab } from "./constants";
+import { VitalsStrip } from "./components/vitals-strip/vitals-strip";
+import { FOLD_UNDER_PX, PLAYER_TABS, TAB_PARAM, TURN_VIBRATION, type PlayerTab } from "./constants";
 
 type PlayerAppProps = { campaignId: string; characterId: string; rules: RuleEntry[] };
 
+const TAB_ICONS: Record<PlayerTab, LucideIcon> = {
+  SHEET: ScrollText,
+  FIGHT: Swords,
+  INTEL: RadioTower,
+  RULES: BookOpen,
+};
+
 export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
   const { state, codex, online, send, books, requestPage } = useTable(campaignId);
-
-  const [tab, setTab] = useState<PlayerTab>("SHEET");
+  const params = useSearchParams();
+  const tab = PLAYER_TABS.find((t) => t.toLowerCase() === params.get(TAB_PARAM)) ?? "SHEET";
+  const [folded, setFolded] = useState(false);
   const { fresh, markSeen } = useSeen(campaignId, codex);
   const me = state?.characters.find((c) => c.id === characterId);
   const enc = state?.encounter ?? null;
@@ -50,11 +62,25 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
     wasMyTurn.current = myTurn;
   }, [myTurn]);
 
-  // A tab tap. INTEL lists everything inline, so an entry can't be opened one by one: leaving INTEL is what marks what it
-  // showed as seen.
+  // External system: the page scroll (IntersectionObserver). Once the marker near the top of the body slides under the
+  // open header, the vitals strip folds to one line; the folded header is shorter, so it only opens again near the top.
+  // A callback ref, since the marker only mounts after the first snapshot.
+  const watchTop = useCallback((el: HTMLDivElement | null) => {
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setFolded(e ? !e.isIntersecting : false), {
+      rootMargin: `-${FOLD_UNDER_PX}px 0px 0px 0px`,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // A tab tap: the tab goes in the address, so a refresh keeps it. INTEL lists everything inline, so leaving it is what
+  // marks what it showed as seen. The native history API updates useSearchParams without a server round trip.
   const handleTab = (t: PlayerTab) => {
     if (tab === "INTEL" && t !== "INTEL") markSeen();
-    setTab(t);
+    const q = new URLSearchParams(params.toString());
+    q.set(TAB_PARAM, t.toLowerCase());
+    window.history.replaceState(null, "", `?${q.toString()}`);
   };
 
   if (!state || !codex) return <StatusScreen text="SYNCING…" />;
@@ -72,11 +98,12 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
       : null;
   // Worked out before hidden threats were dropped from this view; sideUpNext here would miss their Turns.
   const next = enc?.upNext ?? null;
-  const banner = !enc
+  const round = enc ? `RND ${String(enc.round).padStart(2, "0")}` : "";
+  const status = !enc
     ? "NO COMBAT · STANDING BY"
     : myTurn
-      ? "▶ YOUR TURN"
-      : `RND ${String(enc.round).padStart(2, "0")} · ${currentName ? `${currentName.toUpperCase()} ACTING` : `${(next ?? "—").toUpperCase()} PICK`}${myCombatant?.acted ? " · YOU: DONE" : ""}`;
+      ? `▶ ${round} · YOUR TURN`
+      : `${round} · ${currentName ? `${currentName.toUpperCase()} ACTING` : `${(next ?? "—").toUpperCase()} PICK`}${myCombatant?.acted ? " · YOU: DONE" : ""}`;
 
   return (
     <BooksProvider books={books} requestPage={requestPage}>
@@ -84,30 +111,47 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
         <PictureProvider campaignId={campaignId}>
           <MentionsProvider codex={codex} missing="(unknown)">
             <div className="pl">
-              <div className={`pl-banner band torn ${myTurn ? "up" : ""}`}>
-                {/* In the banner, not fixed over it, so it never covers LEAVE or the account button. */}
+              <header className={`pl-head band torn slate-card ${myTurn ? "up" : ""}`}>
+                {/* In the header, not fixed over it, so it never covers the menu or the account button. */}
                 {!online && <div className="badge-offline">NO SIGNAL</div>}
-                {/* Signed-in players also get the lobby and account menu. LEAVE gives up the seat: the Agent goes back to
-            reserve and the room QR offers it again; /leave then forgets a guest's cookie. */}
-                <Show when="signed-in">
-                  <a href="/" className="btn sq" aria-label="Back to lobby">
-                    ◂
-                  </a>
-                </Show>
-                <div className="pl-banner-text">
-                  <div className="label">{state.campaign.name.toUpperCase()}</div>
-                  <div className="display">{banner}</div>
+                <div className="pl-top">
+                  {/* Signed-in players also get the lobby and account menu. LEAVE gives up the seat: the Agent goes
+                  back to reserve and the room QR offers it again; /leave then forgets a guest's cookie. */}
+                  <Show when="signed-in">
+                    <a href="/" className="pl-ic" aria-label="Back to lobby">
+                      <ChevronLeft size={20} aria-hidden />
+                    </a>
+                  </Show>
+                  <div className="pl-where">
+                    <span className="label">{state.campaign.name.toUpperCase()}</span>
+                    <span className="mono pl-status">{status}</span>
+                  </div>
+                  <Show when="signed-in">
+                    <UserButton />
+                  </Show>
+                  <button type="button" className="pl-ic" popoverTarget="pl-menu" aria-label="Menu: theme, leave">
+                    <EllipsisVertical size={20} aria-hidden />
+                  </button>
+                  <div id="pl-menu" popover="auto" className="pl-menu">
+                    <ThemeToggle />
+                    <button className="btn sm" onClick={leave}>
+                      LEAVE
+                    </button>
+                  </div>
                 </div>
-                <ThemeToggle />
-                <Show when="signed-in">
-                  <UserButton />
-                </Show>
-                <button className="btn sm" onClick={leave}>
-                  LEAVE
-                </button>
-              </div>
+                {myTurn && (
+                  <div className="pl-turn">
+                    <span className="display">YOUR TURN</span>
+                    <i>{me.name} acts. The GM ends the Turn.</i>
+                  </div>
+                )}
+                <VitalsStrip me={me} state={state} send={send} folded={folded} onOpenSheet={() => handleTab("SHEET")} />
+              </header>
               <div className="pl-body">
+                <div ref={watchTop} className="pl-fold-mark" aria-hidden />
                 {state.campaign.archived && <ArchivedBanner text="THE GM HAS CLOSED THIS GAME. NOTHING CAN CHANGE." />}
+                {/* On every tab, since a spend can be asked from the strip or FIGHT: yours to cancel, the others' Glory to see (§11.123). */}
+                <PendingSpends state={state} characterId={me.id} send={send} />
                 {myTurn && <TurnActions />}
                 {state.testCall && (
                   <TestPrompt
@@ -118,25 +162,36 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                     send={send}
                   />
                 )}
-                {tab === "SHEET" && <Sheet me={me} tier={state.campaign.tier} table={{ state, send }} requests />}
+                {tab === "SHEET" && <Sheet me={me} tier={state.campaign.tier} table={{ state, send }} />}
                 {tab === "FIGHT" && <Fight state={state} legend={rules.filter((r) => r.kind === "stat")} />}
                 {tab === "INTEL" && <Intel codex={codex} state={state} fresh={fresh} />}
                 {tab === "RULES" && <RulesRef rules={rules} />}
               </div>
-              <nav className="tabs pl-tabs" role="tablist">
-                {PLAYER_TABS.map((t) => (
-                  <button
-                    key={t}
-                    role="tab"
-                    className="tab"
-                    aria-selected={tab === t}
-                    aria-label={t === "INTEL" && newCount > 0 ? `INTEL, ${newCount} new` : undefined}
-                    onClick={() => handleTab(t)}
-                  >
-                    {t}
-                    {t === "INTEL" && newCount > 0 && <span className="pl-tab-new">{newCount} NEW</span>}
-                  </button>
-                ))}
+              <nav className="pl-nav" role="tablist" aria-label="Player sections">
+                {PLAYER_TABS.map((t) => {
+                  const Icon = TAB_ICONS[t];
+                  return (
+                    <button
+                      key={t}
+                      role="tab"
+                      className="pl-tab"
+                      aria-selected={tab === t}
+                      aria-label={
+                        t === "INTEL" && newCount > 0
+                          ? `INTEL, ${newCount} new`
+                          : t === "FIGHT" && enc
+                            ? "FIGHT, a fight is on"
+                            : undefined
+                      }
+                      onClick={() => handleTab(t)}
+                    >
+                      <Icon size={20} aria-hidden />
+                      <span>{t}</span>
+                      {t === "FIGHT" && enc && <span className="pl-live" />}
+                      {t === "INTEL" && newCount > 0 && <span className="mono pl-count">{newCount}</span>}
+                    </button>
+                  );
+                })}
               </nav>
             </div>
           </MentionsProvider>

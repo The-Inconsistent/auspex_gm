@@ -30,7 +30,7 @@ import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 
-import { PendingSpends, RequestSpend } from "./components/request-spend/request-spend";
+import { PendingSpends, RequestSpend } from "@/components/ui/request-spend/request-spend";
 import { SupplyRow } from "./components/supply-row/supply-row";
 import { UpgradeRow } from "./components/upgrade-row/upgrade-row";
 import { Vital } from "./components/vital/vital";
