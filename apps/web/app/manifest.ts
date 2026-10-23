@@ -11,5 +11,10 @@ export default function manifest(): MetadataRoute.Manifest {
     display: "standalone",
     background_color: TOKENS.vellum,
     theme_color: TOKENS.iron,
+    // app/icon.svg (the Crimson Seal) and app/apple-icon.png, served at these paths by Next's icon convention.
+    icons: [
+      { src: "/icon.svg", sizes: "any", type: "image/svg+xml" },
+      { src: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   };
 }

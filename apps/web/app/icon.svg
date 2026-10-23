@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- The Crimson Seal: a double-headed aquila in vellum on crimson (lib/tokens). -->
+  <defs>
+    <g id="half">
+      <path d="M37 30 L47 18 L63 11 L60 19 L55 19 L58 25 L51 25 L54 31 L46 31 L48 36 L37 37 Z"/>
+      <path d="M31 24 L34 16 C35 12 38 9 41 9 L47 11 L42 13.5 L40 15 L38 19 L36 26 Z"/>
+    </g>
+  </defs>
+  <circle cx="32" cy="32" r="31" fill="#8b2a2a"/>
+  <circle cx="32" cy="32" r="27.5" fill="none" stroke="#e7e5e0" stroke-width="1.5"/>
+  <g fill="#e7e5e0" transform="translate(10.9 10.5) scale(0.66)">
+    <use href="#half"/>
+    <use href="#half" transform="translate(64 0) scale(-1 1)"/>
+    <path d="M28 23 C28 20 36 20 36 23 L37 40 L32 45 L27 40 Z"/>
+    <path d="M29 43 L35 43 L39 56 L32 52 L25 56 Z"/>
+  </g>
+</svg>
