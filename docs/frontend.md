@@ -965,17 +965,28 @@ a closed dialog can't be reopened; make a new one.
 
 ## 4. Player app: `components/player/player-app/`
 
-`PlayerApp` is phone-first:
+`PlayerApp` is phone-first, laid out after the canvas page "Player phone, rebound (Oct 2026)" (canvas
+`LRBEbp8GhgBAFeDk4pohVy`):
 - `SYNCING…` until both snapshots arrive, and `CHARACTER NOT FOUND. ASK YOUR GM.` if `characterId` isn't in `state`.
-- **Banner** (`.pl-banner`), one of:
+- **Header** (`.pl-head`, sticky on every tab): an iron band with the campaign name and a mono status line, one of:
   - `NO COMBAT · STANDING BY`
-  - `▶ YOUR TURN`, on an amber background
+  - `▶ RND nn · YOUR TURN`: the band turns crimson and a big `YOUR TURN` sits under it
   - `RND nn · <NAME> ACTING` or `<SIDE> PICK`, with `· YOU: DONE` added once the player has acted
+
+  The lobby link and the account button (signed in only) and a `⋮` menu (a native `popover`: theme, LEAVE) sit on it.
+- **Vitals strip** (`components/vitals-strip/`), under the band on every tab: what's left of Wounds and Shock, Wrath and
+  the party's Glory (each a `RequestSpend` trigger, §11.122), `pcStatus` chips and the Conditions (each opens its rule).
+  Each counter's label opens its rule too (`STRIP_RULES`: Wounds and Shock Core p.37, Wrath and Glory p.164), standing in
+  for the long sheet's WRATH line and Legend.
+  Tapping the name opens SHEET. Under it, on every tab, the pending spend requests (`PendingSpends`: yours with
+  CANCEL, the others' read-only, §11.123), since a spend can be asked from the strip or FIGHT. Once the page scrolls past a marker 160 px down (`.pl-fold-mark`, an
+  IntersectionObserver on a callback ref) it folds to one mono line.
 - **Vibration:** when it becomes the player's turn, `navigator.vibrate(TURN_VIBRATION)` buzzes once. This is a
   `useEffect` on `myTurn`, with a ref so it fires only on the change.
-- **Tabs** (`PLAYER_TABS`: SHEET, FIGHT, INTEL) sit in a sticky bar at the bottom. INTEL's reads `n NEW` (`.pl-tab-new`)
-  while anything on it is new.
-- **NEW** (`hooks/use-seen`, `lib/seen`): the badge and a `NEW` chip on each new row of INTEL.
+- **Tabs** (`PLAYER_TABS`: SHEET, FIGHT, INTEL, RULES) sit in a sticky bar at the bottom, each with a Lucide icon. The
+  open tab is in the address (`?tab=fight`, `TAB_PARAM`), set with `history.replaceState` so a refresh keeps it without
+  a server round trip. FIGHT carries a lit square while a fight is on; INTEL a count of what's new.
+- **NEW** (`hooks/use-seen`, `lib/seen`): the count on INTEL and a `NEW` tag on each new item.
   - **What counts:** a handout, known person or known location in this phone's own snapshot (so only what the GM has
     revealed) whose key (`handout:<id>`, `npc:<id>`, `location:<id>`) the phone hasn't seen. Its picture has its own key
     (`picture:<imageId>`), so a picture the GM shows later on an entry already seen makes it new again; an entry with a new
@@ -984,19 +995,20 @@ a closed dialog can't be reopened; make a new one.
     `useSyncExternalStore` so a second tab follows. Every read and write is guarded: with no storage the badge stays off.
   - **First visit:** a device with no record of the campaign stores everything already revealed as seen (the baseline,
     `shownKeys`), so a new phone isn't flooded.
-  - **Marked seen** when the player leaves INTEL for another tab (`markSeen` in `handleTab`): INTEL lists everything inline,
-    so an entry can't be opened one by one, and the chips stay for the whole visit.
-- **A called Test** (`components/player/test-prompt/test-prompt.tsx`, issue #191), over every tab while the GM's call
-  names this Agent: the Test and its DN (unless hidden; a Corruption DN with this Agent's level modifier), YOUR POOL
-  from `testPool`, the Icon, Wrath Die and Wrath reroll reminders as `RuleIdLink`s (and Fear's or Corruption's cost),
-  then PASSED / FAILED (`test.report`; the pressed one is what the GM has, and a re-tap changes it). FAILED on a
-  Corruption Test first asks for ICONS ROLLED, COMPLICATION, WRATH CRITICAL and SPENT 1 WRATH.
+  - **Marked seen** when the player leaves INTEL for another tab (`markSeen` in `handleTab`), or taps MARK ALL READ.
+- **A called Test** (`components/player/test-prompt/test-prompt.tsx`, issue #191): a bottom sheet over every tab, above
+  the tab strip, while the GM's call names this Agent. It shows the Test and its DN (unless hidden; a Corruption DN with this Agent's level
+  modifier), the pool from `testPool` as a big number, the Icon, Wrath Die and Wrath reroll reminders as `RuleIdLink`s
+  (and Fear's or Corruption's cost), then PASSED / FAILED (`test.report`; the pressed one is what the GM has, and a
+  re-tap changes it). FAILED on a Corruption Test first asks for ICONS ROLLED, COMPLICATION, WRATH CRITICAL and SPENT 1
+  WRATH. HIDE folds it to a bar; it starts folded once this Agent has answered.
 
 | Tab | File | Shows | The player can change |
 |---|---|---|---|
-| SHEET | `components/sheet/sheet.tsx` (+ `components/vital/vital.tsx`) | Name; archetype, species and Tier; keywords; `pcStatus` chips; `Vital` cards for Wounds and Shock (`remaining`: what's left and a draining bar), Wrath and PARTY GLORY, all read-only; the GM's Ruin; derived traits (DEF RES RSLV CONV SPD INF PAS); Conditions, read-only (each name opens its rule); armament (`WeaponLine` with `effectiveStrength`, its traits open their rules) and armour, each with its `UpgradeRow` at a table (fit and remove, `host` weapon or armour) and the notes a fitted upgrade leaves to the GM; skill totals (`skillTotal`); abilities; talents; gear; SUPPLY (`SupplyRow` lines for Wealth and each Ammo type) | Spending their own Wealth and Ammo (−1, `character.supply`; × on an empty type removes it). Granting Wealth or Ammo, Conditions, Wounds, Shock, Wrath, Glory and RESPITE are GM only |
-| FIGHT | `components/fight/fight.tsx` | Two tables, as on the tracker: one per `Side.options`, each under a `.tbar` (crimson AGENTS, iron THREATS) with its `acted/total ACTED`. Every combatant is a card (`div.item.agents` / `div.item.threats`, outlined in `--side-agents` blue or `--side-threats` orange): `▶` and a crimson ring on the one acting, dimmed once done, a Wounds bar that drains as they're hurt, with no number (mobs show `×count OF start`), threat status chips, and Conditions (each a `RuleLink`). A threat card's header is a `button.item-head` with `aria-expanded` that toggles its `StatBlock`, or `DATA RESTRICTED BY GM.` while it's `bars`; a hidden threat isn't there at all. A PC card's header is plain | Nothing |
-| INTEL | `components/intel/intel.tsx` | The codex search box on top (`ui/codex-search`, issue #198), whose hits replace the page while it holds text, then NEXT SESSION once the GM has set one (`Sat 12 Oct, 18:00 · Mike's flat` in the phone's own zone, `lib/next-session`, with ADD TO CALENDAR to `next.ics`; issue #197), MISSION (framework and patron), PREVIOUSLY (every session with a recap, newest first: the latest open, older ones folded in a `<details>`; issue #195), handouts (newest `revealedAt` first, each drawn in its style by `HandoutDoc`), known persons, known locations (nested by `placeTree`, indented), each with its picture once the GM shows it (issue #199), and a `NEW` chip on whatever is new (above) | Nothing |
+| SHEET | `components/player/player-sheet/player-sheet.tsx` | Two views. AT A GLANCE: the Traits row, ARMAMENT (each weapon with its pool, `lib/sheet-pools`), the five highest skill totals. DOSSIER: the Agent as the book's printed archetype block (Core p.117: name bar, TIER · SPECIES · XP, KEYWORDS, ARCHETYPE, ATTRIBUTES, SKILLS, abilities and talents, WARGEAR, INFLUENCE, the ATTRIBUTE / RATING table), then every skill's dice, talents and abilities folded, gear and SUPPLY with `UpgradeRow`, Corruption and mutations, objectives (the secret one folded), WHO YOU ARE, XP and LEVEL UP. `ui/sheet/sheet.tsx` stays the one-page sheet for the GM's PARTY dossier and the invite page | Their own detail (WHO YOU ARE); spending their own Wealth and Ammo (−1, `character.supply`); fitting upgrades; asking for a spend. Granting Wealth or Ammo, Conditions, Wounds, Shock, Wrath, Glory and RESPITE are GM only |
+| FIGHT | `components/fight/fight.tsx` | No fight: one line. Your turn: THIS TURN (`TurnActions`, Core pp.178–180), STRIKE (your weapons with their pools), SPEND (a Wrath and a Glory `RequestSpend`), and who picks after you. Otherwise a NOW ACTING plate (`Unseen threat` for `UNSEEN_ID`) and UP NEXT. Under either, both sides as lists (outlined in `--side-agents` / `--side-threats`): acted counts, a Wounds track with no number (mobs `×count of start`), the turn word, Conditions as `RuleLink`s, your own row marked YOU; a threat row toggles its `StatBlock`, or `Data restricted by the GM.` while it's `bars`; a hidden threat isn't there at all | Asking for a spend |
+| INTEL | `components/intel/intel.tsx` | INBOX: what's new as transmission cards (handouts, then persons, then places; READ, SHOW THE TABLE), MARK ALL READ, then THE MISSION, NEXT SESSION (`lib/next-session`, ADD TO CALENDAR to `next.ics`; issue #197) and the MISSION LOG (issue #196). ARCHIVE: the codex search (`ui/codex-search`, issue #198), whose hits replace the list, then PERSONS · PLACES (nested by `placeTree`) · HANDOUTS · MISSIONS · RECAPS (issue #195). A row opens the entry sheet (a modal `<dialog>`: the entry, its picture only once the GM shows it, issue #199). SHOW THE TABLE puts a handout or a picture full screen (the Fullscreen API, else a fixed overlay) to hold up at the table | Nothing |
+| RULES | `components/ui/rules-ref/rules-ref.tsx` | The rules reference, shared with the GM's RULES tab | Nothing |
 
 **Hidden until the GM reveals it.** The filtering happens on the server (`toPlayerView` / `toPlayerCodex` in
 `@wg/shared`), not in these components:
@@ -1158,7 +1170,8 @@ each scene-first screen:
 | `scene.css` | SCENE: `.scene`, the strip, the layer switch (`.scene-layers`), the two columns, IN THIS SCENE, WHERE NEXT, the SCENE BEGUN notice |
 | `story.css` | STORY: the spine and its cards, the spread (`.story-spread`, `.story-leaf`), sections and pencils |
 | `party.css` | PARTY: the session band, the agent cards, the dossier sheet (`dialog.party-dlg`), the tapped values |
-| `player.css` | The NEW badge: INTEL's `n NEW` (`.pl-tab-new`) and a row's chip (`.pl-new`) |
+| `player.css` | The player shell (`.pl`, `.pl-head`, the vitals strip `.pl-strip`/`.pl-vt`, `.pl-nav`/`.pl-tab`) and the dataslate accents every player screen shares: `.mono`, `.cut` (clipped corners, an inset focus ring), `.slate-card` (iron with scanlines), `.xmit` (a `+++ HANDOUT +++` stamp), `.pool-badge` |
+| `player-sheet.css`, `player-fight.css`, `player-intel.css`, `player-test.css` | One player screen each: SHEET, FIGHT, INTEL, the called Test |
 
 **Themes.** `:root` is **vellum** (day). **Vigil** (night: soot page, bone ink, ember red) re-maps the same tokens
 under `:root[data-theme="vigil"]`, and under `prefers-color-scheme: dark` unless `data-theme="vellum"` is set.
@@ -1172,7 +1185,7 @@ The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.
 |---|---|---|
 | `--font-display` → `--display` | Cinzel (variable) | Heads, labels, buttons, tabs, chips: `.display`, `.label`, `.rule`, `.btn`, `.tab`, `.chip`. Stands in for the books' Priori Serif |
 | `--font-serif` → `--serif` | Crimson Pro (variable, with italics) | Body text, the default for everything; counters use its lining tabular figures. Stands in for Caxton |
-| `--font-mono` → `--mono` | IBM Plex Mono (400/500/700) | Only in-world print-outs and typed commands: `pre.text.slate` (handouts, data-slates) and `.cmd input` |
+| `--font-mono` → `--mono` | IBM Plex Mono (400/500/700) | In-world print-outs and typed commands (`pre.text.slate`, `.cmd input`), and on the player's phone the dataslate's live readouts: counters, the status line, pools, `.xmit` stamps (`.pl .mono`) |
 
 **Tokens** (`:root`, re-mapped for vigil):
 
@@ -1215,7 +1228,7 @@ The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.
   strip under 900px). `.tabs.sub` is an underlined in-screen strip (codex kinds, rule kinds) that scrolls sideways
   when it doesn't fit.
 - Bands: `.band` (iron, bone text; `.btn`, `.dim` and `.label` inside it switch to their on-iron colours) and
-  `.band.torn` (adds the ragged bottom edge). Used by `.gm-head`, `.pl-banner` (the player banner, wrapping at 390px) and `.bld-head` (the builder, NEW CAMPAIGN,
+  `.band.torn` (adds the ragged bottom edge). Used by `.gm-head`, `.pl-head` (the player header, sticky over every tab) and `.bld-head` (the builder, NEW CAMPAIGN,
   set-up and lobby headers).
 - Book furniture: `.sb*` (the stat block: `.sb-title`, `.sb-grid`, `.sb-head` with `.cur` for the campaign Tier,
   `.sb-v`, `.sb-shade`, `.sb-band`, `.sb-body`), `.tbar` (a crimson table title bar; `.iron` for Threats), `.plate`
