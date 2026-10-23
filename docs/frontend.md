@@ -285,8 +285,9 @@ The room QR and per-character invite links point here. The page fetches `/api/in
   - A card (`components/agent-card/`) is made to skim: the portrait only if there is one, name, archetype · species,
     Keywords, the seven Attributes as the book's table, the three best Skills as dice badges (`lib/sheet-pools`), and the
     weapons by name; PLAY, and READ. A reserve Agent with no sheet yet shows only "No sheet yet" and PLAY.
-  - READ opens the Agent's printed stat block (the DOSSIER's `StatBlock`, Core p.117) in a modal, then its BACKGROUND
-    (the player-written appearance, past and personality, folded as `DetailView` does), with PLAY at its foot.
+  - READ opens a modal: the Agent's BACKGROUND first (the player-written appearance, past and personality, folded as
+    `DetailView` does), since a new player chooses by story before the numbers mean anything; then its printed stat
+    block (the DOSSIER's `StatBlock`, Core p.117); PLAY at its foot.
     The preview has stripped Ability and Talent text already (book prose needs a seat), so only names and cites show.
   - Each choice POSTs to `/api/invites/:code/accept` from the browser, with `asGuest` set when signed out, then pushes
     to `/c/<campaignId>`. A refusal (such as "That character is already taken") shows inline.

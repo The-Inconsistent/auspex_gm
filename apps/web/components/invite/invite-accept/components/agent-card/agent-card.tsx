@@ -18,8 +18,8 @@ type AgentCardProps = {
 };
 
 // One Agent to choose before taking a seat, skimmable at a glance: who, the Attributes, the best Skills and the
-// weapons. READ opens the book's printed stat block (Core p.117), the same one the player's DOSSIER starts with,
-// then the Agent's BACKGROUND (appearance, past, personality) as the long sheet folds it. The
+// weapons. READ opens the Agent's BACKGROUND (appearance, past, personality) as the long sheet folds it, then
+// the book's printed stat block (Core p.117), the same one the player's DOSSIER starts with. The
 // preview has already stripped Ability and Talent text (book prose needs a seat), so only names and cites show.
 export function AgentCard({ c, tier, play }: AgentCardProps) {
   const ref = useRef<HTMLDialogElement>(null);
@@ -82,19 +82,19 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
       <dialog
         ref={ref}
         className="sheet"
-        aria-label={`${c.name}: stat block and background`}
+        aria-label={`${c.name}: background and stat block`}
         onClose={() => setOpen(false)}
         onClick={handleBackdrop}
       >
         <div className="sb-title">
-          <span>STAT BLOCK</span>
+          <span>{c.name.toUpperCase()}</span>
           <button className="btn sm" onClick={() => ref.current?.close()}>
             CLOSE
           </button>
         </div>
         {open && (
           <div className="agent-read">
-            {built && <StatBlock me={c} d={deriveStats({ stats: s, overrides: c.overrides, tier })} tier={tier} />}
+            {/* The story first: a new player picks an Agent by who they are, and the stat block means little yet. */}
             {lore && (
               <section className="stack" style={{ gap: 6 }} aria-label="Background">
                 <div className="rule">
@@ -103,6 +103,7 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
                 <DetailView detail={c.detail} />
               </section>
             )}
+            {built && <StatBlock me={c} d={deriveStats({ stats: s, overrides: c.overrides, tier })} tier={tier} />}
             <button className="btn primary" disabled={play.busy} onClick={play.onPlay}>
               {play.label}
             </button>
