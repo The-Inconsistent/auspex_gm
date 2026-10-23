@@ -94,9 +94,11 @@ export function SealButton({ pool, state, codex, send, onError }: SealButtonProp
               ))}
             </>
           )}
-          <button className="btn sm" onClick={close}>
-            CLOSE
-          </button>
+          <div className="dlg-foot">
+            <button className="btn sm" onClick={close}>
+              CLOSE
+            </button>
+          </div>
         </div>
       )}
     </Popover>

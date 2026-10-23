@@ -24,7 +24,7 @@ export function QrDialog({ qr, onClose }: QrDialogProps) {
         <div className="dim" style={{ fontSize: 12, wordBreak: "break-all", maxWidth: 360 }}>
           {qr.url}
         </div>
-        <button className="btn primary" onClick={onClose}>
+        <button className="btn" onClick={onClose}>
           CLOSE
         </button>
       </div>

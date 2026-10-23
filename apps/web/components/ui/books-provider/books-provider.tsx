@@ -72,8 +72,8 @@ export function BooksProvider({ books, requestPage, children }: BooksProviderPro
               {shown.error ?? "Asking the GM's tablet for the page…"}
             </p>
           )}
-          <form method="dialog">
-            <button className="btn primary">CLOSE</button>
+          <form method="dialog" className="dlg-foot">
+            <button className="btn sm">CLOSE</button>
           </form>
         </div>
       </dialog>

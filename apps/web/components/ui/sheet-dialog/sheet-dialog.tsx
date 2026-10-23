@@ -34,11 +34,13 @@ export function SheetDialog(props: SheetProps) {
       >
         <div className="sb-title">
           <span>{character.name.toUpperCase()}</span>
+        </div>
+        <div className="pl-body">{open && <Sheet {...props} />}</div>
+        <div className="dlg-foot">
           <button className="btn sm" onClick={() => ref.current?.close()}>
             CLOSE
           </button>
         </div>
-        <div className="pl-body">{open && <Sheet {...props} />}</div>
       </dialog>
     </>
   );

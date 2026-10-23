@@ -116,9 +116,6 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
       >
         <div className="sb-title">
           <span>{c.name.toUpperCase()}</span>
-          <button className="btn sm" onClick={() => ref.current?.close()}>
-            CLOSE
-          </button>
         </div>
         {open && (
           <div className="agent-read">
@@ -138,11 +135,16 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
                 <Wargear me={c} />
               </>
             )}
-            <button className="btn primary" disabled={play.busy} onClick={play.onPlay}>
-              {play.label}
-            </button>
           </div>
         )}
+        <div className="dlg-foot">
+          <button className="btn primary" disabled={play.busy} onClick={play.onPlay}>
+            {play.label}
+          </button>
+          <button className="btn sm" onClick={() => ref.current?.close()}>
+            CLOSE
+          </button>
+        </div>
       </dialog>
     </article>
   );

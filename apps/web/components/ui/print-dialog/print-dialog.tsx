@@ -191,8 +191,8 @@ export function PrintProvider({ source: { state, codex, threats, wargear }, chil
               {built && typeof built === "object" && "error" in built && <div className="red">! {built.error}</div>}
             </>
           )}
-          <form method="dialog">
-            <button className="btn">CLOSE</button>
+          <form method="dialog" className="dlg-foot">
+            <button className="btn sm">CLOSE</button>
           </form>
         </div>
       </dialog>

@@ -66,9 +66,6 @@ export function RequestSpend({ pool, state, characterId, send, label, className 
       >
         <div className="sb-title">
           <span>SPEND {word} · THE GM ANSWERS</span>
-          <button className="btn sm" onClick={() => ref.current?.close()}>
-            CLOSE
-          </button>
         </div>
         <div className="stack" style={{ gap: 10, padding: 10 }}>
           <div className="label">
@@ -108,6 +105,11 @@ export function RequestSpend({ pool, state, characterId, send, label, className 
             ))}
           </div>
           <Refusal error={error} onDismiss={() => setError(null)} />
+        </div>
+        <div className="dlg-foot">
+          <button className="btn sm" onClick={() => ref.current?.close()}>
+            CLOSE
+          </button>
         </div>
       </dialog>
     </>

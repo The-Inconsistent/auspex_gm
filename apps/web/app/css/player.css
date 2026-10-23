@@ -244,18 +244,20 @@
   background: transparent;
 }
 /* A spend dialog opens from the strip, so it sits inside the iron header (.band) and would take its bone-on-iron
-   button and label colours; its body (.stack) keeps the page's ink on its vellum, as everywhere else. */
+   button and label colours; its body (.stack) and foot (.dlg-foot) keep the page's ink on its vellum, as everywhere else. */
 .pl-head dialog.spend .stack .label {
   color: var(--ink-3);
 }
-.pl-head dialog.spend .stack .btn:not(.primary) {
+.pl-head dialog.spend .stack .btn:not(.primary),
+.pl-head dialog.spend .dlg-foot .btn:not(.primary) {
   color: var(--ink);
   border-color: var(--ink-2);
   box-shadow:
     inset 0 0 0 2px var(--vellum),
     inset 0 0 0 3px var(--line);
 }
-.pl-head dialog.spend .stack .btn:not(.primary):hover {
+.pl-head dialog.spend .stack .btn:not(.primary):hover,
+.pl-head dialog.spend .dlg-foot .btn:not(.primary):hover {
   background: var(--red-tint);
 }
 .pl-strip-line {
