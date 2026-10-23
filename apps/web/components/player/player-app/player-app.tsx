@@ -169,7 +169,7 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                     legend={rules.filter((r) => r.kind === "stat")}
                   />
                 )}
-                {tab === "INTEL" && <Intel codex={codex} state={state} fresh={fresh} />}
+                {tab === "INTEL" && <Intel codex={codex} state={state} fresh={fresh} markSeen={markSeen} />}
                 {tab === "RULES" && <RulesRef rules={rules} />}
               </div>
               <nav className="pl-nav" role="tablist" aria-label="Player sections">

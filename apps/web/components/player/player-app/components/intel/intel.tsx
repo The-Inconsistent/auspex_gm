@@ -1,147 +1,86 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { flushSync } from "react-dom";
 
-import { flatTree, placeTree, type Codex, type LiveState } from "@wg/shared";
+import type { Codex, LiveState } from "@wg/shared";
 
-import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
-import { CodexPicture } from "@/components/ui/codex-picture/codex-picture";
-import { CodexSearch } from "@/components/ui/codex-search/codex-search";
-import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
-import { Mentions } from "@/components/ui/mentions/mentions";
-import { nextSessionLine } from "@/lib/next-session/next-session";
-import { isFresh } from "@/lib/seen/seen";
+import { freshCount } from "@/lib/seen/seen";
 
-import { MISSION_GROUPS } from "./constants";
+import { Archive } from "./components/archive/archive";
+import { EntrySheet } from "./components/entry-sheet/entry-sheet";
+import { Inbox } from "./components/inbox/inbox";
+import { ShowTable } from "./components/show-table/show-table";
+import { INTEL_VIEWS, type IntelView } from "./constants";
+import { findEntry, type EntryRef, type IntelEntry } from "./utils";
 
-type IntelProps = { codex: Codex; state: LiveState; fresh: ReadonlySet<string> }; // fresh: keys not yet seen (lib/seen)
+// fresh: keys not yet seen (lib/seen); markSeen stores them as seen.
+type IntelProps = { codex: Codex; state: LiveState; fresh: ReadonlySet<string>; markSeen: () => void };
 
-// The codex search (issue #198) over what this phone was shown; its hits replace the page below.
-export function Intel(props: IntelProps) {
-  const [query, setQuery] = useState("");
+// INTEL: an INBOX of what is new, an ARCHIVE of everything shown, one entry sheet over both, and SHOW THE TABLE.
+export function Intel({ codex, state, fresh, markSeen }: IntelProps) {
+  const [view, setView] = useState<IntelView>("INBOX");
+  const [opened, setOpened] = useState<EntryRef | null>(null);
+  const [showing, setShowing] = useState<IntelEntry | null>(null);
+  const sheet = useRef<HTMLDialogElement>(null);
+  const table = useRef<HTMLDivElement>(null);
+  const newCount = freshCount(codex, fresh);
+
+  // Render the entry before showModal() picks what to focus.
+  const handleOpen = (e: IntelEntry) => {
+    flushSync(() => setOpened({ kind: e.kind, id: e.entry.id }));
+    if (!sheet.current?.open) sheet.current?.showModal();
+  };
+  // Fullscreen must be requested inside the tap, so render the view first, then ask. The sheet closes first: a modal
+  // dialog sits above everything but a fullscreen element. A browser without it, or one that refuses, still shows the
+  // view as a fixed full-screen overlay, so a refusal needs no message.
+  const handleShow = async (e: IntelEntry) => {
+    sheet.current?.close();
+    flushSync(() => setShowing(e));
+    if (!document.fullscreenEnabled) return;
+    try {
+      await table.current?.requestFullscreen();
+    } catch {
+      // refused (no user gesture left, a kiosk policy): the overlay is already up
+    }
+  };
+  // CLOSE on the shown view: leave fullscreen if it is on, then drop the view.
+  const handleCloseTable = async () => {
+    setShowing(null);
+    if (!document.fullscreenElement) return;
+    try {
+      await document.exitFullscreen();
+    } catch {
+      // already left (the browser's own Escape): nothing to undo
+    }
+  };
+
   return (
     <>
-      <CodexSearch query={query} onQuery={setQuery} />
-      {!query.trim() && <IntelPage {...props} />}
+      <div className="pl-seg" role="group" aria-label="Intel views">
+        {INTEL_VIEWS.map((v) => (
+          <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>
+            {v}
+            {v === "INBOX" && newCount > 0 && (
+              <span className="mono pl-seg-count" aria-label={`${newCount} new`}>
+                {newCount}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+      {view === "INBOX" ? (
+        <Inbox codex={codex} state={state} fresh={fresh} markSeen={markSeen} onOpen={handleOpen} onShow={handleShow} />
+      ) : (
+        <Archive codex={codex} fresh={fresh} onOpen={handleOpen} />
+      )}
+      <EntrySheet
+        ref={sheet}
+        codex={codex}
+        entry={findEntry(codex, opened)}
+        onClose={() => setOpened(null)}
+        onShow={handleShow}
+      />
+      {showing && <ShowTable ref={table} entry={showing} onClose={handleCloseTable} />}
     </>
   );
-}
-
-function IntelPage({ codex, state, fresh }: IntelProps) {
-  const handouts = [...codex.handouts].sort((a, b) => (b.revealedAt ?? "").localeCompare(a.revealedAt ?? ""));
-  // Every recap, newest first (issue #195, §11.151): the latest open, the rest folded for a player catching up.
-  const [last, ...older] = codex.sessions.filter((s) => s.recap).reverse();
-  const { framework, frameworkBonus, patron, kind, limits, nextSessionAt, nextSessionPlace } = state.campaign;
-  return (
-    <>
-      {/* When the table meets next (issue #197), in this phone's own time zone; the .ics carries it to a calendar. */}
-      {nextSessionAt && (
-        <div className="stack" style={{ gap: 4 }}>
-          <div className="rule">NEXT SESSION</div>
-          <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-            <b style={{ flex: 1 }}>{nextSessionLine(nextSessionAt, nextSessionPlace)}</b>
-            <a className="btn sm" href={`/api/campaigns/${state.campaign.id}/next.ics`} download>
-              ADD TO CALENDAR
-            </a>
-          </div>
-        </div>
-      )}
-      {(framework || kind.length > 0 || limits.length > 0) && (
-        <div className="stack" style={{ gap: 4 }}>
-          <div className="rule">MISSION</div>
-          {framework && <pre className="text">{framework}</pre>}
-          {frameworkBonus && <div className="dim">BONUS: {frameworkBonus}</div>}
-          {patron && <div className="dim">PATRON: {patron}</div>}
-          {/* What the whole table agreed (Core p.316, rules-flow §11.79), so nobody has to remember it. */}
-          {kind.length > 0 && <div className="dim">KIND OF GAME: {kind.join(" · ")}</div>}
-          {limits.length > 0 && <div className="dim">LEAVE OUT: {limits.join(" · ")}</div>}
-        </div>
-      )}
-      {/* The adventures the GM has shown the party (toPlayerCodex sends only those; issue #196, §11.148–150). */}
-      {codex.adventures.length > 0 && (
-        <div className="stack" style={{ gap: 4 }}>
-          <div className="rule">MISSION LOG</div>
-          {MISSION_GROUPS.map(([status, label]) =>
-            codex.adventures
-              .filter((a) => a.status === status)
-              .map((a) => (
-                <div key={a.id}>
-                  <span className={`chip ${status === "running" ? "warn" : ""}`}>{label}</span>{" "}
-                  <b>{a.title.toUpperCase()}</b>
-                  {a.brief && <div className="dim">{a.brief}</div>}
-                </div>
-              )),
-          )}
-        </div>
-      )}
-      {last && (
-        <div className="stack" style={{ gap: 4 }}>
-          <div className="rule">
-            PREVIOUSLY (SESSION {last.number}
-            {last.title && ` · ${last.title.toUpperCase()}`})
-          </div>
-          <pre className="text">
-            <Mentions text={last.recap} />
-          </pre>
-          {older.map((s) => (
-            <details key={s.id}>
-              <summary className="label">
-                SESSION {s.number}
-                {s.title && ` · ${s.title.toUpperCase()}`} · {new Date(s.startedAt).toLocaleDateString()}
-              </summary>
-              <pre className="text">
-                <Mentions text={s.recap} />
-              </pre>
-            </details>
-          ))}
-        </div>
-      )}
-      <div className="rule">HANDOUTS</div>
-      {handouts.length === 0 && <div className="dim">No transmissions received.</div>}
-      {handouts.map((h) => (
-        <div key={h.id} className="handout stack" style={{ gap: 8 }}>
-          <span className="label">
-            {isFresh({ fresh, kind: "handout", entry: h }) && <NewChip />}
-            {h.title.toUpperCase()}
-            {/* toPlayerCodex leaves the viewer alone in a private handout's audience. */}
-            {h.audience.length > 0 && " · FOR YOUR EYES ONLY"}
-          </span>
-          <HandoutDoc handout={h} />
-        </div>
-      ))}
-      <div className="rule">KNOWN PERSONS</div>
-      {codex.npcs.map((n) => (
-        <div key={n.id} className="item">
-          {isFresh({ fresh, kind: "npc", entry: n }) && <NewChip />}
-          <b>{n.name.toUpperCase()}</b> <AttitudeChip attitude={n.attitude} />
-          {n.role && <span className="dim">{n.role}</span>}
-          {/* Only once the GM shows it: toPlayerCodex drops a held-back picture's id (issue #199). */}
-          {n.imageId && <CodexPicture imageId={n.imageId} alt={n.name} />}
-          {n.description && (
-            <pre className="text">
-              <Mentions text={n.description} self={n.id} />
-            </pre>
-          )}
-        </div>
-      ))}
-      <div className="rule">KNOWN LOCATIONS</div>
-      {/* Nested as the GM files them (issue #50); a place under a hidden one comes top-level (toPlayerCodex). */}
-      {flatTree(placeTree(codex.locations)).map(({ row: l, depth }) => (
-        <div key={l.id} className="item" style={{ marginLeft: depth * 18 }}>
-          {isFresh({ fresh, kind: "location", entry: l }) && <NewChip />}
-          <b>{l.name.toUpperCase()}</b>
-          {l.imageId && <CodexPicture imageId={l.imageId} alt={l.name} />}
-          {l.description && (
-            <pre className="text">
-              <Mentions text={l.description} self={l.id} />
-            </pre>
-          )}
-        </div>
-      ))}
-    </>
-  );
-}
-
-// A word, not just a colour: this was revealed since the phone last left INTEL.
-function NewChip() {
-  return <span className="chip warn pl-new">NEW</span>;
 }
