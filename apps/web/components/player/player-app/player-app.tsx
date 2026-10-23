@@ -17,7 +17,6 @@ import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
 import { Sheet } from "@/components/ui/sheet/sheet";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
-import { TurnActions } from "@/components/ui/turn-actions/turn-actions";
 import { useSeen } from "@/hooks/use-seen/use-seen";
 import { useTable } from "@/hooks/use-table/use-table";
 import { freshCount } from "@/lib/seen/seen";
@@ -152,7 +151,6 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                 {state.campaign.archived && <ArchivedBanner text="THE GM HAS CLOSED THIS GAME. NOTHING CAN CHANGE." />}
                 {/* On every tab, since a spend can be asked from the strip or FIGHT: yours to cancel, the others' Glory to see (§11.123). */}
                 <PendingSpends state={state} characterId={me.id} send={send} />
-                {myTurn && <TurnActions />}
                 {state.testCall && (
                   <TestPrompt
                     key={state.testCall.id}
@@ -163,7 +161,14 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                   />
                 )}
                 {tab === "SHEET" && <Sheet me={me} tier={state.campaign.tier} table={{ state, send }} />}
-                {tab === "FIGHT" && <Fight state={state} legend={rules.filter((r) => r.kind === "stat")} />}
+                {tab === "FIGHT" && (
+                  <Fight
+                    state={state}
+                    characterId={characterId}
+                    send={send}
+                    legend={rules.filter((r) => r.kind === "stat")}
+                  />
+                )}
                 {tab === "INTEL" && <Intel codex={codex} state={state} fresh={fresh} />}
                 {tab === "RULES" && <RulesRef rules={rules} />}
               </div>
