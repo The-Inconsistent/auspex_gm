@@ -7,6 +7,7 @@ import { ATTRIBUTES, deriveStats, withMutations, type Character } from "@wg/shar
 import { StatBlock } from "@/components/player/player-sheet/components/stat-block/stat-block";
 import { Wargear } from "@/components/player/player-sheet/components/wargear/wargear";
 import { DetailView, hasDetail } from "@/components/ui/character-detail/character-detail";
+import { KeywordPop } from "@/components/ui/keyword-pop/keyword-pop";
 import { SheetGuide } from "@/components/ui/sheet-guide/sheet-guide";
 import { Term } from "@/components/ui/term/term";
 import { portrait } from "@/lib/portraits/portraits";
@@ -50,7 +51,16 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
       <div className="agent-pick-body">
         <b className="display agent-pick-name">{c.name.toUpperCase()}</b>
         <i className="dim">{[s.archetype, s.species].filter(Boolean).join(" · ") || "No sheet yet"}</i>
-        {s.keywords.length > 0 && <span className="kw">{s.keywords.join(" · ")}</span>}
+        {s.keywords.length > 0 && (
+          <span className="kw">
+            {s.keywords.map((k, i) => (
+              <span key={k}>
+                {i > 0 && " · "}
+                <KeywordPop name={k} />
+              </span>
+            ))}
+          </span>
+        )}
         {built && (
           <>
             <div className="agent-attrs" aria-label="Attributes">

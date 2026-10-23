@@ -46,7 +46,10 @@ in `docs/rules-flow.md` §11. Add new ones there, not silently in code.
   Book pages reach seated players only live: the GM's tablet renders the one tapped page from the GM's own PDF, and
   the api relays it without storing anything (`book:*` socket events, `docs/architecture.md`). Printed cards follow the
   screen's gates: only `GmApp` mounts the print dialog, and the GM's own browser builds the PDF from what it already
-  holds; nothing is uploaded or stored (`docs/frontend.md` §5.1).
+  holds; nothing is uploaded or stored (`docs/frontend.md` §5.1). **One exception:** faction Keyword text (the
+  Keyword entries in `packages/data/creation/keywords`, which the publisher also prints on its website) may be shown
+  in full to anyone, the JOIN page's guests included: the publisher approved it (October 2026). It reaches the
+  browser only through `@wg/data/keyword-texts`; nothing else in `packages/data` is bundled into the web app.
 
 ## Stack
 
