@@ -5,6 +5,7 @@ import { useRef, useState, type MouseEvent } from "react";
 import { ATTRIBUTES, deriveStats, withMutations, type Character } from "@wg/shared";
 
 import { StatBlock } from "@/components/player/player-sheet/components/stat-block/stat-block";
+import { DetailView, hasDetail } from "@/components/ui/character-detail/character-detail";
 import { portrait } from "@/lib/portraits/portraits";
 import { topSkills } from "@/lib/sheet-pools/sheet-pools";
 
@@ -17,13 +18,15 @@ type AgentCardProps = {
 };
 
 // One Agent to choose before taking a seat, skimmable at a glance: who, the Attributes, the best Skills and the
-// weapons. READ opens the book's printed stat block (Core p.117), the same one the player's DOSSIER starts with. The
+// weapons. READ opens the book's printed stat block (Core p.117), the same one the player's DOSSIER starts with,
+// then the Agent's BACKGROUND (appearance, past, personality) as the long sheet folds it. The
 // preview has already stripped Ability and Talent text (book prose needs a seat), so only names and cites show.
 export function AgentCard({ c, tier, play }: AgentCardProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
   const s = c.stats;
   const built = !!(s.archetype || s.species); // a reserve Agent nobody has built yet has an empty sheet
+  const lore = hasDetail(c.detail); // the player's own words (appearance, past, personality), not book prose
   const pic = portrait(c.detail.portrait);
   const attrs = withMutations(s).attributes;
 
@@ -69,7 +72,7 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
           <button className="btn primary" disabled={play.busy} onClick={play.onPlay}>
             {play.label}
           </button>
-          {built && (
+          {(built || lore) && (
             <button className="btn" onClick={handleRead}>
               READ
             </button>
@@ -79,7 +82,7 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
       <dialog
         ref={ref}
         className="sheet"
-        aria-label={`${c.name}: stat block`}
+        aria-label={`${c.name}: stat block and background`}
         onClose={() => setOpen(false)}
         onClick={handleBackdrop}
       >
@@ -91,7 +94,15 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
         </div>
         {open && (
           <div className="agent-read">
-            <StatBlock me={c} d={deriveStats({ stats: s, overrides: c.overrides, tier })} tier={tier} />
+            {built && <StatBlock me={c} d={deriveStats({ stats: s, overrides: c.overrides, tier })} tier={tier} />}
+            {lore && (
+              <section className="stack" style={{ gap: 6 }} aria-label="Background">
+                <div className="rule">
+                  <span>BACKGROUND</span>
+                </div>
+                <DetailView detail={c.detail} />
+              </section>
+            )}
             <button className="btn primary" disabled={play.busy} onClick={play.onPlay}>
               {play.label}
             </button>
