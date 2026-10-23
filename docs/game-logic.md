@@ -134,7 +134,8 @@ Melee, with made-up numbers: S 5 in armour with Powered 2 and a weapon at S+5 �
   Complication −1 Wealth), `requisitionYield` (Ammo 3, Grenades/Missiles 5 − Rarity). `stats.requisitioned` holds
   the session id of the last Test per slot, so each character gets one Wargear and one Ammo Test per session.
 - **Catalogue items on a sheet** (`packages/shared/src/wargear.ts`): `sheetWeapon` turns a catalogue weapon into a sheet
-  weapon (thrown range = N × Strength, p.207; a knife keeps its reach and gets a `Thrown (X m)` trait), `gearLine`
+  weapon (thrown range = N × Strength, p.207; a knife keeps its reach and gets a `Thrown (X m)` trait; `melee` from
+  `isMeleeProfile`, decided while a throw is still told apart from a reach), `gearLine`
   makes the gear string (armour's AR and Powered, and the page), `requisitionKindOf` maps `grenade`/`ammo` to the Ammo Test.
 - Not tracked: Objectives, automatic Wealth awards, Regroup healing (p.196). Regroup is a manual HEAL. Rank from XP
   is the builder's (`rankOf` in `resolveBuild`), for Rank requirements and "+Rank" grants when XP is spent.

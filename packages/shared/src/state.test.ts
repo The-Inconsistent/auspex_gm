@@ -729,6 +729,7 @@ test("sheetWeapon and gearLine: catalogue entries on a sheet (p.207)", () => {
     damage: 2,
     ed: 2,
     range: [1],
+    melee: true, // a reach and a throw: swung, it rolls Weapon Skill
     traits: ["Thrown (20 m)"],
   });
   const frag = {
@@ -736,6 +737,12 @@ test("sheetWeapon and gearLine: catalogue entries on a sheet (p.207)", () => {
     weapon: { addStrength: false, damage: 10, ed: 4, thrown: 4, salvo: null, traits: ["Blast (6)"] },
   };
   assert.deepEqual(sheetWeapon(frag, 9).range, [36]);
+  // A throw is not a reach: at Strength 1 the grenade's 4 m still rolls Ballistic Skill.
+  assert.equal(sheetWeapon(frag, 1).melee, false);
+  const gauss = { name: "Gauss Flayer", weapon: { addStrength: false, damage: 12, ed: 1, range: [48], traits: [] } };
+  assert.equal(sheetWeapon(gauss, 5).melee, false); // one range, but a gun's
+  const glaive = { name: "Ghostglaive", weapon: { addStrength: false, damage: 9, ed: 3, range: [2], traits: [] } };
+  assert.equal(sheetWeapon(glaive, 5).melee, true);
   assert.equal(
     gearLine({
       name: "Tacticus Mk X",
