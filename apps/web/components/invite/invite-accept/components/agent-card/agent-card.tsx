@@ -47,34 +47,40 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
 
   return (
     <article className="pick agent-pick">
-      {pic && <Image src={pic} alt="" width={144} className="portrait-thumb" />}
-      <div className="agent-pick-body">
-        <b className="display agent-pick-name">{c.name.toUpperCase()}</b>
-        <i className="dim">{[s.archetype, s.species].filter(Boolean).join(" · ") || "No sheet yet"}</i>
-        {s.keywords.length > 0 && (
-          <span className="kw">
-            {s.keywords.map((k, i) => (
-              <span key={k}>
-                {i > 0 && " · "}
-                <KeywordPop name={k} />
-              </span>
-            ))}
-          </span>
-        )}
-        {built && (
-          <>
-            <div className="agent-attrs" aria-label="Attributes">
-              {ATTRIBUTES.map((a) => (
-                <Term key={a} k={ATTRIBUTE_TERMS[a]}>
-                  <b>{a}</b>
-                  <span className="mono">{attrs[a]}</span>
-                </Term>
-              ))}
-            </div>
-            <div className="agent-skills" aria-label="Best Skills, dice to roll">
-              <Term k="dice">
-                <span className="label">BEST DICE</span>
+      {/* Who first, then full-width rows a new player reads top to bottom: what they are, the seven numbers, the
+          dice they'll roll most, what they carry. */}
+      <div className="agent-head">
+        {pic && <Image src={pic} alt="" width={144} className="portrait-thumb" />}
+        <div className="agent-head-text">
+          <b className="display agent-pick-name">{c.name.toUpperCase()}</b>
+          <i className="dim">{[s.archetype, s.species].filter(Boolean).join(" · ") || "No sheet yet"}</i>
+        </div>
+      </div>
+      {s.keywords.length > 0 && (
+        <span className="kw agent-kw">
+          {s.keywords.map((k, i) => (
+            <span key={k}>
+              {i > 0 && " · "}
+              <KeywordPop name={k} />
+            </span>
+          ))}
+        </span>
+      )}
+      {built && (
+        <>
+          <div className="agent-attrs" aria-label="Attributes">
+            {ATTRIBUTES.map((a) => (
+              <Term key={a} k={ATTRIBUTE_TERMS[a]}>
+                <b>{a}</b>
+                <span className="mono">{attrs[a]}</span>
               </Term>
+            ))}
+          </div>
+          <div className="agent-row">
+            <Term k="dice">
+              <span className="label">BEST DICE</span>
+            </Term>
+            <div className="agent-skills" aria-label="Best Skills, dice to roll">
               {topSkills(s, CARD_SKILLS).map((r) => (
                 <span key={r.skill}>
                   <span className={r.trained ? "pool-badge" : "pool-badge hollow"}>{r.total}</span>
@@ -82,19 +88,24 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
                 </span>
               ))}
             </div>
-            {s.weapons.length > 0 && <span className="agent-arms">{s.weapons.map((w) => w.name).join(" · ")}</span>}
-          </>
-        )}
-        <div className="keys" style={{ paddingTop: 2 }}>
-          <button className="btn primary" disabled={play.busy} onClick={play.onPlay}>
-            {play.label}
-          </button>
-          {(built || lore) && (
-            <button className="btn" onClick={handleRead}>
-              READ
-            </button>
+          </div>
+          {s.weapons.length > 0 && (
+            <div className="agent-row">
+              <span className="label">WEAPONS</span>
+              <span className="agent-arms">{s.weapons.map((w) => w.name).join(" · ")}</span>
+            </div>
           )}
-        </div>
+        </>
+      )}
+      <div className="keys agent-keys">
+        <button className="btn primary" disabled={play.busy} onClick={play.onPlay}>
+          {play.label}
+        </button>
+        {(built || lore) && (
+          <button className="btn" onClick={handleRead}>
+            READ
+          </button>
+        )}
       </div>
       <dialog
         ref={ref}
