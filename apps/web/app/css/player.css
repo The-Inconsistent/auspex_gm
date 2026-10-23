@@ -380,8 +380,9 @@
 }
 
 /* The dataslate accents (canvas page "Player phone, rebound"): Plex Mono for live readouts, clipped corners, scanlines on
-   iron. Shared by every player screen; each screen keeps its own rules in player-<screen>.css. */
-.pl .mono {
+   iron. Shared by every player screen (and the invite page's Agent cards); each screen keeps its own rules in
+   player-<screen>.css. */
+.mono {
   font-family: var(--mono);
   font-variant-numeric: tabular-nums;
 }

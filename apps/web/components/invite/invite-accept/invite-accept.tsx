@@ -1,19 +1,18 @@
 "use client";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 
 import type { AcceptInvite, InvitePreview } from "@wg/shared";
 
 import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
-import { SheetDialog } from "@/components/ui/sheet-dialog/sheet-dialog";
-import { portrait } from "@/lib/portraits/portraits";
+
+import { AgentCard } from "./components/agent-card/agent-card";
 
 type InviteAcceptProps = { code: string; preview: InvitePreview };
 
 // Claim a seat from an invite: the invited character, an open one, or a new one (room invites). Signed-in users become
-// members; guests (if the GM allowed them) get a QR-style guest cookie. SHEET shows each Agent read-only first, with no
-// rules to link to (they need a seat), hence the empty RulesProvider.
+// members; guests (if the GM allowed them) get a QR-style guest cookie. Each Agent is a card to skim, and READ opens its
+// printed stat block, with no rules to link to (they need a seat), hence the empty RulesProvider.
 export function InviteAccept({ code, preview: p }: InviteAcceptProps) {
   const router = useRouter();
   const [newName, setNewName] = useState("");
@@ -67,47 +66,29 @@ export function InviteAccept({ code, preview: p }: InviteAcceptProps) {
           )}
 
           {!p.member && canClaim && p.mode === "character" && p.character && (
-            <div className="keys" style={{ paddingTop: 0 }}>
-              <button className="btn primary" disabled={busy} onClick={() => accept({})}>
-                PLAY {p.character.name.toUpperCase()}
-                {p.signedIn ? "" : " AS GUEST"}
-              </button>
-              <SheetDialog me={p.character} tier={p.tier} />
-            </div>
+            <AgentCard
+              c={p.character}
+              tier={p.tier}
+              play={{
+                label: `PLAY ${p.character.name.toUpperCase()}${p.signedIn ? "" : " AS GUEST"}`,
+                busy,
+                onPlay: () => void accept({}),
+              }}
+            />
           )}
 
           {!p.member && canClaim && p.mode === "room" && (
             <>
               <div className="rule">PICK YOUR AGENT</div>
               {p.openCharacters.length === 0 && <span className="dim">Every agent is taken. Start a new one:</span>}
-              {p.openCharacters.map((c) => {
-                const pic = portrait(c.detail.portrait);
-                return (
-                  <div key={c.id} className="pick">
-                    {pic ? (
-                      <Image src={pic} alt="" width={144} className="portrait-thumb" />
-                    ) : (
-                      <span className="portrait-thumb" />
-                    )}
-                    <div className="stack" style={{ gap: 4, flex: 1, minWidth: 0 }}>
-                      <b>{c.name.toUpperCase()}</b>
-                      <i className="dim">
-                        {[c.stats.archetype, c.stats.species].filter(Boolean).join(" · ") || "No sheet yet"}
-                      </i>
-                      <div className="keys" style={{ paddingTop: 2 }}>
-                        <button
-                          className="btn sm primary"
-                          disabled={busy}
-                          onClick={() => accept({ characterId: c.id })}
-                        >
-                          PLAY
-                        </button>
-                        <SheetDialog me={c} tier={p.tier} />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+              {p.openCharacters.map((c) => (
+                <AgentCard
+                  key={c.id}
+                  c={c}
+                  tier={p.tier}
+                  play={{ label: "PLAY", busy, onPlay: () => void accept({ characterId: c.id }) }}
+                />
+              ))}
               <form style={{ display: "flex", gap: 8 }} onSubmit={handleNew}>
                 <input
                   className="input"
