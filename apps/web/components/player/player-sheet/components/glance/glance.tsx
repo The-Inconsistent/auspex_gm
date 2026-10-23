@@ -1,7 +1,8 @@
 "use client";
 import { effectiveStrength, type Character, type DerivedStats } from "@wg/shared";
 
-import { RuleIdLink } from "@/components/ui/rule-link/rule-link";
+import { SheetGuide } from "@/components/ui/sheet-guide/sheet-guide";
+import { Term } from "@/components/ui/term/term";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import { topSkills, weaponPool, weaponSkill } from "@/lib/sheet-pools/sheet-pools";
 
@@ -17,30 +18,37 @@ export function Glance({ me, d, onAllSkills }: GlanceProps) {
   const armour = s.armour.name ? `Resilience counts the ${s.armour.name}, AR ${s.armour.ar}. ` : "";
   return (
     <>
+      <SheetGuide />
       <section className="ps-section" aria-label="Traits">
         <div className="ps-stat">
           {TRAIT_CELLS.map((t) => (
             <div key={t.label} className="ps-stat-cell">
-              <RuleIdLink id={t.rule}>
+              <Term k={t.key}>
                 <span className="ps-stat-h">{t.label}</span>
                 <span className="ps-stat-v mono">{d[t.key]}</span>
-              </RuleIdLink>
+              </Term>
             </div>
           ))}
         </div>
-        <span className="ps-note">{armour}Tap a Trait to read it.</span>
+        <span className="ps-note">{armour}Tap a Trait for what it means.</span>
       </section>
 
       {s.weapons.length > 0 && (
         <section className="ps-section">
           <Heading title="ARMAMENT" />
+          <span className="ps-note">
+            Each line reads <Term k="damage">damage</Term> + <Term k="ed">ED</Term> · <Term k="ap">AP</Term> · R for{" "}
+            <Term k="range">Range</Term> · S for <Term k="salvo">Salvo</Term>, then its traits.
+          </span>
           {s.weapons.map((w) => (
             <div key={w.name} className="ps-weapon cut">
               {/* the pool the attack rolls: Skill + Attribute, mutations counted */}
-              <span className="pool-badge" role="img" aria-label={`${weaponSkill(w)} pool ${weaponPool(s, w)}`}>
-                <small>{WEAPON_SKILL_TAGS[weaponSkill(w)]}</small>
-                {weaponPool(s, w)}
-              </span>
+              <Term k={weaponSkill(w) === "Weapon Skill" ? "weaponSkill" : "ballisticSkill"}>
+                <span className="pool-badge" role="img" aria-label={`${weaponSkill(w)} pool ${weaponPool(s, w)}`}>
+                  <small>{WEAPON_SKILL_TAGS[weaponSkill(w)]}</small>
+                  {weaponPool(s, w)}
+                </span>
+              </Term>
               <div className="ps-weapon-text">
                 <b className="ps-weapon-name">{w.name}</b>
                 <span className="ps-weapon-line">
@@ -53,7 +61,14 @@ export function Glance({ me, d, onAllSkills }: GlanceProps) {
       )}
 
       <section className="ps-section">
-        <Heading title="YOUR SKILLS" aside={<span className="label">DICE</span>} />
+        <Heading
+          title="YOUR SKILLS"
+          aside={
+            <span className="label">
+              <Term k="dice">DICE</Term>
+            </span>
+          }
+        />
         {topSkills(s, GLANCE_SKILLS).map((r) => (
           <div key={r.skill} className="ps-skill">
             <span className={r.trained ? "pool-badge" : "pool-badge hollow"}>{r.total}</span>

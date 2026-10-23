@@ -5,9 +5,13 @@ import { useRef, useState, type MouseEvent } from "react";
 import { ATTRIBUTES, deriveStats, withMutations, type Character } from "@wg/shared";
 
 import { StatBlock } from "@/components/player/player-sheet/components/stat-block/stat-block";
+import { Wargear } from "@/components/player/player-sheet/components/wargear/wargear";
 import { DetailView, hasDetail } from "@/components/ui/character-detail/character-detail";
+import { SheetGuide } from "@/components/ui/sheet-guide/sheet-guide";
+import { Term } from "@/components/ui/term/term";
 import { portrait } from "@/lib/portraits/portraits";
 import { topSkills } from "@/lib/sheet-pools/sheet-pools";
+import { ATTRIBUTE_TERMS } from "@/lib/sheet-terms/sheet-terms";
 
 import { CARD_SKILLS } from "./constants";
 
@@ -51,13 +55,16 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
           <>
             <div className="agent-attrs" aria-label="Attributes">
               {ATTRIBUTES.map((a) => (
-                <span key={a}>
+                <Term key={a} k={ATTRIBUTE_TERMS[a]}>
                   <b>{a}</b>
                   <span className="mono">{attrs[a]}</span>
-                </span>
+                </Term>
               ))}
             </div>
             <div className="agent-skills" aria-label="Best Skills, dice to roll">
+              <Term k="dice">
+                <span className="label">BEST DICE</span>
+              </Term>
               {topSkills(s, CARD_SKILLS).map((r) => (
                 <span key={r.skill}>
                   <span className={r.trained ? "pool-badge" : "pool-badge hollow"}>{r.total}</span>
@@ -103,7 +110,13 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
                 <DetailView detail={c.detail} />
               </section>
             )}
-            {built && <StatBlock me={c} d={deriveStats({ stats: s, overrides: c.overrides, tier })} tier={tier} />}
+            {built && (
+              <>
+                <SheetGuide />
+                <StatBlock me={c} d={deriveStats({ stats: s, overrides: c.overrides, tier })} tier={tier} />
+                <Wargear me={c} />
+              </>
+            )}
             <button className="btn primary" disabled={play.busy} onClick={play.onPlay}>
               {play.label}
             </button>

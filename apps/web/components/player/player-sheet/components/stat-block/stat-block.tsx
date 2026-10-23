@@ -12,20 +12,23 @@ import {
 } from "@wg/shared";
 
 import { PageCite } from "@/components/ui/page-cite/page-cite";
+import { Term } from "@/components/ui/term/term";
+import { ATTRIBUTE_TERMS } from "@/lib/sheet-terms/sheet-terms";
 
 type StatBlockProps = { me: Character; d: DerivedStats; tier: number };
 
-// The Agent as the book prints an Archetype's stat block (Core p.117): the name bar, the Tier strip, labelled rows on
-// alternating bands, then the Attribute table. Read-only, and the first thing in the DOSSIER.
+// The Agent as the book prints an Archetype's stat block (Core p.117): the name bar and the Tier strip, then labelled
+// rows on alternating bands, ordered for a new player: what you are made of (Attributes, then Influence), what you are
+// (Archetype), what you can do (Skills, Abilities, Talents), and who you belong to (Keywords) last. Every label, and
+// every Attribute by its full name, opens its meaning. Wargear is its own section below (Wargear). Read-only.
 export function StatBlock({ me, d, tier }: StatBlockProps) {
   const s = me.stats;
   const shown = withMutations(s); // Attributes and Skills as the mutations change them (Core pp.288–295)
   const trained = (Object.keys(SKILLS) as Skill[]).filter((k) => (shown.skills[k] ?? 0) > 0);
-  const wargear = [...s.weapons.map((w) => w.name), ...(s.armour.name ? [s.armour.name] : []), ...s.gear];
   // Abilities and Talents are cited as the build wrote them. Nothing on the sheet marks which ability is the Archetype's.
   const rules = [
-    ["ABILITIES", s.abilities],
-    ["TALENTS", s.talents],
+    ["abilities", "ABILITIES", s.abilities],
+    ["talents", "TALENTS", s.talents],
   ] as const;
 
   return (
@@ -33,37 +36,66 @@ export function StatBlock({ me, d, tier }: StatBlockProps) {
       <div className="ps-spikes" aria-hidden="true" />
       <div className="ps-btitle">{me.name.toUpperCase()}</div>
       <div className="ps-bmeta">
-        <b>TIER</b>
+        <b>
+          <Term k="tier">TIER</Term>
+        </b>
         <span className="mono">{tier}</span>
-        <b>SPECIES</b>
+        <b>
+          <Term k="species">SPECIES</Term>
+        </b>
         <span>{s.species}</span>
-        <b>XP</b>
+        <b>
+          <Term k="xp">XP</Term>
+        </b>
         <span className="mono">{me.xp}</span>
       </div>
       <div className="ps-rows">
-        {s.keywords.length > 0 && (
-          <div className="ps-brow">
-            <b>KEYWORDS:</b> <span className="ps-kw">{s.keywords.join(", ")}</span>
-          </div>
-        )}
         <div className="ps-brow">
-          <b>ARCHETYPE:</b> {s.archetype || "None"}, Rank {rankOf(me.xp)}
+          <b>
+            <Term k="attributes">ATTRIBUTES</Term>:
+          </b>
+          <span className="ps-attrs">
+            {ATTRIBUTES.map((a) => (
+              <span key={a}>
+                <Term k={ATTRIBUTE_TERMS[a]}>{ATTRIBUTE_NAMES[a]}</Term> <b className="mono">{shown.attributes[a]}</b>
+              </span>
+            ))}
+          </span>
+          {s.armour.powered > 0 && (
+            <i className="ps-cite">
+              Strength {effectiveStrength(s)} in Powered ({s.armour.powered}) armour.
+            </i>
+          )}
         </div>
         <div className="ps-brow">
-          <b>ATTRIBUTES:</b> {ATTRIBUTES.map((a) => `${ATTRIBUTE_NAMES[a]} ${shown.attributes[a]}`).join(", ")}
+          <b>
+            <Term k="influence">INFLUENCE</Term>:
+          </b>{" "}
+          <span className="mono">{d.influence}</span>
+        </div>
+        <div className="ps-brow">
+          <b>
+            <Term k="archetype">ARCHETYPE</Term>:
+          </b>{" "}
+          {s.archetype || "None"}, <Term k="rank">Rank</Term> {rankOf(me.xp)}
         </div>
         {trained.length > 0 && (
           <div className="ps-brow">
-            <b>SKILLS:</b> {trained.map((k) => `${k} ${shown.skills[k]}`).join(", ")}
+            <b>
+              <Term k="skills">SKILLS</Term>:
+            </b>{" "}
+            {trained.map((k) => `${k} ${shown.skills[k]}`).join(", ")}
           </div>
         )}
         {rules.map(
-          ([title, list]) =>
+          ([term, title, list]) =>
             list.length > 0 && (
               <div key={title} className="ps-brow">
-                <b>{title}:</b>{" "}
+                <b>
+                  <Term k={term}>{title}</Term>:
+                </b>{" "}
                 {list.map((r, i) => (
-                  <span key={r.name}>
+                  <span key={`${r.name}-${i}`}>
                     {i > 0 && ", "}
                     {r.name}
                     {r.page && (
@@ -77,34 +109,14 @@ export function StatBlock({ me, d, tier }: StatBlockProps) {
               </div>
             ),
         )}
-        {wargear.length > 0 && (
+        {s.keywords.length > 0 && (
           <div className="ps-brow">
-            <b>WARGEAR:</b> {wargear.join(", ")}
+            <b>
+              <Term k="keywords">KEYWORDS</Term>:
+            </b>{" "}
+            <span className="ps-kw">{s.keywords.join(", ")}</span>
           </div>
         )}
-        <div className="ps-brow">
-          <b>INFLUENCE:</b> <span className="mono">{d.influence}</span>
-        </div>
-      </div>
-      <div className="ps-bbar">
-        <span>ATTRIBUTES</span>
-        {s.armour.powered > 0 && (
-          <span className="mono ps-bbar-note">
-            S {effectiveStrength(s)} IN POWERED ({s.armour.powered})
-          </span>
-        )}
-      </div>
-      <div className="ps-tbl">
-        <span className="ps-tbl-h">ATTRIBUTE</span>
-        {ATTRIBUTES.map((a) => (
-          <b key={a}>{a}</b>
-        ))}
-        <span className="ps-tbl-h">RATING</span>
-        {ATTRIBUTES.map((a) => (
-          <span key={a} className="mono">
-            {shown.attributes[a]}
-          </span>
-        ))}
       </div>
       <div className="ps-spikes ps-spikes-dn" aria-hidden="true" />
     </section>
