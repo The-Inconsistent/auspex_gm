@@ -46,9 +46,11 @@ async function openCharacters(conn: Db, campaignId: string) {
   return chars.filter((c) => !claimed.has(c.id));
 }
 
-// A sheet for someone who holds an invite but no seat yet: no objectives, no book prose (see InvitePreview).
-const previewSheet = (c: Character): Character => {
-  const bare = (list: Character["stats"]["talents"]) => list.map((r) => ({ ...r, text: "" }));
+// A sheet for someone who holds an invite but no seat yet: no objectives, no book prose (see InvitePreview). Ability and
+// Talent text stays for a signed-in visitor, who may read the same text in the creation catalogue already (seatless
+// /api/creation needs a signed-in Clerk user, CLAUDE.md); a guest gets the names and cites only.
+const previewSheet = (c: Character, signedIn: boolean): Character => {
+  const bare = (list: Character["stats"]["talents"]) => (signedIn ? list : list.map((r) => ({ ...r, text: "" })));
   // A fitted upgrade's notes are its rules text (withUpgrades, Core p.227), so they need a seat too — on the suit as
   // much as on a weapon — and so do the standing weapon effects: their notes and `gm` mods are book prose
   // (rules-flow.md §11.68). The profile numbers stay, the AR and Traits an upgrade changed with them.
@@ -84,9 +86,11 @@ export async function previewInvite({ code, user }: { code: string; user: AuthUs
     campaignName: c?.name ?? "?",
     tier: c?.tier ?? 1,
     mode: inv.mode,
-    character: ch ? previewSheet(toCharacter(ch)) : null,
+    character: ch ? previewSheet(toCharacter(ch), !!user) : null,
     openCharacters:
-      inv.mode === "room" ? chars.filter((r) => !claimed.has(r.id)).map((r) => previewSheet(toCharacter(r))) : [],
+      inv.mode === "room"
+        ? chars.filter((r) => !claimed.has(r.id)).map((r) => previewSheet(toCharacter(r), !!user))
+        : [],
     allowGuests: inv.allowGuests,
     signedIn: !!user,
     member: !!m,

@@ -394,6 +394,9 @@ button.ps-fold-head > .ps-fold-title {
   box-shadow: inset 0 0 0 3px var(--bone);
 }
 .term-pop {
+  /* a long Ability text scrolls inside the card rather than off the screen */
+  max-height: 80dvh;
+  overflow-y: auto;
   /* its own type, whatever it sits in (a stat block's <b>, the card's grid, the guide's list) */
   font: 400 16px/1.4 var(--serif);
   letter-spacing: normal;
@@ -441,6 +444,7 @@ button.ps-fold-head > .ps-fold-title {
   color: var(--ink-3);
 }
 .term-pop-text {
+  white-space: pre-line;
   font-family: var(--serif);
   font-size: 16px;
   font-weight: 400;

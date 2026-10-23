@@ -12,16 +12,26 @@ import {
 } from "@wg/shared";
 
 import { PageCite } from "@/components/ui/page-cite/page-cite";
-import { Term } from "@/components/ui/term/term";
-import { ATTRIBUTE_TERMS } from "@/lib/sheet-terms/sheet-terms";
+import { Pop, Term } from "@/components/ui/term/term";
+import { ATTRIBUTE_TERMS, SKILL_TERMS } from "@/lib/sheet-terms/sheet-terms";
 
-type StatBlockProps = { me: Character; d: DerivedStats; tier: number };
+type StatBlockProps = {
+  me: Character;
+  d: DerivedStats;
+  tier: number;
+  // The SKILLS, ABILITIES and TALENTS rows. The DOSSIER leaves them out: its DICE TO ROLL and TALENTS & ABILITIES
+  // sections below already hold them, with more.
+  lists?: boolean;
+};
+
+// What an Ability or Talent says, or why it can't be read here: the invite preview strips the text for a guest.
+const NO_TEXT = "Its full text shows once you sign in or take a seat.";
 
 // The Agent as the book prints an Archetype's stat block (Core p.117): the name bar and the Tier strip, then labelled
 // rows on alternating bands, ordered for a new player: what you are made of (Attributes, then Influence), what you are
 // (Archetype), what you can do (Skills, Abilities, Talents), and who you belong to (Keywords) last. Every label, and
 // every Attribute by its full name, opens its meaning. Wargear is its own section below (Wargear). Read-only.
-export function StatBlock({ me, d, tier }: StatBlockProps) {
+export function StatBlock({ me, d, tier, lists = true }: StatBlockProps) {
   const s = me.stats;
   const shown = withMutations(s); // Attributes and Skills as the mutations change them (Core pp.288–295)
   const trained = (Object.keys(SKILLS) as Skill[]).filter((k) => (shown.skills[k] ?? 0) > 0);
@@ -79,16 +89,22 @@ export function StatBlock({ me, d, tier }: StatBlockProps) {
           </b>{" "}
           {s.archetype || "None"}, <Term k="rank">Rank</Term> {rankOf(me.xp)}
         </div>
-        {trained.length > 0 && (
+        {lists && trained.length > 0 && (
           <div className="ps-brow">
             <b>
               <Term k="skills">SKILLS</Term>:
             </b>{" "}
-            {trained.map((k) => `${k} ${shown.skills[k]}`).join(", ")}
+            {trained.map((k, i) => (
+              <span key={k}>
+                {i > 0 && ", "}
+                <Term k={SKILL_TERMS[k]}>{k}</Term> {shown.skills[k]}
+              </span>
+            ))}
           </div>
         )}
         {rules.map(
           ([term, title, list]) =>
+            lists &&
             list.length > 0 && (
               <div key={title} className="ps-brow">
                 <b>
@@ -97,7 +113,9 @@ export function StatBlock({ me, d, tier }: StatBlockProps) {
                 {list.map((r, i) => (
                   <span key={`${r.name}-${i}`}>
                     {i > 0 && ", "}
-                    {r.name}
+                    <Pop title={r.name} cite={r.page ?? ""} body={r.text || NO_TEXT}>
+                      {r.name}
+                    </Pop>
                     {r.page && (
                       <i className="ps-cite">
                         {" "}

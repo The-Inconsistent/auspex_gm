@@ -3,8 +3,10 @@ import type { Character, DerivedStats } from "@wg/shared";
 
 import { PageCite } from "@/components/ui/page-cite/page-cite";
 import { SheetGuide } from "@/components/ui/sheet-guide/sheet-guide";
+import { Term } from "@/components/ui/term/term";
 import type { Send } from "@/hooks/use-table/use-table";
 import { skillRows } from "@/lib/sheet-pools/sheet-pools";
+import { SKILL_TERMS } from "@/lib/sheet-terms/sheet-terms";
 
 import { DOSSIER_JUMPS } from "../../constants";
 import { FoldRow } from "../fold-row/fold-row";
@@ -39,7 +41,7 @@ export function Dossier({ me, d, tier, send, buildHref, onError }: DossierProps)
         ))}
       </nav>
 
-      <StatBlock me={me} d={d} tier={tier} />
+      <StatBlock me={me} d={d} tier={tier} lists={false} />
       <Wargear me={me} />
 
       {/* A Test rolls Skill + Attribute (Core p.21), so an unrated Skill still rolls its Attribute: shown hollow. */}
@@ -50,7 +52,7 @@ export function Dossier({ me, d, tier, send, buildHref, onError }: DossierProps)
             <div key={r.skill} className="ps-die">
               <span className={r.trained ? "pool-badge" : "pool-badge hollow"}>{r.total}</span>
               <span>
-                {r.skill} <span className="ps-attr mono">{r.attribute}</span>
+                <Term k={SKILL_TERMS[r.skill]}>{r.skill}</Term> <span className="ps-attr mono">{r.attribute}</span>
               </span>
             </div>
           ))}

@@ -1801,6 +1801,16 @@ test("character builder: the creation catalogue for seats, and character.build d
   assert.equal(previewed.stats.weaponEffects, undefined);
   assert.ok(previewed.stats.weapons.every((w) => !w.effects && !w.notes));
   assert.ok(carbine(previewed).traits.includes("Rapid Fire (2)"), "the profile stays");
+  // Ability and Talent text is book prose: a guest gets the names and cites, a signed-in visitor (who can read it in
+  // /api/creation already) the text too.
+  assert.ok(previewed.stats.abilities.length > 0 && previewed.stats.abilities.every((r) => r.text === ""));
+  const signedIn = (
+    (await (await get(`/invites/${veylInvite.token}`, bearer(clerk("reader")))).json()) as { character: Character }
+  ).character;
+  assert.ok(
+    signedIn.stats.abilities.some((r) => r.text !== ""),
+    "a signed-in visitor reads the abilities",
+  );
   assert.ok(veyl.builtAt && veyl.builtAt <= Date.now(), "the save is stamped, so older device drafts go stale");
   assert.equal(veyl.xpSpent, 0, "a character just made has spent no XP in play");
 
