@@ -11,7 +11,7 @@ table, such as a travel event in prep or a Mutation table after a failed Mutatio
   locations, session recaps.
 
 Everything syncs live. UI style is the "Imperial Manuscript", after the books' print design: a cold grey page, crimson ink and charcoal
-iron (Cinzel + Crimson Pro; IBM Plex Mono only for in-world print-outs), with a night "vigil" theme (`docs/frontend.md` §7).
+iron (Cinzel + Crimson Pro; IBM Plex Mono only for in-world print-outs and the player phone's dataslate readouts), with a night "vigil" theme (`docs/frontend.md` §7).
 
 ## Rules come from the books, never from memory
 
@@ -181,12 +181,14 @@ apps/web/components/gm/      gm-app (the shell, useGm(); rail: SCENE · STORY ·
                              SCENE reuse), header (seal pads, CALL A TEST, SPEND ASKED), setup (checklist, framework, export),
                              codex, party (one-button cards, the dossier sheet), test-call (the call form and tally, issue #191),
                              spend-requests (kebab-case folders, children under components/)
-apps/web/components/player/  player-app (sheet, fight, intel with NEW marks), test-prompt (a called Test: pool, PASSED / FAILED; #191)
+apps/web/components/player/  player-app (the shell: header, vitals-strip, icon tabs with the tab in ?tab=; fight; intel: INBOX, ARCHIVE, entry sheet,
+                             SHOW THE TABLE, NEW marks), player-sheet (AT A GLANCE, and the DOSSIER printed as the Core p.117 archetype block),
+                             test-prompt (a called Test as a bottom sheet: pool, PASSED / FAILED; #191)
 apps/web/components/builder/ builder (draft, live resolveBuild, one screen per creation step, XP ledger; one Bench for a
                              campaign or the library, import-library for bringing a library character in)
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
                              to read its rule), mentions + mention-field (codex @mentions: tap-to-peek links, the @ list in
-                             a text field; issue #200), codex-search (one box over every codex entry, a hit opens its peek; #198), find-field (find an entry to add or name a new one), weapon-line, sheet (with upgrade-row, request-spend: the phone's SPEND buttons), bar, stat-block, status-chips,
+                             a text field; issue #200), codex-search (one box over every codex entry, a hit opens its peek; #198), find-field (find an entry to add or name a new one), weapon-line, sheet (the one-page sheet: GM PARTY, invite page), request-spend (SPEND and the pending list), supply-row, upgrade-row, bar, stat-block, status-chips,
                              status-screen, refusal, table-talk (kind of game and limits), wizard-steps (NEW CAMPAIGN's step strip),
                              field-error (a refused field's reason), threat-builder + threat-starts (a custom stat block, from
                              CODEX › THREATS or a scene), print-dialog (PrintProvider, usePrint: the printed cards and handouts PDF), print-pick (a row's tick for PRINT N),
@@ -198,7 +200,7 @@ apps/web/hooks/use-table/    socket + wake lock
 apps/web/hooks/use-reorder/  drag a row by its handle (touch, pen, mouse, arrow keys): the scene editor's Tests, spends, fight
 apps/web/hooks/use-seen/     what this phone has seen of the codex (localStorage), for INTEL's NEW
 apps/web/hooks/use-field-errors/  CREATE/ADD/SAVE check a shared zod schema first and mark refused fields (ui/field-error)
-apps/web/lib/                command (tracker command line), blocks, weapon-line, tokens (raw colour values),
+apps/web/lib/                command (tracker command line), sheet-pools (a weapon's and a Skill's dice), blocks, weapon-line, tokens (raw colour values),
                              share-origin (QR and invite links carry an address a phone can reach), qr (a join link as a QR image),
                              print-cards (what a print holds, card sizes, the sheet layout), vox-lines (a vox handout's stamps),
                              codex-image (shrink a picture in the browser, upload it, its seat-gated URL), scene (currentScene),

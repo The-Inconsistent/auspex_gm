@@ -20,7 +20,8 @@ import "./css/scene.css";
 import "./css/story.css";
 import "./css/editor.css";
 
-// Cinzel stands in for the books' Priori Serif, Crimson Pro for Caxton; Plex Mono is only for in-world print-outs.
+// Cinzel stands in for the books' Priori Serif, Crimson Pro for Caxton; Plex Mono is for in-world print-outs and the
+// player phone's dataslate readouts (docs/frontend.md §7).
 const display = Cinzel({ subsets: ["latin"], variable: "--font-display" });
 const serif = Crimson_Pro({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-serif" });
 const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "700"], variable: "--font-mono" });
