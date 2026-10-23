@@ -291,7 +291,12 @@ The room QR and per-character invite links point here. The page fetches `/api/in
     Every term opens its meaning (`ui/term`); the JOIN page is served no rules, so there is no FULL RULE there. Each
     Skill opens what it's for (`SKILL_TERMS`, Core pp.121–127) and each Ability or Talent its text (`Pop`): the preview
     keeps that text for a signed-in visitor and strips it for a guest, who reads "Its full text shows once you sign in
-    or take a seat".
+    or take a seat". Each Keyword opens the book's full text of it (`ui/keyword-pop`, `@wg/data/keyword-texts`: the
+    publisher approved faction Keyword text for anyone); a Chapter or other filled bracket reads its bracket's text
+    ("DARK ANGELS: a Chapter", [CHAPTER] Core p.377), and a Keyword no book in the data names stays plain. A Keyword
+    the books name but never describe may carry our own HOUSE text in `keyword-texts.ts`, shown with no page
+    (DEATHWATCH, written after the Warhammer 40k Wiki and Warhammer Community's Kill Team: Tomb World preview; the
+    sources are named in the code).
     The preview has stripped Ability and Talent text already (book prose needs a seat), so only names and cites show.
   - Each choice POSTs to `/api/invites/:code/accept` from the browser, with `asGuest` set when signed out, then pushes
     to `/c/<campaignId>`. A refusal (such as "That character is already taken") shows inline.

@@ -10,6 +10,7 @@
     "zod": "^4.6.5"
   },
   "exports": {
-    ".": "./index.ts"
+    ".": "./index.ts",
+    "./keyword-texts": "./keyword-texts.ts"
   }
 }

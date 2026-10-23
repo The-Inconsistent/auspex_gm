@@ -11,6 +11,7 @@ import {
   type Skill,
 } from "@wg/shared";
 
+import { KeywordPop } from "@/components/ui/keyword-pop/keyword-pop";
 import { PageCite } from "@/components/ui/page-cite/page-cite";
 import { Pop, Term } from "@/components/ui/term/term";
 import { ATTRIBUTE_TERMS, SKILL_TERMS } from "@/lib/sheet-terms/sheet-terms";
@@ -132,7 +133,14 @@ export function StatBlock({ me, d, tier, lists = true }: StatBlockProps) {
             <b>
               <Term k="keywords">KEYWORDS</Term>:
             </b>{" "}
-            <span className="ps-kw">{s.keywords.join(", ")}</span>
+            <span className="ps-kw">
+              {s.keywords.map((k, i) => (
+                <span key={k}>
+                  {i > 0 && ", "}
+                  <KeywordPop name={k} />
+                </span>
+              ))}
+            </span>
           </div>
         )}
       </div>
