@@ -1,14 +1,23 @@
-import { SKILLS, skillTotal, withMutations, type CharacterStats, type Skill, type Weapon } from "@wg/shared";
+import {
+  SKILLS,
+  isMeleeProfile,
+  skillTotal,
+  withMutations,
+  type CharacterStats,
+  type Skill,
+  type Weapon,
+} from "@wg/shared";
 
-// All it reads: the reach, and `addStrength` on a character's melee profile (a catalogue entry has only the reach).
-type Reach = Pick<Weapon, "range"> & { addStrength?: boolean };
+// All it reads: `melee`, set when the weapon joined the sheet, else the reach and `addStrength`.
+type Reach = Pick<Weapon, "range" | "melee"> & { addStrength?: boolean };
 export type WeaponSkill = Extract<Skill, "Weapon Skill" | "Ballistic Skill">;
 
-// Which Skill a weapon rolls: Ballistic Skill (ranged) or Weapon Skill (melee), docs/rules-flow.md §4 step 1.
-// ponytail: the data has no melee/ranged flag, so melee is "adds Strength" or one short range (catalogue: 1 to 4);
-// every ranged profile and thrown one prints a Long range of 9 or more. Upgrade when the weapon carries its kind.
+// Which Skill a weapon rolls: Ballistic Skill (ranged) or Weapon Skill (melee), docs/rules-flow.md §4 step 1. `melee`
+// comes from the printed profile (sheetWeapon in @wg/shared).
+// ponytail: a sheet built before `melee` existed falls back to the same test on the sheet's profile, which can't tell a
+// thrown weapon's short throw from a reach; a rebuild sets the field.
 export const weaponSkill = (w: Reach): WeaponSkill =>
-  w.addStrength || (w.range.length === 1 && w.range[0]! <= 4) ? "Weapon Skill" : "Ballistic Skill";
+  (w.melee ?? isMeleeProfile(w)) ? "Weapon Skill" : "Ballistic Skill";
 
 // The pool an attack with this weapon rolls: its Skill's total (Skill + linked Attribute, Core p.21), mutations counted.
 export const weaponPool = (s: CharacterStats, w: Reach) => skillTotal(s, weaponSkill(w));

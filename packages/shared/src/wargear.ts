@@ -106,15 +106,25 @@ export const Wargear = z.object({
 });
 export type Wargear = z.infer<typeof Wargear>;
 
+// The longest reach a melee weapon prints. No profile says "melee" in so many words: a melee weapon adds Strength
+// ("S + X") or prints one reach (Knife 1, Eviscerator 2, the Ghostglaive 2), while a gun prints three bands or, a few
+// xenos and Chaos pieces, one range of 9 m or more (Gauss Flayer 48, Blasted Standard 9). Checked against every entry
+// in packages/data/wargear; a throw is not a reach (`thrown`, p.207).
+export const MELEE_MAX_REACH = 4;
+export const isMeleeProfile = (w: { addStrength?: boolean; range?: number[] }) =>
+  !!w.addStrength || (w.range?.length === 1 && w.range[0]! <= MELEE_MAX_REACH);
+
 // A catalogue weapon as a sheet weapon. A thrown range becomes N × the character's Strength in metres (p.207); a
-// weapon that is also melee keeps its reach and notes the throw as a trait.
+// weapon that is also melee keeps its reach and notes the throw as a trait. `melee` is decided here, while a throw is
+// still told apart from a reach.
 export function sheetWeapon(
   { name, weapon: { thrown, range, ...w } }: { name: string; weapon: WargearWeapon },
   strength: number,
 ) {
   const throwM = thrown === undefined ? undefined : thrown * strength;
-  if (range === undefined) return { name, ...w, range: [throwM ?? 1] };
-  return { name, ...w, range, traits: throwM === undefined ? w.traits : [...w.traits, `Thrown (${throwM} m)`] };
+  const melee = isMeleeProfile({ addStrength: w.addStrength, range });
+  if (range === undefined) return { name, ...w, range: [throwM ?? 1], melee };
+  return { name, ...w, range, melee, traits: throwM === undefined ? w.traits : [...w.traits, `Thrown (${throwM} m)`] };
 }
 
 // A catalogue weapon as a **Threat's** weapon (GitHub issue #43). A stat block prints final numbers, and `Weapon` has

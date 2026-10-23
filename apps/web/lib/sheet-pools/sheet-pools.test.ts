@@ -17,6 +17,8 @@ test("a ranged weapon rolls Ballistic Skill + Agility, a melee one Weapon Skill 
   assert.equal(weaponSkill({ ...base, range: [1] }), "Weapon Skill");
   assert.equal(weaponPool(stats, { ...base, range: [2], addStrength: true } as never), 9);
   assert.equal(weaponSkill({ ...base, range: [14] }), "Ballistic Skill"); // a thrown grenade
+  assert.equal(weaponSkill({ ...base, range: [4], melee: false }), "Ballistic Skill"); // set when it joined: a short throw
+  assert.equal(weaponSkill({ ...base, range: [48] }), "Ballistic Skill"); // one range, but a gun's
   assert.equal(weaponSkill({ range: [2] }), "Weapon Skill"); // a reach-2 blade (Eviscerator), even from the catalogue
 });
 

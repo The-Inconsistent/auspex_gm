@@ -482,7 +482,7 @@ Each file is `{ "name": "...", "stats": { ... } }`. Every field has a default.
 | `speed` | int 0–20, default 6 | Species base speed (Core p.29) |
 | `mods` | partial `{ maxWounds, maxShock, defence, resilience, resolve, conviction, influence, speed, determination }` | **Additive** on top of the derived Traits (`deriveStats`), e.g. Primaris +3 Wounds, Honour the Chapter +1 Resolve |
 | `abilities[]`, `talents[]` | `{ name ≤ 100, text ≤ 2000, page?: string }`, ≤ 30 each | `page` is a free-text cite such as `"Core p.117"` or `"VoA p.35"` |
-| `weapons[]` | `Weapon` + `addStrength: bool` (default false), ≤ 20 | `addStrength: true` for melee "S + X": damage = effective Strength + `damage` |
+| `weapons[]` | `Weapon` + `addStrength: bool` (default false), ≤ 20 | `addStrength: true` for melee "S + X": damage = effective Strength + `damage`. `melee` (optional): the attack rolls Weapon Skill, else Ballistic Skill; `sheetWeapon` sets it from the printed profile (`isMeleeProfile`: adds Strength, or one reach of `MELEE_MAX_REACH` 4 m or less; a throw is not a reach). A sheet built before it falls back to the same test on its profile |
 | `gear` | string[] ≤ 60 | |
 | `wealth` | int ≥ 0 | Live counter (`character.supply`); starts at Tier (Core p.206) |
 | `requisitioned` | `{ wargear?, ammo? }` session ids | Set by `character.requisition`; leave it out of packs |

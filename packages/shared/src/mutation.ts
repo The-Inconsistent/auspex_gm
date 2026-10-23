@@ -3,7 +3,7 @@ import { Rarity } from "./requisition.ts";
 import { rowsFor, tableProblems } from "./roll-table.ts";
 import { Source } from "./source.ts";
 import { MutationMods, type SheetMutation } from "./state.ts";
-import { WargearWeapon } from "./wargear.ts";
+import { WargearWeapon, isMeleeProfile } from "./wargear.ts";
 
 // Mutations (Core pp.287–295, issue #182): a failed Mutation Test rolls a d6 for severity, then a d66 on that
 // severity's table. Book text, so like the scene presets it is served to the GM only.
@@ -109,6 +109,7 @@ export function sheetMutation(row: Entry, sub?: Entry): SheetMutation {
       name,
       ...profile,
       range: profile.range ?? [1],
+      melee: isMeleeProfile({ ...profile, range: profile.range ?? [1] }),
     })),
   };
 }
