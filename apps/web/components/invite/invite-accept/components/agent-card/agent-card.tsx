@@ -11,7 +11,7 @@ import { SheetGuide } from "@/components/ui/sheet-guide/sheet-guide";
 import { Term } from "@/components/ui/term/term";
 import { portrait } from "@/lib/portraits/portraits";
 import { topSkills } from "@/lib/sheet-pools/sheet-pools";
-import { ATTRIBUTE_TERMS } from "@/lib/sheet-terms/sheet-terms";
+import { ATTRIBUTE_TERMS, SKILL_TERMS } from "@/lib/sheet-terms/sheet-terms";
 
 import { CARD_SKILLS } from "./constants";
 
@@ -68,7 +68,7 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
               {topSkills(s, CARD_SKILLS).map((r) => (
                 <span key={r.skill}>
                   <span className={r.trained ? "pool-badge" : "pool-badge hollow"}>{r.total}</span>
-                  {r.skill}
+                  <Term k={SKILL_TERMS[r.skill]}>{r.skill}</Term>
                 </span>
               ))}
             </div>

@@ -5,6 +5,7 @@ import { SheetGuide } from "@/components/ui/sheet-guide/sheet-guide";
 import { Term } from "@/components/ui/term/term";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import { topSkills, weaponPool, weaponSkill } from "@/lib/sheet-pools/sheet-pools";
+import { SKILL_TERMS } from "@/lib/sheet-terms/sheet-terms";
 
 import { GLANCE_SKILLS, TRAIT_CELLS, WEAPON_SKILL_TAGS } from "../../constants";
 import { Heading } from "../heading/heading";
@@ -72,7 +73,9 @@ export function Glance({ me, d, onAllSkills }: GlanceProps) {
         {topSkills(s, GLANCE_SKILLS).map((r) => (
           <div key={r.skill} className="ps-skill">
             <span className={r.trained ? "pool-badge" : "pool-badge hollow"}>{r.total}</span>
-            <span className="ps-skill-name">{r.skill}</span>
+            <span className="ps-skill-name">
+              <Term k={SKILL_TERMS[r.skill]}>{r.skill}</Term>
+            </span>
             <span className="ps-attr mono">{r.attribute}</span>
           </div>
         ))}

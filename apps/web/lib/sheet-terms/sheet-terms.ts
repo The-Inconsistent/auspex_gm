@@ -1,4 +1,4 @@
-import { ATTRIBUTE_NAMES, type Attribute } from "@wg/shared";
+import { ATTRIBUTE_NAMES, type Attribute, type Skill } from "@wg/shared";
 
 // One term a new player meets on a sheet. `meaning` is our own plain wording, never the book's sentences nor its lists
 // in their order, so the JOIN page can show it before anyone holds a seat; `cite` is the page it comes from; `rule` is
@@ -230,6 +230,86 @@ export const SHEET_TERMS = {
     rule: "stat-salvo",
     meaning: "How fast it fires, for options like Full Auto. Reloading afterwards takes a Simple Action and 1 Ammo.",
   },
+  athletics: {
+    name: "Athletics (S)",
+    cite: "Core p.121",
+    meaning: "Running, climbing, jumping, swimming: any feat of physical effort.",
+  },
+  awareness: {
+    name: "Awareness (Int)",
+    cite: "Core p.122",
+    meaning: "Noticing what is around you: a sound, a hidden foe, something out of place.",
+  },
+  cunning: {
+    name: "Cunning (Fel)",
+    cite: "Core p.122",
+    meaning: "Knowing the underworld's ways: shady dealings, rough contacts and dirty tricks.",
+  },
+  deception: {
+    name: "Deception (Fel)",
+    cite: "Core p.122",
+    meaning: "Lying well, from a flat untruth to a careful half-truth.",
+  },
+  insight: {
+    name: "Insight (Fel)",
+    cite: "Core p.123",
+    meaning: "Reading people: their mood, what they want, and when they are hiding something.",
+  },
+  intimidation: {
+    name: "Intimidation (Wil)",
+    cite: "Core p.123",
+    meaning: "Getting your way through fear.",
+  },
+  investigation: {
+    name: "Investigation (Int)",
+    cite: "Core p.123",
+    meaning: "Piecing clues together, digging through records and asking the right offices.",
+  },
+  leadership: {
+    name: "Leadership (Wil)",
+    cite: "Core p.124",
+    meaning: "Getting others to follow you into danger, and steadying the shaken.",
+  },
+  medicae: {
+    name: "Medicae (Int)",
+    cite: "Core p.124",
+    meaning: "Treating wounds and fighting off sickness and poison.",
+  },
+  persuasion: {
+    name: "Persuasion (Fel)",
+    cite: "Core p.125",
+    meaning: "Winning someone over and changing their mind.",
+  },
+  pilot: {
+    name: "Pilot (A)",
+    cite: "Core p.125",
+    meaning: "Driving and flying vehicles.",
+  },
+  psychicMastery: {
+    name: "Psychic Mastery (Wil)",
+    cite: "Core p.126",
+    meaning: "Calling up psychic powers by bending the Warp. Only a psyker uses it.",
+  },
+  scholar: {
+    name: "Scholar (Int)",
+    cite: "Core p.126",
+    meaning: "Recalling what you have studied: history, lore, the ways of the Imperium.",
+  },
+  stealth: {
+    name: "Stealth (A)",
+    cite: "Core p.126",
+    meaning: "Hiding, moving unseen and slipping past security.",
+  },
+  survival: {
+    name: "Survival (Wil)",
+    cite: "Core p.127",
+    meaning: "Living off the land: finding food and shelter, tracking, and finding your way.",
+  },
+  tech: {
+    name: "Tech (Int)",
+    cite: "Core p.127",
+    meaning: "Working with machines: making them run, mending them, or taking them apart.",
+  },
   ballisticSkill: {
     name: "Ballistic Skill (BS)",
     cite: "Core p.122",
@@ -252,4 +332,26 @@ export const ATTRIBUTE_TERMS: Record<Attribute, SheetTermKey> = {
   Wil: "willpower",
   Int: "intellect",
   Fel: "fellowship",
+};
+
+// Each Skill's term (Core pp.121–127), as the sheet spells the Skill.
+export const SKILL_TERMS: Record<Skill, SheetTermKey> = {
+  Athletics: "athletics",
+  Awareness: "awareness",
+  "Ballistic Skill": "ballisticSkill",
+  Cunning: "cunning",
+  Deception: "deception",
+  Insight: "insight",
+  Intimidation: "intimidation",
+  Investigation: "investigation",
+  Leadership: "leadership",
+  Medicae: "medicae",
+  Persuasion: "persuasion",
+  Pilot: "pilot",
+  "Psychic Mastery": "psychicMastery",
+  Scholar: "scholar",
+  Stealth: "stealth",
+  Survival: "survival",
+  Tech: "tech",
+  "Weapon Skill": "weaponSkill",
 };

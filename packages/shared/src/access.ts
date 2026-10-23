@@ -38,8 +38,9 @@ export const InvitePreview = z.object({
   campaignName: z.string(),
   tier: Tier,
   mode: InviteMode,
-  // Read-only sheets, so a player can choose before taking a seat: objectives blanked, Ability and Talent text
-  // stripped (book prose needs a seat, CLAUDE.md; the page cites stay).
+  // Read-only sheets, so a player can choose before taking a seat: objectives blanked; Ability and Talent text kept for
+  // a signed-in visitor (who can read it in /api/creation already) and stripped for a guest (book prose needs an
+  // account, CLAUDE.md; the page cites stay).
   character: Character.nullable(), // the invited character (mode "character")
   openCharacters: z.array(Character), // unclaimed characters to pick from (mode "room")
   allowGuests: z.boolean(),
