@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Show, UserButton } from "@wg/auth/react";
 import { UNSEEN_ID, type RuleEntry } from "@wg/shared";
 
+import { PlayerSheet } from "@/components/player/player-sheet/player-sheet";
 import { TestPrompt } from "@/components/player/test-prompt/test-prompt";
 import { ArchivedBanner } from "@/components/ui/archived-banner/archived-banner";
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
@@ -14,7 +15,6 @@ import { MentionsProvider } from "@/components/ui/mentions/mentions-provider";
 import { PendingSpends } from "@/components/ui/request-spend/request-spend";
 import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
 import { RulesRef } from "@/components/ui/rules-ref/rules-ref";
-import { Sheet } from "@/components/ui/sheet/sheet";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { useSeen } from "@/hooks/use-seen/use-seen";
@@ -160,7 +160,7 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                     send={send}
                   />
                 )}
-                {tab === "SHEET" && <Sheet me={me} tier={state.campaign.tier} table={{ state, send }} />}
+                {tab === "SHEET" && <PlayerSheet me={me} state={state} send={send} />}
                 {tab === "FIGHT" && (
                   <Fight
                     state={state}

@@ -31,8 +31,8 @@ import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { PendingSpends, RequestSpend } from "@/components/ui/request-spend/request-spend";
-import { SupplyRow } from "./components/supply-row/supply-row";
-import { UpgradeRow } from "./components/upgrade-row/upgrade-row";
+import { SupplyRow } from "@/components/ui/supply-row/supply-row";
+import { UpgradeRow } from "@/components/ui/upgrade-row/upgrade-row";
 import { Vital } from "./components/vital/vital";
 import { SHEET_COUNTERS, SHEET_LEGEND } from "./constants";
 

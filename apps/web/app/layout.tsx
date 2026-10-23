@@ -13,6 +13,7 @@ import "./css/header.css";
 import "./css/party.css";
 import "./css/player.css";
 import "./css/player-fight.css";
+import "./css/player-sheet.css";
 import "./css/player-test.css";
 import "./css/scene.css";
 import "./css/story.css";

@@ -3,7 +3,8 @@ import { useRef, useState } from "react";
 
 import { Sheet, type SheetProps } from "@/components/ui/sheet/sheet";
 
-// SHEET: the Agent's play sheet exactly as its player sees it, pregen or player-made. With `table` (GM PARTY) it's
+// SHEET: the Agent's whole sheet on one page, pregen or player-made (the player's phone has its own two views,
+// components/player/player-sheet). With `table` (GM PARTY) it's
 // live and its buttons work for the GM too (the GM may send every action); without (the invite page) it's read-only.
 // The sheet renders only while open, so a PARTY of ten doesn't draw ten hidden sheets. A native modal <dialog> brings
 // Escape, the focus trap, focus return and the backdrop (as Legend does).
