@@ -1472,47 +1472,6 @@ dialog.picker {
   }
 }
 
-/* Player shell */
-.pl {
-  --bar-h: 52px; /* the sticky tab strip (.tab min-height), for .refusal */
-  min-height: 100dvh;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto 1fr auto;
-}
-.pl-banner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 10px;
-  padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 10px; /* sides: body pads the notch */
-}
-.pl-banner-text {
-  flex: 1 1 160px; /* below ~160px of room the buttons wrap under the text instead of squeezing it */
-  min-width: 0;
-}
-.pl-banner-text .display {
-  font-size: 21px;
-  line-height: 1.15;
-}
-/* The tab strip stays under the thumb; its bottom padding keeps the labels clear of the home indicator. */
-.pl-tabs {
-  position: sticky;
-  bottom: 0;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-.pl-banner.up {
-  background: var(--red-fill);
-}
-.pl-body {
-  padding: 22px 16px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
-  max-width: 720px; /* a phone-first column: on a tablet the banner and tab strip stay full width, the content doesn't */
-  margin-inline: auto;
-}
 /* A checkbox or radio in a form row: the whole label is the 44px hit area, the box inside stays a readable size. */
 .check {
   display: flex;

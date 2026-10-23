@@ -1,16 +1,433 @@
 /* player: the scene-first redesign. Loaded after globals.css (app/layout.tsx), so a rule here wins a tie. */
 
-/* NEW: a reveal the phone hasn't left INTEL since (lib/seen). */
-.pl-tab-new {
-  display: block;
+/* The player shell: header (banner + vitals strip), body, bottom tabs. Moved here from globals.css. */
+.pl {
+  --bar-h: 62px; /* the sticky tab strip (.pl-tab height), for .refusal and the Test sheet */
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+}
+/* Sticky, so the counters stay on screen on every tab (canvas board "SHEET · vitals strip"). */
+.pl-head {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: env(safe-area-inset-top, 0px) 8px 10px;
+}
+.pl-head.up {
+  background: var(--red-fill);
+}
+.pl-top {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 48px;
+}
+.pl-ic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--bone-2);
+  cursor: pointer;
+}
+.pl-where {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.pl-where .label {
   font-size: 12px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.18em;
+}
+.pl-status {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   color: var(--red-on-iron);
 }
-.tab[aria-selected="true"] .pl-tab-new {
+.pl-head.up .pl-status,
+.pl-head.up .label,
+.pl-head.up .pl-ic {
   color: var(--bone);
 }
+/* The popover's own UA rule hides it while closed; a display here would override that, so it is set only when open. */
+.pl-menu:popover-open {
+  display: flex;
+}
+.pl-menu {
+  position: fixed;
+  inset: auto 8px auto auto;
+  top: calc(52px + env(safe-area-inset-top, 0px));
+  margin: 0;
+  gap: 8px;
+  padding: 10px;
+  background: var(--iron);
+  color: var(--bone);
+  border: 1px solid var(--bone-line);
+}
+.pl-turn {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 2px 6px 10px;
+}
+.pl-turn .display {
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+.pl-turn i {
+  font-size: 16px;
+  color: var(--bone-2);
+}
+.pl-head.up .pl-turn i {
+  color: var(--bone);
+}
+
+/* The vitals strip */
+.pl-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 6px;
+}
+.pl-strip-who {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--bone);
+  text-align: left;
+  cursor: pointer;
+}
+.pl-strip-who > span {
+  flex-grow: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.pl-strip-who .display {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+.pl-strip-who i {
+  font-size: 14px;
+  color: var(--bone-2);
+}
+.pl-vts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+.pl-vt {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  min-width: 0;
+  min-height: 64px;
+  padding: 7px 8px 8px;
+  border: 1px solid var(--bone-line);
+  background: var(--bone-wash);
+  color: var(--bone);
+  font: inherit;
+  text-align: left;
+}
+.pl-vt .label {
+  font-size: 12px;
+  color: var(--bone-2);
+}
+.pl-vt.tap {
+  border-color: var(--red-on-iron);
+}
+.pl-vt.tap:has(.pl-vt-btn:disabled) {
+  border-color: var(--bone-line);
+}
+/* A strip label reads its rule (STRIP_RULES); the dotted underline says so. */
+.pl-vt .rule-link {
+  align-self: flex-start;
+  color: inherit;
+}
+/* Wrath and Glory: the value under the label is the spend button, filling the rest of the cell. */
+.pl-vt-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  flex-grow: 1;
+  width: 100%;
+  min-height: 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.pl-vt-btn:disabled {
+  cursor: default;
+}
+.pl-vt-btn:focus-visible {
+  outline: 3px solid var(--red-on-iron);
+  outline-offset: 2px;
+}
+.pl-vt.glory {
+  border-color: var(--brass);
+}
+.pl-vt:focus-visible {
+  outline: 3px solid var(--red-on-iron);
+  outline-offset: 1px;
+}
+.pl-vn {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+}
+.pl-vn small {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--bone-2);
+}
+.pl-vt .track {
+  align-self: stretch;
+  width: auto;
+  border-color: var(--bone-line);
+}
+/* The page's ink is too dark on iron and crimson in the day theme, so the strip's bars use the on-iron shades. */
+.pl-vt .track.harm > span {
+  background: var(--red-on-iron);
+}
+.pl-vt .track.ink > span {
+  background: var(--bone-2);
+}
+.pl-vs {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--red-on-iron);
+}
+.pl-vt.glory .pl-vs {
+  color: var(--brass);
+}
+.pl-head.up .pl-vs,
+.pl-head.up .pl-vt.glory .pl-vs {
+  color: var(--bone);
+}
+.pl-strip-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+/* The page's chip inks are too dark on iron in the day theme. */
+.pl-strip-chips .chip {
+  border-color: var(--bone-line);
+  color: var(--bone);
+}
+.pl-strip-chips .chip.warn {
+  border-color: var(--red-on-iron);
+  color: var(--red-on-iron);
+  background: transparent;
+}
+/* A spend dialog opens from the strip, so it sits inside the iron header (.band) and would take its bone-on-iron
+   button and label colours; its body (.stack) keeps the page's ink on its vellum, as everywhere else. */
+.pl-head dialog.spend .stack .label {
+  color: var(--ink-3);
+}
+.pl-head dialog.spend .stack .btn:not(.primary) {
+  color: var(--ink);
+  border-color: var(--ink-2);
+  box-shadow:
+    inset 0 0 0 2px var(--vellum),
+    inset 0 0 0 3px var(--line);
+}
+.pl-head dialog.spend .stack .btn:not(.primary):hover {
+  background: var(--red-tint);
+}
+.pl-strip-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--bone-line);
+  background: var(--bone-wash);
+  color: var(--bone);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.pl-strip-line .display {
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 40%;
+}
+.pl-strip-line .mono {
+  flex-grow: 1;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.pl-strip-flag {
+  padding: 1px 6px;
+  border: 1px solid var(--red-on-iron);
+  color: var(--red-on-iron);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pl-body {
+  position: relative;
+  padding: 24px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 720px; /* a phone-first column: on a tablet the header and tab strip stay full width, the content doesn't */
+  margin-inline: auto;
+}
+/* Where the strip folds: once this scrolls under the header. Out of flow, so it never adds a gap. */
+.pl-fold-mark {
+  position: absolute;
+  top: 160px;
+  left: 0;
+  width: 1px;
+  height: 1px;
+}
+
+/* The tab strip stays under the thumb; its bottom padding keeps the labels clear of the home indicator. */
+.pl-nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--iron);
+}
+.pl-tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: var(--bar-h);
+  padding: 0;
+  border: 0;
+  border-top: 3px solid transparent;
+  background: transparent;
+  color: var(--bone-2);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+}
+.pl-tab[aria-selected="true"] {
+  color: var(--bone);
+  border-top-color: var(--red-on-iron);
+  background: var(--red-fill);
+}
+.pl-tab:focus-visible {
+  outline: 3px solid var(--red-on-iron);
+  outline-offset: -3px;
+}
+/* A fight is on: a lit square by FIGHT (the tab's label says so too). */
+.pl-live {
+  position: absolute;
+  top: 8px;
+  right: calc(50% - 22px);
+  width: 8px;
+  height: 8px;
+  background: var(--red-on-iron);
+  box-shadow: 0 0 0 3px var(--shade-35);
+}
+/* INTEL's NEW count: reveals this phone hasn't left INTEL since (lib/seen). */
+.pl-count {
+  position: absolute;
+  top: 5px;
+  left: calc(50% + 8px);
+  min-width: 18px;
+  padding: 0 3px;
+  background: var(--red-on-iron);
+  color: var(--iron);
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+}
+/* A row's NEW chip. */
 .pl-new {
   margin-right: 8px;
   vertical-align: middle;
+}
+
+/* The dataslate accents (canvas page "Player phone, rebound"): Plex Mono for live readouts, clipped corners, scanlines on
+   iron. Shared by every player screen; each screen keeps its own rules in player-<screen>.css. */
+.pl .mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+/* Two opposite corners cut off. clip-path also clips an outline, so a cut control shows focus as an inset ring. */
+.cut {
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+.cut:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 3px var(--red-on-iron);
+}
+/* An iron surface with faint scanlines: the strip, a transmission card, the YOUR TURN plate. */
+.slate-card {
+  background-color: var(--iron);
+  background-image: repeating-linear-gradient(0deg, var(--bone-wash) 0 1px, transparent 1px 3px);
+  color: var(--bone);
+}
+/* "+++ HANDOUT +++": the stamp heading a transmission. */
+.xmit {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--red-on-iron);
+}
+/* A dice pool or skill total as a crimson badge before its line (BS 12 on a weapon, 9 before Athletics). */
+.pool-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 36px;
+  height: 32px;
+  padding: 0 4px;
+  background: var(--red-fill);
+  color: var(--bone);
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+}
+/* Untrained: the Attribute alone. */
+.pool-badge.hollow {
+  background: transparent;
+  color: var(--ink-3);
+  box-shadow: inset 0 0 0 1px var(--line);
 }

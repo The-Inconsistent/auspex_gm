@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 
 import {
   MAX_SPEND_AMOUNT,
@@ -17,12 +17,18 @@ import type { Send } from "@/hooks/use-table/use-table";
 
 type SpendProps = { state: LiveState; characterId: string; send: Send };
 // "wrath" or "glory": the two pools a spend costs (spendCost).
-type RequestSpendProps = SpendProps & { pool: keyof ReturnType<typeof spendCost> };
+type RequestSpendProps = SpendProps & {
+  pool: keyof ReturnType<typeof spendCost>;
+  // The button that opens the modal: a whole vitals cell on the strip, a big FIGHT button. Default: "SPEND WRATH".
+  label?: ReactNode;
+  className?: string;
+};
 
 // Ask the GM to spend a Wrath or Glory for you (rules-flow.md §11.122). Nothing is spent until the GM accepts. The
-// button sits in its pool's card on the sheet and opens a modal <dialog> (Escape, focus trap, backdrop, as Legend does).
+// button (a pool's cell on the player's vitals strip, FIGHT's SPEND, the GM's long sheet) opens a modal <dialog>
+// (Escape, focus trap, backdrop, as Legend does).
 // An empty pool can't be asked for, and Glory never more than the party holds; the api checks both again.
-export function RequestSpend({ pool, state, characterId, send }: RequestSpendProps) {
+export function RequestSpend({ pool, state, characterId, send, label, className = "btn sm" }: RequestSpendProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const [amount, setAmount] = useState(1);
   const [error, setError] = useState<string | null>(null);
@@ -42,8 +48,13 @@ export function RequestSpend({ pool, state, characterId, send }: RequestSpendPro
 
   return (
     <>
-      <button className="btn sm" disabled={have < 1} onClick={() => ref.current?.showModal()}>
-        SPEND {word}
+      <button
+        className={className}
+        disabled={have < 1}
+        aria-label={label ? `Spend ${word}: ask the GM, ${have} held` : undefined}
+        onClick={() => ref.current?.showModal()}
+      >
+        {label ?? `SPEND ${word}`}
       </button>
       <dialog
         ref={ref}
@@ -103,7 +114,7 @@ export function RequestSpend({ pool, state, characterId, send }: RequestSpendPro
   );
 }
 
-// Every pending request, under the sheet's pools. Everyone at the table sees them: Glory is the party's pool, and p.165
+// Every pending request, on every tab of the player's phone (and under the long sheet's pools). Everyone at the table sees them: Glory is the party's pool, and p.165
 // has the group agree on it (§11.123). Only the asker may cancel.
 export function PendingSpends({ state, characterId, send }: SpendProps) {
   const [error, setError] = useState<string | null>(null);
