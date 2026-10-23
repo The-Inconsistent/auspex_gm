@@ -2,6 +2,7 @@
 import type { Character, DerivedStats } from "@wg/shared";
 
 import { PageCite } from "@/components/ui/page-cite/page-cite";
+import { SheetGuide } from "@/components/ui/sheet-guide/sheet-guide";
 import type { Send } from "@/hooks/use-table/use-table";
 import { skillRows } from "@/lib/sheet-pools/sheet-pools";
 
@@ -10,6 +11,7 @@ import { FoldRow } from "../fold-row/fold-row";
 import { GearSupply } from "../gear-supply/gear-supply";
 import { Heading } from "../heading/heading";
 import { StatBlock } from "../stat-block/stat-block";
+import { Wargear } from "../wargear/wargear";
 import { WhoYouAre } from "../who-you-are/who-you-are";
 
 type DossierProps = {
@@ -21,13 +23,14 @@ type DossierProps = {
   onError: (error: string | null) => void;
 };
 
-// DOSSIER: the printed stat block first, then everything the long sheet held: the dice for every Skill, the Talents and
+// DOSSIER: the printed stat block first (HOW TO READ THIS SHEET above it, the WARGEAR datacard below), then everything the long sheet held: the dice for every Skill, the Talents and
 // abilities with their text, gear and supply, Corruption, the GM's orders, and who the Agent is.
 export function Dossier({ me, d, tier, send, buildHref, onError }: DossierProps) {
   const s = me.stats;
   const rules = [...s.abilities, ...s.talents];
   return (
     <>
+      <SheetGuide />
       <nav className="ps-jump" aria-label="Jump to">
         {DOSSIER_JUMPS.map((j) => (
           <a key={j.id} href={`#${j.id}`}>
@@ -37,6 +40,7 @@ export function Dossier({ me, d, tier, send, buildHref, onError }: DossierProps)
       </nav>
 
       <StatBlock me={me} d={d} tier={tier} />
+      <Wargear me={me} />
 
       {/* A Test rolls Skill + Attribute (Core p.21), so an unrated Skill still rolls its Attribute: shown hollow. */}
       <section className="ps-section" aria-label="Dice to roll">
@@ -57,9 +61,10 @@ export function Dossier({ me, d, tier, send, buildHref, onError }: DossierProps)
       <section className="ps-section" aria-label="Talents and abilities">
         <Heading title="TALENTS & ABILITIES" id="ps-talents" />
         {rules.length === 0 && <span className="ps-ink2">None yet.</span>}
-        {rules.map((r) =>
+        {/* An ability and a Talent can share a name (Hammer of Wrath), so the key carries the place too. */}
+        {rules.map((r, i) =>
           r.text ? (
-            <FoldRow key={r.name} title={r.name} cite={r.page}>
+            <FoldRow key={`${r.name}-${i}`} title={r.name} cite={r.page}>
               <p>{r.text}</p>
               {r.page && (
                 <span className="ps-cite">
@@ -68,7 +73,7 @@ export function Dossier({ me, d, tier, send, buildHref, onError }: DossierProps)
               )}
             </FoldRow>
           ) : (
-            <div key={r.name} className="ps-fold-head ps-fold-flat">
+            <div key={`${r.name}-${i}`} className="ps-fold-head ps-fold-flat">
               <span className="ps-fold-title">{r.name}</span>
               {r.page && <span className="ps-cite">{r.page}</span>}
             </div>

@@ -32,24 +32,33 @@
   text-align: center;
   border-bottom: 2px solid var(--iron-2);
 }
-.agent-attrs > span {
+.agent-attrs > .term {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  text-align: center;
   min-width: 0;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
 }
-.agent-attrs b {
+/* The letter, scoped to the button since the meaning card (ui/term) sits inside .agent-attrs too; its underline says
+   "tap me", the number under it stays plain. */
+.agent-attrs > .term > b {
   padding: 3px 0 2px;
   background: var(--iron-2);
   color: var(--bone);
   font-family: var(--display);
   font-size: 12px;
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
 }
 .agent-attrs .mono {
   padding: 4px 0;
   font-size: 17px;
   font-weight: 700;
 }
-.agent-attrs > span:nth-child(even) .mono {
+.agent-attrs > .term:nth-of-type(even) .mono {
   background: var(--vellum-3);
 }
 .agent-skills {
@@ -73,4 +82,7 @@
   flex-direction: column;
   gap: 12px;
   padding: 12px 16px 16px;
+}
+.agent-attrs > .term:focus-visible {
+  outline-color: var(--red-on-iron);
 }

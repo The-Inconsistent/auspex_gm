@@ -188,7 +188,7 @@ apps/web/components/builder/ builder (draft, live resolveBuild, one screen per c
                              campaign or the library, import-library for bringing a library character in)
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
                              to read its rule), mentions + mention-field (codex @mentions: tap-to-peek links, the @ list in
-                             a text field; issue #200), codex-search (one box over every codex entry, a hit opens its peek; #198), find-field (find an entry to add or name a new one), weapon-line, sheet (the one-page sheet: GM PARTY, invite page), request-spend (SPEND and the pending list), supply-row, upgrade-row, bar, stat-block, status-chips,
+                             a text field; issue #200), codex-search (one box over every codex entry, a hit opens its peek; #198), find-field (find an entry to add or name a new one), term (tap a sheet word for its plain meaning and page) + sheet-guide (HOW TO READ THIS SHEET), weapon-line, sheet (the one-page sheet: GM PARTY, invite page), request-spend (SPEND and the pending list), supply-row, upgrade-row, bar, stat-block, status-chips,
                              status-screen, refusal, table-talk (kind of game and limits), wizard-steps (NEW CAMPAIGN's step strip),
                              field-error (a refused field's reason), threat-builder + threat-starts (a custom stat block, from
                              CODEX › THREATS or a scene), print-dialog (PrintProvider, usePrint: the printed cards and handouts PDF), print-pick (a row's tick for PRINT N),
@@ -200,7 +200,7 @@ apps/web/hooks/use-table/    socket + wake lock
 apps/web/hooks/use-reorder/  drag a row by its handle (touch, pen, mouse, arrow keys): the scene editor's Tests, spends, fight
 apps/web/hooks/use-seen/     what this phone has seen of the codex (localStorage), for INTEL's NEW
 apps/web/hooks/use-field-errors/  CREATE/ADD/SAVE check a shared zod schema first and mark refused fields (ui/field-error)
-apps/web/lib/                command (tracker command line), sheet-pools (a weapon's and a Skill's dice), blocks, weapon-line, tokens (raw colour values),
+apps/web/lib/                command (tracker command line), sheet-pools (a weapon's and a Skill's dice), sheet-terms (each sheet term's plain meaning, page and rule), blocks, weapon-line, tokens (raw colour values),
                              share-origin (QR and invite links carry an address a phone can reach), qr (a join link as a QR image),
                              print-cards (what a print holds, card sizes, the sheet layout), vox-lines (a vox handout's stamps),
                              codex-image (shrink a picture in the browser, upload it, its seat-gated URL), scene (currentScene),

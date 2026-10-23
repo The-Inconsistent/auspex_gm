@@ -66,7 +66,7 @@
 .ps-more:focus-visible,
 .ps-fold-head:focus-visible,
 .ps-jump > a:focus-visible,
-.ps-stat-cell .rule-link:focus-visible {
+.ps-stat-cell .term:focus-visible {
   outline: none;
   box-shadow: inset 0 0 0 3px var(--red);
 }
@@ -109,7 +109,7 @@
 .ps-stat-cell:nth-child(even) .ps-stat-v {
   background: var(--vellum-2);
 }
-.ps-stat-cell .rule-link {
+.ps-stat-cell .term {
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -282,54 +282,6 @@
   font-weight: 700;
   color: var(--red);
 }
-.ps-bbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 7px 10px;
-  background: var(--red-fill);
-  color: var(--bone);
-  font-family: var(--display);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-.ps-bbar-note {
-  font-size: 12px;
-  color: var(--bone-2);
-}
-.ps-tbl {
-  display: grid;
-  grid-template-columns: 86px repeat(7, minmax(0, 1fr));
-  text-align: center;
-  font-size: 16px;
-}
-.ps-tbl-h {
-  display: flex;
-  align-items: center;
-  padding: 6px 7px;
-  background: var(--iron-2);
-  color: var(--bone);
-  font-family: var(--display);
-  font-size: 12px;
-  letter-spacing: 0.06em;
-}
-.ps-tbl > b {
-  padding: 6px 0;
-  font-family: var(--display);
-  font-size: 12.5px;
-}
-.ps-tbl > span:not(.ps-tbl-h) {
-  padding: 6px 0;
-  font-size: 17px;
-  font-weight: 700;
-}
-.ps-tbl > :nth-child(2n + 3):not(.ps-tbl-h),
-.ps-tbl > :nth-child(2n + 11):not(.ps-tbl-h) {
-  background: var(--vellum-2);
-}
-
 /* DICE TO ROLL: every Skill in two columns. */
 .ps-dice {
   display: grid;
@@ -408,4 +360,242 @@ button.ps-fold-head > .ps-fold-title {
   flex-grow: 1;
   font-size: 13px;
   color: var(--ink-2);
+}
+
+/* A sheet term (ui/term): a dotted underline says "tap me", and its meaning opens as a small card (a native popover,
+   centred by the browser). The padding widens the tap target without moving the text (as .rule-link does). */
+.term {
+  display: inline;
+  margin: -8px -2px;
+  padding: 8px 2px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: help;
+}
+.term:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+/* On an iron band (the stat block's TIER · SPECIES · XP) the page's crimson is too dark to see. */
+.ps-bmeta .term:focus-visible {
+  outline-color: var(--red-on-iron);
+}
+/* Inside a clipped weapon card an outline would be cut off, so the badge itself takes the ring (player.css .cut). */
+.ps-weapon .term:focus-visible {
+  outline: none;
+}
+.ps-weapon .term:focus-visible .pool-badge {
+  box-shadow: inset 0 0 0 3px var(--bone);
+}
+.term-pop {
+  /* its own type, whatever it sits in (a stat block's <b>, the card's grid, the guide's list) */
+  font: 400 16px/1.4 var(--serif);
+  letter-spacing: normal;
+  text-transform: none;
+  text-align: left;
+  width: min(340px, calc(100vw - 32px));
+  padding: 12px 14px 14px;
+  border: 1px solid var(--iron-2);
+  border-top: 3px solid var(--red-fill);
+  background: var(--vellum);
+  color: var(--ink);
+  box-shadow: 0 10px 30px var(--shade-40);
+  text-align: left;
+}
+/* Closed, it stays out of every layout: a parent's "> span" rule must not show it (a popover's UA rule is weaker), so it
+   is hidden at a specificity no "> span" reaches, and shown only by :popover-open.
+   ponytail: needs the Popover API (Safari 17, Chrome 114); older browsers drop the :popover-open rule, so the card just
+   never opens there rather than spilling inline. A fallback dialog if a table's phones turn out older. */
+.term-pop.term-pop {
+  display: none;
+}
+.term-pop.term-pop:popover-open {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+.term-pop::backdrop {
+  background: var(--shade-28);
+}
+.term-pop-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.term-pop-head .display {
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+.term-pop-head i {
+  flex-shrink: 0;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.term-pop-text {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-transform: none;
+}
+.term-pop-keys {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+/* CLOSE sits at the right end, with or without FULL RULE beside it. */
+.term-pop-keys > .btn:last-child {
+  margin-left: auto;
+}
+
+/* HOW TO READ THIS SHEET (ui/sheet-guide): folded, so it costs a regular nothing. */
+.sheet-guide {
+  border: 1px solid var(--line);
+  background: var(--vellum-2);
+}
+.sheet-guide > summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--red);
+  cursor: pointer;
+}
+.sheet-guide > ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0 14px 4px 30px;
+  font-size: 15.5px;
+  line-height: 1.45;
+}
+.sheet-guide i {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.sheet-guide-tip {
+  display: block;
+  padding: 6px 14px 12px;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ink-3);
+}
+
+/* The stat block's Attributes by full name, two to a line on a phone. */
+.ps-attrs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px 14px;
+  margin: 4px 0 2px;
+}
+@media (min-width: 560px) {
+  .ps-attrs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* WARGEAR as a Kill Team datacard: icon · name (reach and traits under it) · dice · damage · AP. */
+.wg {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px solid var(--red-fill);
+}
+.wg-row {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) 40px 52px 30px;
+  gap: 8px;
+  align-items: center;
+  min-height: 44px;
+  padding: 6px 4px;
+  font-size: 15px;
+}
+.wg-row:nth-child(even) {
+  background: var(--vellum-2);
+}
+.wg-head {
+  min-height: 34px;
+  padding-block: 4px;
+  border-bottom: 2px solid var(--red-fill);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+}
+.wg-head > span:nth-child(n + 3) {
+  text-align: center;
+}
+.wg-icon {
+  display: flex;
+  justify-content: center;
+  color: var(--red);
+}
+.wg-name {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.wg-name > b {
+  font-family: var(--display);
+  font-size: 14px;
+  line-height: 1.2;
+}
+.wg-rules {
+  font-size: 13.5px;
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+.wg-pool,
+.wg-dmg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.05;
+}
+.wg-row > .mono:last-child {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+}
+.wg-pool small,
+.wg-dmg small {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-3);
+}
+.wg-pool small {
+  font-family: var(--display);
+  color: var(--red);
+}
+.wg-kit {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 4px;
+  font-size: 15px;
+  line-height: 1.35;
+  border-bottom: 1px solid var(--line);
+}
+.wg-kit > svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--red);
 }
