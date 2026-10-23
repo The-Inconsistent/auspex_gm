@@ -173,7 +173,7 @@ apps/web/app/       page.tsx (lobby, guest redirect, sign-in landing), c/new/pag
 apps/web/components/lobby/   lobby-view (your games, CREATE NEW CAMPAIGN, import, your characters, running now)
 apps/web/components/new-campaign/  the CREATE NEW CAMPAIGN steps before CREATE: tier, premise, name (table is ui/table-talk)
 apps/web/components/campaign-setup/  its steps after CREATE: setting, factions, players (CODEX's pickers, PARTY's RoomInvite)
-apps/web/components/invite/  invite-accept
+apps/web/components/invite/  invite-accept (agent-card: each Agent to skim before taking a seat; READ opens its printed stat block)
 apps/web/components/admin/   admin-view (the /admin page: users-tab, games-tab with game-card, events-log; lib/admin has its calls)
 apps/web/components/gm/      gm-app (the shell, useGm(); rail: SCENE · STORY · CODEX · PARTY · RULES · BOOKS, SETUP at the foot), scene (the play home:
                              reveals, CALL, exits, the FIGHT layer), tracker (the FIGHT layer: four-button key bar, delta pad),

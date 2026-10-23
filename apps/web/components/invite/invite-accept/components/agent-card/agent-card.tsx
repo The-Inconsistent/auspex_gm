@@ -1,0 +1,103 @@
+"use client";
+import Image from "next/image";
+import { useRef, useState, type MouseEvent } from "react";
+
+import { ATTRIBUTES, deriveStats, withMutations, type Character } from "@wg/shared";
+
+import { StatBlock } from "@/components/player/player-sheet/components/stat-block/stat-block";
+import { portrait } from "@/lib/portraits/portraits";
+import { topSkills } from "@/lib/sheet-pools/sheet-pools";
+
+import { CARD_SKILLS } from "./constants";
+
+type AgentCardProps = {
+  c: Character;
+  tier: number;
+  play: { label: string; busy: boolean; onPlay: () => void };
+};
+
+// One Agent to choose before taking a seat, skimmable at a glance: who, the Attributes, the best Skills and the
+// weapons. READ opens the book's printed stat block (Core p.117), the same one the player's DOSSIER starts with. The
+// preview has already stripped Ability and Talent text (book prose needs a seat), so only names and cites show.
+export function AgentCard({ c, tier, play }: AgentCardProps) {
+  const ref = useRef<HTMLDialogElement>(null);
+  const [open, setOpen] = useState(false);
+  const s = c.stats;
+  const built = !!(s.archetype || s.species); // a reserve Agent nobody has built yet has an empty sheet
+  const pic = portrait(c.detail.portrait);
+  const attrs = withMutations(s).attributes;
+
+  // READ: render the block, then open the modal (Escape, focus trap, focus return, backdrop).
+  const handleRead = () => {
+    setOpen(true);
+    ref.current?.showModal();
+  };
+  // A click on the dialog element itself, not its content, is a click on the backdrop: close.
+  const handleBackdrop = (e: MouseEvent<HTMLDialogElement>) => {
+    if (e.target === ref.current) ref.current?.close();
+  };
+
+  return (
+    <article className="pick agent-pick">
+      {pic && <Image src={pic} alt="" width={144} className="portrait-thumb" />}
+      <div className="agent-pick-body">
+        <b className="display agent-pick-name">{c.name.toUpperCase()}</b>
+        <i className="dim">{[s.archetype, s.species].filter(Boolean).join(" · ") || "No sheet yet"}</i>
+        {s.keywords.length > 0 && <span className="kw">{s.keywords.join(" · ")}</span>}
+        {built && (
+          <>
+            <div className="agent-attrs" aria-label="Attributes">
+              {ATTRIBUTES.map((a) => (
+                <span key={a}>
+                  <b>{a}</b>
+                  <span className="mono">{attrs[a]}</span>
+                </span>
+              ))}
+            </div>
+            <div className="agent-skills" aria-label="Best Skills, dice to roll">
+              {topSkills(s, CARD_SKILLS).map((r) => (
+                <span key={r.skill}>
+                  <span className={r.trained ? "pool-badge" : "pool-badge hollow"}>{r.total}</span>
+                  {r.skill}
+                </span>
+              ))}
+            </div>
+            {s.weapons.length > 0 && <span className="agent-arms">{s.weapons.map((w) => w.name).join(" · ")}</span>}
+          </>
+        )}
+        <div className="keys" style={{ paddingTop: 2 }}>
+          <button className="btn primary" disabled={play.busy} onClick={play.onPlay}>
+            {play.label}
+          </button>
+          {built && (
+            <button className="btn" onClick={handleRead}>
+              READ
+            </button>
+          )}
+        </div>
+      </div>
+      <dialog
+        ref={ref}
+        className="sheet"
+        aria-label={`${c.name}: stat block`}
+        onClose={() => setOpen(false)}
+        onClick={handleBackdrop}
+      >
+        <div className="sb-title">
+          <span>STAT BLOCK</span>
+          <button className="btn sm" onClick={() => ref.current?.close()}>
+            CLOSE
+          </button>
+        </div>
+        {open && (
+          <div className="agent-read">
+            <StatBlock me={c} d={deriveStats({ stats: s, overrides: c.overrides, tier })} tier={tier} />
+            <button className="btn primary" disabled={play.busy} onClick={play.onPlay}>
+              {play.label}
+            </button>
+          </div>
+        )}
+      </dialog>
+    </article>
+  );
+}

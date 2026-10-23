@@ -19,6 +19,7 @@ import "./css/player-test.css";
 import "./css/scene.css";
 import "./css/story.css";
 import "./css/editor.css";
+import "./css/invite.css";
 
 // Cinzel stands in for the books' Priori Serif, Crimson Pro for Caxton; Plex Mono is for in-world print-outs and the
 // player phone's dataslate readouts (docs/frontend.md §7).

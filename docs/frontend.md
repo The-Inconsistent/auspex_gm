@@ -280,10 +280,13 @@ The room QR and per-character invite links point here. The page fetches `/api/in
   - Already a member: YOU'RE SEATED · OPEN TABLE.
   - Signed out: SIGN IN TO JOIN (to `/sign-in?redirect_url=/invite/<code>`), plus a note that guests may join below, or
     that the table needs an account when `allowGuests` is false.
-  - A character invite: PLAY <NAME> (or PLAY <NAME> AS GUEST), and SHEET.
-  - A room invite: PICK YOUR AGENT from `openCharacters` (portrait, name, archetype, PLAY and SHEET), or a NEW AGENT
-    NAME form.
-  - SHEET is `SheetDialog` without `table`: the play sheet, read-only, so a player can compare Agents before choosing.
+  - A character invite: that Agent's card, with PLAY <NAME> (or PLAY <NAME> AS GUEST).
+  - A room invite: PICK YOUR AGENT from `openCharacters`, one card each, or a NEW AGENT NAME form.
+  - A card (`components/agent-card/`) is made to skim: the portrait only if there is one, name, archetype · species,
+    Keywords, the seven Attributes as the book's table, the three best Skills as dice badges (`lib/sheet-pools`), and the
+    weapons by name; PLAY, and READ. A reserve Agent with no sheet yet shows only "No sheet yet" and PLAY.
+  - READ opens the Agent's printed stat block (the DOSSIER's `StatBlock`, Core p.117) in a modal, with PLAY at its foot.
+    The preview has stripped Ability and Talent text already (book prose needs a seat), so only names and cites show.
   - Each choice POSTs to `/api/invites/:code/accept` from the browser, with `asGuest` set when signed out, then pushes
     to `/c/<campaignId>`. A refusal (such as "That character is already taken") shows inline.
 
@@ -1172,6 +1175,7 @@ each scene-first screen:
 | `party.css` | PARTY: the session band, the agent cards, the dossier sheet (`dialog.party-dlg`), the tapped values |
 | `player.css` | The player shell (`.pl`, `.pl-head`, the vitals strip `.pl-strip`/`.pl-vt`, `.pl-nav`/`.pl-tab`) and the dataslate accents every player screen shares: `.mono`, `.cut` (clipped corners, an inset focus ring), `.slate-card` (iron with scanlines), `.xmit` (a `+++ HANDOUT +++` stamp), `.pool-badge` |
 | `player-sheet.css`, `player-fight.css`, `player-intel.css`, `player-test.css` | One player screen each: SHEET, FIGHT, INTEL, the called Test |
+| `invite.css` | `/invite/<code>`: the Agent cards to skim before taking a seat (`.agent-pick`, the Attribute row, best Skills, weapons) and the READ dialog's printed stat block |
 
 **Themes.** `:root` is **vellum** (day). **Vigil** (night: soot page, bone ink, ember red) re-maps the same tokens
 under `:root[data-theme="vigil"]`, and under `prefers-color-scheme: dark` unless `data-theme="vellum"` is set.
@@ -1185,7 +1189,7 @@ The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.
 |---|---|---|
 | `--font-display` → `--display` | Cinzel (variable) | Heads, labels, buttons, tabs, chips: `.display`, `.label`, `.rule`, `.btn`, `.tab`, `.chip`. Stands in for the books' Priori Serif |
 | `--font-serif` → `--serif` | Crimson Pro (variable, with italics) | Body text, the default for everything; counters use its lining tabular figures. Stands in for Caxton |
-| `--font-mono` → `--mono` | IBM Plex Mono (400/500/700) | In-world print-outs and typed commands (`pre.text.slate`, `.cmd input`), and on the player's phone the dataslate's live readouts: counters, the status line, pools, `.xmit` stamps (`.pl .mono`) |
+| `--font-mono` → `--mono` | IBM Plex Mono (400/500/700) | In-world print-outs and typed commands (`pre.text.slate`, `.cmd input`), and on the player's phone the dataslate's live readouts: counters, the status line, pools, `.xmit` stamps, the invite page's Agent cards (`.mono`) |
 
 **Tokens** (`:root`, re-mapped for vigil):
 
