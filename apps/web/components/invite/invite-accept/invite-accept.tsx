@@ -5,6 +5,7 @@ import { useState, type FormEvent } from "react";
 import type { AcceptInvite, InvitePreview } from "@wg/shared";
 
 import { RulesProvider } from "@/components/ui/rules-provider/rules-provider";
+import { Term } from "@/components/ui/term/term";
 
 import { AgentCard } from "./components/agent-card/agent-card";
 
@@ -46,6 +47,13 @@ export function InviteAccept({ code, preview: p }: InviteAcceptProps) {
       <main className="center pad">
         <div className="panel pad stack" style={{ maxWidth: 480, width: "100%" }}>
           <div className="display page-title">JOIN {p.campaignName.toUpperCase()}</div>
+          {/* What the game is, before picking who to play in it. */}
+          <div className="invite-premise">
+            <Term k="tier">
+              <span className="label">TIER {p.tier}</span>
+            </Term>
+            {p.framework && <p>{p.framework}</p>}
+          </div>
           {p.member && (
             <a className="btn primary" href={`/c/${p.campaignId}`}>
               YOU&apos;RE SEATED · OPEN TABLE

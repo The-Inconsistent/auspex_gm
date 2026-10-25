@@ -37,6 +37,7 @@ export const InvitePreview = z.object({
   campaignId: z.string(),
   campaignName: z.string(),
   tier: Tier,
+  framework: z.string(), // the GM's premise (Core p.18), their own words or a printed Framework's name; "" when unset
   mode: InviteMode,
   // Read-only sheets, so a player can choose before taking a seat: objectives blanked; Ability and Talent text kept for
   // a signed-in visitor (who can read it in /api/creation already) and stripped for a guest (book prose needs an

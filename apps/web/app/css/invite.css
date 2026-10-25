@@ -116,3 +116,19 @@
 .agent-attrs > .term:focus-visible {
   outline-color: var(--red-on-iron);
 }
+
+.invite-premise {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: -6px;
+  text-align: center;
+}
+.invite-premise p {
+  margin: 0;
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.35;
+  white-space: pre-line;
+}
