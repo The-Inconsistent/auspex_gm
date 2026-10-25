@@ -973,6 +973,11 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      *Approved by the GM, 2026-10-22.*
 159. **A Ruin or Glory pool's ready-made spends from the books are picked while building a scene** (ADD FROM BOOK). At the
      table a seal's pad offers only the current scene's planned spends. *Approved by the GM, 2026-10-22.*
+160. **Powered (X) counts in Strength Skills and Tests.** Powered armour gives "a Strength bonus equal to the rating"
+     (Core p.232), and the sheet summary (p.40) adds a bonus to the Rating for the Attribute TOTAL, then Skill Rating +
+     Attribute Total for the Skill Total. So Athletics and a Strength Test roll the total (`attributeTotals`), as melee
+     damage and a throw's range already did. The Traits keep the rating; none of them reads Strength. *Approved by the
+     GM, 2026-10-25.*
 
 ---
 

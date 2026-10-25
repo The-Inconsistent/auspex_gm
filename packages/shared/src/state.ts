@@ -248,9 +248,18 @@ export function withMutations(s: CharacterStats): CharacterStats {
   return { ...s, attributes, skills, mods };
 }
 
+// Each Attribute's TOTAL, the sheet's Rating + Bonus (Core p.40): mutations, and Powered (X) armour's Strength bonus
+// (p.232). Skills and Attribute Tests roll the total (rules-flow.md §11.160); the Traits keep the rating (no Trait reads S).
+export function attributeTotals(s: CharacterStats): Record<Attribute, number> {
+  const a = withMutations(s).attributes;
+  return { ...a, S: a.S + s.armour.powered };
+}
+
 const rawSkillTotal = (s: CharacterStats, skill: Skill) => (s.skills[skill] ?? 0) + s.attributes[SKILLS[skill]];
-export const skillTotal = (s: CharacterStats, skill: Skill) => rawSkillTotal(withMutations(s), skill);
-export const effectiveStrength = (s: CharacterStats) => withMutations(s).attributes.S + s.armour.powered; // Powered (X), p.232
+// Skill Rating + the linked Attribute's TOTAL (p.40).
+export const skillTotal = (s: CharacterStats, skill: Skill) =>
+  (withMutations(s).skills[skill] ?? 0) + attributeTotals(s)[SKILLS[skill]];
+export const effectiveStrength = (s: CharacterStats) => attributeTotals(s).S;
 
 // Traits, pp.36-37 and the sheet (p.372). All Traits have a minimum of 1 (p.36).
 export function deriveStats({

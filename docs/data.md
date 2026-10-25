@@ -478,7 +478,7 @@ Each file is `{ "name": "...", "stats": { ... } }`. Every field has a default.
 | `keywords` | string[] ≤ 20 | |
 | `attributes` | `{ S, T, A, I, Wil, Int, Fel }`, 1–12 each | |
 | `skills` | partial record of skill name → rating 0–8 | Names must be keys of `SKILLS` (e.g. `"Ballistic Skill"`). The pool is rating + the linked Attribute (`skillTotal`) |
-| `armour` | `{ name, ar 0–20, invulnerable, powered 0–10, traits[] }` | `powered` is added to S for melee damage (`effectiveStrength`, Core p.232) |
+| `armour` | `{ name, ar 0–20, invulnerable, powered 0–10, traits[] }` | `powered` is added to S for melee damage, Athletics and Strength Tests (`attributeTotals`, Core p.232, rules-flow §11.160) |
 | `speed` | int 0–20, default 6 | Species base speed (Core p.29) |
 | `mods` | partial `{ maxWounds, maxShock, defence, resilience, resolve, conviction, influence, speed, determination }` | **Additive** on top of the derived Traits (`deriveStats`), e.g. Primaris +3 Wounds, Honour the Chapter +1 Resolve |
 | `abilities[]`, `talents[]` | `{ name ≤ 100, text ≤ 2000, page?: string }`, ≤ 30 each | `page` is a free-text cite such as `"Core p.117"` or `"VoA p.35"` |

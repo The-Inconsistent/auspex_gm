@@ -12,7 +12,7 @@ table (`roll-table.ts`, `flavour.ts`).
 
 | Layer | File | Holds |
 |---|---|---|
-| Pure rules | `packages/shared/src/state.ts` | `deriveStats`, `skillTotal`, `effectiveStrength`, `poolMax`, `isOut`, `canAct`, `sideUpNext`, `canSeize`, `pcStatus`, `threatStatus`, `toPlayerView`, `CONDITIONS`, `TURN_START_REMINDERS`, `TURN_END_REMINDERS` |
+| Pure rules | `packages/shared/src/state.ts` | `deriveStats`, `attributeTotals`, `skillTotal`, `effectiveStrength`, `poolMax`, `isOut`, `canAct`, `sideUpNext`, `canSeize`, `pcStatus`, `threatStatus`, `toPlayerView`, `CONDITIONS`, `TURN_START_REMINDERS`, `TURN_END_REMINDERS` |
 | | `packages/shared/src/threat.ts` | `Threat` schema, `threatClassAt`, `THREAT_ONLY_SOURCES` and `threatCite` (a stat block's page cite), `encounterBudget` / `tallyByClass` / `rosterTally` |
 | | `packages/shared/src/threat-scale.ts` | `THREAT_PROFILES`, `applyProfile`, `scaleBy`, `scaleThreat`, `prepareThreat` (VoA p.126, Core p.326) |
 | | `packages/shared/src/codex.ts` | `toPlayerCodex`, `EncounterEntry`, `MAX_ENCOUNTER_ROWS` |
@@ -70,8 +70,10 @@ is stored but unused; AP is applied at the table.
 
 **Other helpers**
 
-- `skillTotal(stats, skill)` = skill rating + its linked Attribute from `SKILLS` (sheet p.372).
-- `effectiveStrength(stats)` = S + `armour.powered` (Powered (X), p.232).
+- `attributeTotals(stats)` = each Attribute's TOTAL, the sheet's Rating + Bonus (p.40): mutations, and Powered (X)
+  armour's Strength bonus (p.232). Skills and Attribute Tests roll it (rules-flow §11.160); `deriveStats` keeps the ratings.
+- `skillTotal(stats, skill)` = skill rating + its linked Attribute's TOTAL, from `SKILLS` (sheet p.372).
+- `effectiveStrength(stats)` = the Strength TOTAL, S + `armour.powered` (Powered (X), p.232).
 - Melee weapons with `addStrength: true` print damage as S + X. `apps/web/lib/weapon-line/weapon-line.ts` resolves
   it to `effectiveStrength + damage` when it knows the wielder.
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   ATTRIBUTES,
   SKILLS,
+  attributeTotals,
   corruptionLevel,
   deriveStats,
   effectiveStrength,
@@ -58,6 +59,7 @@ export function Sheet({ me, tier, table, requests = false }: SheetProps) {
   const rank = rankOf(me.xp);
   const corruption = corruptionLevel(s.corruption);
   const shown = withMutations(s); // Attributes and Skills as the mutations change them (Core pp.288–295)
+  const totals = attributeTotals(s);
   // Where XP is spent: the builder's ADVANCE screen for a character already made (Core pp.146–151), the builder from the
   // top for one that isn't. LEVEL UP and the button at the foot of the sheet are the same trip, so they share this.
   const buildHref = table
@@ -321,8 +323,9 @@ export function Sheet({ me, tier, table, requests = false }: SheetProps) {
               <span className="display" style={{ flex: 1, letterSpacing: "0.12em" }}>
                 {ATTRIBUTE_NAMES[a].toUpperCase()}
               </span>
+              {/* the TOTAL its Skills roll: Powered armour counts in Strength (Core pp.40, 232, §11.160) */}
               <span className="display" style={{ width: 64, textAlign: "right", fontSize: 22 }}>
-                {shown.attributes[a]}
+                {totals[a]}
               </span>
               <span style={{ width: 64 }} />
             </div>
