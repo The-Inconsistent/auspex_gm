@@ -67,7 +67,7 @@ const previewSheet = (c: Character, signedIn: boolean): Character => {
 export async function previewInvite({ code, user }: { code: string; user: AuthUser | null }): Promise<InvitePreview> {
   const inv = await liveInvite(db, code);
   const [c] = await db
-    .select({ name: campaign.name, tier: campaign.tier })
+    .select({ name: campaign.name, tier: campaign.tier, framework: campaign.framework })
     .from(campaign)
     .where(eq(campaign.id, inv.campaignId));
   const [chars, claimed] = await Promise.all([
@@ -85,6 +85,7 @@ export async function previewInvite({ code, user }: { code: string; user: AuthUs
     campaignId: inv.campaignId,
     campaignName: c?.name ?? "?",
     tier: c?.tier ?? 1,
+    framework: c?.framework ?? "",
     mode: inv.mode,
     character: ch ? previewSheet(toCharacter(ch), !!user) : null,
     openCharacters:
