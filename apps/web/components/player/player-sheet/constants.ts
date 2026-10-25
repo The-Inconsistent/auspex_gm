@@ -19,15 +19,17 @@ export const TRAIT_CELLS = [
   { label: "AWARE", key: "passiveAwareness" },
 ] as const;
 
-// The DOSSIER's jump strip; each `id` is the anchor of a section.
+// The DOSSIER's jump strip, in the book's order; each `id` is the anchor of a box.
 export const DOSSIER_JUMPS = [
   { label: "ATTRIBUTES", id: "ps-attr" },
-  { label: "WARGEAR", id: "ps-wargear" },
   { label: "SKILLS", id: "ps-skills" },
+  { label: "WRATH", id: "ps-wrath" },
+  { label: "SURVIVAL", id: "ps-survival" },
+  { label: "WARGEAR", id: "ps-wargear" },
   { label: "TALENTS", id: "ps-talents" },
-  { label: "GEAR", id: "ps-gear" },
-  { label: "ORDERS", id: "ps-orders" },
-  { label: "WHO", id: "ps-who" },
+  { label: "INJURIES", id: "ps-injuries" },
+  { label: "NOTES", id: "ps-notes" },
+  { label: "XP", id: "ps-xp" },
 ] as const;
 
 // The Skill a weapon's pool is rolled on, as the card's tag (rules-flow.md §4: Ballistic Skill + Agility ranged, Weapon

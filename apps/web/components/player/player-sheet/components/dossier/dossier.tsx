@@ -1,35 +1,35 @@
 "use client";
-import type { Character, DerivedStats } from "@wg/shared";
+import type { Character, DerivedStats, LiveState } from "@wg/shared";
 
-import { PageCite } from "@/components/ui/page-cite/page-cite";
 import { SheetGuide } from "@/components/ui/sheet-guide/sheet-guide";
-import { Term } from "@/components/ui/term/term";
 import type { Send } from "@/hooks/use-table/use-table";
-import { skillRows } from "@/lib/sheet-pools/sheet-pools";
-import { SKILL_TERMS } from "@/lib/sheet-terms/sheet-terms";
 
 import { DOSSIER_JUMPS } from "../../constants";
-import { FoldRow } from "../fold-row/fold-row";
-import { GearSupply } from "../gear-supply/gear-supply";
-import { Heading } from "../heading/heading";
-import { StatBlock } from "../stat-block/stat-block";
+import { AttributesBox } from "../attributes-box/attributes-box";
+import { InjuriesBox } from "../injuries-box/injuries-box";
+import { NotesBox } from "../notes-box/notes-box";
+import { SheetHead } from "../sheet-head/sheet-head";
+import { SkillsBox } from "../skills-box/skills-box";
+import { TalentsBox } from "../talents-box/talents-box";
+import { TraitsBox } from "../traits-box/traits-box";
 import { Wargear } from "../wargear/wargear";
-import { WhoYouAre } from "../who-you-are/who-you-are";
+import { WrathBox } from "../wrath-box/wrath-box";
+import { XpBox } from "../xp-box/xp-box";
 
 type DossierProps = {
   me: Character;
   d: DerivedStats;
-  tier: number;
+  state: LiveState;
   send: Send;
   buildHref: string;
   onError: (error: string | null) => void;
 };
 
-// DOSSIER: the printed stat block first (HOW TO READ THIS SHEET above it, the WARGEAR datacard below), then everything the long sheet held: the dice for every Skill, the Talents and
-// abilities with their text, gear and supply, Corruption, the GM's orders, and who the Agent is.
-export function Dossier({ me, d, tier, send, buildHref, onError }: DossierProps) {
-  const s = me.stats;
-  const rules = [...s.abilities, ...s.talents];
+// DOSSIER: the Agent as the book's character sheet (Core pp.40–41), its two pages as two framed sheets, the boxes in
+// the book's order. A box the app has no data for (Objective, Faith, Memorable Injuries, Psychic Powers, Stealth) isn't
+// drawn. Our own parts stay: the name bar and Tier strip, WARGEAR as a datacard, and tap-for-meaning on every term.
+export function Dossier({ me, d, state, send, buildHref, onError }: DossierProps) {
+  const tier = state.campaign.tier;
   return (
     <>
       <SheetGuide />
@@ -41,72 +41,21 @@ export function Dossier({ me, d, tier, send, buildHref, onError }: DossierProps)
         ))}
       </nav>
 
-      <StatBlock me={me} d={d} tier={tier} lists={false} />
-      <Wargear me={me} />
+      <div className="bs-sheet">
+        <SheetHead me={me} tier={tier} />
+        <AttributesBox me={me} />
+        <SkillsBox me={me} />
+        <WrathBox me={me} state={state} send={send} />
+        <TraitsBox me={me} d={d} tier={tier} />
+        <Wargear me={me} live={{ d, send, onError }} />
+      </div>
 
-      {/* A Test rolls Skill + Attribute (Core p.21), so an unrated Skill still rolls its Attribute: shown hollow. */}
-      <section className="ps-section" aria-label="Dice to roll">
-        <Heading title="DICE TO ROLL" id="ps-skills" aside={<span className="label">SKILL + ATTR</span>} />
-        <div className="ps-dice">
-          {skillRows(s).map((r) => (
-            <div key={r.skill} className="ps-die">
-              <span className={r.trained ? "pool-badge" : "pool-badge hollow"}>{r.total}</span>
-              <span>
-                <Term k={SKILL_TERMS[r.skill]}>{r.skill}</Term> <span className="ps-attr mono">{r.attribute}</span>
-              </span>
-            </div>
-          ))}
-        </div>
-        <span className="ps-note">Hollow badges are untrained: the Attribute alone.</span>
-      </section>
-
-      <section className="ps-section" aria-label="Talents and abilities">
-        <Heading title="TALENTS & ABILITIES" id="ps-talents" />
-        {rules.length === 0 && <span className="ps-ink2">None yet.</span>}
-        {/* An ability and a Talent can share a name (Hammer of Wrath), so the key carries the place too. */}
-        {rules.map((r, i) =>
-          r.text ? (
-            <FoldRow key={`${r.name}-${i}`} title={r.name} cite={r.page}>
-              <p>{r.text}</p>
-              {r.page && (
-                <span className="ps-cite">
-                  <PageCite cite={r.page} />
-                </span>
-              )}
-            </FoldRow>
-          ) : (
-            <div key={`${r.name}-${i}`} className="ps-fold-head ps-fold-flat">
-              <span className="ps-fold-title">{r.name}</span>
-              {r.page && <span className="ps-cite">{r.page}</span>}
-            </div>
-          ),
-        )}
-      </section>
-
-      <GearSupply me={me} send={send} onError={onError} />
-
-      {/* From the GM, to this Agent only (toPlayerView blanks everyone else's). Folded, so a phone left on the table
-          doesn't show them to the player beside it. */}
-      <section className="ps-section" aria-label="Orders">
-        <Heading title="ORDERS" id="ps-orders" />
-        {me.objectives.length === 0 && <span className="ps-ink2">No orders from the GM yet.</span>}
-        {me.objectives.map((o, i) => (
-          <FoldRow
-            key={i}
-            tag={o.done ? "DONE" : "SECRET"}
-            title={
-              <span className={o.done ? "ps-struck" : undefined}>
-                {o.done ? "Done. Tap to read." : "Hidden from the table. Tap to read."}
-              </span>
-            }
-          >
-            <span className={o.done ? "ps-struck" : undefined}>{o.text}</span>
-            {o.done && <span className="sr-only"> (done)</span>}
-          </FoldRow>
-        ))}
-      </section>
-
-      <WhoYouAre me={me} send={send} buildHref={buildHref} onError={onError} />
+      <div className="bs-sheet">
+        <TalentsBox me={me} />
+        <InjuriesBox me={me} d={d} />
+        <NotesBox me={me} send={send} onError={onError} />
+        <XpBox me={me} d={d} buildHref={buildHref} />
+      </div>
     </>
   );
 }

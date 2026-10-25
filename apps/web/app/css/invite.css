@@ -132,3 +132,8 @@
   line-height: 1.35;
   white-space: pre-line;
 }
+
+/* READ's sheet runs to the dialog's edges: the Skills table needs the DOSSIER's width to fit its names. */
+.agent-read > .bs-sheet {
+  margin-inline: -16px;
+}

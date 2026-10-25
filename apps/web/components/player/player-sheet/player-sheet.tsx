@@ -43,7 +43,7 @@ export function PlayerSheet({ me, state, send }: PlayerSheetProps) {
       {view === "glance" ? (
         <Glance me={me} d={d} onAllSkills={handleAllSkills} />
       ) : (
-        <Dossier me={me} d={d} tier={tier} send={send} buildHref={buildHref} onError={setError} />
+        <Dossier me={me} d={d} state={state} send={send} buildHref={buildHref} onError={setError} />
       )}
       <Refusal error={error} onDismiss={() => setError(null)} />
     </div>
