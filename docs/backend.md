@@ -527,7 +527,7 @@ at any game that exists, so every GM-only route and socket works for them withou
 ### Invites (`invite.service.ts`, `access.actions.ts`)
 
 - **Create:** `invite.create` stores `sha256(code)` of a `newSecret()` and returns the code once. The web app makes two
-  kinds: a **room QR** (`mode: "room"`, 12 h, unlimited uses, guests allowed) and a **per-character link**
+  kinds: a **room QR** (`mode: "room"`, 168 h, unlimited uses, guests allowed) and a **per-character link**
   (`mode: "character"`, 168 h, one use).
 - **Live** means not revoked, not expired, and `uses < max_uses` (or no limit). Anything else refuses with "This invite
   has expired or was already used. Ask your GM for a new one".

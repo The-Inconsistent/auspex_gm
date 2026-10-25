@@ -70,7 +70,7 @@ People sign in with Clerk accounts. Players who don't want an account can join a
   a GM's access is their account; there are no GM links.
 - **Creators** (Clerk public metadata `role: "creator"`, set by hand in the Clerk Dashboard) can start games in the
   lobby.
-- **Invites.** From **PARTY**, the GM shows a **ROOM QR** (12 hours; players claim an open agent or name a new one) or
+- **Invites.** From **PARTY**, the GM shows a **ROOM QR** (a week; players claim an open agent or name a new one) or
   an **INVITE** link for one character (a week, single use). A lost invite isn't recovered: revoke it and make a new
   one.
 - **Guests** hold a per-character QR token in an httpOnly cookie. They come in through an invite that allows guests,

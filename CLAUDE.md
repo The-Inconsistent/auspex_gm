@@ -103,7 +103,7 @@ phones/tablets ──HTTPS──▶ Pangolin (prod TLS) ──▶ Next ──rew
     `WEB_ORIGIN`) and reads the name and role from custom session-token claims (see `packages/auth/src/api.ts`).
   - Guests hold a per-character player token (`access_token`) in the httpOnly `wg_token` cookie, from a GUEST QR
     (`/join/<token>`) or a guest-friendly invite.
-  - The GM invites from PARTY: a room QR (`mode: "room"`, 12 h) or a single-use per-character link (`mode:
+  - The GM invites from PARTY: a room QR (`mode: "room"`, 168 h) or a single-use per-character link (`mode:
     "character"`, 168 h), at `/invite/<code>`. Accepting runs through `TableGateway.mutate` (the action queue, then a
     broadcast). Players never receive invites (`toPlayerView` clears `access.invites`).
   - `ADMIN_KEY` is for scripts only: `POST /api/campaigns` with `ownerUserId`, and a socket with

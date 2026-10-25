@@ -19,8 +19,8 @@ export const ASCEND_KINDS = {
 } as const satisfies Record<AscensionKind, { label: string; cite: string; gist: string }>;
 export type AscendKind = AscensionKind;
 
-// How long invites stay live: the room QR covers one evening at the table; a character link a week of lead time.
-export const ROOM_INVITE_HOURS = 12;
+// How long invites stay live: the room QR and a character link both last a week, so one code covers the gap between sessions.
+export const ROOM_INVITE_HOURS = 168;
 export const CHARACTER_INVITE_HOURS = 168;
 
 // Button labels for the requisition kinds (Core p.205, p.229).

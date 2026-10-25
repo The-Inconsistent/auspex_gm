@@ -39,7 +39,7 @@ export function RoomInvite({ send, onError, compact }: RoomInviteProps) {
             ROOM QR
           </button>
           <span className="dim">
-            Players scan it, sign in or join as a guest, and claim an agent. Live {ROOM_INVITE_HOURS} h.
+            Players scan it, sign in or join as a guest, and claim an agent. Live {ROOM_INVITE_HOURS / 24} days.
           </span>
         </div>
       )}
