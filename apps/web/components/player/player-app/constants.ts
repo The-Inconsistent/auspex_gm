@@ -11,8 +11,15 @@ export const TURN_VIBRATION = [200, 100, 200];
 // About the open header's height: the vitals strip folds once the body's marker (.pl-fold-mark) passes under it.
 export const FOLD_UNDER_PX = 220;
 
-// The rule each strip label opens (ids from packages/data/rules, as the long sheet's SHEET_LEGEND): Wounds and Shock
-// (Core p.37), Wrath and Glory (p.164).
+// The strip's counter labels (read-only: the GM changes them), keyed by their `character.adjust` field.
+export const SHEET_COUNTERS = {
+  wounds: { label: "WOUNDS" },
+  shock: { label: "SHOCK" },
+  wrath: { label: "WRATH" },
+} as const;
+
+// The rule each strip label opens (ids from packages/data/rules): Wounds and Shock (Core p.37), Wrath and Glory
+// (p.164).
 export const STRIP_RULES = {
   wounds: "stat-wounds",
   shock: "stat-shock",

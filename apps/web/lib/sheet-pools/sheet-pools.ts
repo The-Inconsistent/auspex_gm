@@ -19,6 +19,10 @@ export type WeaponSkill = Extract<Skill, "Weapon Skill" | "Ballistic Skill">;
 export const weaponSkill = (w: Reach): WeaponSkill =>
   (w.melee ?? isMeleeProfile(w)) ? "Weapon Skill" : "Ballistic Skill";
 
+// The Skill a weapon's pool is rolled on, as the card's tag (rules-flow.md §4: Ballistic Skill + Agility ranged, Weapon
+// Skill + Initiative melee).
+export const WEAPON_SKILL_TAGS = { "Ballistic Skill": "BS", "Weapon Skill": "WS" } as const;
+
 // The pool an attack with this weapon rolls: its Skill's total (Skill + linked Attribute, Core p.21), mutations counted.
 export const weaponPool = (s: CharacterStats, w: Reach) => skillTotal(s, weaponSkill(w));
 

@@ -1,4 +1,5 @@
-/* player sheet: AT A GLANCE and the DOSSIER (components/player/player-sheet). Shared dataslate classes (.cut, .pool-badge,
+/* player sheet: AT A GLANCE and the DOSSIER (components/player/player-sheet), and the book's character sheet every view
+   draws (components/ui/book-sheet). Shared dataslate classes (.cut, .pool-badge,
    .mono) are in css/player.css; everything here is tokens only, so vellum and vigil both work. */
 .ps {
   display: flex;

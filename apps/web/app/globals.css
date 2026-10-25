@@ -474,9 +474,6 @@ textarea.input {
 .track.ink > span {
   background: var(--ink-2);
 }
-.vital .track {
-  width: 100%;
-}
 
 /* ASCEND on PARTY (Core pp.147-148): one line per character, the shortfall in words, then the two Ascensions. */
 .asc-row {
@@ -791,22 +788,6 @@ textarea.input {
   background: var(--bone-wash);
 }
 
-/* LEVEL UP: XP earned and not spent yet, on the sheet's head; it links to the builder's ADVANCE screen (Core
-   pp.146-151). Crimson means "now", so it reads as something waiting to be done, and the words carry it as well. */
-.badge-up {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 10px;
-  background: var(--red-fill);
-  border: 1px solid var(--red-2);
-  color: var(--bone);
-  font-family: var(--display);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-decoration: none;
-}
 /* In flow, as the first row of the GM header or player banner (both wrap), so it never covers their controls. */
 .badge-offline {
   flex: 1 0 100%;
@@ -876,7 +857,7 @@ textarea.input {
   white-space: nowrap;
   margin-left: auto; /* keeps the cite beside the (?) on the right */
 }
-/* The (?) on a stat block and its legend dialog (components/ui/legend); the GM's sheet dialog (party/sheet-dialog) shares it. */
+/* The (?) on a stat block and its legend dialog (components/ui/legend); the GM's sheet dialog (ui/sheet-dialog) shares it. */
 .sb-help {
   position: relative;
   flex: none;
@@ -1492,60 +1473,6 @@ dialog.picker {
   width: 22px;
   height: 22px;
   margin: 11px;
-}
-/* The sheet's XP line: earned, what advancement has left to spend, Rank (Core p.146), then LEVEL UP. */
-.sheet-xp {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 6px 16px;
-}
-.sheet-xp b {
-  font-family: var(--display);
-  font-size: 18px;
-}
-.vitals {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-.vital {
-  border: 1px solid var(--line);
-  background: var(--vellum-2);
-  box-shadow:
-    inset 0 0 0 3px var(--vellum-2),
-    inset 0 0 0 4px var(--line);
-  padding: 10px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.vital .num {
-  font-family: var(--serif);
-  font-weight: 700;
-  font-size: 44px;
-  line-height: 0.95;
-}
-.traits {
-  display: flex;
-  border: 1px solid var(--line);
-}
-.traits > div {
-  flex: 1;
-  padding: 8px 0;
-  text-align: center;
-  border-right: 1px solid var(--line);
-  display: flex;
-  flex-direction: column;
-}
-.traits > div:last-child {
-  border-right: 0;
-}
-.traits .v {
-  font-family: var(--serif);
-  font-weight: 700;
-  font-size: 26px;
-  line-height: 1;
 }
 
 .list {

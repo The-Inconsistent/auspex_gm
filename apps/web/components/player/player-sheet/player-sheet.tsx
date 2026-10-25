@@ -3,7 +3,6 @@ import { useState } from "react";
 
 import { deriveStats, type Character, type LiveState } from "@wg/shared";
 
-import { BUILD_STEP_PARAM } from "@/components/builder/constants";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
 import { revealAnchor } from "@/lib/anchor/anchor";
@@ -21,10 +20,6 @@ export function PlayerSheet({ me, state, send }: PlayerSheetProps) {
   const d = deriveStats({ stats: me.stats, overrides: me.overrides, tier });
   const [view, setView] = useState<SheetView>("glance");
   const [error, setError] = useState<string | null>(null);
-  // Where XP is spent: the builder's ADVANCE screen for a character already made (Core pp.146–151), the builder from the
-  // top for one that isn't.
-  const buildHref = `/c/${state.campaign.id}/build/${me.id}${me.build ? `?${BUILD_STEP_PARAM}=advance` : ""}`;
-
   // "ALL 18 SKILLS": opens the DOSSIER and scrolls to its dice once it has drawn.
   const handleAllSkills = () => {
     setView("dossier");
@@ -43,7 +38,7 @@ export function PlayerSheet({ me, state, send }: PlayerSheetProps) {
       {view === "glance" ? (
         <Glance me={me} d={d} onAllSkills={handleAllSkills} />
       ) : (
-        <Dossier me={me} d={d} state={state} send={send} buildHref={buildHref} onError={setError} />
+        <Dossier me={me} state={state} send={send} onError={setError} />
       )}
       <Refusal error={error} onDismiss={() => setError(null)} />
     </div>

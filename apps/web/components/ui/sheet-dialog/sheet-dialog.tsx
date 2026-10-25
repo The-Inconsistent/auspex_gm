@@ -1,18 +1,22 @@
 "use client";
 import { useRef, useState } from "react";
 
-import { Sheet, type SheetProps } from "@/components/ui/sheet/sheet";
+import type { Character, LiveState } from "@wg/shared";
 
-// SHEET: the Agent's whole sheet on one page, pregen or player-made (the player's phone has its own two views,
-// components/player/player-sheet). With `table` (GM PARTY) it's
-// live and its buttons work for the GM too (the GM may send every action); without it, read-only. (The invite page
-// shows its own Agent cards, components/invite/invite-accept/components/agent-card.)
-// The sheet renders only while open, so a PARTY of ten doesn't draw ten hidden sheets. A native modal <dialog> brings
-// Escape, the focus trap, focus return and the backdrop (as Legend does).
-export function SheetDialog(props: SheetProps) {
-  const character = props.me;
+import { BookSheet } from "@/components/ui/book-sheet/book-sheet";
+import { Refusal } from "@/components/ui/refusal/refusal";
+import type { Send } from "@/hooks/use-table/use-table";
+
+type SheetDialogProps = { me: Character; tier: number; table: { state: LiveState; send: Send } };
+
+// SHEET (GM PARTY): the Agent as the book's character sheet, the same one the player's DOSSIER draws (ui/book-sheet),
+// live, its buttons working for the GM too (the GM may send every action); the GM spends Wrath from PARTY, so there is
+// no SPEND WRATH to ask with. The sheet renders only while open, so a PARTY of ten doesn't draw ten hidden sheets. A
+// native modal <dialog> brings Escape, the focus trap, focus return and the backdrop (as Legend does).
+export function SheetDialog({ me, tier, table }: SheetDialogProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const show = () => {
     setOpen(true);
@@ -27,15 +31,19 @@ export function SheetDialog(props: SheetProps) {
       <dialog
         ref={ref}
         className="sheet"
-        aria-label={`${character.name}: character sheet`}
-        onClose={() => setOpen(false)}
+        aria-label={`${me.name}: character sheet`}
+        // only its own close: a dialog inside the sheet (WHO YOU ARE's help) must not unmount it
+        onClose={(e) => e.target === e.currentTarget && setOpen(false)}
         // A click on the dialog element itself, not its content, is a click on the backdrop.
         onClick={(e) => e.target === ref.current && ref.current.close()}
       >
         <div className="sb-title">
-          <span>{character.name.toUpperCase()}</span>
+          <span>{me.name.toUpperCase()}</span>
         </div>
-        <div className="pl-body">{open && <Sheet {...props} />}</div>
+        <div className="pl-body">
+          {open && <BookSheet me={me} tier={tier} table={{ ...table, onError: setError }} />}
+        </div>
+        <Refusal error={error} onDismiss={() => setError(null)} />
         <div className="dlg-foot">
           <button className="btn sm" onClick={() => ref.current?.close()}>
             CLOSE
