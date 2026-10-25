@@ -29,7 +29,8 @@ export function PartyDialog({ label, title, side, msg, onClose, children }: Part
       ref={ref}
       className={`party-dlg ${side ? "side" : ""}`}
       aria-label={label}
-      onClose={onClose}
+      // React passes a nested dialog's close up the tree (a SHEET or QR inside the dossier): only this dialog's own counts.
+      onClose={(e) => e.target === e.currentTarget && onClose()}
       // A click on the dialog element itself, not its content, is a click on the backdrop.
       onClick={(e) => e.target === ref.current && ref.current.close()}
     >

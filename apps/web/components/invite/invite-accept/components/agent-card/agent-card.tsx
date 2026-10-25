@@ -2,14 +2,9 @@
 import Image from "next/image";
 import { useRef, useState, type MouseEvent } from "react";
 
-import { ATTRIBUTES, attributeTotals, deriveStats, type Character } from "@wg/shared";
+import { ATTRIBUTES, attributeTotals, type Character } from "@wg/shared";
 
-import { AttributesBox } from "@/components/player/player-sheet/components/attributes-box/attributes-box";
-import { SheetHead } from "@/components/player/player-sheet/components/sheet-head/sheet-head";
-import { SkillsBox } from "@/components/player/player-sheet/components/skills-box/skills-box";
-import { TalentsBox } from "@/components/player/player-sheet/components/talents-box/talents-box";
-import { TraitsBox } from "@/components/player/player-sheet/components/traits-box/traits-box";
-import { Wargear } from "@/components/player/player-sheet/components/wargear/wargear";
+import { BookSheet } from "@/components/ui/book-sheet/book-sheet";
 import { DetailView, hasDetail } from "@/components/ui/character-detail/character-detail";
 import { KeywordPop } from "@/components/ui/keyword-pop/keyword-pop";
 import { SheetGuide } from "@/components/ui/sheet-guide/sheet-guide";
@@ -115,7 +110,7 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
         ref={ref}
         className="sheet"
         aria-label={`${c.name}: background and stat block`}
-        onClose={() => setOpen(false)}
+        onClose={(e) => e.target === e.currentTarget && setOpen(false)} // not a dialog nested in the sheet
         onClick={handleBackdrop}
       >
         <div className="sb-title">
@@ -135,15 +130,7 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
             {built && (
               <>
                 <SheetGuide />
-                {/* The seated DOSSIER's first page, read-only: no spends, Wrath, injuries or notes before a seat. */}
-                <div className="bs-sheet">
-                  <SheetHead me={c} tier={tier} />
-                  <AttributesBox me={c} />
-                  <SkillsBox me={c} />
-                  <TraitsBox me={c} d={deriveStats({ stats: s, overrides: c.overrides, tier })} tier={tier} />
-                  <Wargear me={c} />
-                  <TalentsBox me={c} textless="Their full text shows once you sign in or take a seat." />
-                </div>
+                <BookSheet me={c} tier={tier} textless="Their full text shows once you sign in or take a seat." />
               </>
             )}
           </div>

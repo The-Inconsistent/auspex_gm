@@ -31,7 +31,3 @@ export const DOSSIER_JUMPS = [
   { label: "NOTES", id: "ps-notes" },
   { label: "XP", id: "ps-xp" },
 ] as const;
-
-// The Skill a weapon's pool is rolled on, as the card's tag (rules-flow.md §4: Ballistic Skill + Agility ranged, Weapon
-// Skill + Initiative melee).
-export const WEAPON_SKILL_TAGS = { "Ballistic Skill": "BS", "Weapon Skill": "WS" } as const;

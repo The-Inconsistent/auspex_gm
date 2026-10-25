@@ -5,12 +5,11 @@ import { deriveStats, pcStatus, poolMax, type Character, type LiveState } from "
 
 import { RuleIdLink, RuleLink } from "@/components/ui/rule-link/rule-link";
 import { RequestSpend } from "@/components/ui/request-spend/request-spend";
-import { SHEET_COUNTERS } from "@/components/ui/sheet/constants";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { Track } from "@/components/ui/track/track";
 import type { Send } from "@/hooks/use-table/use-table";
 
-import { STRIP_RULES } from "../../constants";
+import { SHEET_COUNTERS, STRIP_RULES } from "../../constants";
 
 type VitalsStripProps = {
   me: Character;

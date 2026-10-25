@@ -4,10 +4,10 @@ import { effectiveStrength, type Character, type DerivedStats } from "@wg/shared
 import { SheetGuide } from "@/components/ui/sheet-guide/sheet-guide";
 import { Term } from "@/components/ui/term/term";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
-import { topSkills, weaponPool, weaponSkill } from "@/lib/sheet-pools/sheet-pools";
+import { WEAPON_SKILL_TAGS, topSkills, weaponPool, weaponSkill } from "@/lib/sheet-pools/sheet-pools";
 import { SKILL_TERMS } from "@/lib/sheet-terms/sheet-terms";
 
-import { GLANCE_SKILLS, TRAIT_CELLS, WEAPON_SKILL_TAGS } from "../../constants";
+import { GLANCE_SKILLS, TRAIT_CELLS } from "../../constants";
 import { Heading } from "../heading/heading";
 
 type GlanceProps = { me: Character; d: DerivedStats; onAllSkills: () => void };

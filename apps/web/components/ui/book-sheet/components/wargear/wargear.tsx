@@ -9,9 +9,8 @@ import { SupplyRow } from "@/components/ui/supply-row/supply-row";
 import { Term } from "@/components/ui/term/term";
 import { UpgradeRow } from "@/components/ui/upgrade-row/upgrade-row";
 import type { Send } from "@/hooks/use-table/use-table";
-import { weaponPool, weaponSkill } from "@/lib/sheet-pools/sheet-pools";
+import { WEAPON_SKILL_TAGS, weaponPool, weaponSkill } from "@/lib/sheet-pools/sheet-pools";
 
-import { WEAPON_SKILL_TAGS } from "../../constants";
 import { BookBox } from "../book-box/book-box";
 
 // `live`: the seated player's own sheet, with its spends and upgrade fitting. Without it (the JOIN page's READ) the box
