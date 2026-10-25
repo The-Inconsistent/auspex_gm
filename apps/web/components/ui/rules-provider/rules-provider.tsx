@@ -61,8 +61,8 @@ export function RulesProvider({ rules, children }: RulesProviderProps) {
           {shown.entries.map((r) => (
             <RuleItem key={`${shown.n}-${r.id}`} r={r} open />
           ))}
-          <form method="dialog">
-            <button className="btn primary">CLOSE</button>
+          <form method="dialog" className="dlg-foot">
+            <button className="btn sm">CLOSE</button>
           </form>
         </div>
       </dialog>

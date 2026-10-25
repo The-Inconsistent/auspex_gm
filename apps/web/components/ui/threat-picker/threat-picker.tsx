@@ -87,9 +87,6 @@ export function ThreatPicker({
       >
         <div className="sb-title">
           <span>BESTIARY · {found.length}</span>
-          <button className="btn sm" onClick={() => ref.current?.close()}>
-            CLOSE
-          </button>
         </div>
         <div className="tp-facets">
           <input
@@ -154,6 +151,11 @@ export function ThreatPicker({
           {found.length > shown.length && (
             <div className="dim">{found.length - shown.length} more, narrow the search.</div>
           )}
+        </div>
+        <div className="dlg-foot">
+          <button className="btn sm" onClick={() => ref.current?.close()}>
+            CLOSE
+          </button>
         </div>
       </dialog>
     </>

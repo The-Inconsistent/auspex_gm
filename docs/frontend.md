@@ -1235,6 +1235,8 @@ The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.
 **Class vocabulary:**
 - Text: `.sr-only` (read by screen readers, not drawn), `.display`, `.page-title` (the 30px page and round title), `.dim`, `.accent` (crimson emphasis: the acting combatant, notices, success), `.red` (errors),
   `.label`, `.rule` (a section head; the double rule is drawn by `::after`), `.kw` (keywords in crimson small caps).
+- Dialogs: every dialog ends in `.dlg-foot` (sticky): CLOSE as a plain `.btn.sm` at the right end, a main action
+  (PLAY, GO TO) at the left. A way out is never crimson, the colour that means "do it".
 - Controls: `.btn` (ink outline with an inner double frame), with `.primary` (crimson fill), `.danger`, `.sm` (32px),
   `.sq` (44px square; every "◂" back link) and `.sq.sm` (the dense 32px square, the builder's −/+ steppers); `.input`;
   `.field`; `.check` (a checkbox or radio label with a 44px hit area) and `.check-box` (a lone checkbox padded to 44px).

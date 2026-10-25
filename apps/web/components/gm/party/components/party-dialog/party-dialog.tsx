@@ -12,7 +12,7 @@ type PartyDialogProps = {
   children: ReactNode;
 };
 
-// PARTY's one dialog: a native modal <dialog>, so Escape, the focus trap, focus into it (the CLOSE button is first) and
+// PARTY's one dialog: a native modal <dialog>, so Escape, the focus trap, focus into it, and
 // focus back to the control that opened it come from the browser. The parent mounts it only while open.
 export function PartyDialog({ label, title, side, msg, onClose, children }: PartyDialogProps) {
   const ref = useRef<HTMLDialogElement>(null);
@@ -35,9 +35,6 @@ export function PartyDialog({ label, title, side, msg, onClose, children }: Part
     >
       <div className="sb-title">
         <span>{title}</span>
-        <button className="btn" onClick={() => ref.current?.close()}>
-          CLOSE
-        </button>
       </div>
       <div className="party-dlg-body stack">
         {shown && (
@@ -46,6 +43,11 @@ export function PartyDialog({ label, title, side, msg, onClose, children }: Part
           </div>
         )}
         {children}
+      </div>
+      <div className="dlg-foot">
+        <button className="btn sm" onClick={() => ref.current?.close()}>
+          CLOSE
+        </button>
       </div>
     </dialog>
   );

@@ -31,14 +31,16 @@ export function Legend({ title, entries, inline = false }: LegendProps) {
       >
         <div className="sb-title">
           <span>{title.toUpperCase()}</span>
-          <button className="btn sm" onClick={() => ref.current?.close()}>
-            CLOSE
-          </button>
         </div>
         <div className="list">
           {entries.map((r) => (
             <RuleItem key={r.id} r={r} />
           ))}
+        </div>
+        <div className="dlg-foot">
+          <button className="btn sm" onClick={() => ref.current?.close()}>
+            CLOSE
+          </button>
         </div>
       </dialog>
     </>

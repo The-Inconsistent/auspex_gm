@@ -1673,6 +1673,24 @@ details.rule-item > pre.text {
   margin: 0;
   padding: 0 10px;
 }
+/* Every dialog's foot, the same everywhere: CLOSE a plain button at the right end, a main action (PLAY, GO TO) on the
+   left. Crimson means "do it" in this app, so a way out is never red. Sticky, so a long dialog keeps CLOSE in reach. */
+.dlg-foot {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 12px;
+  border-top: 1px solid var(--line);
+  background: var(--vellum);
+}
+.dlg-foot > :last-child {
+  margin-left: auto;
+}
 dialog.rule-dialog {
   width: min(640px, calc(100vw - 32px));
   max-height: calc(100dvh - 32px);

@@ -135,8 +135,7 @@ export function MentionsProvider({ codex, missing, onGoTo, editor, children }: M
         ) : (
           <div className="stack pad">
             {entry ? <Peek key={`${entry.kind}:${entry.id}`} entry={entry} /> : <p className="dim">{missing}</p>}
-            <form method="dialog" className="keys" style={{ paddingTop: 0 }}>
-              <button className="btn primary">CLOSE</button>
+            <form method="dialog" className="dlg-foot">
               {/* A scene's editor is its STORY page (GO TO), not a codex form. */}
               {entry && editor && entry.kind !== "scene" && (
                 <button type="button" className="btn" onClick={() => setEditing("peek")}>
@@ -148,6 +147,7 @@ export function MentionsProvider({ codex, missing, onGoTo, editor, children }: M
                   GO TO
                 </button>
               )}
+              <button className="btn sm">CLOSE</button>
             </form>
           </div>
         )}
