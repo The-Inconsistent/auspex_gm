@@ -3,9 +3,9 @@ import { DN_TABLE } from "./dn.ts";
 import {
   ATTRIBUTE_NAMES,
   SKILLS,
+  attributeTotals,
   deriveStats,
   skillTotal,
-  withMutations,
   type CalledTest,
   type Character,
   type TestReport,
@@ -46,7 +46,7 @@ export const dnLabel = ({ kind, dn }: Pick<CalledTest, "kind" | "dn">) => {
 // (p.169), Resolve (p.170) or Conviction for Corruption (p.285). One of them is the Wrath Die (p.159).
 export function testPool({ character: c, test: t, tier }: { character: Character; test: CalledTest; tier: number }) {
   if (t.skill) return skillTotal(c.stats, t.skill);
-  if (t.attribute) return withMutations(c.stats).attributes[t.attribute];
+  if (t.attribute) return attributeTotals(c.stats)[t.attribute]; // Powered counts in a Strength Test (§11.160)
   const d = deriveStats({ stats: c.stats, overrides: c.overrides, tier });
   return t.kind === "influence" ? d.influence : t.kind === "resolve" ? d.resolve : d.conviction;
 }

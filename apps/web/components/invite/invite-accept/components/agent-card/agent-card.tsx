@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useRef, useState, type MouseEvent } from "react";
 
-import { ATTRIBUTES, deriveStats, withMutations, type Character } from "@wg/shared";
+import { ATTRIBUTES, attributeTotals, deriveStats, type Character } from "@wg/shared";
 
 import { StatBlock } from "@/components/player/player-sheet/components/stat-block/stat-block";
 import { Wargear } from "@/components/player/player-sheet/components/wargear/wargear";
@@ -33,7 +33,7 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
   const built = !!(s.archetype || s.species); // a reserve Agent nobody has built yet has an empty sheet
   const lore = hasDetail(c.detail); // the player's own words (appearance, past, personality), not book prose
   const pic = portrait(c.detail.portrait);
-  const attrs = withMutations(s).attributes;
+  const attrs = attributeTotals(s); // the TOTALs its BEST DICE add to, Powered counted (§11.160)
 
   // READ: render the block, then open the modal (Escape, focus trap, focus return, backdrop).
   const handleRead = () => {

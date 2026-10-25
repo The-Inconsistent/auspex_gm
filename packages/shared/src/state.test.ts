@@ -5,6 +5,9 @@ import {
   Action,
   CharacterDetail,
   CharacterStats,
+  attributeTotals,
+  effectiveStrength,
+  skillTotal,
   Threat,
   threatCite,
   adjustAmmo,
@@ -395,6 +398,23 @@ test("deriveStats: sheet formulas, additive mods, overrides, minimum 1", () => {
   assert.equal(bonus.passiveAwareness, 3 + 2, "Ever Vigilant, Core p.133");
   assert.equal(bonus.maxTraumatic, 5 + 1, "Ded 'Ard!, Apocrypha p.235");
   assert.equal(CharacterStats.parse({}).speed, 6, "empty stats parse with defaults");
+});
+
+test("Powered (X) adds to Strength's TOTAL, which Strength Skills and Tests roll (Core pp.40, 232; §11.160)", () => {
+  const s = CharacterStats.parse({
+    attributes: { S: 5, T: 5, A: 6, I: 5, Wil: 5, Int: 4, Fel: 1 },
+    armour: { name: "Mk X Phobos", ar: 4, powered: 3 },
+    skills: { Athletics: 4, "Ballistic Skill": 6 },
+  });
+  assert.equal(attributeTotals(s).S, 8);
+  assert.equal(attributeTotals(s).A, 6, "only Strength takes the bonus");
+  assert.equal(skillTotal(s, "Athletics"), 4 + 8);
+  assert.equal(skillTotal(s, "Ballistic Skill"), 6 + 6);
+  assert.equal(effectiveStrength(s), 8);
+  const c = char({ stats: s });
+  const called = (o: Partial<CalledTest>): CalledTest => ({ kind: "skill", skill: null, attribute: null, dn: 3, ...o });
+  assert.equal(testPool({ character: c, test: called({ kind: "attribute", attribute: "S" }), tier: 1 }), 8);
+  assert.equal(testPool({ character: c, test: called({ skill: "Athletics" }), tier: 1 }), 12);
 });
 
 test("pool caps", () => {
