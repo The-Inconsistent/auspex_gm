@@ -12,6 +12,7 @@ type UpgradeRowProps = {
   me: Character;
   item: Host;
   host?: UpgradeHost;
+  named?: boolean; // print the item's name first, where the row doesn't sit under it (the DOSSIER's datacard)
   send: Send;
   onRefusal: (error: string | null) => void;
 };
@@ -19,7 +20,7 @@ type UpgradeRowProps = {
 // Fitting an upgrade to this weapon or suit, and taking one off (Core p.227, rules-flow.md §11.63): instant, no Test, so
 // it is a tap. What can be fitted is what the character holds in gear, which the server lists as `ownedUpgrades` because
 // a phone doesn't carry the catalogue. The server checks the fit, the maximum of three and the slot again.
-export function UpgradeRow({ me, item, host = "weapon", send, onRefusal }: UpgradeRowProps) {
+export function UpgradeRow({ me, item, host = "weapon", named = false, send, onRefusal }: UpgradeRowProps) {
   const [pick, setPick] = useState("");
   const [busy, setBusy] = useState(false);
   // Only what fits this host, and never Matched Pair, which reads on two weapons and stays the GM's (§11.64).
@@ -53,6 +54,7 @@ export function UpgradeRow({ me, item, host = "weapon", send, onRefusal }: Upgra
 
   return (
     <div className="keys" style={{ paddingTop: 2, gap: 4 }}>
+      {named && <b className="label">{item.name.toUpperCase()}</b>}
       {fitted.map((u) => (
         <button
           key={u.id}

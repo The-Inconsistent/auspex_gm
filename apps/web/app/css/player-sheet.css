@@ -38,9 +38,6 @@
   gap: 2px;
   font-size: 16px;
 }
-.ps-block-line {
-  display: block;
-}
 
 /* The two views. */
 .ps-seg {
@@ -215,20 +212,11 @@
   background: var(--vellum-2);
 }
 
-/* The printed archetype stat block (Core p.117): spikes, crimson name bar, iron strip, banded rows, Attribute table. */
-.ps-block {
-  display: flex;
-  flex-direction: column;
-  scroll-margin-top: 124px; /* clears the sticky header, which a jump folds to its one-line height (.pl-head) */
-}
+/* The sheet's head (components/sheet-head): spikes, the crimson name bar, the iron TIER · SPECIES · XP strip. */
 .ps-spikes {
   height: 7px;
   background: conic-gradient(from 148deg at 50% 0, var(--red-fill) 0 64deg, transparent 64deg) 0 0 / 9px 7px repeat-x;
   border-top: 2px solid var(--red-fill);
-}
-.ps-spikes-dn {
-  transform: scaleY(-1);
-  margin-top: 2px;
 }
 .ps-btitle {
   padding: 9px 10px 8px;
@@ -263,38 +251,11 @@
   padding: 6px 8px;
   min-width: 0;
 }
-.ps-brow {
-  padding: 7px 10px;
-  font-size: 15.5px;
-  line-height: 1.35;
-}
-.ps-rows > .ps-brow:nth-child(even) {
-  background: var(--vellum-2);
-}
-.ps-brow > b:first-child {
-  font-family: var(--display);
-  font-size: 12.5px;
-  letter-spacing: 0.03em;
-}
 .ps-kw {
   font-family: var(--display);
   font-size: 12.5px;
   font-weight: 700;
   color: var(--red);
-}
-/* DICE TO ROLL: every Skill in two columns. */
-.ps-dice {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2px 14px;
-}
-.ps-die {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  font-size: 15.5px;
-  line-height: 1.1;
 }
 
 /* Folded rows: a Talent, an ability, an order. */
@@ -317,6 +278,9 @@
   font-size: 16px;
   color: inherit;
   text-align: left;
+}
+.ps-fold-head > .ps-cite {
+  white-space: nowrap;
 }
 .ps-fold-flat {
   border-bottom: 1px solid var(--line);
@@ -346,20 +310,6 @@ button.ps-fold-head > .ps-fold-title {
 .ps-struck {
   text-decoration: line-through;
   color: var(--ink-3);
-}
-
-/* WHO YOU ARE's foot: the XP and the way to spend it. */
-.ps-xp {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 4px;
-}
-.ps-xp-line {
-  flex-grow: 1;
-  font-size: 13px;
-  color: var(--ink-2);
 }
 
 /* A sheet term (ui/term): a dotted underline says "tap me", and its meaning opens as a small card (a native popover,
@@ -500,19 +450,6 @@ button.ps-fold-head > .ps-fold-title {
   color: var(--ink-3);
 }
 
-/* The stat block's Attributes by full name, two to a line on a phone. */
-.ps-attrs {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2px 14px;
-  margin: 4px 0 2px;
-}
-@media (min-width: 560px) {
-  .ps-attrs {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
 /* WARGEAR as a Kill Team datacard: icon · name (reach and traits under it) · dice · damage · AP. */
 .wg {
   display: flex;
@@ -602,4 +539,424 @@ button.ps-fold-head > .ps-fold-title {
   flex-shrink: 0;
   margin-top: 2px;
   color: var(--red);
+}
+
+/* The DOSSIER as the book's character sheet (Core pp.40–41): each page an iron frame with a double inner rule, its boxes
+   split by iron rules, each box's title centred over a quill rule and a diamond. Our own drawing: no art from the book. */
+.bs-sheet {
+  display: flex;
+  flex-direction: column;
+  border: 4px solid var(--iron);
+  box-shadow:
+    inset 0 0 0 2px var(--vellum),
+    inset 0 0 0 3.5px var(--iron);
+  padding: 3.5px;
+}
+.bs-head,
+.bs-box {
+  scroll-margin-top: 124px; /* clears the sticky header, which a jump folds to its one-line height (.pl-head) */
+}
+.bs-head {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 4px;
+}
+.bs-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 8px 12px;
+  border-top: 2.5px solid var(--iron);
+}
+.bs-sheet > .bs-box:first-child {
+  border-top: 0;
+}
+.bs-bh {
+  margin: 0;
+  text-align: center;
+  font-family: var(--display);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.bs-qr {
+  position: relative;
+  display: block;
+  height: 5px;
+  margin: 2px 4% 12px;
+  box-sizing: border-box;
+  color: var(--red);
+  border-top: 1px solid currentColor;
+  border-bottom: 2.5px solid currentColor;
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+}
+.bs-qr::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 1px;
+  width: 9px;
+  height: 9px;
+  background: currentColor;
+  transform: translateX(-50%) rotate(45deg);
+  box-shadow: 0 0 0 2px var(--vellum);
+}
+.bs-lbl {
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--ink-2);
+}
+.bs-cap {
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.25;
+  color: var(--ink-3);
+}
+.bs-cap-end {
+  text-align: right;
+}
+.bs-dim {
+  color: var(--ink-3);
+}
+.bs-sub {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  margin-top: 6px;
+}
+.bs-sub > .bs-lbl {
+  flex-grow: 1;
+}
+
+/* Personal Details: the book's labelled lines under our name bar and strip. */
+.bs-fields {
+  display: flex;
+  flex-direction: column;
+  padding: 2px 10px 0;
+}
+.bs-fld {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 8px 0 6px;
+  border-bottom: 1px solid var(--line);
+  font-size: 15.5px;
+  line-height: 1.3;
+}
+.bs-fld:last-child {
+  border-bottom: 0;
+}
+.bs-fld > b {
+  flex-shrink: 0;
+  font-family: var(--display);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+
+/* ATTRIBUTES: RATING, BONUS, TOTAL under iron head cells. */
+.bs-at {
+  display: flex;
+  flex-direction: column;
+}
+.bs-at-row {
+  display: grid;
+  grid-template-columns: 58px repeat(7, minmax(0, 1fr));
+  text-align: center;
+}
+.bs-at-row > b {
+  display: flex;
+  align-items: center;
+  font-family: var(--display);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--ink-2);
+  text-align: left;
+}
+.bs-at-row > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  font-size: 15px;
+  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+.bs-at-row > span:first-child {
+  border: 0; /* the head row's empty corner */
+}
+.bs-at-row > .bs-at-h {
+  min-height: 30px;
+  border: 0;
+  background: var(--iron-2);
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+}
+.bs-at-row > .bs-at-bonus {
+  color: var(--red);
+  font-weight: 700;
+}
+.bs-at-total {
+  background: var(--vellum-2);
+}
+.bs-at-total > span {
+  border-bottom: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+.bs-at-total > b {
+  color: var(--ink);
+  padding-left: 4px;
+}
+.bs-at-row:not(.bs-at-total) > b {
+  padding-left: 4px;
+}
+
+/* SKILLS: two columns of nine split by an iron rule, as the sheet prints them. */
+.bs-sk {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.bs-skc {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.bs-skc:first-child {
+  padding-right: 5px;
+}
+.bs-skc + .bs-skc {
+  padding-left: 5px;
+  border-left: 2.5px solid var(--iron);
+}
+.bs-skc-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24px 16px 30px;
+  gap: 4px;
+  align-items: center;
+  min-height: 44px;
+  border-bottom: 1px solid var(--line);
+}
+.bs-skc-row > span:nth-child(n + 2) {
+  text-align: center;
+}
+.bs-skc-row > span:last-child {
+  display: flex;
+  justify-content: flex-end;
+}
+.bs-skc-n {
+  font-size: 13.5px;
+  line-height: 1.05;
+  overflow-wrap: break-word;
+}
+.bs-skc-a {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.bs-skc-row .pool-badge {
+  min-width: 28px;
+  height: 28px;
+  font-size: 14px;
+}
+
+/* WRATH: the points and SPEND, then USES FOR WRATH. */
+.bs-wrath {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.bs-wrath > .bs-cap {
+  flex-grow: 1;
+}
+.bs-wrath > .btn {
+  flex-shrink: 0;
+}
+.bs-wrath-v {
+  padding-left: 6px;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1;
+}
+.bs-uses {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  margin-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.bs-uses > b {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-right: 1px solid var(--line);
+  font-family: var(--display);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  text-align: center;
+}
+.bs-uses > ul {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0;
+  padding: 6px 0 0 10px;
+  list-style: none;
+  font-size: 14.5px;
+  line-height: 1.25;
+}
+.bs-uses li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.bs-uses li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+  transform: rotate(45deg) translateY(-2px);
+}
+
+/* A worked-out number under its label, with the book's formula as a grey caption. */
+.bs-cells {
+  display: grid;
+}
+.bs-cells-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.bs-cells-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.bs-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 8px 4px 6px;
+  text-align: center;
+}
+.bs-cells > * + * {
+  border-left: 1px solid var(--line);
+}
+.bs-cell-total {
+  background: var(--vellum-2);
+}
+.bs-cell-start {
+  align-items: flex-start;
+  padding-left: 0;
+  text-align: left;
+}
+.bs-cell-text {
+  padding-top: 6px;
+  font-size: 16px;
+}
+.bs-v {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.bs-v > small {
+  font-size: 15px;
+  color: var(--ink-3);
+}
+.bs-stack {
+  display: flex;
+  flex-direction: column;
+}
+.bs-stack > * + * {
+  border-top: 1px solid var(--line);
+}
+.bs-rule-under {
+  border-bottom: 1.5px solid var(--ink-2);
+}
+
+/* SURVIVAL: Defence beside Resilience's Base + Armour = Total. */
+.bs-sv {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  border-bottom: 1.5px solid var(--ink-2);
+}
+.bs-sv > .bs-cell {
+  justify-content: flex-end;
+}
+.bs-sv-res {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding-top: 6px;
+  border-left: 1.5px solid var(--ink-2);
+  text-align: center;
+}
+
+/* WARGEAR's foot: Supply beside Influence, as the sheet's Gear row holds Influence and Wealth. */
+.bs-gear-h {
+  margin-top: 8px;
+}
+.bs-gear-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 84px;
+  margin-top: 8px;
+  border-top: 2.5px solid var(--iron);
+}
+.bs-supply {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 8px 4px 0;
+}
+.bs-gear-foot > .bs-cell {
+  border-left: 1px solid var(--line);
+}
+
+/* CORRUPTION: the points beside the sheet's five rows of five circles, one row a level. */
+.bs-corruption {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 10px;
+  padding-top: 8px;
+}
+.bs-pips {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 8px;
+}
+.bs-pip-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.bs-pip {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border: 1.5px solid var(--ink-3);
+  border-radius: 50%;
+}
+.bs-pip-on {
+  border-color: var(--red);
+  background: var(--red);
+}
+.bs-pip-row > b {
+  padding-left: 6px;
+  font-family: var(--display);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+}
+.bs-pip-row > .bs-pip-now {
+  color: var(--red);
+}
+
+#ps-xp > .btn {
+  margin-top: 8px;
 }

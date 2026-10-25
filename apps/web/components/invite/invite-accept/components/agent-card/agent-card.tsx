@@ -4,7 +4,11 @@ import { useRef, useState, type MouseEvent } from "react";
 
 import { ATTRIBUTES, attributeTotals, deriveStats, type Character } from "@wg/shared";
 
-import { StatBlock } from "@/components/player/player-sheet/components/stat-block/stat-block";
+import { AttributesBox } from "@/components/player/player-sheet/components/attributes-box/attributes-box";
+import { SheetHead } from "@/components/player/player-sheet/components/sheet-head/sheet-head";
+import { SkillsBox } from "@/components/player/player-sheet/components/skills-box/skills-box";
+import { TalentsBox } from "@/components/player/player-sheet/components/talents-box/talents-box";
+import { TraitsBox } from "@/components/player/player-sheet/components/traits-box/traits-box";
 import { Wargear } from "@/components/player/player-sheet/components/wargear/wargear";
 import { DetailView, hasDetail } from "@/components/ui/character-detail/character-detail";
 import { KeywordPop } from "@/components/ui/keyword-pop/keyword-pop";
@@ -24,7 +28,7 @@ type AgentCardProps = {
 
 // One Agent to choose before taking a seat, skimmable at a glance: who, the Attributes, the best Skills and the
 // weapons. READ opens the Agent's BACKGROUND (appearance, past, personality) as the long sheet folds it, then
-// the book's printed stat block (Core p.117), the same one the player's DOSSIER starts with. The
+// the book's character sheet (Core p.40) as the seated DOSSIER draws it, read-only. The
 // preview has already stripped Ability and Talent text (book prose needs a seat), so only names and cites show.
 export function AgentCard({ c, tier, play }: AgentCardProps) {
   const ref = useRef<HTMLDialogElement>(null);
@@ -131,8 +135,15 @@ export function AgentCard({ c, tier, play }: AgentCardProps) {
             {built && (
               <>
                 <SheetGuide />
-                <StatBlock me={c} d={deriveStats({ stats: s, overrides: c.overrides, tier })} tier={tier} />
-                <Wargear me={c} />
+                {/* The seated DOSSIER's first page, read-only: no spends, Wrath, injuries or notes before a seat. */}
+                <div className="bs-sheet">
+                  <SheetHead me={c} tier={tier} />
+                  <AttributesBox me={c} />
+                  <SkillsBox me={c} />
+                  <TraitsBox me={c} d={deriveStats({ stats: s, overrides: c.overrides, tier })} tier={tier} />
+                  <Wargear me={c} />
+                  <TalentsBox me={c} textless="Their full text shows once you sign in or take a seat." />
+                </div>
               </>
             )}
           </div>

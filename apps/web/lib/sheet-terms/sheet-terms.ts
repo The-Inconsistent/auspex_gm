@@ -114,6 +114,32 @@ export const SHEET_TERMS = {
     rule: "stat-conviction",
     meaning: "Your dice to resist corruption and Chaos, in a Corruption Test. It starts equal to your Willpower.",
   },
+  determination: {
+    name: "Determination",
+    cite: "Core p.196",
+    meaning:
+      "When an attack Wounds you, roll this many dice: each Icon turns one Wound into Shock. It equals your Toughness.",
+  },
+  traumatic: {
+    name: "Traumatic Injuries",
+    cite: "Core p.193",
+    meaning: "Lasting harm you take while Dying. Take more than your maximum (Tier +1) and you die.",
+  },
+  mutations: {
+    name: "Mutations",
+    cite: "Core p.287",
+    meaning: "How Chaos has changed your body. A failed Mutation Test as your Corruption rises gives you one.",
+  },
+  corruption: {
+    name: "Corruption",
+    cite: "Core p.285",
+    meaning: "The taint of Chaos on your soul. Each 5 points is a level that makes the next Corruption Test harder.",
+  },
+  bonus: {
+    name: "Bonus",
+    cite: "Core p.40",
+    meaning: "What gear and changes add to an Attribute. Rating + Bonus is the TOTAL your Skills and Tests roll.",
+  },
   speed: {
     name: "Speed",
     cite: "Core p.180",
