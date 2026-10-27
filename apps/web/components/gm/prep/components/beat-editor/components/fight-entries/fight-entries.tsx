@@ -108,7 +108,7 @@ export function FightEntries({
       <div className="ed-rows">
         {entries.map((e, i) => {
           const t = bestiary.find((x) => x.id === e.threatId);
-          const name = t?.name ?? e.threatId;
+          const name = e.label ?? t?.name ?? e.threatId;
           const visibility = e.visibility ?? "bars";
           const isOpen = open === i;
           return (
@@ -143,6 +143,17 @@ export function FightEntries({
                       />
                     </div>
                   </div>
+                  {/* The combatant's name in the fight (encounter.actions.ts); blank keeps the stat block's. */}
+                  <label className="field">
+                    <span className="label">NAME</span>
+                    <input
+                      className="input"
+                      placeholder={t?.name ?? e.threatId}
+                      maxLength={100}
+                      value={e.label ?? ""}
+                      onChange={(ev) => setEntry(i, { label: ev.target.value || undefined })}
+                    />
+                  </label>
                   <div className="ed-pair">
                     <div className="field">
                       <span className="label">COUNT</span>
