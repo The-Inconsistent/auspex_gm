@@ -109,8 +109,11 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
   CSS and in the printed PDF. `header` is one short banner or reference line; empty shows the style's own. Both are
   player-facing text, so the player codex carries them. Not a rule.
 - **Private notes**: a handout's `audience` (character ids, empty = every player) limits a revealed handout to those
-  Agents' players; deleting its only reader hides it again. Each character also carries GM-written `objectives`
-  (`{ text, done }`, set by the GM-only `character.objectives`) that only its own player receives.
+  Agents' players; deleting its only reader hides it again. Each character also carries `objectives`
+  (`{ text, done, rolled?, adventureId?, beatId? }`) that only its own player receives: the GM writes them with
+  `character.objectives`, optionally tied to an adventure or scene that STORY and SCENE show (rules-flow §11.163), and
+  the player records the session's Objective roll (Core p.43) with `character.rollObjective`, which END SESSION clears
+  (§11.161).
 
 ## Mentions
 

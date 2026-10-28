@@ -22,6 +22,8 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
   if (a.type === "campaign.archive") return { state: true, codex: true };
   // A table screen token is no part of either snapshot (players never see access).
   if (a.type === "screen.issue" || a.type === "screen.revoke") return { state: false, codex: false };
+  // Deleting an adventure or scene unlinks the Agents' missions tied to it (§11.163), which ride the state snapshot.
+  if (a.type === "codex.delete" && (a.kind === "adventure" || a.kind === "beat")) return { state: true, codex: true };
   // A custom threat rides the codex snapshot (issue #43), so saving or deleting one only changes that.
   if (
     a.type === "codex.save" ||
@@ -77,7 +79,10 @@ function authorize(ctx: Ctx, a: Action) {
     a.id !== ctx.characterId
   )
     fail("Not your character");
-  if ((a.type === "spend.request" || a.type === "test.report") && a.characterId !== ctx.characterId)
+  if (
+    (a.type === "spend.request" || a.type === "test.report" || a.type === "character.rollObjective") &&
+    a.characterId !== ctx.characterId
+  )
     fail("Not your character");
   if (a.type === "character.update" && a.overrides) fail("Overrides are GM only");
   if (a.type === "character.build" && a.keepSheet) fail("GM only");
@@ -164,6 +169,7 @@ function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promis
     case "character.giveItem":
     case "character.takeItem":
     case "character.objectives":
+    case "character.rollObjective":
     case "character.respite":
     case "character.delete":
     case "token.issue":

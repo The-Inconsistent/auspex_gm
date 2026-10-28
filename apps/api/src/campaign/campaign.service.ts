@@ -291,6 +291,12 @@ async function writeFile(
       characters.map((ch, i) => ({
         ...own(ch, i),
         builtAt: ch.builtAt === null ? null : new Date(ch.builtAt),
+        // A mission's STORY link follows its adventure and scene; one the file left out drops (§11.163).
+        objectives: ch.objectives.map((o) => ({
+          ...o,
+          adventureId: ref(o.adventureId ?? null),
+          beatId: ref(o.beatId ?? null),
+        })),
       })),
     );
   // Before the beats and NPCs that name them, though nothing in the database points at one: the id is the slug.

@@ -197,6 +197,14 @@ test("toPlayerView: each player gets only their own Agent's objectives", () => {
   assert.deepEqual(objectives(null), [[], []], "a player without a character sees none");
 });
 
+test("toPlayerView: a mission's STORY link stays on the GM's side (§11.163)", () => {
+  const id = "00000000-0000-4000-8000-000000000001";
+  const s = table(enc([]), [
+    char({ id: "a", objectives: [{ text: "Find the seal", done: false, adventureId: id, beatId: id }] }),
+  ]);
+  assert.deepEqual(toPlayerView(s, "a").characters[0]!.objectives, [{ text: "Find the seal", done: false }]);
+});
+
 test("toPlayerView: each player sees only their own Agent's Corruption", () => {
   const stats = CharacterStats.parse({ corruption: 7 });
   const s = table(enc([]), [char({ id: "a", stats }), char({ id: "b", stats })]);

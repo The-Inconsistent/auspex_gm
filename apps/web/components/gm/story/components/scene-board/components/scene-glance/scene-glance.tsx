@@ -1,6 +1,8 @@
 import type { Codex } from "@wg/shared";
 
+import { useGm } from "@/components/gm/gm-app/gm-context";
 import { sceneNumber } from "@/components/gm/prep/utils";
+import { objectivesAt } from "@/lib/scene/scene";
 import { onEntryNames, privateHandouts, sceneFixes } from "@/lib/story-scenes/story-scenes";
 
 import type { Adventure } from "../../../../types";
@@ -22,6 +24,7 @@ export function SceneGlance({ beat: b, index, order, codex, onOpen, onRun }: Sce
   const place = codex.locations.find((l) => l.id === b.locationId)?.name;
   const priv = privateHandouts(b, codex.handouts);
   const shown = onEntryNames(b, codex);
+  const missions = objectivesAt(useGm().state.characters, { adventureId: b.adventureId, beatId: b.id }).length;
   const rows: [string, string][] = [
     ["CAST", String(b.npcIds.length)],
     ["HANDOUTS", `${b.handoutIds.length}${priv ? ` · ${priv} PRIVATE` : ""}`],
@@ -29,6 +32,7 @@ export function SceneGlance({ beat: b, index, order, codex, onOpen, onRun }: Sce
     ["TESTS", String(b.tests.length)],
     ["FIGHT IF IT BREAKS OUT", String(b.encounter.length)],
     ["EXITS", String(b.exits.length)],
+    ["AGENT OBJECTIVES", String(missions)],
   ];
 
   return (

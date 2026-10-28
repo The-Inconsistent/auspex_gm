@@ -28,6 +28,10 @@ const printedNpcs = npcPresetList(); // npc-presets/<source>.json (issue #47)
 // when the campaign doesn't allow them.
 export const buildCatalogue = (homebrew: boolean): BuildCatalogue => ({ creation, wargear, homebrew });
 
+// One row of a Background table's Objectives (Core p.43: a d6 each session), or null when the table prints none there.
+export const factionObjective = ({ tableId, roll }: { tableId: string; roll: number }) =>
+  creation.backgrounds.find((t) => t.id === tableId)?.objectives[roll - 1] ?? null;
+
 // Why a resolved build can't be saved yet, as the builder's refusal reads it, or null when it's ready. Shared by
 // `character.build` and the library's PUT, so both refuse in the same words. `gmLater`: the library has no GM, so what
 // only a GM judges waits for the campaign's GM after the import (docs/rules-flow.md §11.59).

@@ -251,6 +251,8 @@ export const Action = z.union([
       .refine((a) => a.host === "armour" || a.weapon !== undefined, "Name the weapon to take the upgrade off"),
     // GM only: replaces the Agent's private objectives (only its player sees them).
     z.object({ type: z.literal("character.objectives"), characterId: id, objectives: Objectives }),
+    // The player's d6 on their Faction's Objectives table (Core p.43): the server records that row (§11.161).
+    z.object({ type: z.literal("character.rollObjective"), characterId: id, roll: z.number().int().min(1).max(6) }),
     z.object({ type: z.literal("character.respite"), id }), // p.197: Wounds 0, Shock 0, Wrath 2; not while Dying
     z.object({ type: z.literal("character.delete"), id }),
     // Save a character from its creation choices (build.ts). The server re-runs resolveBuild, refuses a build that
@@ -435,6 +437,8 @@ export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
   "spend.cancel",
   // Reporting a called Test's result is the player's, for their own Agent (issue #191, §11.144).
   "test.report",
+  // The session's Objective is the player's roll (Core p.43, §11.161).
+  "character.rollObjective",
 ]);
 
 // `notices`: lines for the GM who sent the action, about what it changed. They exist because no snapshot can carry

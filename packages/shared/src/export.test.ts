@@ -34,7 +34,10 @@ const file = CampaignExport.parse({
       xp: 30,
       conditions: ["Bleeding"],
       detail: {},
-      objectives: [{ text: "Recover the relic", done: true }],
+      objectives: [
+        { text: "Recover the relic", done: true },
+        { text: "Recite a litany", done: false, rolled: true },
+      ],
     },
   ],
   codex: {
@@ -176,7 +179,11 @@ test("freshStart resets play, keeps the sheet and the XP", () => {
   assert.deepEqual([f.campaign.kind, f.campaign.limits], [[], []], "a new table agrees its own (§11.79)");
   assert.deepEqual([c!.wounds, c!.shock, c!.wrath, c!.traumatic, c!.conditions], [0, 0, 2, 0, []]);
   assert.equal(c!.xp, 30);
-  assert.equal(c!.objectives[0]!.done, false);
+  assert.deepEqual(
+    c!.objectives,
+    [{ text: "Recover the relic", done: false }],
+    "the session's rolled one goes (§11.161)",
+  );
   assert.equal(f.codex.adventures[0]!.status, "planned");
   assert.deepEqual(
     [f.codex.adventures[0]!.beats[0]!.status, f.codex.adventures[0]!.beats[0]!.outcome],

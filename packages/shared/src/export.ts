@@ -124,7 +124,7 @@ export function freshStart(e: CampaignExport): CampaignExport {
       traumatic: 0,
       annihilated: false,
       conditions: [],
-      objectives: ch.objectives.map((o) => ({ ...o, done: false })),
+      objectives: ch.objectives.filter((o) => !o.rolled).map((o) => ({ ...o, done: false })), // a rolled one was its session's
     })),
     codex: {
       ...c,

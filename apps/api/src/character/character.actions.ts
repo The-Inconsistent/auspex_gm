@@ -1,4 +1,4 @@
-import { and, desc, eq, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import {
   CharacterBuild,
   CharacterDetail,
@@ -12,6 +12,7 @@ import {
   findMutation,
   sheetMutation,
   MAX_MUTATIONS,
+  MAX_OBJECTIVES,
   mutationDns,
   creationKey,
   keepPlay,
@@ -44,12 +45,12 @@ import { accessToken } from "../auth/auth.schema.ts";
 import { issueToken, type Ctx } from "../auth/auth.service.ts";
 import { adjustPool, campaignRules, campaignTier } from "../campaign/campaign.actions.ts";
 import { session } from "../campaign/campaign.schema.ts";
-import { handout, item } from "../codex/codex.schema.ts";
+import { adventure, beat, handout, item } from "../codex/codex.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
 import { character } from "./character.schema.ts";
-import { buildCatalogue, buildRefusal } from "./creation.service.ts";
+import { buildCatalogue, buildRefusal, factionObjective } from "./creation.service.ts";
 
 export type CharacterAction = Extract<Action, { type: `character.${string}` | `token.${string}` }>;
 
@@ -701,12 +702,56 @@ export async function applyCharacterAction(
     }
 
     case "character.objectives": {
+      // A STORY link names this campaign's adventure, or one of its scenes with that scene's own adventure (§11.163).
+      const beatIds = a.objectives.flatMap((o) => (o.beatId ? [o.beatId] : []));
+      const adventureIds = a.objectives.flatMap((o) => (o.adventureId ? [o.adventureId] : []));
+      const beats = beatIds.length
+        ? await tx
+            .select({ id: beat.id, adventureId: beat.adventureId })
+            .from(beat)
+            .where(and(eq(beat.campaignId, cid), inArray(beat.id, beatIds)))
+        : [];
+      const adventures = adventureIds.length
+        ? await tx
+            .select({ id: adventure.id })
+            .from(adventure)
+            .where(and(eq(adventure.campaignId, cid), inArray(adventure.id, adventureIds)))
+        : [];
+      const adventureOf = new Map(beats.map((b) => [b.id, b.adventureId]));
+      const known = new Set(adventures.map((r) => r.id));
+      for (const o of a.objectives) {
+        if (o.adventureId && !known.has(o.adventureId)) fail("That adventure isn't in this campaign");
+        if (o.beatId && adventureOf.get(o.beatId) !== o.adventureId) fail("That scene isn't in that adventure");
+      }
       const r = await tx
         .update(character)
         .set({ objectives: a.objectives })
         .where(inCampaign(a.characterId))
         .returning({ id: character.id });
       return r.length ? { ok: true } : fail("Character not found");
+    }
+
+    // The d6 the player rolled on their Faction's Objectives table (Core p.43), at the start of a session. The server
+    // reads the row, so the phone never holds the table; a new roll replaces the session's last (§11.161).
+    case "character.rollObjective": {
+      const row = await ownCharacter(tx, { campaignId: cid, id: a.characterId });
+      const [open] = await tx
+        .select({ id: session.id })
+        .from(session)
+        .where(and(eq(session.campaignId, cid), isNull(session.endedAt)));
+      if (!open) fail("Start a session first: the Objective is rolled each session (Core p.43)");
+      // shortcut: a hand-made sheet has no Background table to roll on; the GM writes its Objective in ORDERS
+      const made = CharacterBuild.safeParse(row.build);
+      const tableId = made.success ? made.data.background?.tableId : undefined;
+      const text = tableId ? factionObjective({ tableId, roll: a.roll }) : null;
+      if (!text) fail(`No Faction Objectives table on ${row.name}: the GM writes it in`);
+      const kept = Objectives.parse(row.objectives).filter((o) => !o.rolled);
+      if (kept.length >= MAX_OBJECTIVES) fail(`${row.name} has ${MAX_OBJECTIVES} objectives already`);
+      await tx
+        .update(character)
+        .set({ objectives: [...kept, { text, done: false, rolled: true }] })
+        .where(inCampaign(row.id));
+      return { ok: true };
     }
 
     case "character.respite": {

@@ -24,6 +24,8 @@ export function NotesBox({ me, send, onError }: NotesBoxProps) {
     if (r.ok) setDetail(null);
   };
 
+  const orders = me.objectives.filter((o) => !o.rolled); // the rolled Objective has its own box (ObjectiveBox)
+
   return (
     <BookBox title="NOTES" id="ps-notes" label="Notes">
       <div className="bs-sub" id="ps-who">
@@ -58,8 +60,8 @@ export function NotesBox({ me, send, onError }: NotesBoxProps) {
       <div className="bs-sub" id="ps-orders">
         <span className="bs-lbl">ORDERS</span>
       </div>
-      {me.objectives.length === 0 && <span className="ps-ink2">No orders from the GM yet.</span>}
-      {me.objectives.map((o, i) => (
+      {orders.length === 0 && <span className="ps-ink2">No orders from the GM yet.</span>}
+      {orders.map((o, i) => (
         <FoldRow
           key={i}
           tag={o.done ? "DONE" : "SECRET"}

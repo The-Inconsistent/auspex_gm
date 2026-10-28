@@ -179,7 +179,16 @@ export function Story({
     <div className="pad stack">
       {msg && <div className={msg.startsWith("!") ? "red" : "accent"}>{msg}</div>}
 
-      {!editing && <AdventureBar codex={codex} adv={adv} send={send} onPick={pickAdventure} onReport={report} />}
+      {!editing && (
+        <AdventureBar
+          codex={codex}
+          characters={state.characters}
+          adv={adv}
+          send={send}
+          onPick={pickAdventure}
+          onReport={report}
+        />
+      )}
       {!editing && <ImportAdventure campaignId={campaignId} onReport={report} />}
 
       {adv && !editing && (

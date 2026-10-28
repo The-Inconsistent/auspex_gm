@@ -329,6 +329,23 @@ export async function applyCodexAction(
               from jsonb_array_elements(${beat.exits}) with ordinality as t(e, i))`,
           })
           .where(and(eq(beat.campaignId, cid), sql`${beat.exits} @> ${JSON.stringify([{ beatId: a.id }])}::jsonb`));
+      // A mission linked to it stays the Agent's, unlinked (§11.163): PARTY re-sends the whole list, which the link check
+      // would refuse. An adventure takes its scenes with it.
+      if (a.kind === "adventure" || a.kind === "beat") {
+        const key = a.kind === "adventure" ? "adventureId" : "beatId";
+        await tx
+          .update(character)
+          .set({
+            objectives: sql`(select jsonb_agg(case when o->>'${sql.raw(key)}' = ${a.id} then o - 'adventureId' - 'beatId' else o end order by i)
+              from jsonb_array_elements(${character.objectives}) with ordinality as t(o, i))`,
+          })
+          .where(
+            and(
+              eq(character.campaignId, cid),
+              sql`${character.objectives} @> ${JSON.stringify([{ [key]: a.id }])}::jsonb`,
+            ),
+          );
+      }
       return { ok: true };
     }
 

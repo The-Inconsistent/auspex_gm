@@ -783,6 +783,24 @@ button.ps-fold-head > .ps-fold-title {
   font-weight: 700;
   line-height: 1;
 }
+/* OBJECTIVE: the session's prompt, or I ROLLED and the six faces of the die. */
+.bs-obj {
+  margin: 0;
+  padding: 0 6px;
+  font-size: 16px;
+  line-height: 1.35;
+}
+.bs-obj-roll {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+.bs-obj-roll > .btn {
+  min-width: 44px;
+  padding: 0;
+}
 .bs-uses {
   display: grid;
   grid-template-columns: 74px minmax(0, 1fr);

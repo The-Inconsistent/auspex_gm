@@ -410,3 +410,20 @@ b.story-exit {
   color: var(--red);
   font-weight: 700;
 }
+
+/* AGENT OBJECTIVES: a mission the GM tied to this adventure or scene in PARTY; SCENE's run page draws the same lines. */
+.agent-obj {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.agent-obj > b {
+  font-family: var(--display);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+}
+.agent-obj-done {
+  text-decoration: line-through;
+  color: var(--ink-3);
+}

@@ -1726,6 +1726,58 @@ const disruptor = {
   languages: { picks: ["high-gothic"] },
 };
 
+test("objectives: the player rolls the session's Objective, and a mission ties to a scene (§11.161, §11.163)", async (t) => {
+  const gm = await newCampaign("Objectives", 4);
+  t.after(() => gm.socket.close());
+  const veyl = await gm.send({ type: "character.build", name: "Veyl", build: disruptor });
+  const other = await gm.send({ type: "character.create", name: "Other" });
+  assert.ok(veyl.ok && veyl.id && other.ok && other.id);
+  const issued = await gm.send({ type: "token.issue", characterId: veyl.id });
+  assert.ok(issued.ok && issued.token);
+  const p = connect({ auth: { token: issued.token } });
+  t.after(() => p.socket.close());
+  await p.until((s) => s.characters.length === 2);
+  const roll = (characterId: string, n: number) => p.send({ type: "character.rollObjective", characterId, roll: n });
+  const mine = (s: LiveState) => s.characters.find((c) => c.id === veyl.id)!.objectives;
+
+  assert.equal((await roll(veyl.id, 3)).ok, false, "rolled at the start of a session (Core p.43)");
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.equal((await roll(other.id, 3)).ok, false, "only for their own Agent");
+  assert.ok(
+    (await gm.send({ type: "character.objectives", characterId: veyl.id, objectives: [{ text: "Trust no one" }] })).ok,
+  );
+  assert.ok((await roll(veyl.id, 3)).ok);
+  assert.ok((await roll(veyl.id, 1)).ok, "a second roll replaces the first");
+  const rolled = mine(await p.until((s) => mine(s).length === 2 && mine(s)[1]?.text !== mine(s)[0]?.text));
+  assert.equal(rolled[0]!.text, "Trust no one");
+  assert.equal(rolled[1]!.rolled, true);
+  assert.equal(
+    (await gm.send({ type: "character.rollObjective", characterId: other.id, roll: 1 })).ok,
+    false,
+    "no table",
+  );
+  assert.ok((await gm.send({ type: "session.end", xp: 0, recap: "" })).ok);
+  await p.until((s) => mine(s).length === 1 && mine(s)[0]?.text === "Trust no one");
+
+  // A mission tied to a scene: only this campaign's, and deleting the scene unlinks it.
+  const adv = await gm.send({ type: "codex.save", kind: "adventure", data: { title: "Vault" } });
+  assert.ok(adv.ok && adv.id);
+  const beat = await gm.send({ type: "codex.save", kind: "beat", data: { adventureId: adv.id, title: "Door" } });
+  assert.ok(beat.ok && beat.id);
+  const veylId = veyl.id;
+  const tie = (link: { adventureId: string | null; beatId: string | null }) =>
+    gm.send({ type: "character.objectives", characterId: veylId, objectives: [{ text: "Trust no one", ...link }] });
+  assert.equal((await tie({ adventureId: crypto.randomUUID(), beatId: null })).ok, false);
+  assert.equal((await tie({ adventureId: null, beatId: beat.id })).ok, false, "a scene keeps its adventure");
+  assert.ok((await tie({ adventureId: adv.id, beatId: beat.id })).ok);
+  const gmView = (s: LiveState) => s.characters.find((c) => c.id === veyl.id)!.objectives[0]!;
+  await gm.until((s) => gmView(s).beatId === beat.id);
+  assert.equal(mine(await p.until(() => true))[0]!.beatId, undefined, "the phone never gets the link");
+  assert.ok((await gm.send({ type: "codex.delete", kind: "beat", id: beat.id })).ok);
+  const after = gmView(await gm.until((s) => gmView(s).beatId === undefined));
+  assert.deepEqual([after.text, after.adventureId], ["Trust no one", undefined]);
+});
+
 test("seat.leave: a player gives the Agent back to the room QR", async (t) => {
   const gm = await newCampaign("Leave", 2);
   t.after(() => gm.socket.close());

@@ -18,6 +18,7 @@ import { SceneHazards } from "@/components/gm/prep/components/scene-hazards/scen
 import { ScenePools } from "@/components/gm/prep/components/scene-pools/scene-pools";
 import { SceneTests } from "@/components/gm/prep/components/scene-tests/scene-tests";
 import { sceneNumber, stripBeat } from "@/components/gm/prep/utils";
+import { AgentObjectives } from "@/components/gm/agent-objectives/agent-objectives";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
 import { Mentions } from "@/components/ui/mentions/mentions";
 import { ReachChip } from "@/components/ui/reach-chip/reach-chip";
@@ -25,6 +26,7 @@ import { useMentions } from "@/components/ui/mentions/mentions-provider";
 import { usePrint } from "@/components/ui/print-dialog/print-dialog";
 import type { Send } from "@/hooks/use-table/use-table";
 import { fieldedAgentIds } from "@/lib/print-cards/print-cards";
+import { objectivesAt } from "@/lib/scene/scene";
 import { entryLine, exitNumber, readiness, sceneFixes, toggleId } from "@/lib/story-scenes/story-scenes";
 
 import type { Adventure } from "../../types";
@@ -221,6 +223,7 @@ export function ScenePage({
               </details>
             ),
           })}
+          <AgentObjectives rows={objectivesAt(state.characters, { adventureId: adv.id, beatId: beat.id })} />
           {part({
             label: "OUTCOME",
             name: "outcome",

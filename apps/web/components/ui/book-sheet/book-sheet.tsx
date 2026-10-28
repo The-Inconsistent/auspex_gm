@@ -7,6 +7,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 import { AttributesBox } from "./components/attributes-box/attributes-box";
 import { InjuriesBox } from "./components/injuries-box/injuries-box";
 import { NotesBox } from "./components/notes-box/notes-box";
+import { ObjectiveBox } from "./components/objective-box/objective-box";
 import { SheetHead } from "./components/sheet-head/sheet-head";
 import { SkillsBox } from "./components/skills-box/skills-box";
 import { TalentsBox } from "./components/talents-box/talents-box";
@@ -27,8 +28,8 @@ type BookSheetProps = {
 
 // The Agent as the book's character sheet (Core pp.40–41): its two pages as two framed sheets, the boxes in the book's
 // order. The one sheet every view draws (the player's DOSSIER, GM PARTY's SHEET, the JOIN page's READ), so a change
-// here reaches them all. A box the app has no data for (Objective, Faith, Memorable Injuries, Psychic Powers, Stealth)
-// isn't drawn.
+// here reaches them all. A box the app has no data for (Faith, Memorable Injuries, Psychic Powers, Stealth) isn't drawn;
+// OBJECTIVE only where there's a Faction table to roll on.
 export function BookSheet({ me, tier, table, textless }: BookSheetProps) {
   const d = deriveStats({ stats: me.stats, overrides: me.overrides, tier });
   if (!table)
@@ -53,6 +54,7 @@ export function BookSheet({ me, tier, table, textless }: BookSheetProps) {
         <AttributesBox me={me} />
         <SkillsBox me={me} />
         <WrathBox me={me} state={state} send={send} asks={asks} />
+        <ObjectiveBox me={me} send={send} onError={onError} />
         <TraitsBox me={me} d={d} tier={tier} />
         <Wargear me={me} live={{ d, send, onError }} />
       </div>

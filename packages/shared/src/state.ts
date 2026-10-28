@@ -310,7 +310,15 @@ export type CharacterDetail = z.infer<typeof CharacterDetail>;
 
 // The GM's private notes to one Agent (docs/campaign-model.md): only that character's player sees them.
 export const MAX_OBJECTIVES = 20;
-export const Objective = z.object({ text: z.string().trim().min(1).max(500), done: z.boolean().default(false) });
+export const Objective = z.object({
+  text: z.string().trim().min(1).max(500),
+  done: z.boolean().default(false),
+  // The session's Objective, rolled on the Faction's table (Core p.43); END SESSION clears it (rules-flow.md §11.161).
+  rolled: z.boolean().optional(),
+  // Where the mission sits in STORY (§11.163): a whole adventure, or one scene of it (beatId with its adventureId).
+  adventureId: z.uuid().nullable().optional(),
+  beatId: z.uuid().nullable().optional(),
+});
 export type Objective = z.infer<typeof Objective>;
 export const Objectives = z.array(Objective).max(MAX_OBJECTIVES);
 
@@ -661,7 +669,8 @@ export const toPlayerView = (s: LiveState, characterId: string | null): LiveStat
   campaign: { ...s.campaign, ruin: 0 },
   characters: s.characters.map((c) =>
     c.id === characterId
-      ? c
+      ? // A mission's STORY link names adventures and scenes the phone may never be shown.
+        { ...c, objectives: c.objectives.map(({ adventureId, beatId, ...o }) => o) }
       : {
           ...c,
           objectives: [],

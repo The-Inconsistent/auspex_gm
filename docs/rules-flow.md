@@ -978,6 +978,18 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      Attribute Total for the Skill Total. So Athletics and a Strength Test roll the total (`attributeTotals`), as melee
      damage and a throw's range already did. The Traits keep the rating; none of them reads Strength. *Approved by the
      GM, 2026-10-25.*
+161. **The session's Objective is the player's roll, recorded on their phone** (Core p.43: "Roll a d6 at the beginning
+     of each session to determine your Objective"; p.30). The die stays physical: the player taps the face it shows in
+     the sheet's OBJECTIVE box (under WRATH, as on the book's sheet p.40), and the server writes that row of the
+     Agent's Background table (`character.rollObjective`). It needs an open session; a new roll replaces the session's
+     last; END SESSION clears it, and the GM's own objectives stay. A sheet with no Background table has no box: the GM
+     writes its Objective in. *Approved by the GM, 2026-10-28.*
+162. **DONE on an Objective is a mark, not a Wrath award.** P.43: "If you roleplay it well, the GM awards you a Wrath
+     Point" (p.164): the GM judges and adds it with the Wrath control. *Approved by the GM, 2026-10-28.*
+163. **An Agent's mission can be tied to an adventure or one of its scenes** (no book rule; a prep note). PARTY picks
+     the link; STORY's adventure and scene pages and SCENE's run page show the missions tied there on a closed plate,
+     since each is one player's secret. The player's phone never receives the link. Deleting the adventure or scene
+     unlinks the mission, and a campaign import carries the link with its rows. *Approved by the GM, 2026-10-28.*
 
 ---
 

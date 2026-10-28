@@ -1,4 +1,4 @@
-import type { Codex } from "@wg/shared";
+import type { Codex, LiveState, Objective } from "@wg/shared";
 
 type Adventure = Codex["adventures"][number];
 type Beat = Adventure["beats"][number];
@@ -13,4 +13,17 @@ export function currentScene(
     if (index >= 0) return { adventure, beat: adventure.beats[index]!, index }; // found just above
   }
   return null;
+}
+
+// The Agents' missions the GM tied in PARTY to this adventure as a whole (no `beatId`) or to one of its scenes
+// (rules-flow.md §11.163), with whose they are. Done ones stay, so the GM sees what is already met.
+export function objectivesAt(
+  characters: LiveState["characters"],
+  { adventureId, beatId = null }: { adventureId: string; beatId?: string | null },
+): { agent: string; objective: Objective }[] {
+  return characters.flatMap((c) =>
+    c.objectives
+      .filter((o) => o.adventureId === adventureId && (o.beatId ?? null) === beatId)
+      .map((objective) => ({ agent: c.name, objective })),
+  );
 }

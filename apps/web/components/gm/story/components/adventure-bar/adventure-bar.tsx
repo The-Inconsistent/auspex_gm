@@ -1,17 +1,20 @@
 "use client";
 import { useState, type FormEvent } from "react";
 
-import { AdventureStatus, CodexSave, type ActionResult, type Codex } from "@wg/shared";
+import { AdventureStatus, CodexSave, type ActionResult, type Codex, type LiveState } from "@wg/shared";
 
 import { FieldError } from "@/components/ui/field-error/field-error";
 import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
 
+import { AgentObjectives } from "@/components/gm/agent-objectives/agent-objectives";
 import { ADVENTURE_STATUS } from "@/components/gm/prep/constants";
+import { objectivesAt } from "@/lib/scene/scene";
 import type { Adventure } from "../../types";
 
 type AdventureBarProps = {
   codex: Codex;
+  characters: LiveState["characters"]; // for the missions the GM tied to this adventure (§11.163)
   adv: Adventure | null;
   send: Send;
   onPick: (id: string) => void;
@@ -20,7 +23,7 @@ type AdventureBarProps = {
 
 // The adventure bar, as PREP has it: switch or start an adventure, its brief and premise, its mission status, and
 // whether the party has it (issue #196).
-export function AdventureBar({ codex, adv, send, onPick, onReport }: AdventureBarProps) {
+export function AdventureBar({ codex, characters, adv, send, onPick, onReport }: AdventureBarProps) {
   const [title, setTitle] = useState("");
   const [advDraft, setAdvDraft] = useState<{ title: string; premise: string; brief: string } | null>(null); // adventure being edited
   const newFields = useFieldErrors("adv-new"); // the new adventure's title
@@ -175,6 +178,7 @@ export function AdventureBar({ codex, adv, send, onPick, onReport }: AdventureBa
                 <pre className="text">{adv.premise}</pre>
               </details>
             )}
+            <AgentObjectives rows={objectivesAt(characters, { adventureId: adv.id })} />
             <div className="keys">
               <button className="btn sm" onClick={() => editAdventure(adv)}>
                 EDIT ADVENTURE

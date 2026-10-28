@@ -177,6 +177,12 @@ export async function applyCampaignAction(
       const before = await charactersOf(tx, cid);
       await clearSpendRequests(tx, { campaignId: cid }); // the session the pools were spent in is over
       await clearTestCall(tx, cid);
+      // The rolled Objective was this session's (Core p.43, §11.161); the GM's own orders stay.
+      for (const c of before.filter((c) => c.objectives.some((o) => o.rolled)))
+        await tx
+          .update(character)
+          .set({ objectives: c.objectives.filter((o) => !o.rolled) })
+          .where(eq(character.id, c.id));
       await tx.update(session).set({ endedAt: new Date(), recap: a.recap, xp: a.xp }).where(eq(session.id, s.id));
       await tx
         .update(character)

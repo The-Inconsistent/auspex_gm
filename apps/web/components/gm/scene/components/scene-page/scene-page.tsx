@@ -1,6 +1,7 @@
 "use client";
 import type { Codex, LiveState, ScenePresets, Threat } from "@wg/shared";
 
+import { AgentObjectives } from "@/components/gm/agent-objectives/agent-objectives";
 import { SceneHazards } from "@/components/gm/prep/components/scene-hazards/scene-hazards";
 import { ScenePools } from "@/components/gm/prep/components/scene-pools/scene-pools";
 import { TEST_RULES } from "@/components/gm/prep/constants";
@@ -8,6 +9,7 @@ import { sceneNumber } from "@/components/gm/prep/utils";
 import { Mentions } from "@/components/ui/mentions/mentions";
 import { RuleIdLink } from "@/components/ui/rule-link/rule-link";
 import type { Send } from "@/hooks/use-table/use-table";
+import { objectivesAt } from "@/lib/scene/scene";
 
 import type { Report, SceneBeat } from "../../types";
 import { TestRows } from "../test-rows/test-rows";
@@ -25,8 +27,8 @@ type ScenePageProps = {
   onEdit: (beatId: string) => void;
 };
 
-// The scene as the book prints it, in the book's order: the label line, GOAL, READ ALOUD, GM NOTES on a closed plate,
-// HAZARDS, TESTS, RUIN & GLORY. Everything the GM needs to run it, nothing to edit; EDIT leaves for STORY.
+// The scene as the book prints it, in the book's order: the label line, GOAL, READ ALOUD, GM NOTES on a closed plate
+// (and the Agents' missions tied here, §11.163), HAZARDS, TESTS, RUIN & GLORY. Everything the GM needs to run it, nothing to edit; EDIT leaves for STORY.
 export function ScenePage({
   state,
   codex,
@@ -81,6 +83,13 @@ export function ScenePage({
           </pre>
         </details>
       )}
+      {/* The scene's own missions, then the adventure's whole-adventure ones. */}
+      <AgentObjectives
+        rows={[
+          ...objectivesAt(state.characters, { adventureId: beat.adventureId, beatId: beat.id }),
+          ...objectivesAt(state.characters, { adventureId: beat.adventureId }),
+        ]}
+      />
       {place && (
         <SceneHazards
           beat={beat}
