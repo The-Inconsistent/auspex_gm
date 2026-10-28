@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { CharacterBuild } from "./build.ts";
 import { CodexInput, ImageMime } from "./codex.ts";
+import { parseMentions } from "./mention.ts";
 import { CUSTOM_THREAT_CAP, CustomThreat } from "./threat.ts";
 import { CharacterDetail, CharacterStats, Objectives, Overrides, TableLines, Tier } from "./state.ts";
 
@@ -143,5 +144,55 @@ export function freshStart(e: CampaignExport): CampaignExport {
       handouts: c.handouts.map((h) => ({ ...h, revealed: false, imageRevealed: false, revealedAt: null })),
       sessions: [],
     },
+  };
+}
+
+// IMPORT ADVENTURE: the picked adventures out of a campaign file, with what their scenes link to (places and the places
+// they sit in, NPCs and their factions, handouts, items and who holds them, custom threats, pictures) and the entries
+// their own texts @mention, one level deep. The characters a handout's audience names ride along for the importer to
+// match by name; it never inserts them. Nothing is given to an Agent: the live sheets don't carry the file's gear.
+// Slicing a slice by all its adventures gives it back unchanged, so the api re-slices what the browser sent.
+export function sliceAdventures(e: CampaignExport, adventureIds: readonly string[]): CampaignExport {
+  const { codex: c } = e;
+  const picked = new Set(adventureIds);
+  const adventures = c.adventures.filter((a) => picked.has(a.id));
+  const beats = adventures.flatMap((a) => a.beats);
+  const linked = new Set<string>(
+    [...adventures, ...beats]
+      .flatMap((r) => Object.values(r))
+      .flatMap((v) => (typeof v === "string" ? parseMentions(v) : []))
+      .flatMap((p) => ("id" in p ? [p.id] : [])),
+  );
+  for (const b of beats)
+    for (const id of [b.locationId, ...b.npcIds, ...b.handoutIds, ...b.itemIds]) if (id) linked.add(id);
+  const items = c.items.filter((i) => linked.has(i.id));
+  for (const i of items) for (const id of [i.locationId, i.npcId]) if (id) linked.add(id);
+  const npcs = c.npcs.filter((n) => linked.has(n.id));
+  for (const n of npcs) if (n.factionId) linked.add(n.factionId);
+  // Stops at a place already in, so a hand-edited loop ends too; the importer refuses that file anyway.
+  const parentOf = new Map(c.locations.map((l) => [l.id, l.parentId]));
+  for (const id of [...linked]) for (let p = parentOf.get(id); p && !linked.has(p); p = parentOf.get(p)) linked.add(p);
+  const locations = c.locations.filter((l) => linked.has(l.id));
+  const handouts = c.handouts.filter((h) => linked.has(h.id));
+  const threatIds = new Set([
+    ...beats.flatMap((b) => b.encounter.map((x) => x.threatId)),
+    ...npcs.flatMap((n) => (n.statSource.kind === "bestiary" ? [n.statSource.threatId] : [])),
+  ]);
+  const audience = new Set(handouts.flatMap((h) => h.audience));
+  const imageIds = new Set([...locations, ...npcs, ...handouts].map((r) => r.imageId));
+  return {
+    ...e,
+    characters: e.characters.filter((ch) => audience.has(ch.id)),
+    codex: {
+      factions: c.factions.filter((f) => linked.has(f.id)),
+      adventures,
+      locations,
+      npcs,
+      handouts,
+      items: items.map((i) => ({ ...i, givenTo: null })),
+      sessions: [],
+      customThreats: c.customThreats.filter((t) => threatIds.has(t.id)),
+    },
+    images: e.images.filter((p) => p && imageIds.has(p.id)),
   };
 }

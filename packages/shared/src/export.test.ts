@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { BeatExit, CampaignExport, freshStart } from "./index.ts";
+import { BeatExit, CampaignExport, freshStart, sliceAdventures } from "./index.ts";
 
 const ID = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, "0")}`;
 
@@ -198,4 +198,58 @@ test("freshStart resets play, keeps the sheet and the XP", () => {
     [null, ID(1)],
     "a given item stays given: the sheet keeps its line",
   );
+});
+
+test("sliceAdventures keeps the picked adventures and what their scenes link to", () => {
+  const big = CampaignExport.parse({
+    ...file,
+    codex: {
+      ...file.codex,
+      factions: [
+        { id: ID(20), name: "Mechanicus" },
+        { id: ID(21), name: "Unrelated" },
+      ],
+      adventures: [
+        {
+          ...file.codex.adventures[0],
+          premise: `Find @[npc:${ID(22)}]`,
+          beats: [{ ...file.codex.adventures[0]!.beats[0], npcIds: [ID(5)], encounter: [{ threatId: "custom-grub" }] }],
+        },
+        {
+          id: ID(23),
+          title: "Other",
+          beats: [{ id: ID(24), adventureId: ID(23), title: "Away", order: 0, npcIds: [ID(25)] }],
+        },
+      ],
+      locations: [
+        { ...file.codex.locations[0], parentId: ID(26) },
+        { id: ID(26), name: "Hive Primus" },
+      ],
+      npcs: [
+        { ...file.codex.npcs[0], factionId: ID(20) },
+        { id: ID(22), name: "Mentioned" },
+        { id: ID(25), name: "Elsewhere" },
+      ],
+      customThreats: [],
+    },
+  });
+  const s = sliceAdventures(big, [ID(2)]);
+  assert.deepEqual(
+    s.codex.adventures.map((a) => a.id),
+    [ID(2)],
+  );
+  assert.deepEqual(s.codex.locations.map((l) => l.id).sort(), [ID(4), ID(26)], "with the place it sits in");
+  assert.deepEqual(s.codex.npcs.map((n) => n.id).sort(), [ID(5), ID(22)], "linked and mentioned, not the other's");
+  assert.deepEqual(
+    s.codex.factions.map((f) => f.id),
+    [ID(20)],
+  );
+  assert.deepEqual(s.codex.handouts, [], "no scene links the handout");
+  assert.deepEqual(s.characters, [], "no handout, so no audience to match");
+  assert.deepEqual(
+    s.codex.items.map((i) => [i.id, i.givenTo]),
+    [[ID(9), null]],
+  );
+  assert.deepEqual(s.codex.sessions, []);
+  assert.deepEqual(sliceAdventures(s, [ID(2)]), s, "slicing a slice gives it back");
 });

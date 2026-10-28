@@ -3766,3 +3766,57 @@ test("a codex picture: the GM uploads it, a player sees it once the entry and it
   assert.equal(picture.base64, WEBP.toString("base64"));
   assert.equal(copy.codex.npcs.find((n) => n.name === "Magos")?.imageId, picture.id);
 });
+
+test("IMPORT ADVENTURE: an adventure from a file into a running campaign, reusing what it already has", async (t) => {
+  const src = await newCampaign("Prep copy", 3, "10.19.11.1"); // its own address, under the per-IP connect limit
+  const live = await newCampaign("Live game", 3, "10.19.11.1");
+  t.after(() => (src.socket.close(), live.socket.close()));
+  const id = async (r: Promise<ActionResult>) => {
+    const x = await r;
+    assert.ok(x.ok && x.id, JSON.stringify(x));
+    return x.id;
+  };
+  const save = (gm: typeof src, kind: string, data: object) => gm.send({ type: "codex.save", kind, data } as never);
+  const tullLive = await id(save(live, "npc", { name: "Magos Tull" }));
+  const tull = await id(save(src, "npc", { name: "magos tull", revealed: true }));
+  const vex = await id(save(src, "npc", { name: "Inquisitor Vex", revealed: true }));
+  const adv = await id(save(src, "adventure", { title: "The Dig", status: "running" }));
+  await id(
+    save(src, "beat", { adventureId: adv, title: "Arrival", npcIds: [tull, vex], gmNotes: `Ask @[npc:${vex}]` }),
+  );
+  await id(save(src, "adventure", { title: "Not this one" }));
+
+  // The browser sends one adventure; the api slices again, so the rest of the codex never comes in.
+  const file = await (await get(`/campaigns/${src.campaignId}/export`, bearer(src.gmClerk))).json();
+  file.codex.adventures = file.codex.adventures.filter((a: { id: string }) => a.id === adv);
+  const path = `/campaigns/${live.campaignId}/import-adventures`;
+  assert.equal((await post(path, { file }, bearer(clerk("stranger")))).status, 401);
+  const bad = structuredClone(file);
+  bad.codex.adventures[0].beats[0].encounter = [{ threatId: "nope" }];
+  assert.equal((await post(path, { file: bad }, bearer(live.gmClerk))).status, 400);
+  const r = await post(path, { file }, bearer(live.gmClerk));
+  assert.equal(r.status, 200);
+  assert.deepEqual(await r.json(), {
+    adventures: 1,
+    scenes: 1,
+    reused: { factions: 0, locations: 0, npcs: 1, handouts: 0, items: 0 },
+    droppedPictures: 0,
+  });
+
+  await eventually(() => live.codex()?.adventures.length === 1, "the imported adventure");
+  const cx = live.codex()!;
+  assert.deepEqual(
+    cx.npcs.map((n) => [n.name, n.revealed]),
+    [
+      ["Magos Tull", false],
+      ["Inquisitor Vex", false],
+    ],
+    "the live Tull is kept, Vex comes in as prep",
+  );
+  const vexLive = cx.npcs[1]!.id;
+  const [a] = cx.adventures;
+  assert.deepEqual(
+    [a!.title, a!.status, a!.beats[0]!.npcIds, a!.beats[0]!.gmNotes],
+    ["The Dig", "planned", [tullLive, vexLive], `Ask @[npc:${vexLive}]`],
+  );
+});

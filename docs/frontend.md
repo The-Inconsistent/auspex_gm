@@ -415,7 +415,7 @@ prep, and the fight is a layer inside SCENE.
 |---|---|---|
 | SCENE | `Scene` | `scene/scene.tsx`, `scene/constants.ts`, `scene/types.ts`, `scene/components/{no-scene,scene-strip,scene-preview,scene-page,test-rows,in-this-scene (with `reveal-row`),where-next,begun-notice}`, `lib/scene/scene.ts` (`currentScene`), `lib/scene-reveal` |
 | (FIGHT, a layer of SCENE) | `Tracker` | `tracker/tracker.tsx`, `tracker/constants.ts`, `tracker/types.ts`, `tracker/components/{key-bar,delta-pad,fight-row,add-combatants,crit-perils}`, `lib/fight-delta` |
-| STORY | `Story` | `story/story.tsx`, `story/constants.ts`, `story/types.ts`, `story/components/{adventure-bar,scene-board,scene-page,story-section}`, `lib/story-scenes`; reused from the retired PREP: `prep/types.ts`, `prep/utils.ts`, `prep/components/beat-editor/{beat-editor.tsx,constants.ts}`, `prep/components/scene-picker`, `prep/components/scene-tests` (with `call-test`), `prep/components/scene-pools`, `prep/components/scene-hazards` (a scene's picked hazards with SPOTTED, issue #49), `prep/components/hazard-chips` (a hazard's Tests, Conditions and Threats, shared with CODEX), `lib/hazards`; the scene editor's ITEMS TO FIND chips and the page's items with `item-give` (issue #51) |
+| STORY | `Story` | `story/story.tsx`, `story/constants.ts`, `story/types.ts`, `story/components/{adventure-bar,import-adventure,scene-board,scene-page,story-section}`, `lib/story-scenes`; reused from the retired PREP: `prep/types.ts`, `prep/utils.ts`, `prep/components/beat-editor/{beat-editor.tsx,constants.ts}`, `prep/components/scene-picker`, `prep/components/scene-tests` (with `call-test`), `prep/components/scene-pools`, `prep/components/scene-hazards` (a scene's picked hazards with SPOTTED, issue #49), `prep/components/hazard-chips` (a hazard's Tests, Conditions and Threats, shared with CODEX), `lib/hazards`; the scene editor's ITEMS TO FIND chips and the page's items with `item-give` (issue #51) |
 
 ### 3.0 A called Test: `components/gm/test-call/` (issue #191)
 
@@ -689,6 +689,10 @@ SCENE; the code keeps `beat`. STORY is prep as a storyboard: you flip scene by s
   mission). Picking one goes back to its BOARD and closes any open editor. The inline NEW ADVENTURE form sends
   `codex.save { kind: "adventure" }` and switches to the new adventure using `r.id`. EDIT ADVENTURE (title, BRIEF,
   PREMISE / GM NOTES on a closed plate), the mission status select and SHOWN / HIDDEN TO THE PARTY (the mission log, issue #196) sit under it.
+- **IMPORT ADVENTURE** (`components/import-adventure`), under the bar: pick a campaign file, tick its adventures, and
+  only their slice (`sliceAdventures`) is posted to `/api/campaigns/:id/import-adventures`. The result line in STORY's
+  message says what came in, what was already here and how many pictures were left out; the codex arrives with the
+  rebroadcast.
 - **Views** (`STORY_VIEWS`): a BOARD | PAGE toggle beside `<ADVENTURE> · SCENES`. The URL says which (§1.1): PAGE when
   it names a scene, so a peek's GO TO or SCENE's EDIT opens that scene's page.
 - **BOARD** (`components/scene-board`): the scenes in story order hung on an iron spine (`ol.story-spine`), with the

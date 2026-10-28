@@ -14,6 +14,7 @@ import {
 } from "@wg/shared";
 
 import { FindField } from "@/components/ui/find-field/find-field";
+import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { RUIN_ACTIONS_TABLE, type ThreatDraft } from "@/components/ui/threat-builder/constants";
 import { ThreatBuilder } from "@/components/ui/threat-builder/threat-builder";
 import { ThreatPicker } from "@/components/ui/threat-picker/threat-picker";
@@ -58,12 +59,14 @@ export function FightEntries({
   // Counted from the merged bestiary: nothing outside CODEX › THREATS reads codex.customThreats (issue #43).
   const customsFull = bestiary.filter((t) => t.source === "custom").length >= CUSTOM_THREAT_CAP;
 
+  // The GM's own stat blocks first and marked, so they aren't lost past the find box's first hits among 369 threats.
   const options = useMemo(
     () =>
-      bestiary.map((t) => ({
+      [...bestiary.filter((t) => t.source === "custom"), ...bestiary.filter((t) => t.source !== "custom")].map((t) => ({
         id: t.id,
         name: t.name,
         detail: `${threatCite(t)} · ${THREAT_CLASS_LABEL[threatClassAt(t, tier)]}`,
+        chip: t.source === "custom" ? <span className="chip">CUSTOM</span> : undefined,
       })),
     [bestiary, tier],
   );
@@ -128,6 +131,11 @@ export function FightEntries({
                   {e.asMob && <span className="chip">MOB</span>}
                   {e.marker && <span className="chip">MARKER: {e.marker.toUpperCase()}</span>}
                   <span className="chip">{VISIBILITY_LABEL[visibility]}</span>
+                  {t && (
+                    <span className="ed-stats">
+                      DEF {t.defence} · W {t.wounds} · S {t.shock ?? "–"} · RES {t.resilience.value} · SPD {t.speed}
+                    </span>
+                  )}
                 </button>
               </div>
               {isOpen && (
@@ -228,6 +236,7 @@ export function FightEntries({
                     scale={e.scale}
                     onChange={(next) => setEntry(i, next)}
                   />
+                  {t && <StatBlock t={t} tier={tier} />}
                   <div>
                     <button className="lnk red" onClick={() => removeEntry(i)}>
                       REMOVE
@@ -239,18 +248,32 @@ export function FightEntries({
           );
         })}
       </div>
-      <FindField
-        label="Find a threat"
-        options={options}
-        onPick={addEntry}
-        // Writing one here keeps the scene open; leaving for CODEX › THREATS would drop its unsaved changes. A stat
-        // block being written closes only by its own CANCEL, so a stray tap can't drop it.
-        newLabel={customsFull || building ? undefined : (q) => `+ NEW CUSTOM THREAT “${q}”`}
-        onCreate={(q) => {
-          setTyped(q);
-          build("start");
-        }}
-      />
+      <div className="ed-find-row">
+        <FindField
+          label="Find a threat"
+          options={options}
+          onPick={addEntry}
+          // Writing one here keeps the scene open; leaving for CODEX › THREATS would drop its unsaved changes. A stat
+          // block being written closes only by its own CANCEL, so a stray tap can't drop it.
+          newLabel={customsFull || building ? undefined : (q) => `+ NEW CUSTOM THREAT “${q}”`}
+          onCreate={(q) => {
+            setTyped(q);
+            build("start");
+          }}
+        />
+        {/* The same start as typing an unknown name, for a GM who doesn't know that route exists. */}
+        {!customsFull && !building && (
+          <button
+            className="btn"
+            onClick={() => {
+              setTyped("");
+              build("start");
+            }}
+          >
+            + NEW CUSTOM THREAT
+          </button>
+        )}
+      </div>
       {/* The find box disables itself with nothing to show; say why, because a failed load looks like an empty book. */}
       {!bestiary.length && <span className="dim">No bestiary loaded.</span>}
       {customsFull && <span className="dim">Custom threats are full ({CUSTOM_THREAT_CAP}).</span>}

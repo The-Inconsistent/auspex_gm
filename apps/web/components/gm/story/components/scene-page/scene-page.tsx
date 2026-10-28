@@ -1,5 +1,5 @@
 "use client";
-import { Check, Eye, Lock } from "lucide-react";
+import { Check, Eye } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
 import {
@@ -20,6 +20,7 @@ import { SceneTests } from "@/components/gm/prep/components/scene-tests/scene-te
 import { sceneNumber, stripBeat } from "@/components/gm/prep/utils";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
 import { Mentions } from "@/components/ui/mentions/mentions";
+import { ReachChip } from "@/components/ui/reach-chip/reach-chip";
 import { useMentions } from "@/components/ui/mentions/mentions-provider";
 import { usePrint } from "@/components/ui/print-dialog/print-dialog";
 import type { Send } from "@/hooks/use-table/use-table";
@@ -262,10 +263,7 @@ export function ScenePage({
                     id: h.id,
                     name: h.title,
                     chip: h.audience.length ? (
-                      <span className="chip warn reach" title={`${only} only`}>
-                        <Lock size={12} strokeWidth={2.4} aria-hidden="true" />
-                        <span className="reach-names">{only}</span>&nbsp;ONLY
-                      </span>
+                      <ReachChip only={only} />
                     ) : (
                       <span className="chip reach">
                         <Eye size={12} strokeWidth={2.2} aria-hidden="true" />

@@ -1,5 +1,5 @@
 "use client";
-import { Eye, Lock } from "lucide-react";
+import { Eye } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
 import type { ActionInput, Codex, HazardTable, MentionKind } from "@wg/shared";
@@ -7,6 +7,7 @@ import type { ActionInput, Codex, HazardTable, MentionKind } from "@wg/shared";
 import { useGm } from "@/components/gm/gm-app/gm-context";
 import { FindField } from "@/components/ui/find-field/find-field";
 import { useMentions } from "@/components/ui/mentions/mentions-provider";
+import { ReachChip } from "@/components/ui/reach-chip/reach-chip";
 import type { Send } from "@/hooks/use-table/use-table";
 import { hazardView } from "@/lib/hazards/hazards";
 import { placeOptions } from "@/lib/places/places";
@@ -220,10 +221,7 @@ export function PeopleProps({ draft, codex, send, hazardTables, tier, onChange }
               id: h.id,
               name: h.title,
               chip: h.audience.length ? (
-                <span className="chip warn reach" title={`${only} only`}>
-                  <Lock size={12} strokeWidth={2.4} aria-hidden="true" />
-                  <span className="reach-names">{only}</span>&nbsp;ONLY
-                </span>
+                <ReachChip only={only} />
               ) : (
                 <span className="chip reach">
                   <Eye size={12} strokeWidth={2.2} aria-hidden="true" />

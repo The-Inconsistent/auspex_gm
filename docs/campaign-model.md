@@ -140,6 +140,8 @@ A codex text can name another entry (GitHub issue #200). The GM's rulings of 202
   `(unknown)`, including a private handout, whose title stays with its audience (`plainMentions`).
 - **IMPORT GAME** gives every row a new id, so it remaps the ids inside tokens through the same map (`remapMentions`).
   A token pointing outside the file is kept, and shows as the placeholder.
+- **IMPORT ADVENTURE** (STORY) brings the entries an adventure's own texts mention along with it, one level deep, and
+  points a mention of an entry the campaign already has (by name) at that entry.
 
 ## Building a campaign
 
@@ -178,5 +180,12 @@ these steps and ticks each one from what the campaign already holds; nothing is 
 
 Bestiary data is one flat folder, `packages/data/threats/*.json`, with each file's book in its `source` field ([data.md](data.md)). An adventure can be exported and imported as
 JSON (factions, NPCs, locations, beats, handouts) so a new campaign can start from a prepared pack.
+
+**IMPORT ADVENTURE** (STORY) brings adventures from a campaign file into a running campaign, so the next session can
+be prepped in a copy of the game. `sliceAdventures` (`packages/shared/src/export.ts`) takes the picked adventures and
+what their scenes link to: places with the places they sit in, NPCs with their factions, handouts, items with their
+holders, custom threats, pictures, and the entries the adventure's texts mention. It all comes in as prep
+(`freshStart`: planned, hidden, nothing given to an Agent). An entry named like one the campaign already has is that
+entry, left unchanged, so the copy's people and places aren't duplicated.
 
 The repo ships no pack now; the first campaign was moved out to an import file. A pack is `packages/data/packs/<name>/` (`pack.json` + `characters/*.json`), loaded with `bun run seed <name> --owner …`.

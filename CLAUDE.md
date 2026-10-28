@@ -309,7 +309,7 @@ These are binding; follow them when writing code and use them when reviewing:
   socket.io's handshake gets a 308 or 404.
 - **Rate limits** (`apps/api/src/core/rate-limit.ts`, in-process): 60/min per IP on `/api/join`, `/api/guest` and
   `/api/invites`, 120/min **per caller** (their session, falling back to the IP) on `/api/library`, `/api/creation`,
-  `/api/rules`, `/api/frameworks` and `/api/campaigns/import`, because the library builder autosaves and a whole table shares one IP,
+  `/api/rules`, `/api/frameworks`, `/api/campaigns/import` and `/api/campaigns/:id/import-adventures`, because the library builder autosaves and a whole table shares one IP,
   60 socket connects/min per IP, 120 actions/min per socket (the admin key is exempt, for `seed.ts`).
   The IP is `CF-Connecting-IP`, so Next's server-side fetches to the api must forward it.
 - **Style:** match the surrounding code. Comments say *why*, with page cites. Deliberate shortcuts are marked

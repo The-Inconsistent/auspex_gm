@@ -5,9 +5,11 @@ import { rulesList, scenePresets, threats, wargear } from "@wg/data";
 import {
   CharacterStats,
   CUSTOM_PREFIX,
+  freshStart,
   isCustomThreatId,
   MAX_SLUG,
   remapMentions,
+  sliceAdventures,
   toIcs,
   wouldCycle,
 } from "@wg/shared";
@@ -85,9 +87,9 @@ export async function exportCampaign(campaignId: string, { pictures = true } = {
   };
 }
 
-// IMPORT GAME: a campaign file (CampaignExport) as a new campaign. Every row gets a fresh id, and references are
-// remapped through those; one that points outside the file is dropped. Direct inserts in one transaction rather than
-// replayed actions, which would lose the counters, sessions and reveal times a backup has to keep.
+const at = (iso: string | null) => (iso ? new Date(iso) : null);
+
+// IMPORT GAME: a campaign file (CampaignExport) as a new campaign, written by `writeFile` in the same transaction.
 export async function importCampaign({
   file,
   owner,
@@ -95,7 +97,100 @@ export async function importCampaign({
   file: CampaignExport;
   owner: { userId: string; name: string };
 }) {
+  let droppedPictures = 0;
+  const made = await createCampaign({
+    ...file.campaign,
+    nextSessionAt: at(file.campaign.nextSessionAt),
+    owner,
+    fill: async (tx, campaignId) => {
+      droppedPictures = await writeFile(tx, { campaignId, file });
+    },
+  });
+  return { ...made, droppedPictures };
+}
+
+// IMPORT ADVENTURE: the adventures in a file (`sliceAdventures`) into a running campaign, as prep (`freshStart`). An
+// entry named like one the campaign already has is that entry, left as it is, so prep made in a copy of this game
+// doesn't duplicate its people and places; only what's missing goes in. The file's Agents are matched by name too, for a
+// handout's audience only. Runs in the table's queue (TableGateway.mutate), so the codex it reads holds still.
+export async function importAdventures(
+  tx: Tx,
+  { campaignId, file: sent }: { campaignId: string; file: CampaignExport },
+) {
+  // The browser sends a slice already; slicing it again drops anything else it carried.
+  const file = freshStart(
+    sliceAdventures(
+      sent,
+      sent.codex.adventures.map((a) => a.id),
+    ),
+  );
   const { codex: c } = file;
+  const [live, agents] = await Promise.all([
+    loadCodex(campaignId),
+    tx.select({ id: character.id, name: character.name }).from(character).where(eq(character.campaignId, campaignId)),
+  ]);
+  const key = (name: string) => name.trim().toLowerCase();
+  const reuse = new Map<string, string>();
+  const match = (rows: { id: string; name: string }[], liveRows: { id: string; name: string }[]) => {
+    const byName = new Map(liveRows.map((r) => [key(r.name), r.id]));
+    // A nameless entry names nothing, so it is never the same as another nameless one.
+    const hits = rows.flatMap((r) => (key(r.name) && byName.has(key(r.name)) ? [r] : []));
+    for (const r of hits) reuse.set(r.id, byName.get(key(r.name))!); // has() above
+    return hits.length;
+  };
+  const titled = (h: { id: string; title: string }) => ({ id: h.id, name: h.title });
+  const reused = {
+    factions: match(c.factions, live.factions),
+    locations: match(c.locations, live.locations),
+    npcs: match(c.npcs, live.npcs),
+    handouts: match(c.handouts.map(titled), live.handouts.map(titled)),
+    items: match(c.items, live.items),
+  };
+  match(file.characters, agents);
+  // The pictures of the entries that go in; a reused entry keeps its own.
+  const shown = new Set(
+    [...c.locations, ...c.npcs, ...c.handouts].filter((r) => !reuse.has(r.id)).map((r) => r.imageId),
+  );
+  const droppedPictures = await writeFile(tx, {
+    campaignId,
+    file: {
+      ...file,
+      characters: [],
+      codex: { ...c, handouts: c.handouts.map((h) => ({ ...h, audience: h.audience.filter((a) => reuse.has(a)) })) },
+      images: file.images.filter((p) => p && shown.has(p.id)),
+    },
+    reuse,
+    live: { customs: live.customThreats, hazards: new Map(live.locations.map((l) => [l.id, l.hazardList])) },
+  });
+  return {
+    adventures: c.adventures.length,
+    scenes: c.adventures.reduce((n, a) => n + a.beats.length, 0),
+    reused,
+    droppedPictures,
+  };
+}
+
+// What both imports write: every row of the file gets a fresh id, and references are remapped through those; one that
+// points outside the file is dropped. A row in `reuse` is a live row already, so it isn't written and its references
+// point at that row. `live` is what the campaign already holds, for the checks. Direct inserts rather than replayed
+// actions, which would lose the counters, sessions and reveal times a backup has to keep. Returns how many of the
+// file's pictures were left out.
+async function writeFile(
+  tx: Tx,
+  {
+    campaignId,
+    file,
+    reuse = new Map(),
+    live = { customs: [], hazards: new Map() },
+  }: {
+    campaignId: string;
+    file: CampaignExport;
+    reuse?: ReadonlyMap<string, string>;
+    live?: { customs: Threat[]; hazards: ReadonlyMap<string, { id: string }[]> };
+  },
+) {
+  const { codex: c } = file;
+  const fresh = <T extends { id: string }>(rows: T[]) => rows.filter((r) => !reuse.has(r.id));
   // Beats belong to the adventure they're filed under, whatever their own adventureId says.
   // One scene is played at a time (beat_one_active): a file from before that rule keeps its first active scene.
   const playing = c.adventures.flatMap((a) => a.beats).find((b) => b.status === "active");
@@ -106,9 +201,10 @@ export async function importCampaign({
       status: b.status === "active" && b !== playing ? ("planned" as const) : b.status,
     })),
   );
-  // Same check as codex.save, but the campaign doesn't exist yet, so it runs against the bestiary plus the file's own
-  // custom threats (issue #43) rather than through `loadThreats`.
-  const customs = c.customThreats;
+  // Same check as codex.save, against the bestiary plus the file's own custom threats (issue #43) and the campaign's.
+  // One the campaign already has by its slug is that one: the campaign's stat block stays.
+  const liveCustoms = new Set(live.customs.map((t) => t.id));
+  const customs = c.customThreats.filter((t) => !liveCustoms.has(t.id));
   // A slug is a row's identity here (`custom_threat` is unique per campaign and slug), and the id carries it, so a
   // file naming one twice has to be refused with a reason: the insert below would otherwise raise a constraint error,
   // which is not an ActionError and would answer 500 instead of 400. An id of `custom-` alone passes `Threat`'s regex
@@ -116,24 +212,25 @@ export async function importCampaign({
   // A slug longer than `threat.save` and `threat.delete` accept would import a threat the GM could never edit or delete.
   const slugOf = (id: string) => id.slice(CUSTOM_PREFIX.length);
   if (
-    customs.some(
+    c.customThreats.some(
       (t) => !isCustomThreatId(t.id) || t.source !== "custom" || !slugOf(t.id) || slugOf(t.id).length > MAX_SLUG,
     )
   )
     fail("A custom threat in that file isn't a custom threat");
-  if (customs.length > CUSTOM_THREAT_CAP) fail(`At most ${CUSTOM_THREAT_CAP} custom threats per campaign`);
-  const customIds = new Set(customs.map((t) => t.id));
-  if (customIds.size !== customs.length) fail("That file repeats a custom threat");
-  const known = new Set([...threats.keys(), ...customIds]);
+  if (live.customs.length + customs.length > CUSTOM_THREAT_CAP)
+    fail(`At most ${CUSTOM_THREAT_CAP} custom threats per campaign`);
+  const customIds = new Set(c.customThreats.map((t) => t.id));
+  if (customIds.size !== c.customThreats.length) fail("That file repeats a custom threat");
+  const known = new Set([...threats.keys(), ...customIds, ...liveCustoms]);
   const unknown = [
     ...beats.flatMap((b) => b.encounter.map((e) => e.threatId)),
-    ...c.npcs.flatMap((n) => (n.statSource.kind === "bestiary" ? [n.statSource.threatId] : [])),
+    ...fresh(c.npcs).flatMap((n) => (n.statSource.kind === "bestiary" ? [n.statSource.threatId] : [])),
   ].find((t) => !known.has(t));
   if (unknown) fail(`Unknown threat "${unknown}"`);
-  checkHazards(c.locations.flatMap((l) => l.hazardList));
+  checkHazards(fresh(c.locations).flatMap((l) => l.hazardList));
   // Items as codex.save checks them (issue #51): a known catalogue entry, one holder, and none once given.
-  checkWargear(c.items.map((i) => i.wargearId));
-  for (const i of c.items) {
+  checkWargear(fresh(c.items).map((i) => i.wargearId));
+  for (const i of fresh(c.items)) {
     checkHolder(i);
     if (i.givenTo && (i.locationId || i.npcId)) fail(`${i.name} is with an Agent and has a holder too`);
   }
@@ -141,8 +238,13 @@ export async function importCampaign({
   const parentOf = new Map(c.locations.map((l) => [l.id, l.parentId]));
   if (c.locations.some((l) => wouldCycle({ id: l.id, parentId: l.parentId, parentOf })))
     fail("That file nests a place inside itself");
-  // A scene keeps only the picks its place lists, as codex.save does (§11.95).
-  const listed = new Map(c.locations.map((l) => [l.id, new Set(l.hazardList.map((h) => h.id))]));
+  // A scene keeps only the picks its place lists, as codex.save does (§11.95); a reused place lists its live picks.
+  const listed = new Map(
+    c.locations.map((l) => {
+      const to = reuse.get(l.id);
+      return [l.id, new Set((to ? (live.hazards.get(to) ?? []) : l.hazardList).map((h) => h.id))];
+    }),
+  );
 
   // Pictures are a nice-to-have (issue #199): one the file mangled parses as null, and a repeated one counts once, so
   // neither refuses the campaign. The rest go in through the store's own checks below.
@@ -158,13 +260,12 @@ export async function importCampaign({
     ...c.items,
     ...pictures,
   ];
-  const ids = new Map(rows.map((r) => [r.id, randomUUID()]));
-  if (ids.size !== rows.length) fail("That file repeats an id");
+  if (new Set(rows.map((r) => r.id)).size !== rows.length) fail("That file repeats an id");
+  const ids = new Map([...reuse, ...fresh(rows).map((r) => [r.id, randomUUID()] as const)]);
   // Like codex.save: an empty audience means every player, so an Agent missing from the file can't just be dropped.
   if (c.handouts.some((h) => h.audience.some((a) => !ids.has(a)))) fail("A handout's audience isn't in that file");
   const ref = (old: string | null) => (old && ids.get(old)) || null;
   const refs = (old: string[]) => old.flatMap((o) => ids.get(o) ?? []);
-  const at = (iso: string | null) => (iso ? new Date(iso) : null);
   // A codex mention carries a row id (issue #200), so every text that may hold one follows the same map.
   const remapText = <T extends object>(r: T): T =>
     Object.fromEntries(Object.entries(r).map(([k, v]) => [k, typeof v === "string" ? remapMentions(v, ids) : v])) as T;
@@ -174,118 +275,114 @@ export async function importCampaign({
   const kept = new Set<string>(); // the file's picture ids that made it in
   const picture = (old: string | null) => (old && kept.has(old) ? ref(old) : null);
 
-  const made = await createCampaign({
-    ...file.campaign,
-    nextSessionAt: at(file.campaign.nextSessionAt),
-    owner,
-    fill: async (tx, campaignId) => {
-      // Lists load in createdAt order, and now() is the same for the whole transaction, so each row gets its place in
-      // the file as its own millisecond. The id is in the map because every row went into it above.
-      const t0 = Date.now();
-      const own = <T extends { id: string }>(r: T, i: number) => ({
-        ...remapText(r),
-        id: ids.get(r.id)!,
-        campaignId,
-        createdAt: new Date(t0 + i),
-      });
-      // In reference order; one statement per table, so a location can name a parent from the same insert.
-      if (file.characters.length)
-        await tx.insert(character).values(
-          file.characters.map((ch, i) => ({
-            ...own(ch, i),
-            builtAt: ch.builtAt === null ? null : new Date(ch.builtAt),
-          })),
-        );
-      // Before the beats and NPCs that name them, though nothing in the database points at one: the id is the slug.
-      // These keep their own `createdAt` millisecond like every other list, since `loadCustomThreats` loads them in
-      // that order; they can't use `own()`, which renames a row by its id, because theirs is the slug the file brought.
-      if (customs.length)
-        await tx.insert(customThreat).values(
-          customs.map((t, i) => ({
-            campaignId,
-            slug: t.id.slice(CUSTOM_PREFIX.length),
-            data: t,
-            createdAt: new Date(t0 + i),
-          })),
-        );
-      if (c.factions.length) await tx.insert(faction).values(c.factions.map(own));
-      // Pictures before the entries that show them, through the store's own checks (the bytes, the caps). One that
-      // fails a check is left out, and its entries import without a picture; the checks fail before the insert, so the
-      // transaction carries on.
-      for (const p of pictures) {
-        const bytes = Buffer.from(p.base64, "base64");
-        try {
-          await putImage(tx, { campaignId, mime: p.mime, bytes, id: ids.get(p.id)! }); // mapped above
-          kept.add(p.id);
-        } catch (e) {
-          if (!(e instanceof ActionError)) throw e;
-        }
-      }
-      // `own()` spreads the file's `imageId`, so each entry names its picture's new id explicitly.
-      if (c.locations.length)
-        await tx
-          .insert(location)
-          .values(
-            c.locations.map((l, i) => ({ ...own(l, i), parentId: ref(l.parentId), imageId: picture(l.imageId) })),
-          );
-      if (c.npcs.length)
-        await tx
-          .insert(npc)
-          .values(c.npcs.map((n, i) => ({ ...own(n, i), factionId: ref(n.factionId), imageId: picture(n.imageId) })));
-      if (c.handouts.length)
-        await tx.insert(handout).values(
-          c.handouts.map((h, i) => ({
-            ...own(h, i),
-            revealedAt: at(h.revealedAt),
-            audience: refs(h.audience),
-            imageId: picture(h.imageId),
-          })),
-        );
-      if (c.items.length)
-        await tx.insert(item).values(
-          c.items.map((it, i) => ({
-            ...own(it, i),
-            locationId: ref(it.locationId),
-            npcId: ref(it.npcId),
-            givenTo: ref(it.givenTo),
-          })),
-        );
-      if (c.adventures.length)
-        // A hand-edited file's mission shown without a brief comes in hidden, as codex.save would refuse it (§11.150).
-        await tx
-          .insert(adventure)
-          .values(c.adventures.map(({ beats: _, ...a }, i) => own({ ...a, shown: a.shown && !!a.brief.trim() }, i)));
-      if (beats.length)
-        await tx.insert(beat).values(
-          beats.map((b, i) => ({
-            ...own(b, i),
-            adventureId: ids.get(b.adventureId)!, // its adventure's id, from the same map
-            locationId: ref(b.locationId),
-            npcIds: refs(b.npcIds),
-            handoutIds: refs(b.handoutIds),
-            itemIds: refs(b.itemIds),
-            onEntry: refs(b.onEntry),
-            hazards: b.hazards.filter((h) => b.locationId && listed.get(b.locationId)?.has(h.id)),
-            exits: b.exits.map((e) => ({
-              ...e,
-              beatId: e.beatId && adventureOf.get(e.beatId) === b.adventureId ? ref(e.beatId) : null,
-            })),
-          })),
-        );
-      if (c.sessions.length)
-        await tx.insert(session).values(
-          c.sessions.map(({ id: _, startedAt, endedAt, ...s }) => ({
-            ...remapText(s),
-            campaignId,
-            startedAt: new Date(startedAt),
-            endedAt: at(endedAt),
-          })),
-        );
-    },
+  // Lists load in createdAt order, and now() is the same for the whole transaction, so each row gets its place in
+  // the file as its own millisecond. The id is in the map because every row went into it above.
+  const t0 = Date.now();
+  const own = <T extends { id: string }>(r: T, i: number) => ({
+    ...remapText(r),
+    id: ids.get(r.id)!,
+    campaignId,
+    createdAt: new Date(t0 + i),
   });
-  // What the lobby tells the GM: the pictures the file carried that didn't make it in.
-  // Unreadable ones plus those a check refused; a repeat of a kept picture lost nothing, so it isn't counted.
-  return { ...made, droppedPictures: file.images.filter((p) => !p).length + pictures.length - kept.size };
+  // In reference order; one statement per table, so a location can name a parent from the same insert.
+  const characters = fresh(file.characters);
+  if (characters.length)
+    await tx.insert(character).values(
+      characters.map((ch, i) => ({
+        ...own(ch, i),
+        builtAt: ch.builtAt === null ? null : new Date(ch.builtAt),
+      })),
+    );
+  // Before the beats and NPCs that name them, though nothing in the database points at one: the id is the slug.
+  // These keep their own `createdAt` millisecond like every other list, since `loadCustomThreats` loads them in
+  // that order; they can't use `own()`, which renames a row by its id, because theirs is the slug the file brought.
+  if (customs.length)
+    await tx.insert(customThreat).values(
+      customs.map((t, i) => ({
+        campaignId,
+        slug: t.id.slice(CUSTOM_PREFIX.length),
+        data: t,
+        createdAt: new Date(t0 + i),
+      })),
+    );
+  const factions = fresh(c.factions);
+  if (factions.length) await tx.insert(faction).values(factions.map(own));
+  // Pictures before the entries that show them, through the store's own checks (the bytes, the caps). One that
+  // fails a check is left out, and its entries import without a picture; the checks fail before the insert, so the
+  // transaction carries on.
+  for (const p of pictures) {
+    const bytes = Buffer.from(p.base64, "base64");
+    try {
+      await putImage(tx, { campaignId, mime: p.mime, bytes, id: ids.get(p.id)! }); // mapped above
+      kept.add(p.id);
+    } catch (e) {
+      if (!(e instanceof ActionError)) throw e;
+    }
+  }
+  // `own()` spreads the file's `imageId`, so each entry names its picture's new id explicitly.
+  const locations = fresh(c.locations);
+  if (locations.length)
+    await tx
+      .insert(location)
+      .values(locations.map((l, i) => ({ ...own(l, i), parentId: ref(l.parentId), imageId: picture(l.imageId) })));
+  const npcs = fresh(c.npcs);
+  if (npcs.length)
+    await tx
+      .insert(npc)
+      .values(npcs.map((n, i) => ({ ...own(n, i), factionId: ref(n.factionId), imageId: picture(n.imageId) })));
+  const handouts = fresh(c.handouts);
+  if (handouts.length)
+    await tx.insert(handout).values(
+      handouts.map((h, i) => ({
+        ...own(h, i),
+        revealedAt: at(h.revealedAt),
+        audience: refs(h.audience),
+        imageId: picture(h.imageId),
+      })),
+    );
+  const items = fresh(c.items);
+  if (items.length)
+    await tx.insert(item).values(
+      items.map((it, i) => ({
+        ...own(it, i),
+        locationId: ref(it.locationId),
+        npcId: ref(it.npcId),
+        givenTo: ref(it.givenTo),
+      })),
+    );
+  if (c.adventures.length)
+    // A hand-edited file's mission shown without a brief comes in hidden, as codex.save would refuse it (§11.150).
+    await tx
+      .insert(adventure)
+      .values(c.adventures.map(({ beats: _, ...a }, i) => own({ ...a, shown: a.shown && !!a.brief.trim() }, i)));
+  if (beats.length)
+    await tx.insert(beat).values(
+      beats.map((b, i) => ({
+        ...own(b, i),
+        adventureId: ids.get(b.adventureId)!, // its adventure's id, from the same map
+        locationId: ref(b.locationId),
+        npcIds: refs(b.npcIds),
+        handoutIds: refs(b.handoutIds),
+        itemIds: refs(b.itemIds),
+        onEntry: refs(b.onEntry),
+        hazards: b.hazards.filter((h) => b.locationId && listed.get(b.locationId)?.has(h.id)),
+        exits: b.exits.map((e) => ({
+          ...e,
+          beatId: e.beatId && adventureOf.get(e.beatId) === b.adventureId ? ref(e.beatId) : null,
+        })),
+      })),
+    );
+  if (c.sessions.length)
+    await tx.insert(session).values(
+      c.sessions.map(({ id: _, startedAt, endedAt, ...s }) => ({
+        ...remapText(s),
+        campaignId,
+        startedAt: new Date(startedAt),
+        endedAt: at(endedAt),
+      })),
+    );
+  // Unreadable pictures plus those a check refused; a repeat of a kept picture lost nothing, so it isn't counted.
+  return file.images.filter((p) => !p).length + pictures.length - kept.size;
 }
 
 // A session open longer than this is one nobody closed, so the lobby stops advertising the game as running.

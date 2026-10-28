@@ -1,11 +1,12 @@
 import "reflect-metadata";
 import { createHash } from "node:crypto";
 import { NestFactory } from "@nestjs/core";
+import { z } from "zod";
 import express, { type NextFunction, type Request, type Response } from "express";
 import { SESSION_COOKIE, bearerOf, verifySession } from "@wg/auth/api";
 import { IMAGE_MIMES, IMPORT_MAX_BYTES } from "@wg/shared";
 import { AppModule } from "./app.module.ts";
-import { readCookie } from "./auth/auth.service.ts";
+import { readCookie, resolveCtx } from "./auth/auth.service.ts";
 import { runMigrations } from "./core/db.ts";
 import { clientIp, limiter } from "./core/rate-limit.ts";
 
@@ -27,6 +28,7 @@ app.use(["/api/join", "/api/guest", "/api/invites"], (req: Request, res: Respons
 // each has their own session. Callers with no session (all of these answer 401) fall back to the IP.
 // ponytail: the session token rotates about every 60s, so a determined caller gets a fresh bucket; key it by the Clerk
 // user id once the middleware can see one without a DB write
+const IMPORT_ADVENTURES = "/api/campaigns/:id/import-adventures";
 const allowLibrary = limiter({ max: 120, windowMs: 60_000 });
 const libraryKey = (req: Request) => {
   const session = bearerOf(req.headers.authorization) ?? readCookie(req.headers.cookie, SESSION_COOKIE);
@@ -35,7 +37,15 @@ const libraryKey = (req: Request) => {
     : `ip:${clientIp(req.headers, req.socket.remoteAddress)}`;
 };
 app.use(
-  ["/api/library", "/api/creation", "/api/rules", "/api/frameworks", "/api/campaigns/import", "/api/admin"],
+  [
+    "/api/library",
+    "/api/creation",
+    "/api/rules",
+    "/api/frameworks",
+    "/api/campaigns/import",
+    IMPORT_ADVENTURES,
+    "/api/admin",
+  ],
   (req: Request, res: Response, next: NextFunction) => {
     if (allowLibrary(libraryKey(req))) return next();
     res.status(429).json({ message: "Too many requests. Wait a minute." });
@@ -56,6 +66,20 @@ app.use("/api/campaigns/import", async (req: Request, res: Response, next: NextF
   );
   if (!user) return res.status(401).json({ message: "Unauthorized" });
   if (!user.creator) return res.status(403).json({ message: "Only creators can start a game" });
+  importJson(req, res, next);
+});
+// IMPORT ADVENTURE posts a slice of such a file, pictures and all, so it gets the same parser, only for this campaign's
+// GM: a seat checked before the body is read.
+app.use(IMPORT_ADVENTURES, async (req: Request, res: Response, next: NextFunction) => {
+  const id = z.uuid().safeParse(req.params.id);
+  const ctx = id.success
+    ? await resolveCtx({
+        campaignId: id.data,
+        headers: { authorization: req.headers.authorization, cookie: req.headers.cookie },
+      })
+    : null;
+  if (!ctx) return res.status(401).json({ message: "Unauthorized" });
+  if (ctx.role !== "gm") return res.status(403).json({ message: "Forbidden" });
   importJson(req, res, next);
 });
 

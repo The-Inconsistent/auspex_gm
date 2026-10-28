@@ -200,11 +200,12 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     });
   }
 
-  // For REST changes to a table (accepting an invite): same queue as socket actions, then the same broadcast.
-  async mutate<T>({ campaignId, fn }: { campaignId: string; fn: () => Promise<T> }): Promise<T> {
-    const result = await this.serial(campaignId, fn);
+  // For REST changes to a table (accepting an invite, IMPORT ADVENTURE): same queue as socket actions, then the same
+  // broadcast. `codex` for a change to the codex.
+  async mutate<T>({ campaignId, fn, codex = false }: { campaignId: string; fn: () => Promise<T>; codex?: boolean }) {
+    const result: T = await this.serial(campaignId, fn);
     try {
-      await this.broadcast(campaignId, { state: true, codex: false });
+      await this.broadcast(campaignId, { state: true, codex });
     } catch (e) {
       this.log.error(e);
     }

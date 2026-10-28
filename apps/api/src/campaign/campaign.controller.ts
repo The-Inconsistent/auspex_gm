@@ -37,6 +37,7 @@ import {
   campaignHomebrew,
   createCampaign,
   exportCampaign,
+  importAdventures,
   importCampaign,
   isAdmin,
   listRules,
@@ -53,6 +54,7 @@ const AdminCreate = CreateGame.extend({ ownerUserId: z.string().min(1).max(100).
 const CampaignId = z.uuid();
 const InviteCode = z.string().min(1).max(200);
 const Import = z.object({ file: CampaignExport, fresh: z.boolean().default(false) });
+const ImportAdventures = z.object({ file: CampaignExport });
 
 const parse = <T>(schema: z.ZodType<T>, body: unknown): T => {
   const r = schema.safeParse(body);
@@ -121,6 +123,24 @@ export class CampaignController {
     if (!user.creator) throw new ForbiddenException("Only creators can start a game");
     const { file, fresh } = parse(Import, body);
     return refusing(() => importCampaign({ file: fresh ? freshStart(file) : file, owner: user }));
+  }
+
+  // IMPORT ADVENTURE: adventures from a campaign file into this campaign, as prep. It changes the codex, so it runs in
+  // the table's action queue and rebroadcasts like an action.
+  @Post("campaigns/:id/import-adventures")
+  @HttpCode(200)
+  async importAdventures(@Param("id") id: string, @Req() req: Request, @Body() body: unknown) {
+    const ctx = await resolveCtx({ campaignId: parse(CampaignId, id), headers: headersOf(req) });
+    if (!ctx) throw new UnauthorizedException();
+    if (ctx.role !== "gm") throw new ForbiddenException();
+    const { file } = parse(ImportAdventures, body);
+    return refusing(() =>
+      this.table.mutate({
+        campaignId: ctx.campaignId,
+        codex: true,
+        fn: () => db.transaction((tx) => importAdventures(tx, { campaignId: ctx.campaignId, file })),
+      }),
+    );
   }
 
   // EXPORT: the whole campaign as a file (GM notes, secrets and book text in the sheets, so GM only).

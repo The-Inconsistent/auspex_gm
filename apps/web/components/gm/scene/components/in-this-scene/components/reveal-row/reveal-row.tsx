@@ -2,6 +2,8 @@
 import { Eye, Lock } from "lucide-react";
 import type { ReactNode } from "react";
 
+import { ReachChip } from "@/components/ui/reach-chip/reach-chip";
+
 type RevealRowProps = {
   name: string;
   shown: boolean;
@@ -25,12 +27,7 @@ export function RevealRow({
       <button type="button" className="scene-peek" aria-label={`Peek: ${name}`} onClick={onPeek}>
         {name}
       </button>
-      {only && (
-        <span className="chip warn reach" title={`${only} only`}>
-          <Lock size={12} strokeWidth={2.4} aria-hidden="true" />
-          <span className="reach-names">{only}</span>&nbsp;ONLY
-        </span>
-      )}
+      {only && <ReachChip only={only} />}
       <span className="scene-leader" aria-hidden="true" />
       {children ?? (
         <button
