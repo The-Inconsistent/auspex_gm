@@ -1,6 +1,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { WargearWeapon, advancedWargearProblems, threatWeapon, type Wargear } from "./index.ts";
+import {
+  WargearWeapon,
+  advancedWargearProblems,
+  isMeleeWeapon,
+  threatWeapon,
+  weaponAtStrength,
+  withTypedRange,
+  type Wargear,
+} from "./index.ts";
 
 // Placeholder profiles in the catalogue's shape, not printed entries.
 const entry = (name: string, weapon: unknown) => ({ name, weapon: WargearWeapon.parse(weapon) });
@@ -12,6 +20,8 @@ test("threatWeapon resolves a melee (S) + X against the threat's Strength (Core 
   assert.deepEqual(w.traits, ["Brutal"]);
   // A Threat's weapon has no addStrength: zod would drop the flag and leave a 2-damage blade behind.
   assert.ok(!("addStrength" in w));
+  // It says the 8 counts Strength, so the threat editor can move it when S changes (rules-flow.md §11.165).
+  assert.equal(w.countsStrength, true);
 });
 
 test("threatWeapon leaves a ranged weapon's numbers alone", () => {
@@ -26,11 +36,13 @@ test("threatWeapon leaves a ranged weapon's numbers alone", () => {
       range: [12, 30, 60],
     },
   );
+  assert.equal(w.countsStrength, undefined);
 });
 
 test("threatWeapon turns a thrown S × N into metres (Core p.208)", () => {
   const grenade = threatWeapon(entry("Grenade", { damage: 10, ed: 2, thrown: 3 }), 5);
   assert.deepEqual(grenade.range, [15]);
+  assert.equal(grenade.thrown, 3); // kept, so the range can follow a new Strength (rules-flow.md §11.165)
   // A knife thrown as well as swung keeps its reach and notes the throw, as the sheet does.
   const knife = threatWeapon(entry("Knife", { addStrength: true, damage: 1, ed: 1, range: [1], thrown: 2 }), 4);
   assert.deepEqual(knife.range, [1]);
@@ -43,6 +55,42 @@ test("threatWeapon keeps a count and a null Salvo as printed", () => {
   assert.equal(w.count, 2);
   assert.equal(w.salvo, null);
   assert.deepEqual(w.range, [8]);
+});
+
+// rules-flow.md §11.165: a weapon follows a new Strength only where it is marked.
+test("weaponAtStrength moves a Damage that counts S, and nothing else", () => {
+  const S = { from: 4, to: 6 };
+  assert.equal(weaponAtStrength({ damage: 6, range: [1], countsStrength: true as const }, S).damage, 8);
+  assert.equal(weaponAtStrength({ damage: 5, range: [1] }, S).damage, 5);
+  assert.equal(weaponAtStrength({ damage: 10, range: [12, 24, 36] }, S).damage, 10);
+});
+
+test("weaponAtStrength throws S × N again, in the range or a swung weapon's trait (Core p.208)", () => {
+  const S = { from: 4, to: 5 };
+  assert.deepEqual(weaponAtStrength({ damage: 10, range: [12], thrown: 3 }, S).range, [15]);
+  // A spear with a reach of 2 and a throw keeps its reach (Singing Spear, Core p.213).
+  const spear = threatWeapon(entry("Spear", { addStrength: true, damage: 6, ed: 1, range: [2], thrown: 5 }), 4);
+  const moved = weaponAtStrength(spear, S);
+  assert.deepEqual([moved.range, moved.damage, moved.traits], [[2], 11, ["Thrown (25 m)"]]);
+});
+
+test("isMeleeWeapon: any melee reach, not a throw", () => {
+  assert.equal(isMeleeWeapon({ damage: 6, range: [1] }), true);
+  assert.equal(isMeleeWeapon({ damage: 6, range: [2], countsStrength: true as const }), true);
+  assert.equal(isMeleeWeapon({ damage: 6, range: [3], thrown: 1 }), false);
+  assert.equal(isMeleeWeapon({ damage: 6, range: [12, 24, 36] }), false);
+});
+
+test("withTypedRange: a typed range ends a throw's link, a typed reach keeps a blade's", () => {
+  const grenade = { damage: 10, range: [12], thrown: 3 };
+  assert.equal(withTypedRange(grenade, [20]).thrown, undefined);
+  assert.equal(withTypedRange(grenade, [3]).thrown, undefined);
+  const spear = { damage: 10, range: [2], countsStrength: true as const, thrown: 5, traits: ["Thrown (20 m)"] };
+  assert.deepEqual([withTypedRange(spear, [3]).countsStrength, withTypedRange(spear, [3]).thrown], [true, 5]);
+  assert.deepEqual(
+    [withTypedRange(spear, [12]).countsStrength, withTypedRange(spear, [12]).thrown],
+    [undefined, undefined],
+  );
 });
 
 // Advanced Creation's Wargear table (Core p.39); the readings are rules-flow.md §11.128–130.

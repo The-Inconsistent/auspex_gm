@@ -995,6 +995,15 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      buzz, and each player may send back one short reply (`whisper.reply`; a second overwrites the first). A phone never
      learns who else got the same whisper. Whispers last one session: a session's start or end deletes them, and a
      campaign file doesn't carry them. A lasting note is a handout. *Approved by the GM, 2026-10-30.*
+165. **A custom threat's melee Damage and thrown range follow its Strength** (Core pp.208, 211–213). A stat block
+     prints final numbers, so a melee "(S) + X" weapon taken from the catalogue is stored as S + X, marked
+     `countsStrength`. When the GM changes the threat's Strength in the editor, every marked weapon's Damage moves by
+     the same amount. The GM can tick or untick the mark on any melee row of the weapon table, since not every melee
+     weapon adds Strength (a Voidblade doesn't). A thrown weapon keeps its N (`thrown`, "S × N", p.208), and a new
+     Strength recomputes its range, or the "Thrown (N m)" trait of a weapon that is also swung. A melee row is any
+     reach up to 4, as the sheet reads one (`MELEE_MAX_REACH`). A range typed by hand ends a throw-only weapon's link;
+     a new reach keeps a melee weapon's links, and a range typed past melee reach ends both. A book threat's weapons carry neither mark, because the printed numbers are the book's.
+     *Approved by the GM, 2026-10-31.*
 
 ---
 

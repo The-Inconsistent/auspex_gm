@@ -77,6 +77,12 @@ export const Weapon = z.object({
   // On a character's sheet: an attack with it rolls Weapon Skill, not Ballistic Skill (rules-flow.md §4). Set by
   // `sheetWeapon` from the printed profile; absent on a sheet built before it, and on a threat's weapon.
   melee: z.boolean().optional(),
+  // On a custom threat's weapon only: its Damage already counts the threat's Strength, as a melee "(S) + X" does (Core
+  // pp.211-213), so the threat editor moves it when the GM changes S (rules-flow.md §11.165). The number stays final.
+  countsStrength: z.literal(true).optional(),
+  // On a custom threat's weapon only: thrown at S × this many metres (Core p.208). Its range (or, for a blade also
+  // thrown, its "Thrown (N m)" trait) is already worked out; the editor works it out again when S changes (§11.165).
+  thrown: z.number().int().positive().optional(),
   // On a character's sheet only, and all four about upgrades (Core p.227, rules-flow.md §11.63–§11.65). What is stored
   // is the profile **as printed** plus the ids of what is fitted, never the result: `withUpgrades` derives the shown
   // profile on the way out, so nothing double-applies and a data fix re-derives.
