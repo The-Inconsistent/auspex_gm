@@ -13,6 +13,7 @@ import { applyEncounterAction } from "../encounter/encounter.actions.ts";
 import { applySpendAction } from "../spend/spend.actions.ts";
 import { applyTestCallAction } from "../test-call/test-call.actions.ts";
 import { applyThreatAction } from "../threat/threat.actions.ts";
+import { applyWhisperAction } from "../whisper/whisper.actions.ts";
 
 // Which snapshot an action changes, so the gateway only rebroadcasts what moved.
 export function touches(a: Action): { state: boolean; codex: boolean } {
@@ -80,7 +81,10 @@ function authorize(ctx: Ctx, a: Action) {
   )
     fail("Not your character");
   if (
-    (a.type === "spend.request" || a.type === "test.report" || a.type === "character.rollObjective") &&
+    (a.type === "spend.request" ||
+      a.type === "test.report" ||
+      a.type === "whisper.reply" ||
+      a.type === "character.rollObjective") &&
     a.characterId !== ctx.characterId
   )
     fail("Not your character");
@@ -153,6 +157,11 @@ function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promis
     case "test.report":
     case "test.close":
       return applyTestCallAction(tx, { ctx, action });
+
+    case "whisper.send":
+    case "whisper.reply":
+    case "whisper.delete":
+      return applyWhisperAction(tx, { ctx, action });
 
     case "character.create":
     case "character.update":

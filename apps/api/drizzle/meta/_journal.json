@@ -211,6 +211,13 @@
       "when": 1792671702408,
       "tag": "0029_past_lord_hawal",
       "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1793341195345,
+      "tag": "0030_skinny_agent_zero",
+      "breakpoints": true
     }
   ]
 }

@@ -1158,6 +1158,42 @@ test("a called Test: named phones report their own, others don't see it, a sessi
   assert.equal((await report(pa, a.id, true)).ok, false, "the call is closed");
 });
 
+test("whispers: only the named phones get one, each replies for itself, a session clears them (§11.164)", async (t) => {
+  const gm = await newCampaign("Whispers", 2, "10.19.2.1");
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  const b = await gm.send({ type: "character.create", name: "B" });
+  assert.ok(a.ok && a.id && b.ok && b.id);
+  const seat = async (characterId: string) => {
+    const issued = await gm.send({ type: "token.issue", characterId });
+    assert.ok(issued.ok && issued.token);
+    const p = connect({ auth: { token: issued.token }, headers: { "cf-connecting-ip": "10.19.2.1" } });
+    t.after(() => p.socket.close());
+    await p.until((s) => s.characters.length === 2);
+    return p;
+  };
+  const [pa, pb] = [await seat(a.id), await seat(b.id)];
+
+  assert.equal((await pa.send({ type: "whisper.send", to: [a.id], text: "hi" })).ok, false, "GM only");
+  const sent = await gm.send({ type: "whisper.send", to: [a.id], text: "Your seal grows warm" });
+  assert.ok(sent.ok && sent.id);
+  const mine = await pa.until((s) => s.whispers.some((w) => w.id === sent.id));
+  assert.equal(mine.whispers[0]?.text, "Your seal grows warm");
+  assert.deepEqual((await pb.until((s) => s.characters.length === 2)).whispers, [], "B isn't whispered to");
+
+  const reply = (p: typeof pa, characterId: string, text: string) =>
+    p.send({ type: "whisper.reply", whisperId: sent.id!, characterId, text });
+  assert.equal((await reply(pb, a.id, "me too")).ok, false, "B can't reply for A");
+  assert.equal((await reply(pb, b.id, "me too")).ok, false, "nor answer a whisper to A");
+  assert.ok((await reply(pa, a.id, "I touch it")).ok);
+  await gm.until((s) => s.whispers[0]?.replies[a.id!]?.text === "I touch it");
+
+  assert.equal((await pa.send({ type: "whisper.delete", id: sent.id })).ok, false, "taking it back is the GM's");
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  await pa.until((s) => s.whispers.length === 0);
+  assert.equal((await reply(pa, a.id, "again")).ok, false, "the whisper is gone");
+});
+
 test("table screen: a read-only seat with no character, the table's view and no book text", async (t) => {
   const gm = await newCampaign("Table screen", 2);
   t.after(() => gm.socket.close());

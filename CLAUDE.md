@@ -160,6 +160,8 @@ apps/api/src/
                (test.call/report/close; a player reports for their own Agent), test-call.clear.ts (session start/end)
   threat/      threat.schema.ts (custom_threat: the GM's own stat blocks), threat.actions.ts (threat.save/delete),
                threat.service.ts (loadThreats: bestiary + this campaign's customs, checkThreats)
+  whisper/     whisper.schema.ts (whisper: the GM's private lines to Agents and their replies, one session),
+               whisper.actions.ts (whisper.send/reply/delete), whisper.clear.ts (session start/end)
   table/       table.gateway.ts (socket), table.dispatch.ts (authorize, touches, kicks, applyAction), table.state.ts
 apps/api/drizzle/   generated migrations (applied automatically at startup)
 apps/api/test/      smoke.test.ts: end-to-end GM, player, guest and invite sessions against a running api
@@ -187,7 +189,8 @@ apps/web/components/gm/      gm-app (the shell, useGm(); rail: SCENE · STORY ·
                              spend-requests (kebab-case folders, children under components/)
 apps/web/components/player/  player-app (the shell: header, vitals-strip, icon tabs with the tab in ?tab=; fight; intel: INBOX, ARCHIVE, entry sheet,
                              SHOW THE TABLE, NEW marks), player-sheet (AT A GLANCE, and the DOSSIER as the book's character sheet, Core pp.40–41),
-                             test-prompt (a called Test as a bottom sheet: pool, PASSED / FAILED; #191)
+                             test-prompt (a called Test as a bottom sheet: pool, PASSED / FAILED; #191),
+                             whisper-sheet (a GM whisper as a bottom sheet with a buzz, and the one-line reply; §11.164)
 apps/web/components/builder/ builder (draft, live resolveBuild, one screen per creation step, XP ledger; one Bench for a
                              campaign or the library, import-library for bringing a library character in)
 apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-provider + rule-link (tap a trait or Condition
