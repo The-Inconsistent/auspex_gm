@@ -14,3 +14,14 @@ test("findHits ranks a name's start, then a word's start, then any match", () =>
   assert.deepEqual(findHits(options, "  "), []);
   assert.deepEqual(findHits(options, "zz"), []);
 });
+
+test("findHits finds by `also` after every name match", () => {
+  const options = [
+    { name: "Boy", also: "Ork" },
+    { name: "Orkhunter", also: "Imperium" },
+  ];
+  assert.deepEqual(
+    findHits(options, "ork").map((o) => o.name),
+    ["Orkhunter", "Boy"],
+  );
+});

@@ -278,17 +278,18 @@ export function FightEntries({
       {!bestiary.length && <span className="dim">No bestiary loaded.</span>}
       {customsFull && <span className="dim">Custom threats are full ({CUSTOM_THREAT_CAP}).</span>}
       {building === "start" && (
-        <div className="keys" style={{ alignItems: "center" }}>
-          <span className="label">START FROM</span>
+        <div className="panel pad stack">
           <ThreatStarts
             bestiary={bestiary}
             tier={tier}
-            disabled={customsFull}
+            full={customsFull}
             onStart={(d) => build({ ...d, name: d.name || typed })}
           />
-          <button className="lnk" onClick={() => build(null)}>
-            CANCEL
-          </button>
+          <div>
+            <button className="lnk" onClick={() => build(null)}>
+              CANCEL
+            </button>
+          </div>
         </div>
       )}
       {building && building !== "start" && (
@@ -296,6 +297,7 @@ export function FightEntries({
           <i className="dim">CREATE saves it to CODEX › THREATS straight away, whatever happens to this scene.</i>
           <ThreatBuilder
             start={{ slug: null, draft: building }}
+            tier={tier}
             wargear={wargear}
             ruinActions={poolTables.find((t) => t.id === RUIN_ACTIONS_TABLE) ?? null}
             send={send}
