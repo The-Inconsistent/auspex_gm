@@ -24,23 +24,27 @@ type FindFieldProps = {
 const SHOWN = 8; // hits before "type to narrow"
 
 // One box that finds an entry to add, or names a new one (STORY's scene editor, canvas Flow-EditorPeople): typing lists
-// the matches under it, the last row makes a new one, and Enter takes the top row.
+// the matches under it, the last row makes a new one, and Enter takes the top row. Tapping it before typing lists
+// every option, for a GM who wants to see what the books hold before writing.
 export function FindField({ label, options, onPick, newLabel, onCreate, footnote }: FindFieldProps) {
   const listId = useId();
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
+  const [browse, setBrowse] = useState(false);
   const q = fold(query);
   const typed = query.trim();
   const hits = findHits(options, query);
-  const shown = hits.slice(0, SHOWN);
+  const browsing = browse && !typed;
+  const shown = browsing ? options : hits.slice(0, SHOWN);
   // + NEW only for a name nothing already has, so the codex doesn't fill with twins.
   const canCreate = !!typed && !!onCreate && !!newLabel && !options.some((o) => fold(o.name) === q);
   const rows = shown.length + (canCreate ? 1 : 0);
-  const open = !!typed && rows > 0;
+  const open = (browsing || !!typed) && rows > 0;
 
   const done = () => {
     setQuery("");
     setActive(0);
+    setBrowse(false);
   };
   const pick = (id: string) => {
     onPick(id);
@@ -53,7 +57,8 @@ export function FindField({ label, options, onPick, newLabel, onCreate, footnote
   const choose = (i: number) => (i < shown.length ? pick(shown[i]!.id) : create());
 
   const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "ArrowDown" && open) {
+    if (e.key === "ArrowDown" && !open) setBrowse(true);
+    else if (e.key === "ArrowDown" && open) {
       e.preventDefault();
       setActive((a) => (a + 1) % rows);
     } else if (e.key === "ArrowUp" && open) {
@@ -80,6 +85,9 @@ export function FindField({ label, options, onPick, newLabel, onCreate, footnote
           setQuery(e.target.value);
           setActive(0);
         }}
+        onFocus={() => setBrowse(true)}
+        onClick={() => setBrowse(true)}
+        onBlur={() => setBrowse(false)}
         onKeyDown={handleKey}
       />
       {open && (

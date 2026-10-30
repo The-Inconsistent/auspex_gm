@@ -24,7 +24,7 @@ import {
   type SkillDn,
 } from "@wg/shared";
 
-import { FindField } from "@/components/ui/find-field/find-field";
+import { FindField, type FindOption } from "@/components/ui/find-field/find-field";
 import { NumberInput } from "@/components/ui/number-input/number-input";
 import { RuleIdLink } from "@/components/ui/rule-link/rule-link";
 
@@ -36,13 +36,22 @@ type TestsProps = { tests: BeatTest[]; skillDns: SkillDn[]; onChange: (tests: Be
 
 const signed = (n: number) => (n > 0 ? `+${n}` : `−${-n}`);
 const SKILL_NAMES = Object.keys(SKILLS) as Skill[];
-const SKILL_OPTIONS = SKILL_NAMES.map((s) => ({ id: s, name: s, detail: `(${SKILLS[s]})` }));
+const SKILL_OPTIONS = SKILL_NAMES.map((s) => ({ id: `skill:${s}`, name: s, detail: `(${SKILLS[s]})` }));
+const ATTRIBUTE_OPTIONS = ATTRIBUTES.map((a) => ({ id: `attribute:${a}`, name: ATTRIBUTE_NAMES[a], detail: `(${a})` }));
+// What the second box finds for a new Test of each kind: a trait kind (Influence, Resolve, Corruption) needs none.
+const ADD_OPTIONS: Record<"skill" | "attribute" | "either", { label: string; options: FindOption[] }> = {
+  skill: { label: "Find a Skill", options: SKILL_OPTIONS },
+  attribute: { label: "Find an Attribute", options: ATTRIBUTE_OPTIONS },
+  either: { label: "Find a Skill or Attribute", options: [...SKILL_OPTIONS, ...ATTRIBUTE_OPTIONS] },
+};
 
 // What the scene asks the Agents to roll (issue #39): per Test, its kind and pool, the DN, who rolls, what it's for,
 // the Shifts the GM has ready and both outcomes. The app never rolls a Test. Rows open one at a time (canvas
 // Flow-EditorTests); BeatEditor draws the TESTS · n heading.
 export function Tests({ tests, skillDns, onChange }: TestsProps) {
   const [open, setOpen] = useState<number | null>(null);
+  const [addKind, setAddKind] = useState<TestKind>("skill");
+  const addPool = TEST_POOL[addKind];
   const reorder = useReorder({
     count: tests.length,
     // The open row stays open wherever it is dragged to.
@@ -80,8 +89,12 @@ export function Tests({ tests, skillDns, onChange }: TestsProps) {
   const addFailure = (i: number, text: string) =>
     setTest(i, { onFailure: [tests[i]!.onFailure.trim(), text].filter(Boolean).join("; ") });
 
-  const addSkill = (skill: string) => {
-    onChange([...tests, { ...NEW_TEST, skill: skill as Skill }]);
+  // A new Test of the kind picked first, rolling the Skill or Attribute picked second ("skill:Awareness", "attribute:Wil").
+  const addTest = (pick?: string) => {
+    const [of, name] = pick?.split(":") ?? [];
+    const skill = of === "skill" ? (SKILL_NAMES.find((s) => s === name) ?? null) : null;
+    const attribute = of === "attribute" ? (ATTRIBUTES.find((a) => a === name) ?? null) : null;
+    onChange([...tests, retypeTest({ ...NEW_TEST, skill, attribute }, addKind)]);
     setOpen(tests.length);
   };
 
@@ -355,7 +368,34 @@ export function Tests({ tests, skillDns, onChange }: TestsProps) {
         })}
       </div>
       {tests.length < MAX_TESTS ? (
-        <FindField label="Find a Skill" options={SKILL_OPTIONS} onPick={addSkill} />
+        <div className="keys" style={{ alignItems: "flex-end" }}>
+          <div className="field">
+            <label className="label" htmlFor="test-new-kind">
+              NEW TEST
+            </label>
+            <select
+              id="test-new-kind"
+              className="input"
+              value={addKind}
+              onChange={(e) => setAddKind(TestKind.parse(e.target.value))}
+            >
+              {TestKind.options.map((k) => (
+                <option key={k} value={k}>
+                  {TEST_KIND_LABELS[k]}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="field" style={{ flex: 1 }}>
+            {addPool === "trait" ? (
+              <button type="button" className="btn" onClick={() => addTest()}>
+                + ADD {TEST_KIND_LABELS[addKind]} TEST
+              </button>
+            ) : (
+              <FindField key={addPool} {...ADD_OPTIONS[addPool]} onPick={addTest} />
+            )}
+          </div>
+        </div>
       ) : (
         <span className="dim" style={{ fontSize: 12 }}>
           {tests.length} of {MAX_TESTS}
