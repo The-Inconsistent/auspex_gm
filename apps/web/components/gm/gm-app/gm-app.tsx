@@ -19,6 +19,7 @@ import {
 
 import { CodexEditor } from "@/components/gm/codex/components/codex-editor/codex-editor";
 import { CallTestButton } from "@/components/gm/header/call-test-button/call-test-button";
+import { WhisperButton } from "@/components/gm/header/whisper-button/whisper-button";
 import { SealButton } from "@/components/gm/header/seal-button/seal-button";
 import { SpendBadge } from "@/components/gm/header/spend-badge/spend-badge";
 import { TestCall } from "@/components/gm/test-call/test-call";
@@ -203,6 +204,7 @@ export function GmApp({
                     )}
                     <SpendBadge state={state} send={send} />
                     <CallTestButton state={state} send={send} />
+                    <WhisperButton state={state} send={send} />
                     {Pool.options.map((p) => (
                       <SealButton key={p} pool={p} state={state} codex={codex} send={send} onError={setPoolError} />
                     ))}

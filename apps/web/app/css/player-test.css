@@ -184,3 +184,25 @@
 .pl:has(.pt-bar) .pl-body {
   padding-bottom: calc(16px + 48px);
 }
+
+/* A GM's whisper (rules-flow.md §11.164): the same bottom sheet, its text and a one-line reply. Also in INTEL's INBOX. */
+.wh-text {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.35;
+  white-space: pre-wrap;
+}
+.wh-reply {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+}
+.wh-reply-row {
+  display: flex;
+  gap: 8px;
+}
+.wh-reply-row .input {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+}

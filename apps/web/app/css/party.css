@@ -186,3 +186,17 @@ dialog.party-dlg .sb-title .btn {
 .party-fold[open] > summary::before {
   content: "▾";
 }
+/* A card with WHISPER under it (rules-flow.md §11.164): the card is one button, so the whisper can't sit inside it. */
+.party-card-wrap {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  justify-items: end;
+}
+/* Its panel hangs from the whole card, not the small button, so it never runs off a narrow screen. */
+.party-card-wrap > .hd-pop {
+  position: static;
+}
+.party-card-wrap > .hd-pop > .hd-pop-panel {
+  width: 100%;
+}
