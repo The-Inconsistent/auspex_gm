@@ -2,6 +2,8 @@ import type { StaticImageData } from "next/image";
 
 import type { Character, Combatant } from "@wg/shared";
 
+import canoptekReanimator from "@/assets/ops/canoptek-circle/canoptek-macrocyte-reanimator.webp";
+import canoptekTombCrawler from "@/assets/ops/canoptek-circle/canoptek-tomb-crawler.webp";
 import aegisVeteran from "@/assets/ops/dw/deathwatch-aegis-veteran.webp";
 import blademasterVeteran from "@/assets/ops/dw/deathwatch-blademaster-veteran.webp";
 import bombardVeteran from "@/assets/ops/dw/deathwatch-bombard-veteran.webp";
@@ -32,6 +34,8 @@ import yaegirWarrior from "@/assets/ops/hernkyn-yaegirs/yaegir-warrior.webp";
 // ponytail: GW's copyrighted photos ship as static assets: hashed URLs nobody guesses, but not seat-gated like book
 // content (CLAUDE.md); serve them through an authenticated api route if the repo or app ever opens up.
 export const PORTRAITS = {
+  "canoptek-macrocyte-reanimator": canoptekReanimator,
+  "canoptek-tomb-crawler": canoptekTombCrawler,
   "deathwatch-aegis-veteran": aegisVeteran,
   "deathwatch-blademaster-veteran": blademasterVeteran,
   "deathwatch-bombard-veteran": bombardVeteran,
@@ -74,6 +78,9 @@ const THREAT_PORTRAITS: Record<string, PortraitSlug> = {
   "custom-yaegir-theyn": "yaegir-theyn",
   "custom-yaegir-riflekyn": "yaegir-riflekyn",
   "custom-yaegir-warrior": "yaegir-warrior",
+  "canoptek-reanimator": "canoptek-macrocyte-reanimator",
+  // The name "Canoptek Tomb Crawler" slugs to this (threatSlug); a renamed or clashing one gets no picture.
+  "custom-canoptek-tomb-crawler": "canoptek-tomb-crawler",
 };
 
 // Object.hasOwn: slugs come from the server, and "constructor" must not find Object.prototype's.
