@@ -15,7 +15,6 @@ import { currentScene } from "@/lib/scene/scene";
 import type { Begun } from "@/lib/scene-reveal/scene-reveal";
 
 import { AdventureBar } from "./components/adventure-bar/adventure-bar";
-import { ImportAdventure } from "./components/import-adventure/import-adventure";
 import { SceneBoard } from "./components/scene-board/scene-board";
 import { ScenePage } from "./components/scene-page/scene-page";
 import { STORY_VIEWS, type StoryView } from "./constants";
@@ -181,6 +180,7 @@ export function Story({
 
       {!editing && (
         <AdventureBar
+          campaignId={campaignId}
           codex={codex}
           characters={state.characters}
           adv={adv}
@@ -189,7 +189,6 @@ export function Story({
           onReport={report}
         />
       )}
-      {!editing && <ImportAdventure campaignId={campaignId} onReport={report} />}
 
       {adv && !editing && (
         <>

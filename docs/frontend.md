@@ -694,11 +694,14 @@ The tests are in `lib/command/command.test.ts`.
 SCENE; the code keeps `beat`. STORY is prep as a storyboard: you flip scene by scene, and a scene is played from SCENE
 (§3.0a).
 
-- **Adventure bar** (`components/adventure-bar`): adventures show as a row of buttons (` · SHOWN` once the party has the
-  mission). Picking one goes back to its BOARD and closes any open editor. The inline NEW ADVENTURE form sends
-  `codex.save { kind: "adventure" }` and switches to the new adventure using `r.id`. EDIT ADVENTURE (title, BRIEF,
-  PREMISE / GM NOTES on a closed plate), the mission status select and SHOWN / HIDDEN TO THE PARTY (the mission log, issue #196) sit under it.
-- **IMPORT ADVENTURE** (`components/import-adventure`), under the bar: pick a campaign file, tick its adventures, and
+- **Adventure bar** (`components/adventure-bar`): one button, the open adventure's title with ▾ (the redesign's
+  Flow-StoryBoard); the page under it keeps only the BRIEF, the PREMISE on a closed plate and the linked missions. The
+  button opens the ADVENTURES dialog (PARTY's `PartyDialog`): the adventures to switch to (picking one closes it and
+  goes to its BOARD), NEW ADVENTURE (`codex.save { kind: "adventure" }`, then switches using `r.id`), IMPORT
+  ADVENTURE, and the open adventure's form: title, BRIEF, PREMISE / GM NOTES, mission status, SHOWN TO THE PARTY (the
+  mission log, issue #196), SAVE, and DELETE ADVENTURE (`codex.delete`, behind a confirm: its scenes go with it, linked
+  missions stay unlinked, §11.163).
+- **IMPORT ADVENTURE** (`components/import-adventure`), in the ADVENTURES dialog: pick a campaign file, tick its adventures, and
   only their slice (`sliceAdventures`) is posted to `/api/campaigns/:id/import-adventures`. The result line in STORY's
   message says what came in, what was already here and how many pictures were left out; the codex arrives with the
   rebroadcast.
