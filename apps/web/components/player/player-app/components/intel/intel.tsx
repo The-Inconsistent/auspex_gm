@@ -4,6 +4,7 @@ import { flushSync } from "react-dom";
 
 import type { Codex, LiveState } from "@wg/shared";
 
+import type { Send } from "@/hooks/use-table/use-table";
 import { freshCount } from "@/lib/seen/seen";
 
 import { Archive } from "./components/archive/archive";
@@ -14,10 +15,17 @@ import { INTEL_VIEWS, type IntelView } from "./constants";
 import { findEntry, type EntryRef, type IntelEntry } from "./utils";
 
 // fresh: keys not yet seen (lib/seen); markSeen stores them as seen.
-type IntelProps = { codex: Codex; state: LiveState; fresh: ReadonlySet<string>; markSeen: () => void };
+type IntelProps = {
+  codex: Codex;
+  state: LiveState;
+  characterId: string;
+  send: Send;
+  fresh: ReadonlySet<string>;
+  markSeen: () => void;
+};
 
 // INTEL: an INBOX of what is new, an ARCHIVE of everything shown, one entry sheet over both, and SHOW THE TABLE.
-export function Intel({ codex, state, fresh, markSeen }: IntelProps) {
+export function Intel({ codex, state, characterId, send, fresh, markSeen }: IntelProps) {
   const [view, setView] = useState<IntelView>("INBOX");
   const [opened, setOpened] = useState<EntryRef | null>(null);
   const [showing, setShowing] = useState<IntelEntry | null>(null);
@@ -69,7 +77,16 @@ export function Intel({ codex, state, fresh, markSeen }: IntelProps) {
         ))}
       </div>
       {view === "INBOX" ? (
-        <Inbox codex={codex} state={state} fresh={fresh} markSeen={markSeen} onOpen={handleOpen} onShow={handleShow} />
+        <Inbox
+          codex={codex}
+          state={state}
+          characterId={characterId}
+          send={send}
+          fresh={fresh}
+          markSeen={markSeen}
+          onOpen={handleOpen}
+          onShow={handleShow}
+        />
       ) : (
         <Archive codex={codex} fresh={fresh} onOpen={handleOpen} />
       )}

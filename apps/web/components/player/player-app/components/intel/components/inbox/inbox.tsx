@@ -1,7 +1,9 @@
 import type { Codex, LiveState } from "@wg/shared";
 
 import { AttitudeChip } from "@/components/ui/attitude-chip/attitude-chip";
+import { WhisperReply } from "@/components/player/whisper-sheet/components/whisper-reply/whisper-reply";
 import { headerOf } from "@/components/ui/handout-doc/constants";
+import type { Send } from "@/hooks/use-table/use-table";
 
 import { entryName, firstLine, inboxEntries, parentName, stampOf, type IntelEntry } from "../../utils";
 import { Mission, MissionLog, NextSession } from "../mission/mission";
@@ -9,6 +11,8 @@ import { Mission, MissionLog, NextSession } from "../mission/mission";
 type InboxProps = {
   codex: Codex;
   state: LiveState;
+  characterId: string;
+  send: Send;
   fresh: ReadonlySet<string>;
   markSeen: () => void;
   onOpen: (e: IntelEntry) => void;
@@ -16,7 +20,7 @@ type InboxProps = {
 };
 
 // INBOX: what the GM revealed since this phone last left INTEL, as transmissions, then the mission and when we meet next.
-export function Inbox({ codex, state, fresh, markSeen, onOpen, onShow }: InboxProps) {
+export function Inbox({ codex, state, characterId, send, fresh, markSeen, onOpen, onShow }: InboxProps) {
   const entries = inboxEntries(codex, fresh);
   return (
     <>
@@ -32,6 +36,14 @@ export function Inbox({ codex, state, fresh, markSeen, onOpen, onShow }: InboxPr
           </button>
         </>
       )}
+      {/* This session's whispers to this Agent (§11.164), to reread and answer: a session's start or end clears them. */}
+      {state.whispers.map((w) => (
+        <article key={w.id} className="slate-card cut pl-xmit">
+          <span className="xmit pl-xmit-stamp">+++ WHISPER FROM THE GM +++</span>
+          <p className="wh-text">{w.text}</p>
+          <WhisperReply whisper={w} characterId={characterId} send={send} />
+        </article>
+      ))}
       <Mission state={state} />
       <NextSession state={state} />
       <MissionLog codex={codex} />

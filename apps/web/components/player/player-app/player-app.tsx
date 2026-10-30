@@ -8,6 +8,7 @@ import { UNSEEN_ID, type RuleEntry } from "@wg/shared";
 
 import { PlayerSheet } from "@/components/player/player-sheet/player-sheet";
 import { TestPrompt } from "@/components/player/test-prompt/test-prompt";
+import { WhisperSheet } from "@/components/player/whisper-sheet/whisper-sheet";
 import { ArchivedBanner } from "@/components/ui/archived-banner/archived-banner";
 import { BooksProvider } from "@/components/ui/books-provider/books-provider";
 import { PictureProvider } from "@/components/ui/codex-picture/codex-picture";
@@ -160,6 +161,10 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                     send={send}
                   />
                 )}
+                {/* One bottom sheet at a time: a called Test first, a whisper once it closes. */}
+                {!state.testCall && (
+                  <WhisperSheet campaignId={campaignId} characterId={me.id} whispers={state.whispers} send={send} />
+                )}
                 {tab === "SHEET" && <PlayerSheet me={me} state={state} send={send} />}
                 {tab === "FIGHT" && (
                   <Fight
@@ -169,7 +174,16 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                     legend={rules.filter((r) => r.kind === "stat")}
                   />
                 )}
-                {tab === "INTEL" && <Intel codex={codex} state={state} fresh={fresh} markSeen={markSeen} />}
+                {tab === "INTEL" && (
+                  <Intel
+                    codex={codex}
+                    state={state}
+                    characterId={me.id}
+                    send={send}
+                    fresh={fresh}
+                    markSeen={markSeen}
+                  />
+                )}
                 {tab === "RULES" && <RulesRef rules={rules} />}
               </div>
               <nav className="pl-nav" role="tablist" aria-label="Player sections">

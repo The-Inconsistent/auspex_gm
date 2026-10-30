@@ -12,6 +12,8 @@ import {
   type Wargear,
 } from "@wg/shared";
 
+import { Popover } from "@/components/gm/header/popover/popover";
+import { WhisperPanel } from "@/components/gm/whisper/whisper";
 import type { Send } from "@/hooks/use-table/use-table";
 import { gmPath } from "@/lib/gm-path/gm-path";
 
@@ -80,14 +82,14 @@ export function Party({ state, codex, send, wargear, mutations, dossierId, dossi
   const sessionReport = (r: ActionResult, ok: string) =>
     report(r, r.ok && r.notices?.length ? r.notices.join(" · ") : ok);
 
+  // The card is one button, so WHISPER sits beside it, not inside it (§11.164).
   const card = (c: Character) => (
-    <AgentCard
-      key={c.id}
-      character={c}
-      tier={state.campaign.tier}
-      seat={seatOf(c.id)}
-      onOpen={() => openDossier(c.id)}
-    />
+    <div key={c.id} className="party-card-wrap">
+      <AgentCard character={c} tier={state.campaign.tier} seat={seatOf(c.id)} onOpen={() => openDossier(c.id)} />
+      <Popover className="btn sm" button="WHISPER" label={`Whisper to ${c.name}`} title={`Whisper to ${c.name}`}>
+        {(close) => <WhisperPanel state={state} send={send} to={[c.id]} onSent={close} />}
+      </Popover>
+    </div>
   );
 
   return (

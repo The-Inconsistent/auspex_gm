@@ -428,6 +428,15 @@ CLOSE ends the call. SCENE's TESTS rows (§3.0a) and STORY's planned Tests (**CA
 `prep/components/scene-tests/components/call-test`) call a prepared Test: all seated Agents for an EACH Test, one for the
 rest.
 
+### 3.0b WHISPER: `components/gm/whisper/` (rules-flow §11.164)
+
+WHISPER is a header button (`header/whisper-button`) and a button under each PARTY card (that Agent picked). Its popover
+(`WhisperPanel`) picks Agents, takes up to 500 characters, and lists this session's whispers with each Agent's reply and
+a ✕ to take one back. The header button lights with a count of replies this tablet hasn't seen (`useUnreadReplies`, kept
+in localStorage by `hooks/use-stored-set`). On the phone, `player/whisper-sheet` pops the oldest unread whisper up as a
+bottom sheet with a buzz, once no Test is called; CLOSE or a reply (`whisper-reply`) marks it read. INTEL's INBOX lists
+the session's whispers to reread and answer.
+
 ### 3.0a SCENE: the play home
 
 `Scene` (`components/gm/scene/`). One scene is played at a time: the active beat, which `currentScene(codex)`

@@ -62,3 +62,20 @@
   font-size: 12px;
   color: var(--ink-3);
 }
+
+/* WHISPER (components/gm/whisper, rules-flow.md §11.164): the form, then this session's whispers and their replies. */
+.wh-panel textarea {
+  width: 100%;
+}
+.wh-log {
+  display: grid;
+  gap: 2px;
+  padding-top: 6px;
+  border-top: 1px solid var(--bone-line);
+}
+.wh-log-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
