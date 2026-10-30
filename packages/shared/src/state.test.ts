@@ -24,6 +24,7 @@ import {
   testPool,
   type CalledTest,
   type TestCall,
+  type Whisper,
   deriveStats,
   exhaustedShock,
   isExhausted,
@@ -128,6 +129,7 @@ const table = (e: Encounter, characters: Character[] = []): LiveState => ({
   encounter: e,
   spendRequests: [],
   testCall: null,
+  whispers: [],
   access: noAccess,
 });
 
@@ -161,6 +163,7 @@ test("toPlayerView drops hidden threats, hides bars-only threat stats, keeps bar
     ),
     spendRequests: [],
     testCall: null,
+    whispers: [],
     access: {
       members: [{ userId: "u1", name: "Ana", role: "player", characterId: null }],
       invites: [{ id: "i", mode: "room", characterId: null, allowGuests: true, expiresAt: "", uses: 0, maxUses: null }],
@@ -882,4 +885,20 @@ test("a phone sees the call only if its Agent is asked, with only its own result
   assert.equal(toPlayerView(s, "c").testCall, null, "an Agent not asked");
   assert.equal(toPlayerView(s, null).testCall, null, "the table screen");
   assert.equal(toPlayerView({ ...s, testCall: { ...call, hideDn: true } }, "a").testCall?.test.dn, null, "HIDE DN");
+});
+
+test("a phone gets only the whispers to its Agent, without the other recipients or their replies (§11.164)", () => {
+  const at = "2026-10-30T00:00:00.000Z";
+  const w: Whisper = {
+    id: "w",
+    to: ["a", "b"],
+    text: "Your seal grows warm",
+    replies: { b: { text: "!", at } },
+    createdAt: at,
+  };
+  const s = { ...table(null as never, [char({ id: "a" }), char({ id: "b" }), char({ id: "c" })]), whispers: [w] };
+  assert.deepEqual(toPlayerView(s, "a").whispers, [{ ...w, to: ["a"], replies: {} }]);
+  assert.deepEqual(toPlayerView(s, "b").whispers[0]?.replies, { b: { text: "!", at } });
+  assert.deepEqual(toPlayerView(s, "c").whispers, [], "an Agent not whispered to");
+  assert.deepEqual(toPlayerView(s, null).whispers, [], "the table screen");
 });

@@ -990,6 +990,11 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      the link; STORY's adventure and scene pages and SCENE's run page show the missions tied there on a closed plate,
      since each is one player's secret. The player's phone never receives the link. Deleting the adventure or scene
      unlinks the mission, and a campaign import carries the link with its rows. *Approved by the GM, 2026-10-28.*
+164. **The GM may whisper to Agents** (no book rule; a table aid, like passing a note). WHISPER, in the GM header or on
+     a PARTY card, sends a short private line to one or more Agents (`whisper.send`). It pops up on their phones with a
+     buzz, and each player may send back one short reply (`whisper.reply`; a second overwrites the first). A phone never
+     learns who else got the same whisper. Whispers last one session: a session's start or end deletes them, and a
+     campaign file doesn't carry them. A lasting note is a handout. *Approved by the GM, 2026-10-30.*
 
 ---
 

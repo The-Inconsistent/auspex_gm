@@ -457,6 +457,18 @@ export const TestCall = z.object({
 });
 export type TestCall = z.infer<typeof TestCall>;
 
+// A GM's private note to some Agents, for the role play (rules-flow.md §11.164), with each one's short reply. Session
+// scoped: a session's start or end deletes them.
+export const WhisperReply = z.object({ text: z.string(), at: z.string() }); // at: ISO
+export const Whisper = z.object({
+  id: z.string(),
+  to: z.array(z.string()).min(1),
+  text: z.string(),
+  replies: z.record(z.string(), WhisperReply),
+  createdAt: z.string(), // ISO
+});
+export type Whisper = z.infer<typeof Whisper>;
+
 export const LiveState = z.object({
   campaign: z.object({
     id: z.string(),
@@ -494,6 +506,9 @@ export const LiveState = z.object({
   // The Test the GM called and the results so far (issue #191). A phone gets it only if its Agent is asked, with only
   // its own result.
   testCall: TestCall.nullable(),
+  // This session's whispers, newest first. A phone gets only those to its Agent, without the other recipients or their
+  // replies.
+  whispers: z.array(Whisper),
   // guests: characters a live guest QR token points at (no account, so not in members).
   access: z.object({ members: z.array(Member), invites: z.array(Invite), guests: z.array(z.string()) }),
 });
@@ -688,6 +703,11 @@ export const toPlayerView = (s: LiveState, characterId: string | null): LiveStat
           reports: pick(s.testCall.reports, characterId),
         }
       : null,
+  whispers: characterId
+    ? s.whispers
+        .filter((w) => w.to.includes(characterId))
+        .map((w) => ({ ...w, to: [characterId], replies: pick(w.replies, characterId) }))
+    : [],
   encounter: s.encounter && {
     ...s.encounter,
     upNext: sideUpNext(s),

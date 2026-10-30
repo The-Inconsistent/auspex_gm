@@ -1,5 +1,5 @@
 import { Logger } from "@nestjs/common";
-import { and, asc, eq, gt, inArray, isNull, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gt, inArray, isNull, or, sql } from "drizzle-orm";
 import {
   CharacterDetail,
   EncounterEntry,
@@ -24,6 +24,7 @@ import { combatant, encounter } from "../encounter/encounter.schema.ts";
 import { spendRequest } from "../spend/spend.schema.ts";
 import { testCall } from "../test-call/test-call.schema.ts";
 import { loadCustomThreats } from "../threat/threat.service.ts";
+import { whisper } from "../whisper/whisper.schema.ts";
 
 // Upgrades held in gear, keyed off the gear line a requisition writes ("Magnocular Scope (Core p.228)"). The catalogue
 // is the api's, so this is where an id can be put next to a name for the phones (Core p.227, §11.63).
@@ -153,6 +154,11 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
     .where(eq(spendRequest.campaignId, campaignId))
     .orderBy(asc(spendRequest.createdAt));
   const [call] = await conn.select().from(testCall).where(eq(testCall.campaignId, campaignId));
+  const whispers = await conn
+    .select()
+    .from(whisper)
+    .where(eq(whisper.campaignId, campaignId))
+    .orderBy(desc(whisper.createdAt));
 
   return {
     campaign: {
@@ -224,6 +230,13 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
           createdAt: call.createdAt.toISOString(),
         }
       : null,
+    whispers: whispers.map(({ id, to, text, replies, createdAt }) => ({
+      id,
+      to,
+      text,
+      replies,
+      createdAt: createdAt.toISOString(),
+    })),
     access: {
       members,
       invites: invites.map((i) => ({

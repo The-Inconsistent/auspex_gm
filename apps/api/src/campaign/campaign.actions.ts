@@ -17,6 +17,7 @@ import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
 import { clearSpendRequests } from "../spend/spend.clear.ts";
 import { clearTestCall } from "../test-call/test-call.clear.ts";
+import { clearWhispers } from "../whisper/whisper.clear.ts";
 import { toCharacter } from "../table/table.state.ts";
 import { campaign, session } from "./campaign.schema.ts";
 
@@ -144,6 +145,7 @@ export async function applyCampaignAction(
       await tx.update(character).set({ wrath: 2 }).where(eq(character.campaignId, cid));
       await clearSpendRequests(tx, { campaignId: cid }); // asked against the pools this just reset
       await clearTestCall(tx, cid); // a Test called last session is over (§11.143)
+      await clearWhispers(tx, cid); // whispers last one session (§11.164)
       await tx.update(campaign).set({ glory: 0, ruin: players, nextSessionAt: null }).where(eq(campaign.id, cid));
       await tx
         .update(session)
@@ -177,6 +179,7 @@ export async function applyCampaignAction(
       const before = await charactersOf(tx, cid);
       await clearSpendRequests(tx, { campaignId: cid }); // the session the pools were spent in is over
       await clearTestCall(tx, cid);
+      await clearWhispers(tx, cid);
       // The rolled Objective was this session's (Core p.43, §11.161); the GM's own orders stay.
       for (const c of before.filter((c) => c.objectives.some((o) => o.rolled)))
         await tx

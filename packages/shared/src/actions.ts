@@ -37,6 +37,8 @@ export const SessionJournal = z.object({
 });
 // ponytail: app limit on who one call names; a table this big needs no more.
 const MAX_CALLED = 30;
+export const MAX_WHISPER = 500;
+export const MAX_WHISPER_REPLY = 200;
 const rowId = z.string().regex(/^[a-z0-9-]+$/); // a row of the server's book data
 // A custom threat's slug (issue #43): made server-side by `threatSlug`, and the client only ever echoes one back.
 const slug = z
@@ -113,6 +115,20 @@ export const Action = z.union([
       spentWrath: z.boolean().optional(),
     }),
     z.object({ type: z.literal("test.close") }),
+
+    // A GM's private line to some Agents, and an Agent's short reply (rules-flow.md §11.164). The GM may take one back.
+    z.object({
+      type: z.literal("whisper.send"),
+      to: z.array(id).min(1).max(MAX_CALLED),
+      text: z.string().trim().min(1).max(MAX_WHISPER),
+    }),
+    z.object({
+      type: z.literal("whisper.reply"),
+      whisperId: id,
+      characterId: id,
+      text: z.string().trim().min(1).max(MAX_WHISPER_REPLY),
+    }),
+    z.object({ type: z.literal("whisper.delete"), id }),
 
     // Session start (p.162): Wrath 2 each, Glory 0, Ruin = players. End (p.321): XP to everyone.
     // `title` names the new session up front (issue #175); session.edit can change it later.
@@ -437,6 +453,8 @@ export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
   "spend.cancel",
   // Reporting a called Test's result is the player's, for their own Agent (issue #191, §11.144).
   "test.report",
+  // Answering a whisper to their own Agent (§11.164).
+  "whisper.reply",
   // The session's Objective is the player's roll (Core p.43, §11.161).
   "character.rollObjective",
 ]);
