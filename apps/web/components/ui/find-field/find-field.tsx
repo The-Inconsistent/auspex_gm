@@ -10,6 +10,7 @@ export type FindOption = {
   name: string;
   detail?: string; // a dim line under the name: its kind, its cite
   chip?: ReactNode; // on the right: a handout's reach, a spend's cost
+  also?: string; // more it can be found by, after the names: a threat's faction, book and keywords
 };
 
 type FindFieldProps = {

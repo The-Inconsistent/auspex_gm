@@ -120,3 +120,18 @@ export const ruinAbility = (table: PoolPresetTable, row: PoolPreset) => ({
   text: `${row.text} (${threatCite({ source: table.source, page: row.page ?? table.page })})`,
   weapons: [],
 });
+
+// The parts of a stat block the editor's strip jumps to (canvas Threat-Editor), each a section `th-<id>` in ThreatForm.
+export const PARTS = [
+  ["identity", "IDENTITY"],
+  ["attributes", "ATTRIBUTES"],
+  ["skills", "SKILLS"],
+  ["bonuses", "BONUSES"],
+  ["abilities", "ABILITIES"],
+  ["mob", "MOB"],
+  ["notes", "NOTES"],
+] as const;
+export type Part = (typeof PARTS)[number][0];
+
+// How long after a tap on the strip its scroll may not mark the parts it passes, as the scene editor's.
+export const TAP_SETTLE_MS = 1000;
