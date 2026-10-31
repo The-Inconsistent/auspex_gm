@@ -520,23 +520,24 @@ it by the selected row, so a new selection starts with both panels folded.
 | `SEIZE · 1 GLORY` / `1 RUIN` | As START, and also `canSeize(state, side)` (hidden when that side is up next anyway) | `turn.seize` |
 | `+ CONDITION` | A row is selected | Opens CONDITIONS · NAME: a toggle chip per `CONDITIONS` entry, ticked when on (`character.update` or `combatant.update` with the full list) |
 | `MORE` | Always | Opens the panel below; its accessible name lists what's inside |
+| `ADD TO FIGHT` | Always, last in the row (`AddCombatants`, passed as KeyBar's children) | Opens the add dialog (below) |
 
 MORE holds, in this order:
 - `AMBUSH` / `AWARE · cost`, in Round 1 when the selected row hasn't acted (`combatant.update { ambushed: true }` /
   `combatant.aware`).
-- PLAYERS SEE, a HIDDEN / BAR ONLY / FULL segment, when a threat is selected (`combatant.update { visibility }`,
-  rules-flow §11.56).
 - `NEW ROUND` (`encounter.newRound`), unless it is already the turn button.
 - `REMOVE`, when a row is selected: `combatant.remove`, then clears the selection.
 - `END FIGHT` (`encounter.end`), always.
 
-Each panel has its own CLOSE, one is open at a time, Escape closes it, and a tap on a control inside runs it and folds the
+PLAYERS SEE is the threat row's chip (below), not in MORE. Each panel is one line, its own CLOSE at the end (MORE hides
+while its panel is open; CLOSE takes focus, and MORE gets it back), one is open at a time, Escape closes it, and a tap on a control inside runs it and folds the
 panel. The Seize and Aware cost label is `1 GLORY` when the selected combatant is an agent, and `1 RUIN` otherwise. The
 server charges the cost; see [game-logic.md](game-logic.md).
 
 **Visibility chip.** Each threat row ends with a chip of what the phones see (`VISIBILITY_WORD`): `FULL`, or in a `.warn` chip
-`BARS` / `HIDDEN` (not sent at all). A tap cycles HIDDEN → BARS → FULL (`Visibility.options`) with one
-`combatant.update { visibility }`; its label says what a player sees.
+`BARS` / `HIDDEN` (not sent at all). A tap opens PLAYERS SEE, a native popover (as `ReachChip`) with all three, the
+current one pressed, each with what a phone then shows (`VISIBILITY_SEEN`); a pick sends one
+`combatant.update { visibility }` and closes it. Two taps reach any state, and FULL is never a single stray tap.
 
 **Delta pad** (`DeltaPad`, `lib/fight-delta`). A tap on a row's WOUNDS or SHOCK number selects that row and opens one pad
 under it on that track (a second tap on the same number closes it). It holds:
@@ -590,15 +591,17 @@ ROUND, `roundEndReminders` adds the Mob Resolve Tests. Typed `start`, `seize` an
 handlers (`runCommand`), so they fire the same reminders. What the reminders say is covered in
 [game-logic.md](game-logic.md).
 
-**Add combatants** (`AddCombatants`, under the command line):
+**Add combatants** (`AddCombatants`, the key bar's last button): one ADD TO FIGHT button opens a modal `<dialog>`
+holding all of it. It stays open after ADD (reinforcements come several at once), and a refusal shows inside it
+(`Refusal`), since the tracker error line sits behind the modal.
 - `+ THREAT…` opens the shared `ThreatPicker` (§5) over the bestiary, classed at the campaign's Tier.
 - `MOB #` accepts digits only. A value of 2 or more adds the threat as a mob of that size.
 - An optional MARKER select.
 - A `VisibilitySelect` (PLAYERS: BAR ONLY by default, kept between adds) so a held-back threat goes in hidden.
 - ADD sends `combatant.addThreat`.
 - `+ PARTY (n)` sends one `combatant.addCharacter` for each character not yet in the fight, in order.
-- All of these go through `run`, so they are logged and their errors show on the tracker error line.
-- Under the add row, once the fight holds anything, `BudgetLines` (§5) checks it against the same guideline STORY uses
+- All of these go through `run`, so they are logged.
+- Under the add row in the dialog, once the fight holds anything, `BudgetLines` (§5) checks it against the same guideline STORY uses
   (Threat Assessment p.8). The classes are the ones snapshotted when each threat joined (`threatClass`), a Mob counts as
   one tracked combatant with its surviving `mobCount` as models, and anything `isOut` (a slain threat, a dead Agent)
   leaves the tally even while its row waits to be removed. The budget is sized for the Agents in the fight, falling back
@@ -1037,7 +1040,7 @@ a closed dialog can't be reopened; make a new one.
 | Tab | File | Shows | The player can change |
 |---|---|---|---|
 | SHEET | `components/player/player-sheet/player-sheet.tsx` | Two views, each opening with HOW TO READ THIS SHEET (`ui/sheet-guide`, folded) and every term a tap away from its meaning (`ui/term`, `lib/sheet-terms`: our own one-line wording with its Core page, plus FULL RULE when the seat is served it). AT A GLANCE: the Traits row, ARMAMENT (each weapon with its pool, `lib/sheet-pools`, and a key to the line), the five highest skill totals. DOSSIER: the Agent as the book's character sheet (Core pp.40–41), its two pages as two iron-framed sheets (`.bs-sheet`), each box (`ui/book-sheet/components/book-box`) titled over a quill rule, in the book's order. Page 1: Personal Details (our name bar and TIER · SPECIES · XP strip, then RANK, ARCHETYPE, KEYWORDS), ATTRIBUTES as RATING / BONUS / TOTAL (`attributeTotals`: mutations and Powered, §11.160), SKILLS in two columns of nine (Attribute in grey, Rating, the Total as the dice badge), WRATH (SPEND WRATH and USES FOR WRATH in our words), CONVICTION · RESOLVE · SPEED, SURVIVAL (Defence; Resilience as Base + Armour = Total; max Wounds, max Shock, Determination), each number with the book's grey formula as a caption and any bonus after it, then WARGEAR: the Kill Team-style datacard (`ui/book-sheet/components/wargear`: a ranged or melee icon, the name with its range, Salvo and traits, DICE, DMG +ED, AP), armour, `UpgradeRow`, gear, and SUPPLY (Ammo, Wealth) beside INFLUENCE. Page 2: TALENTS & ABILITIES folded (Talents stamped TALENT), INJURIES & CORRUPTION (Traumatic against the maximum, mutations, Corruption as five rows of five circles named by level), NOTES (WHO YOU ARE, then the GM's ORDERS folded), and PASSIVE AWARENESS · XP EARNED · CURRENT XP with LEVEL UP. A box the app has no data for (Objective, Faith, Memorable Injuries, Psychic Powers, Stealth, Size, Faction, Background) isn't drawn. The JOIN page's READ shows page 1 read-only (Personal Details to WARGEAR, `Wargear` without `live`) and TALENTS & ABILITIES. The sheet itself is one component, `ui/book-sheet` (`BookSheet`), drawn by the DOSSIER, GM PARTY's SHEET and the JOIN page's READ, so a change there reaches all three | Their own detail (WHO YOU ARE); spending their own Wealth and Ammo (−1, `character.supply`); fitting upgrades; asking for a spend. Granting Wealth or Ammo, Conditions, Wounds, Shock, Wrath, Glory and RESPITE are GM only |
-| FIGHT | `components/fight/fight.tsx` | No fight: one line. Your turn: THIS TURN (`TurnActions`, Core pp.178–180), STRIKE (your weapons with their pools), SPEND (a Wrath and a Glory `RequestSpend`), and who picks after you. Otherwise a NOW ACTING plate (`Unseen threat` for `UNSEEN_ID`) and UP NEXT. Under either, both sides as lists (outlined in `--side-agents` / `--side-threats`): acted counts, a Wounds track with no number (mobs `×count of start`), the turn word, Conditions as `RuleLink`s, your own row marked YOU; a threat row toggles its `StatBlock`, or `Data restricted by the GM.` while it's `bars`; a hidden threat isn't there at all | Asking for a spend |
+| FIGHT | `components/fight/fight.tsx` | No fight: one line. Your turn: THIS TURN (one OPTIONS button, `CombatOptions`: every combat-action entry, Core pp.177–190, in closed groups by what the player is doing — YOUR TURN, MOVE, ATTACK, MELEE, SHOOTING, NOT ATTACKING, TURN ORDER — from `lib/combat-options`; an option the Agent's weapons can't use (no ranged weapon, Salvo –, no Heavy) sinks to the end of its group, faded, and says what it needs), STRIKE (your weapons with their pools), SPEND (a Wrath and a Glory `RequestSpend`), and who picks after you. Otherwise a NOW ACTING plate (`Unseen threat` for `UNSEEN_ID`) and UP NEXT. Under either, both sides as lists (outlined in `--side-agents` / `--side-threats`): acted counts, a Wounds track with no number (mobs `×count of start`), the turn word, Conditions as `RuleLink`s, your own row marked YOU; a threat row toggles its `StatBlock`, or `Data restricted by the GM.` while it's `bars`; a hidden threat isn't there at all | Asking for a spend |
 | INTEL | `components/intel/intel.tsx` | INBOX: what's new as transmission cards (handouts, then persons, then places; READ, SHOW THE TABLE), MARK ALL READ, then THE MISSION, NEXT SESSION (`lib/next-session`, ADD TO CALENDAR to `next.ics`; issue #197) and the MISSION LOG (issue #196). ARCHIVE: the codex search (`ui/codex-search`, issue #198), whose hits replace the list, then PERSONS · PLACES (nested by `placeTree`) · HANDOUTS · MISSIONS · RECAPS (issue #195). A row opens the entry sheet (a modal `<dialog>`: the entry, its picture only once the GM shows it, issue #199). SHOW THE TABLE puts a handout or a picture full screen (the Fullscreen API, else a fixed overlay) to hold up at the table | Nothing |
 | RULES | `components/ui/rules-ref/rules-ref.tsx` | The rules reference, shared with the GM's RULES tab | Nothing |
 

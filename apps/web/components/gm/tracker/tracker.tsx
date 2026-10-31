@@ -45,7 +45,7 @@ import { CritPerils } from "./components/crit-perils/crit-perils";
 import { DeltaPad } from "./components/delta-pad/delta-pad";
 import { FightRow } from "./components/fight-row/fight-row";
 import { KeyBar } from "./components/key-bar/key-bar";
-import { LOG_LIMIT, NEW_ROUND, VISIBILITY_TAP } from "./constants";
+import { LOG_LIMIT, NEW_ROUND } from "./constants";
 import type { KeyAction, LogEntry, Run, Vitals } from "./types";
 
 type TrackerProps = {
@@ -343,10 +343,6 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
       `${nameOf(threat).toUpperCase()} ${VISIBILITY_LABEL[visibility]}`,
     );
   };
-  const toggleVisibility = (c: Combatant) => {
-    if (c.kind !== "threat") return;
-    setVisibility({ threat: c, visibility: VISIBILITY_TAP[c.visibility] });
-  };
 
   // AWARE: pays to let an ambushed combatant act in Round 1.
   const handleAware = () => {
@@ -485,7 +481,7 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
                     padId={padId}
                     onSelect={() => toggleSelected(c.id)}
                     onCounter={(field) => handleCounter({ id: c.id, field })}
-                    onVisibility={() => toggleVisibility(c)}
+                    onVisibility={(visibility) => setVisibility({ threat: c, visibility })}
                   >
                     {pad?.id === c.id && (
                       <DeltaPad
@@ -515,15 +511,13 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
           conditions={sel && { name: nameOf(sel), active: conditionsOf(sel), onToggle: handleConditionToggle }}
           more={{
             ambush,
-            visibility:
-              sel?.kind === "threat"
-                ? { value: sel.visibility, onPick: (visibility) => setVisibility({ threat: sel, visibility }) }
-                : null,
             remove: sel && { label: "REMOVE", onClick: handleRemove },
             newRound: primary?.label === NEW_ROUND ? null : { label: NEW_ROUND, onClick: newRound },
             endFight: { label: "END FIGHT", onClick: () => run({ type: "encounter.end" }, "ENCOUNTER ENDED") },
           }}
-        />
+        >
+          <AddCombatants state={state} run={run} bestiary={bestiary} />
+        </KeyBar>
         <form className="cmd" onSubmit={handleCmdSubmit}>
           <span className="label" aria-hidden="true">
             ORDER ›
@@ -535,7 +529,6 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
             placeholder="hollan dmg 3 · +2 · +pinned iskra · seize daro · end"
           />
         </form>
-        <AddCombatants state={state} run={run} bestiary={bestiary} />
       </section>
 
       <aside className="tracker-side">

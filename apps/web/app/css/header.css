@@ -44,6 +44,26 @@
   gap: 8px;
   width: min(80vw, 280px);
 }
+/* A seal's pad: the panel hugs it rather than leaving the other forms' 440px mostly empty. */
+.hd-pop > .hd-pop-panel:has(> .hd-pad) {
+  width: max-content;
+}
+/* On the iron panel: CLOSE's footer keeps the panel's iron rather than the dialogs' vellum, which left bone text on
+   a light strip. */
+.hd-pad > .dlg-foot {
+  position: static;
+  padding: 8px 0 0;
+  background: transparent;
+  border-top-color: var(--bone-line);
+}
+/* An iron panel's unavailable spends stay readable: words at full strength, the dashed edge says "not now", where the
+   page's 45% fade sank bone text into the iron. */
+.band .btn:not(.primary):disabled {
+  opacity: 1;
+  color: var(--bone-2);
+  border-style: dashed;
+  box-shadow: none;
+}
 .hd-pad-row {
   display: flex;
   align-items: center;

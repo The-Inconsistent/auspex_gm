@@ -244,14 +244,18 @@
   flex-direction: column;
   gap: 6px;
 }
+/* One line: the label, the buttons, CLOSE at the end; + CONDITION's many chips wrap inside .fight-chips. */
 .fight-panel {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 8px;
-  align-items: flex-start;
+  align-items: center;
   padding: 10px 12px;
   border: 1px solid var(--line);
   background: var(--vellum-2);
+}
+.fight-panel > .fight-chips {
+  flex: 1 1 auto;
 }
 .fight-chips {
   display: flex;
@@ -325,4 +329,21 @@
     right: 0;
     width: auto;
   }
+}
+
+/* PLAYERS SEE picker (fight-row): the three choices as full-width rows, each with what a phone then shows. */
+.vis-pick {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  text-align: left;
+}
+.vis-pick[aria-pressed="true"] {
+  background: var(--red-fill);
+  color: var(--bone);
+}
+.vis-pick[aria-pressed="true"] .dim {
+  color: inherit;
 }

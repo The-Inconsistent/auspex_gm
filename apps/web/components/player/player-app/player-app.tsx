@@ -172,6 +172,7 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                     characterId={characterId}
                     send={send}
                     legend={rules.filter((r) => r.kind === "stat")}
+                    actions={rules.filter((r) => r.kind === "action")}
                   />
                 )}
                 {tab === "INTEL" && (

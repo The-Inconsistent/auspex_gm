@@ -89,6 +89,18 @@
 }
 
 /* THE SCENE | FIGHT · ROUND n: one segmented control, the pressed half filled. */
+/* FIGHT on a landscape tablet: the scene fills the body, so the table and the side panel (a tall stat block) scroll
+   on their own instead of stretching the page. Narrower, .tracker stacks and the page scrolls (globals.css). */
+@media (min-width: 1101px) {
+  .scene.fighting {
+    height: 100%;
+  }
+  .scene-fight {
+    flex: 1;
+    min-height: 0;
+  }
+}
+
 .scene-layers {
   display: flex;
   align-self: flex-start;

@@ -16,8 +16,6 @@ export const VISIBILITY_SEEN: Record<Visibility, string> = {
   bars: "bars only",
   stats: "the full stat block",
 };
-// What one tap on the chip sets: HIDDEN ↔ BARS, never FULL (book content goes to every phone only from MORE › PLAYERS SEE).
-export const VISIBILITY_TAP: Record<Visibility, Visibility> = { hidden: "bars", bars: "hidden", stats: "bars" };
 
 // The delta pad's WOUNDS | SHOCK segments and each field's DEAL | HEAL words (Shock is recovered, not healed).
 export const PAD_FIELDS = [

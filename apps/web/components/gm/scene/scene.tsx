@@ -108,7 +108,7 @@ export function Scene({ state, codex, send, bestiary, presets, onEdit, layer, on
     });
 
   return (
-    <div className="scene">
+    <div className={showing === "fight" ? "scene fighting" : "scene"}>
       {msg && (
         <div className={msg.startsWith("!") ? "red" : "accent"} role="status">
           {msg}
@@ -143,7 +143,7 @@ export function Scene({ state, codex, send, bestiary, presets, onEdit, layer, on
       )}
       {state.encounter && (
         // Mounted for the whole fight and only hidden on THE SCENE, so the vox log, UNDOs and selection survive a flip.
-        <div hidden={showing !== "fight"}>
+        <div className="scene-fight" hidden={showing !== "fight"}>
           <Tracker
             state={state}
             send={send}

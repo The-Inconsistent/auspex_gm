@@ -88,8 +88,8 @@ STORY. Switching tabs starts the new tab at its top.
   SEIZE · 1 GLORY/RUIN only when allowed, + CONDITION, MORE (ambush or aware, PLAYERS SEE, new round, remove, end fight).
 - **Delta pad:** tap a row's Wounds or Shock number. WOUNDS | SHOCK, DEAL + | HEAL −, the 1–10 keys, a signed number
   (`-3` heals, `+2` deals). Applies through the existing counter actions, so the vox log, notes and UNDO still work.
-- **PLAYERS SEE chip** per Threat: one tap toggles HIDDEN ↔ BARS only; FULL (the stat block, book content) is set only
-  from MORE, so a stray tap never shows a stat block.
+- **PLAYERS SEE chip** per Threat: a tap opens a picker of HIDDEN / BARS / FULL (2026-10-31; was HIDDEN ↔ BARS with FULL
+  only under MORE), so any state is two taps and a stray tap still never shows a stat block.
 - Numbers show what is **left** (13/18), as the bars do; the same on PARTY.
 - On a landscape tablet the side panel (the selected one's stat block, the vox log) stays beside the table; the rows drop
   CLASS, DEF and RES, which the stat block shows.

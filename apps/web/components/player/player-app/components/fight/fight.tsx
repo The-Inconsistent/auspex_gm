@@ -22,13 +22,14 @@ import { RequestSpend } from "@/components/ui/request-spend/request-spend";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { Track } from "@/components/ui/track/track";
-import { TurnActions } from "@/components/ui/turn-actions/turn-actions";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { weaponSkill } from "@/lib/sheet-pools/sheet-pools";
 
-type FightProps = { state: LiveState; characterId: string; send: Send; legend: RuleEntry[] };
+import { CombatOptions } from "./components/combat-options/combat-options";
+
+type FightProps = { state: LiveState; characterId: string; send: Send; legend: RuleEntry[]; actions: RuleEntry[] };
 
 // What a combatant is doing this Round, in words (state is never colour alone): out of the fight (Slain, Dead) and
 // ambushed in Round 1 (p.177) as @wg/shared's isOut and canAct decide, so the phone agrees with the tracker.
@@ -40,7 +41,7 @@ function turnWord(state: LiveState, c: Combatant) {
   return canAct(state, c) ? "READY" : "AMBUSHED";
 }
 
-export function Fight({ state, characterId, send, legend }: FightProps) {
+export function Fight({ state, characterId, send, legend, actions }: FightProps) {
   const [open, setOpen] = useState<string | null>(null);
   const fieldRef = useRef<HTMLDivElement>(null);
   const chars = useMemo(() => new Map(state.characters.map((c) => [c.id, c])), [state.characters]);
@@ -76,7 +77,7 @@ export function Fight({ state, characterId, send, legend }: FightProps) {
   return (
     <div className="pf">
       {myTurn && me ? (
-        <MyTurn me={me} state={state} send={send} after={after} onField={goToField} />
+        <MyTurn me={me} state={state} send={send} after={after} onField={goToField} actions={actions} />
       ) : (
         <section className="pf-now slate-card cut" aria-label="Now acting">
           <span className="xmit">+++ NOW ACTING +++</span>
@@ -187,10 +188,17 @@ export function Fight({ state, characterId, send, legend }: FightProps) {
   );
 }
 
-type MyTurnProps = { me: Character; state: LiveState; send: Send; after: string; onField: () => void };
+type MyTurnProps = {
+  me: Character;
+  state: LiveState;
+  send: Send;
+  after: string;
+  onField: () => void;
+  actions: RuleEntry[];
+};
 
-// Your Turn: what it allows, your guns, and the two spend pools. One RequestSpend dialog per pool lists that pool's spends.
-function MyTurn({ me, state, send, after, onField }: MyTurnProps) {
+// Your Turn: what it allows (one OPTIONS dialog of the combat-action entries, Core pp.177–190), your guns, and the two spend pools. One RequestSpend dialog per pool lists that pool's spends.
+function MyTurn({ me, state, send, after, onField, actions }: MyTurnProps) {
   const spend = { state, characterId: me.id, send };
   return (
     <>
@@ -199,8 +207,8 @@ function MyTurn({ me, state, send, after, onField }: MyTurnProps) {
           <h2>THIS TURN</h2>
           <i />
         </div>
-        <TurnActions />
-        <span className="pf-cap">One of each, Core pp.178–180. Tap one to read it.</span>
+        {actions.length > 0 && <CombatOptions actions={actions} weapons={me.stats.weapons} />}
+        <span className="pf-cap">One of each per Turn, Core pp.177–190. Tap one to read it.</span>
       </section>
 
       {me.stats.weapons.length > 0 && (
