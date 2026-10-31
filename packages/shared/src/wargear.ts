@@ -114,6 +114,11 @@ export const MELEE_MAX_REACH = 4;
 export const isMeleeProfile = (w: { addStrength?: boolean; range?: number[] }) =>
   !!w.addStrength || (w.range?.length === 1 && w.range[0]! <= MELEE_MAX_REACH);
 
+// A throw reaches S × N metres (Core p.208), noted as a trait on a weapon that is also swung.
+export const thrownMetres = (strength: number, n: number) => strength * n;
+const thrownTrait = (m: number) => `Thrown (${m} m)`;
+const THROWN_TRAIT = /^Thrown \(\d+ m\)$/;
+
 // A catalogue weapon as a sheet weapon. A thrown range becomes N × the character's Strength in metres (p.207); a
 // weapon that is also melee keeps its reach and notes the throw as a trait. `melee` is decided here, while a throw is
 // still told apart from a reach.
@@ -121,10 +126,10 @@ export function sheetWeapon(
   { name, weapon: { thrown, range, ...w } }: { name: string; weapon: WargearWeapon },
   strength: number,
 ) {
-  const throwM = thrown === undefined ? undefined : thrown * strength;
+  const throwM = thrown === undefined ? undefined : thrownMetres(strength, thrown);
   const melee = isMeleeProfile({ addStrength: w.addStrength, range });
   if (range === undefined) return { name, ...w, range: [throwM ?? 1], melee };
-  return { name, ...w, range, melee, traits: throwM === undefined ? w.traits : [...w.traits, `Thrown (${throwM} m)`] };
+  return { name, ...w, range, melee, traits: throwM === undefined ? w.traits : [...w.traits, thrownTrait(throwM)] };
 }
 
 // A catalogue weapon as a **Threat's** weapon (GitHub issue #43). A stat block prints final numbers, and `Weapon` has
@@ -133,7 +138,46 @@ export function sheetWeapon(
 // already makes them (Core p.208). Every number stays editable afterwards.
 export function threatWeapon(entry: { name: string; weapon: WargearWeapon }, strength: number): Weapon {
   const { addStrength, ...w } = sheetWeapon(entry, strength);
-  return Weapon.parse({ ...w, damage: addStrength ? strength + w.damage : w.damage });
+  return Weapon.parse({
+    ...w,
+    damage: addStrength ? strength + w.damage : w.damage,
+    // So a later change to S moves the Damage and the throw with it (rules-flow.md §11.165).
+    ...(addStrength ? { countsStrength: true } : {}),
+    ...(entry.weapon.thrown !== undefined ? { thrown: entry.weapon.thrown } : {}),
+  });
+}
+
+// A custom threat's weapon, as the threat editor moves it with Strength (rules-flow.md §11.165).
+type StrengthWeapon = { damage: number; range: number[]; traits?: string[]; countsStrength?: true; thrown?: number };
+
+// Thrown and nothing else: its range is the throw. One also swung keeps its reach and throws by its trait.
+const throwOnly = (w: StrengthWeapon) => w.thrown !== undefined && !w.traits?.some((t) => THROWN_TRAIT.test(t));
+
+// A melee row of the threat editor, where the "counts Strength" tick fits; a reach up to MELEE_MAX_REACH, not a throw.
+export const isMeleeWeapon = (w: StrengthWeapon) =>
+  !throwOnly(w) && isMeleeProfile({ addStrength: w.countsStrength, range: w.range });
+
+// One weapon at a new Strength: a Damage that counts S moves by the change, and a throw is S × N again, in its range
+// or its "Thrown (N m)" trait (Core pp.208, 211-213, rules-flow.md §11.165).
+export function weaponAtStrength<W extends StrengthWeapon>(w: W, { from, to }: { from: number; to: number }): W {
+  const out = w.countsStrength ? { ...w, damage: Math.max(0, w.damage + to - from) } : w;
+  if (w.thrown === undefined) return out;
+  const m = thrownMetres(to, w.thrown);
+  return throwOnly(w)
+    ? { ...out, range: [m] }
+    : { ...out, traits: w.traits?.map((t) => (THROWN_TRAIT.test(t) ? thrownTrait(m) : t)) };
+}
+
+// A range typed by hand is the GM's own number (§11.165): a throw-only weapon's range stops following S, and a reach
+// typed past melee drops the Damage's link too. A blade's new reach keeps both.
+export function withTypedRange<W extends StrengthWeapon>(w: W, range: number[]): W {
+  const melee = isMeleeProfile({ range });
+  return {
+    ...w,
+    range,
+    countsStrength: melee ? w.countsStrength : undefined,
+    thrown: melee && !throwOnly(w) ? w.thrown : undefined,
+  };
 }
 
 // A catalogue item as a gear line on the sheet (≤ 200 characters): the name, armour's AR, and where to read it.
