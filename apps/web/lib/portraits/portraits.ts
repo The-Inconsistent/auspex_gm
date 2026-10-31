@@ -81,6 +81,11 @@ const THREAT_PORTRAITS: Record<string, PortraitSlug> = {
   "canoptek-reanimator": "canoptek-macrocyte-reanimator",
   // The name "Canoptek Tomb Crawler" slugs to this (threatSlug); a renamed or clashing one gets no picture.
   "custom-canoptek-tomb-crawler": "canoptek-tomb-crawler",
+  // The Kommando specialists, made as custom threats in The Long Vigil (named "Kommando Comms Boy" and so on).
+  "custom-kommando-comms-boy": "kommando-comms-boy",
+  "custom-kommando-burna-boy": "kommando-burna-boy",
+  "custom-kommando-rokkit-boy": "kommando-rokkit-boy",
+  "custom-kommando-dakka-boy": "kommando-dakka-boy",
 };
 
 // Object.hasOwn: slugs come from the server, and "constructor" must not find Object.prototype's.
