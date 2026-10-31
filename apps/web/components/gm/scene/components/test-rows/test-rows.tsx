@@ -17,7 +17,7 @@ type TestRowsProps = {
   onReport: Report;
 };
 
-// A scene's prepared Tests, one tap each to call it to the phones (issue #191): an EACH Test asks every seated Agent, a
+// A scene's prepared Tests, one tap each to call it to the phones (issue #191): an ALL Test asks every seated Agent, a
 // ONE Test asks which Agent with a row of chips (one seated Agent needs no asking). Only what it rolls is sent; Shifts and
 // outcomes stay the GM's (rules-flow.md §11.143), in a fold under the row. A Resolve Test has FEAR beside it: Terror earns no Ruin (Core p.199).
 export function TestRows({ tests, characters, agents, send, onReport }: TestRowsProps) {
@@ -31,7 +31,7 @@ export function TestRows({ tests, characters, agents, send, onReport }: TestRows
     onReport(r, `CALLED · ${testTitle(test)}`);
   };
 
-  // The row: EACH calls everyone, ONE calls the lone Agent or opens the chips.
+  // The row: ALL calls everyone, ONE calls the lone Agent or opens the chips.
   const tap = (test: BeatTest, index: number) => {
     if (test.who === "each" || agents.length === 1) return call({ test, who: agents, index });
     setAsking(asking === index ? null : index);

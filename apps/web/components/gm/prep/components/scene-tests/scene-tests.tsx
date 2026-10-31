@@ -38,7 +38,7 @@ export function SceneTests({ tests, characters, agents, send, onReport }: SceneT
           <details key={i}>
             <summary style={{ cursor: "pointer" }}>
               <b>{testTitle(t)}</b> <span className="chip">{dnLabel(t)}</span>{" "}
-              {t.who === "each" && <span className="chip">EACH</span>}{" "}
+              {t.who === "each" && <span className="chip">ALL</span>}{" "}
               {t.shifts.length > 0 && (
                 <span className="dim">
                   {t.shifts.length} SHIFT{t.shifts.length > 1 ? "S" : ""}

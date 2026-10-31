@@ -123,6 +123,8 @@ export const TEST_POOL = {
 } as const satisfies Record<TestKind, string>;
 // One Agent rolls, or each Agent rolls their own (rules-flow.md §11.73).
 export const TestWho = z.enum(["one", "each"]);
+// The words the GM reads: ALL, as SCENE's CALL ALL says, for the stored "each".
+export const TEST_WHO_LABEL = { one: "ONE", each: "ALL" } as const satisfies Record<z.infer<typeof TestWho>, string>;
 export const MAX_TESTS = 12; // ponytail: app limits, not rules; raise them if a scene needs more
 export const MAX_SHIFTS = 5;
 export const BeatTest = z

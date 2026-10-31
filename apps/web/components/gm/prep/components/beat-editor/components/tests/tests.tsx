@@ -14,6 +14,7 @@ import {
   TEST_KIND_LABELS,
   TEST_POOL,
   TestKind,
+  TEST_WHO_LABEL,
   TestWho,
   dnLabel,
   retypeTest,
@@ -124,7 +125,7 @@ export function Tests({ tests, skillDns, onChange }: TestsProps) {
                     {t.dn === null ? dnLabel(t) : `DN ${t.dn}`} · {testTitle(t)}
                     {t.purpose.trim() ? ` · ${t.purpose.trim()}` : ""}
                   </span>
-                  <span className="dim">{t.who === "each" ? "EACH" : "ONE"}</span>
+                  <span className="dim">{TEST_WHO_LABEL[t.who]}</span>
                   {isOpen ? <ChevronUp size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}
                 </button>
               </div>
@@ -190,7 +191,7 @@ export function Tests({ tests, skillDns, onChange }: TestsProps) {
                             aria-pressed={t.who === w}
                             onClick={() => setTest(i, { who: w })}
                           >
-                            {w.toUpperCase()}
+                            {TEST_WHO_LABEL[w]}
                           </button>
                         ))}
                       </div>

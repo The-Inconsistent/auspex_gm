@@ -425,7 +425,7 @@ renders under the header, on every tab: one row per Agent asked, PENDING / PASSE
 PASSED / SET FAILED for a phone that's out, and on a failure the offer the book gives (rules-flow §11.145): **GAIN n
 CORRUPTION · +1 RUIN** (`character.corrupt` with the phone's roll) or **+1 RUIN** (`pool.adjust`), each gone once taken.
 CLOSE ends the call. SCENE's TESTS rows (§3.0a) and STORY's planned Tests (**CALL TO THE PHONES**,
-`prep/components/scene-tests/components/call-test`) call a prepared Test: all seated Agents for an EACH Test, one for the
+`prep/components/scene-tests/components/call-test`) call a prepared Test: all seated Agents for an ALL Test, one for the
 rest.
 
 ### 3.0b WHISPER: `components/gm/whisper/` (rules-flow §11.164)
@@ -460,7 +460,7 @@ the session's whispers to reread and answer.
     GM NOTES (closed on a plate), HAZARDS (`SceneHazards`, when the scene has a place), TESTS and RUIN & GLORY
     (`ScenePools`, when it has any lines). Outcome, exits and the fight are not on the page.
   - TESTS (`TestRows`): a tap on a row calls that Test to the phones (`test.call` with the Test, `who` and `fear`, which
-    replaces an open call). An EACH Test, or any Test with one seated Agent, calls the seated Agents; a ONE Test asks WHO with a chip
+    replaces an open call). An ALL Test, or any Test with one seated Agent, calls the seated Agents; a ONE Test asks WHO with a chip
     per Agent. A Resolve Test has a FEAR toggle (Terror earns no Ruin, Core p.199). Only what it rolls is sent: Shifts and
     outcomes stay with the GM (§11.143). With no seated Agent the rows are disabled.
   - **IN THIS SCENE** (`InThisScene`, `aside`): PLACE, CAST, HANDOUTS and ITEMS the scene links. A name opens its peek
@@ -741,7 +741,7 @@ SCENE; the code keeps `beat`. STORY is prep as a storyboard: you flip scene by s
     with the flag flipped) and adds the "lower the DN" reminder: the app applies no number (§11.92)
   - TESTS (`components/scene-tests/scene-tests.tsx`): the DN TABLE, SHIFTING and FAIL FORWARD rule links, then one
     `<details>` per Test whose summary is what rolls (`testTitle`), the DN (`dnLabel`: NO DN on an Opposed Test, DN · GM
-    SETS on one without a DN yet, §11.75), EACH, the Shift count and, on a Fear or Corruption Test, the Ruin reminder
+    SETS on one without a DN yet, §11.75), ALL, the Shift count and, on a Fear or Corruption Test, the Ruin reminder
     (`ruinOnFailure`, Core p.320); inside are the purpose, SHIFT 1, 2… and both outcomes, and CALL TO THE PHONES (§3.0)
   - RUIN & GLORY (`components/scene-pools/scene-pools.tsx`, issue #40): the RUIN, GLORY, COMPLICATIONS and COMBAT
     COMPLICATIONS rule links, then each Ruin and Glory line with a +N button and each spend with SPEND N. A tap sends
@@ -778,7 +778,7 @@ SCENE; the code keeps `beat`. STORY is prep as a storyboard: you flip scene by s
     items) and ×, which also drops the ON ENTRY tick. Under each, a `FindField` (`components/ui/find-field`) finds an
     entry the scene doesn't hold, or `+ NEW <KIND> “x”` saves a bare codex entry, adds it and opens its sheet. A new
     place replaces the old, its ON ENTRY tick and hazard picks; HAZARDS AT THIS PLACE stays under PLACE (issue #49).
-  - **TESTS** (`components/tests`): one row per Test (`DN 5 · <testTitle> · <purpose>`, ONE/EACH), one open at a time,
+  - **TESTS** (`components/tests`): one row per Test (`DN 5 · <testTitle> · <purpose>`, ONE/ALL; stored `each`), one open at a time,
     dragged by its handle (`hooks/use-reorder`). The open row keeps every field: KIND (`retypeTest`), the Skill or
     Attribute by `TEST_POOL`, WHO ROLLS, PURPOSE, the DN ladder (`DN_TABLE` numbers, `CORRUPTION_DNS` for Corruption, the
     name and modifier in the label) with a `NumberInput` for any other DN (§11.75), the book's example (`skillDns`, Core

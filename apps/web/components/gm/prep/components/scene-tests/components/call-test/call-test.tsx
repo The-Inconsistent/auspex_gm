@@ -14,7 +14,7 @@ type CallTestProps = {
   onReport: (r: ActionResult, ok: string) => void;
 };
 
-// CALL a planned Test to the phones (issue #191): every Agent for an EACH Test, one for the rest. FEAR is the GM's tick:
+// CALL a planned Test to the phones (issue #191): every Agent for an ALL Test, one for the rest. FEAR is the GM's tick:
 // a Resolve Test may be Terror, which p.320 gives no Ruin for (Core p.199). Only what it rolls is sent: the purpose, Shifts and outcomes stay the GM's (rules-flow.md §11.143).
 export function CallTest({ test, agents, send, onReport }: CallTestProps) {
   const [who, setWho] = useState(test.who === "each" ? ALL : (agents[0]?.id ?? ALL));
