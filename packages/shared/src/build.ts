@@ -2371,19 +2371,36 @@ const movement = (armour: { traits: string[] }) =>
   Number(armour.traits.map((t) => /^\+(\d+) M(?:ovement)?$/.exec(t)?.[1]).find(Boolean) ?? 0);
 
 // A rebuild of a character already in play keeps what play changed: Wealth, Ammo and requisitions, and the armament
-// and gear gained since (a requisitioned weapon, loot). What the new build adds joins them; nothing is dropped, and the
-// better armour is worn (only one suit counts, Core p.231). `before`, the sheet the stored build derives, says what the
-// new build adds: what both builds give is already on the sheet, maybe written in another hand (a pregen's printed
-// lines, issue #18), so a rebuild with no changes changes nothing.
+// and gear gained since (a requisitioned weapon, loot). What the new build adds joins them, what the stored build gave
+// and the new one doesn't (the GM's TAKE OUT, an option changed) leaves, and the better armour is worn (only one suit
+// counts, Core p.231). `before`, the sheet the stored build derives, says what changed: what both builds give is already
+// on the sheet, maybe written in another hand (a pregen's printed lines, issue #18), so a rebuild with no changes
+// changes nothing.
 export function keepPlay({
-  previous,
+  previous: kept,
   next,
-  before = previous,
+  before: stored,
 }: {
   previous: CharacterStats;
   next: CharacterStats;
   before?: CharacterStats;
 }): CharacterStats {
+  const before = stored ?? kept;
+  // One copy leaves per copy the stored build gave and the new one doesn't, so a requisitioned copy of the same weapon
+  // stays. Gear goes by the exact line, so a printed line in another hand stays (EDIT CARRIED takes those out). With no
+  // stored build nothing is known to have been the build's, so nothing leaves.
+  const gone = new Map<string, number>();
+  for (const w of stored?.weapons ?? []) gone.set(w.name, (gone.get(w.name) ?? 0) + 1);
+  for (const w of next.weapons) gone.set(w.name, (gone.get(w.name) ?? 0) - 1);
+  const previous = {
+    ...kept,
+    weapons: kept.weapons.filter((w) => {
+      const n = gone.get(w.name) ?? 0;
+      if (n > 0) gone.set(w.name, n - 1);
+      return n <= 0;
+    }),
+    gear: kept.gear.filter((g) => !stored?.gear.includes(g) || next.gear.includes(g)),
+  };
   // Upgrades come from two places and only one of them is the build's, so the two are kept apart: `upgrades` is what
   // the new build says the starting wargear carries (a build edit that drops one drops it here), and `fitted` is what
   // was fitted in play, which no rebuild may touch. Merging them into one list would make a removal indistinguishable
