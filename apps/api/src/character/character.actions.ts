@@ -463,6 +463,16 @@ export async function applyCharacterAction(
       return { ok: true };
     }
 
+    // The GM's hand on CARRIED: a rebuild never drops a line (keepPlay), so this is how one is fixed or taken out.
+    case "character.gear": {
+      const stats = CharacterStats.parse((await ownCharacter(tx, { campaignId: cid, id: a.id })).stats);
+      const i = stats.gear.indexOf(a.line);
+      if (i < 0) fail("That line has changed since you opened it; look again");
+      stats.gear = a.to === null ? stats.gear.toSpliced(i, 1) : stats.gear.with(i, a.to);
+      await saveStats(tx, { id: a.id, stats });
+      return { ok: true };
+    }
+
     // Corruption (Core p.286, §9). A failed Test and its +1 Ruin land in one transaction, so a refusal changes neither.
     case "character.corrupt": {
       const row = await ownCharacter(tx, { campaignId: cid, id: a.id });

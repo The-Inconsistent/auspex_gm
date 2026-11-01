@@ -40,6 +40,21 @@ export function GearTab({ character: c, influence, wargear, sessionId, send, onR
     if (r.ok) setRequisitioning(false);
   };
 
+  // EDIT CARRIED: rewrite or remove one line. The builder can't, since a rebuild keeps every line play added (keepPlay).
+  const [editing, setEditing] = useState(false);
+  const short = (line: string) => line.split(/[:(]/)[0]!.trim().toUpperCase();
+  const saveLine = async (e: FormEvent<HTMLFormElement>, line: string) => {
+    e.preventDefault();
+    const to = String(new FormData(e.currentTarget).get("to") ?? "").trim();
+    if (!to || to === line) return;
+    onResult(await send({ type: "character.gear", id: c.id, line, to }), `${c.name.toUpperCase()} ${short(to)} SAVED`);
+  };
+  const removeLine = async (line: string) =>
+    onResult(
+      await send({ type: "character.gear", id: c.id, line, to: null }),
+      `${c.name.toUpperCase()} ${short(line)} REMOVED`,
+    );
+
   const ammo = Object.entries(c.stats.ammo);
   return (
     <div className="stack">
@@ -89,7 +104,35 @@ export function GearTab({ character: c, influence, wargear, sessionId, send, onR
       )}
       <div className="stack" style={{ gap: 4 }}>
         <span className="label">CARRIED</span>
-        <div className="dim">{c.stats.gear.join(" · ") || "NOTHING LISTED"}</div>
+        {editing ? (
+          c.stats.gear.map((line) => (
+            // key is the line itself, so a saved edit remounts the field with the server's text.
+            <form key={line} className="keys" style={{ paddingTop: 0 }} onSubmit={(e) => saveLine(e, line)}>
+              <textarea
+                className="input"
+                style={{ flex: 1, minWidth: 200 }}
+                name="to"
+                rows={2}
+                maxLength={200}
+                defaultValue={line}
+                aria-label={`Carried line: ${line}`}
+              />
+              <button className="btn sm">SAVE</button>
+              <button className="btn sm danger" type="button" onClick={() => removeLine(line)}>
+                REMOVE
+              </button>
+            </form>
+          ))
+        ) : (
+          <div className="dim">{c.stats.gear.join(" · ") || "NOTHING LISTED"}</div>
+        )}
+        {(editing || c.stats.gear.length > 0) && (
+          <div className="keys">
+            <button className="btn" aria-expanded={editing} onClick={() => setEditing(!editing)}>
+              {editing ? "DONE" : "EDIT CARRIED"}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

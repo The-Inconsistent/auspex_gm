@@ -195,6 +195,14 @@ export const Action = z.union([
       wealth: delta.optional(),
       ammo: z.object({ kind: z.string().trim().min(1).max(60), delta }).optional(),
     }),
+    // GM only: rewrite (`to`) or remove (`to: null`) one CARRIED line. `line` is the text the GM saw, so an edit made
+    // against a list that changed meanwhile (a requisition, TAKE BACK) is refused instead of landing on the wrong line.
+    z.object({
+      type: z.literal("character.gear"),
+      id,
+      line: z.string().min(1).max(200),
+      to: z.string().trim().min(1).max(200).nullable(),
+    }),
     // GM only: Corruption (Core pp.285–286, §9). `delta` is a plain change (a Corrupting weapon, a GM fix); `test` is a
     // failed Corruption Test, sent with its SOURCE DN (p.285): the server adds the level modifier from the stored
     // Corruption, works out the gain and adds the GM's +1 Ruin in the same transaction.

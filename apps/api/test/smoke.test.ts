@@ -283,6 +283,31 @@ test("GM and player share a table", async (t) => {
   });
   assert.equal((await player.send({ type: "nope" } as never)).ok, false, "invalid payloads are rejected");
 
+  // EDIT CARRIED: the GM rewrites or removes one line, named by its text; a stale line is refused. Ends as it began.
+  const kit = (await gm.until((s) => s.characters.some((c) => c.id === hero.id))).characters.find(
+    (c) => c.id === hero.id,
+  )!.stats;
+  assert.ok(
+    (
+      await gm.send({
+        type: "character.update",
+        id: hero.id,
+        stats: { ...kit, gear: [...kit.gear, "Jump Pack", "Chaplet"] },
+      })
+    ).ok,
+  );
+  const carried = { type: "character.gear", id: hero.id } as const;
+  assert.deepEqual(await player.send({ ...carried, line: "Chaplet", to: null }), { ok: false, error: "GM only" });
+  assert.ok((await gm.send({ ...carried, line: "Chaplet", to: "Chaplet Ecclesiasticus" })).ok);
+  assert.ok((await gm.send({ ...carried, line: "Jump Pack", to: null })).ok);
+  assert.deepEqual(await gm.send({ ...carried, line: "Chaplet", to: null }), {
+    ok: false,
+    error: "That line has changed since you opened it; look again",
+  });
+  await gm.until((s) => s.characters.find((c) => c.id === hero.id)?.stats.gear.at(-1) === "Chaplet Ecclesiasticus");
+  assert.ok((await gm.send({ ...carried, line: "Chaplet Ecclesiasticus", to: null })).ok);
+  await gm.until((s) => s.characters.find((c) => c.id === hero.id)?.stats.gear.length === kit.gear.length);
+
   // Alternating turns: Agent, then Threat. Seize: the side that just acted pays 1 Glory to go again, once.
   const heroC = await gm.send({ type: "combatant.addCharacter", characterId: hero.id });
   const otherC = await gm.send({ type: "combatant.addCharacter", characterId: other.id });
