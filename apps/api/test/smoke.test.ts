@@ -2693,6 +2693,11 @@ test("GIVE and TAKE BACK: a found item onto an Agent's sheet and off it again (i
   assert.deepEqual((await sheet(vex)).weapons[0]!.upgradeNames, ["Red-Dot Sight"]);
   assert.ok((await take(vex, sight)).ok);
   await gm.until((s) => !s.characters.find((c) => c.id === vex)?.stats.weapons[0]?.fitted);
+  // Taken back in the session it was given in, its Wargear Test comes back: the GM can give it again (§11.114).
+  assert.equal((await sheet(vex)).requisitioned.wargear, undefined);
+  assert.ok((await give(vex, sight)).ok);
+  await refused(give(vex, await newItem({ name: "Vox Bead" })), "Vex already made this session's wargear Test (p.205)");
+  assert.ok((await take(vex, sight)).ok);
   // Deleting the Agent leaves what they were given loose.
   assert.ok((await gm.send({ type: "character.delete", id: vex })).ok);
   await eventually(() => itemOf(relic).givenTo === null && itemOf(slate).givenTo === null, "Vex's items are loose");

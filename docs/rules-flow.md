@@ -794,7 +794,10 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 114. **TAKE BACK undoes a GIVE** (GitHub issue #51). The given weapon comes off the sheet and any upgrades fitted to it
      return as gear lines, as REMOVE does. A given upgrade that has since been fitted comes off its weapon. A
      gear line the GM already deleted just ends the record. The item is loose again (no place, no NPC) and can be
-     given again; the session's Wargear Test is not refunded. *(User ruling, 2026-10-03, over the issue's "not built".)*
+     given again. Taken back in the session it was given in, the GIVE's Wargear Test is refunded, so a GIVE to the
+     wrong Agent can be undone and the item given again that session; taken back in a later session, nothing is
+     refunded. *(User ruling, 2026-10-03, over the issue's "not built"; the same-session refund added 2026-11-12, after
+     a GIVE to Tirrow could not be redone.)*
 115. **Trinkets & Charms are keepsakes and loot** (Core p.247; Darktide p.15). The Core Rulebook rolls them for a past
      life; Darktide hands them out as finds. FROM LOOT TABLE lists the three Trinket tables beside the books' loot
      tables. *(User ruling, 2026-10-03.)*

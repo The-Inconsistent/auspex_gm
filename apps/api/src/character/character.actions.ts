@@ -616,12 +616,16 @@ export async function applyCharacterAction(
         id: a.id,
         stats: { ...given, requisitioned: { ...given.requisitioned, wargear: open.id } },
       });
-      await tx.update(item).set({ givenTo: row.id, locationId: null, npcId: null }).where(eq(item.id, found.id));
+      await tx
+        .update(item)
+        .set({ givenTo: row.id, givenIn: open.id, locationId: null, npcId: null })
+        .where(eq(item.id, found.id));
       return { ok: true };
     }
 
     // TAKE BACK (rules-flow.md §11.114): whatever the GIVE put on the sheet comes off, a weapon's fitted upgrades return
-    // as gear lines, and a line the GM already removed just ends the record. The Wargear Test isn't refunded.
+    // as gear lines, and a line the GM already removed just ends the record. The Wargear Test comes back only in the
+    // session it was given in.
     case "character.takeItem": {
       const row = await ownCharacter(tx, { campaignId: cid, id: a.id });
       const found = await campaignItem(tx, { campaignId: cid, id: a.itemId });
@@ -655,8 +659,18 @@ export async function applyCharacterAction(
         else if (stats.armour.fitted?.includes(entry.id)) stats.armour = off(stats.armour);
       }
       if (stats.gear.length > MAX_GEAR) fail(`${row.name}'s gear list is full (${MAX_GEAR} lines)`);
+      // Taken back in the session it was given in, the GIVE is undone whole: its Wargear Test comes back (§11.114).
+      // That GIVE used the Test, since nothing else can once it's spent.
+      const [open] = await tx
+        .select({ id: session.id })
+        .from(session)
+        .where(and(eq(session.campaignId, cid), isNull(session.endedAt)));
+      if (open && found.givenIn === open.id && stats.requisitioned.wargear === open.id) {
+        const { wargear: _, ...rest } = stats.requisitioned;
+        stats.requisitioned = rest;
+      }
       await saveStats(tx, { id: a.id, stats });
-      await tx.update(item).set({ givenTo: null }).where(eq(item.id, found.id));
+      await tx.update(item).set({ givenTo: null, givenIn: null }).where(eq(item.id, found.id));
       return { ok: true };
     }
 

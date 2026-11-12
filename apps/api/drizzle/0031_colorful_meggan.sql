@@ -1,0 +1,1 @@
+ALTER TABLE "item" ADD COLUMN "given_in" uuid;

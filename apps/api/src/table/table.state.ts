@@ -303,7 +303,7 @@ export async function loadCodex(campaignId: string): Promise<Codex> {
     locations: locations.map(strip) as Codex["locations"],
     npcs: npcs.map(strip) as Codex["npcs"],
     handouts: handouts.map((h) => ({ ...strip(h), revealedAt: h.revealedAt?.toISOString() ?? null })),
-    items: items.map(strip) as Codex["items"],
+    items: items.map(({ givenIn: _, ...i }) => strip(i)) as Codex["items"], // givenIn is TAKE BACK's, not the table's
     customThreats,
     sessions: sessions.map((s) => ({
       id: s.id,
