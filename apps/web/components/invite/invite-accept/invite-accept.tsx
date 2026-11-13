@@ -89,14 +89,21 @@ export function InviteAccept({ code, preview: p }: InviteAcceptProps) {
             <>
               <div className="rule">PICK YOUR AGENT</div>
               {p.openCharacters.length === 0 && <span className="dim">Every agent is taken. Start a new one:</span>}
-              {p.openCharacters.map((c) => (
-                <AgentCard
-                  key={c.id}
-                  c={c}
-                  tier={p.tier}
-                  play={{ label: "PLAY", busy, onPlay: () => void accept({ characterId: c.id }) }}
-                />
-              ))}
+              {/* The Agent this player left (or was removed from) comes first, to take back as it was. */}
+              {p.openCharacters
+                .toSorted((a, b) => Number(b.id === p.yours) - Number(a.id === p.yours))
+                .map((c) => (
+                  <AgentCard
+                    key={c.id}
+                    c={c}
+                    tier={p.tier}
+                    play={{
+                      label: c.id === p.yours ? "TAKE BACK" : "PLAY",
+                      busy,
+                      onPlay: () => void accept({ characterId: c.id }),
+                    }}
+                  />
+                ))}
               <form style={{ display: "flex", gap: 8 }} onSubmit={handleNew}>
                 <input
                   className="input"

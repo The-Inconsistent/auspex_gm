@@ -225,6 +225,13 @@
       "when": 1794467727995,
       "tag": "0031_colorful_meggan",
       "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1794566030791,
+      "tag": "0032_powerful_purple_man",
+      "breakpoints": true
     }
   ]
 }

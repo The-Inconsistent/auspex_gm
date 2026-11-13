@@ -1867,6 +1867,19 @@ test("seat.leave: a player gives the Agent back to the room QR", async (t) => {
   assert.ok((await guestSock.send({ type: "seat.leave" })).ok);
   await gm.until((s) => s.access.guests.length === 0 && !s.access.members.some((m) => m.userId === "leaver"));
   assert.deepEqual(await open(), [a.id, b.id].sort(), "the room QR offers both again");
+
+  // The leaver's next invite offers their Agent back; anyone else's doesn't (InconsisTable#63).
+  const yours = async (token: string) =>
+    ((await (await get(`/invites/${room.token}`, bearer(token))).json()) as { yours: string | null }).yours;
+  assert.equal(await yours(leaver), a.id);
+  assert.equal(await yours(clerk("stranger")), null);
+  // A member the GM removed (by mistake) gets theirs back too.
+  assert.equal(
+    (await post(`/invites/${room.token}/accept`, { characterId: b.id }, bearer(clerk("removed")))).status,
+    200,
+  );
+  assert.ok((await gm.send({ type: "member.remove", userId: "removed" })).ok);
+  assert.equal(await yours(clerk("removed")), b.id);
 });
 
 test("character builder: the creation catalogue for seats, and character.build decided by the server", async (t) => {

@@ -1,6 +1,7 @@
 import { and, eq, isNull } from "drizzle-orm";
 import type { Action, ActionResult } from "@wg/shared";
 import { ownCharacter } from "../character/character.actions.ts";
+import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { accessToken, appUser, invite, membership } from "./auth.schema.ts";
@@ -19,6 +20,19 @@ export type AccessAction = Extract<
       | "screen.revoke";
   }
 >;
+
+// A seat that ended keeps the Agent in reserve with its sheet; this marks whose it was, so that account's next invite
+// offers it back (InvitePreview.yours).
+async function rememberHolder(
+  tx: Tx,
+  { campaignId, characterId, userId }: { campaignId: string; characterId: string | null; userId: string },
+) {
+  if (characterId)
+    await tx
+      .update(character)
+      .set({ lastUserId: userId })
+      .where(and(eq(character.id, characterId), eq(character.campaignId, campaignId)));
+}
 
 // GM-only (not in PLAYER_ACTIONS): invite links and removing a signed-in member. seat.leave is the player's own, and
 // member.seat is an admin's (authorize).
@@ -61,11 +75,13 @@ export async function applyAccessAction(
 
     case "member.remove": {
       if (a.userId === ctx.userId) fail("You can't remove yourself");
-      const r = await tx
+      const [r] = await tx
         .delete(membership)
         .where(and(eq(membership.campaignId, cid), eq(membership.userId, a.userId)))
-        .returning({ id: membership.id });
-      return r.length ? { ok: true } : fail("Member not found");
+        .returning({ characterId: membership.characterId });
+      if (!r) fail("Member not found");
+      await rememberHolder(tx, { campaignId: cid, characterId: r.characterId, userId: a.userId }); // removed by mistake
+      return { ok: true };
     }
     case "member.seat": {
       // Only a user the app has seen: the id is a Clerk user id, and a typo mustn't seat nobody.
@@ -95,8 +111,10 @@ export async function applyAccessAction(
     case "seat.leave": {
       // No kick: the phone navigates away on the ack, and a kick would drop the socket before the ack reaches it.
       if (ctx.role !== "player" || !ctx.characterId) fail("Only a seated player can leave");
-      if (ctx.userId)
+      if (ctx.userId) {
         await tx.delete(membership).where(and(eq(membership.campaignId, cid), eq(membership.userId, ctx.userId)));
+        await rememberHolder(tx, { campaignId: cid, characterId: ctx.characterId, userId: ctx.userId });
+      }
       // ponytail: a guest can't be told apart from another phone on the same Agent's QR, so all its guest tokens go.
       else
         await tx

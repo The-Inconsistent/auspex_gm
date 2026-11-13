@@ -44,6 +44,8 @@ export const InvitePreview = z.object({
   // account, CLAUDE.md; the page cites stay).
   character: Character.nullable(), // the invited character (mode "character")
   openCharacters: z.array(Character), // unclaimed characters to pick from (mode "room")
+  yours: z.string().nullable(), // the open Agent this signed-in visitor held before they left or were removed
+
   allowGuests: z.boolean(),
   signedIn: z.boolean(),
   member: z.boolean(),

@@ -1,0 +1,1 @@
+ALTER TABLE "character" ADD COLUMN "last_user_id" text;

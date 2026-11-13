@@ -81,6 +81,7 @@ export async function previewInvite({ code, user }: { code: string; user: AuthUs
         .from(membership)
         .where(and(eq(membership.campaignId, inv.campaignId), eq(membership.userId, user.userId)))
     : [];
+  const open = chars.filter((r) => !claimed.has(r.id));
   return {
     campaignId: inv.campaignId,
     campaignName: c?.name ?? "?",
@@ -88,10 +89,9 @@ export async function previewInvite({ code, user }: { code: string; user: AuthUs
     framework: c?.framework ?? "",
     mode: inv.mode,
     character: ch ? previewSheet(toCharacter(ch), !!user) : null,
-    openCharacters:
-      inv.mode === "room"
-        ? chars.filter((r) => !claimed.has(r.id)).map((r) => previewSheet(toCharacter(r), !!user))
-        : [],
+    openCharacters: inv.mode === "room" ? open.map((r) => previewSheet(toCharacter(r), !!user)) : [],
+    // The open Agent this account last held, so it comes back without the GM rebuilding it (InconsisTable#63).
+    yours: (user && open.find((r) => r.lastUserId === user.userId)?.id) ?? null,
     allowGuests: inv.allowGuests,
     signedIn: !!user,
     member: !!m,

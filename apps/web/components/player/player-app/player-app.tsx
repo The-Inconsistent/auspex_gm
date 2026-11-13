@@ -48,7 +48,12 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
   const myTurn = !!enc && !!myCombatant && enc.currentId === myCombatant.id;
   // LEAVE: give the seat back first, then /leave drops a guest cookie and goes home.
   const leave = async () => {
-    if (!window.confirm(`Leave ${me?.name ?? "this seat"}? Another player can then pick this Agent.`)) return;
+    if (
+      !window.confirm(
+        `Leave ${me?.name ?? "this seat"}? The Agent waits in reserve: rejoin with any invite to take it back, unless another player picks it first.`,
+      )
+    )
+      return;
     const r = await send({ type: "seat.leave" });
     // /leave is a route handler that expires the httpOnly cookie, so it needs a full navigation, not a router push.
     // eslint-disable-next-line @next/next/no-location-assign-relative-destination

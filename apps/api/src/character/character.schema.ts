@@ -34,5 +34,8 @@ export const character = pgTable("character", {
   conditions: conditions(),
   detail: jsonb().$type<Partial<CharacterDetail>>().notNull().default({}), // Adding Detail (Core pp.32–36)
   objectives: jsonb().$type<Objective[]>().notNull().default([]), // the GM's notes to this Agent's player only
+  // The account whose seat on this Agent last ended (seat.leave, member.remove), so their next invite offers it back
+  // first (InvitePreview.yours). Guests have no account, so a guest's leave leaves it as it was.
+  lastUserId: text(),
   createdAt: createdAt(),
 });

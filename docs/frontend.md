@@ -281,7 +281,7 @@ The room QR and per-character invite links point here. The page fetches `/api/in
   - Signed out: SIGN IN TO JOIN (to `/sign-in?redirect_url=/invite/<code>`), plus a note that guests may join below, or
     that the table needs an account when `allowGuests` is false.
   - A character invite: that Agent's card, with PLAY <NAME> (or PLAY <NAME> AS GUEST).
-  - A room invite: PICK YOUR AGENT from `openCharacters`, one card each, or a NEW AGENT NAME form.
+  - A room invite: PICK YOUR AGENT from `openCharacters`, one card each, or a NEW AGENT NAME form. The Agent the visitor left or was removed from (`yours`) comes first, as TAKE BACK.
   - A card (`components/agent-card/`) is made to skim: the portrait only if there is one, name, archetype · species,
     Keywords, the seven Attributes as the book's table, the three best Skills as dice badges (`lib/sheet-pools`), and the
     weapons by name; PLAY, and READ. A reserve Agent with no sheet yet shows only "No sheet yet" and PLAY.
