@@ -92,20 +92,23 @@ People sign in with Clerk accounts. Players who don't want an account can join a
 
 ## Branches and PRs
 
-Work goes through [Graphite](https://graphite.dev) (`gt`), not raw `git` branch commands, so a feature split into
-steps lands as a stack of small PRs, each based on the one below. The trunk is `main`.
+Work goes through [`gh stack`](https://github.com/github/gh-stack) (install it with `gh extension install
+github/gh-stack`), so a feature split into steps lands as a stack of small PRs, each based on the one below. The
+trunk is `main`.
 
 | Command | What it does |
 | --- | --- |
-| `gt create <branch> -a -m "<message>"` | Stage everything and commit it as a new branch on top of the current one |
-| `gt modify -a` | Amend the current branch, then restack the branches above it |
-| `gt submit --stack` | Push the stack and open or update a PR for each branch |
-| `gt sync` | Pull `main`, delete merged branches, restack the rest |
-| `gt log short` | Show the stack |
-| `gt track <branch> --parent <parent>` | Adopt a branch made with plain `git` into a stack |
+| `gh stack init <branch>` | Start a stack from `main` with a new branch, or adopt an existing branch |
+| `gh stack add <branch> -A -m "<message>"` | Stage everything and commit it as a new branch on top of the current one |
+| `git commit`, then `gh stack rebase --upstack` | Add to the current branch, then rebase the branches above it |
+| `gh stack submit` | Push the stack and open or update a PR for each branch (`--auto`: no editor, PRs as drafts) |
+| `gh stack push` | Push every branch in the stack, without touching the PRs |
+| `gh stack sync --prune` | Pull `main`, rebase the stack onto it, push, and delete branches whose PRs merged |
+| `gh stack view` | Show the stack and each PR's status |
 
-Plain `git` is still fine for reading (`status`, `diff`, `log`). Don't rebase a stacked branch with `git rebase`;
-`gt restack` keeps its parents straight.
+Plain `git` is fine for reading (`status`, `diff`, `log`) and for committing on the current branch. Don't rebase a
+stacked branch with `git rebase` or push it with `git push`: `gh stack rebase` and `gh stack push` keep the parents
+straight.
 
 ## Layout
 
