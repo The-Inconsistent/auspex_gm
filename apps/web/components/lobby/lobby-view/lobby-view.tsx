@@ -187,6 +187,15 @@ export function LobbyView({ lobby }: LobbyViewProps) {
         <UserButton />
       </header>
 
+      {/* Back in one tap after a closed tab: the seat is kept, only the page was lost. */}
+      {lobby.mine
+        .filter((g) => g.session !== null)
+        .map((g) => (
+          <Link key={g.id} className="btn primary" href={`/c/${g.id}`} style={{ width: "100%" }}>
+            RETURN TO {g.name.toUpperCase()} · SESSION {g.session}
+          </Link>
+        ))}
+
       <div className="rule">YOUR GAMES</div>
       <div className="list">
         {lobby.mine.length === 0 && (

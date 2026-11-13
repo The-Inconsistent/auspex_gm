@@ -1,4 +1,4 @@
-import { and, asc, eq, gt, isNull, or, sql } from "drizzle-orm";
+import { and, asc, eq, isNull, sql } from "drizzle-orm";
 import type { AuthUser } from "@wg/auth/api";
 import { AcceptInvite, type Character, type InvitePreview } from "@wg/shared";
 import { campaign } from "../campaign/campaign.schema.ts";
@@ -9,20 +9,25 @@ import { accessToken, invite, membership } from "./auth.schema.ts";
 import { toCharacter } from "../table/table.state.ts";
 import { hash, issueToken } from "./auth.service.ts";
 
-// A live invite by its code: not revoked, not expired, uses left.
-async function liveInvite(conn: Db, code: string) {
+const DEAD_INVITE = "This invite has expired or was already used. Ask your GM for a new one";
+
+// An invite by its code, live or not.
+async function findInvite(conn: Db, code: string) {
   const [row] = await conn
     .select()
     .from(invite)
-    .where(
-      and(
-        eq(invite.codeHash, hash(code)),
-        isNull(invite.revokedAt),
-        gt(invite.expiresAt, new Date()),
-        or(isNull(invite.maxUses), sql`${invite.uses} < ${invite.maxUses}`),
-      ),
-    );
-  return row ?? fail("This invite has expired or was already used. Ask your GM for a new one");
+    .where(eq(invite.codeHash, hash(code)));
+  return row;
+}
+
+// Not revoked, not expired, uses left.
+const isLive = (row: typeof invite.$inferSelect) =>
+  !row.revokedAt && row.expiresAt > new Date() && (row.maxUses === null || row.uses < row.maxUses);
+
+// A live invite by its code.
+async function liveInvite(conn: Db, code: string) {
+  const row = await findInvite(conn, code);
+  return row && isLive(row) ? row : fail(DEAD_INVITE);
 }
 
 // Characters someone plays: a member holds the seat or a live guest token points at them (activeCharacterIds, web).
@@ -65,7 +70,15 @@ const previewSheet = (c: Character, signedIn: boolean): Character => {
 };
 
 export async function previewInvite({ code, user }: { code: string; user: AuthUser | null }): Promise<InvitePreview> {
-  const inv = await liveInvite(db, code);
+  const inv = (await findInvite(db, code)) ?? fail(DEAD_INVITE);
+  const [m] = user
+    ? await db
+        .select({ id: membership.id })
+        .from(membership)
+        .where(and(eq(membership.campaignId, inv.campaignId), eq(membership.userId, user.userId)))
+    : [];
+  // A used or expired link still takes its own seated player back to the table (OPEN TABLE); anyone else is refused.
+  if (!m && !isLive(inv)) fail(DEAD_INVITE);
   const [c] = await db
     .select({ name: campaign.name, tier: campaign.tier, framework: campaign.framework })
     .from(campaign)
@@ -75,12 +88,6 @@ export async function previewInvite({ code, user }: { code: string; user: AuthUs
     claimedCharacterIds(db, inv.campaignId),
   ]);
   const ch = chars.find((r) => r.id === inv.characterId);
-  const [m] = user
-    ? await db
-        .select({ id: membership.id })
-        .from(membership)
-        .where(and(eq(membership.campaignId, inv.campaignId), eq(membership.userId, user.userId)))
-    : [];
   return {
     campaignId: inv.campaignId,
     campaignName: c?.name ?? "?",
