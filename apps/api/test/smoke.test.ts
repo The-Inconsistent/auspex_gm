@@ -1736,6 +1736,11 @@ test("accounts: lobby, room and character invites, guests, removing a member", a
   );
   assert.equal((await post(`/invites/${one.token}/accept`, {}, bearer(bob))).status, 200);
   assert.equal((await post(`/invites/${one.token}/accept`, {}, bearer(cat))).status, 400, "used up");
+  // Return to session: the used link still opens for the player it seated, and for nobody else.
+  const back = await get(`/invites/${one.token}`, bearer(bob));
+  assert.equal(back.status, 200);
+  assert.equal(((await back.json()) as { member: boolean }).member, true, "seated player gets OPEN TABLE");
+  assert.equal((await get(`/invites/${one.token}`, bearer(cat))).status, 400, "used up for a stranger");
   assert.deepEqual(await gm.send({ type: "invite.create", mode: "character" }), {
     ok: false,
     error: "Pick a character to invite",

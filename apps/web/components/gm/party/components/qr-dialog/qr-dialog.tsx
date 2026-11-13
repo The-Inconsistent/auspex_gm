@@ -24,6 +24,8 @@ export function QrDialog({ qr, onClose }: QrDialogProps) {
         <div className="dim" style={{ fontSize: 12, wordBreak: "break-all", maxWidth: 360 }}>
           {qr.url}
         </div>
+        {/* The code dies with this dialog (only its hash is kept), so a player who closes their tab returns via the lobby. */}
+        <div className="dim">Lost the page? Open {new URL(qr.url).host} and tap RETURN.</div>
         <button className="btn" onClick={onClose}>
           CLOSE
         </button>
