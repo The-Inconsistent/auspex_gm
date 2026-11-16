@@ -1,7 +1,17 @@
 "use client";
-import { BookOpen, ChevronLeft, EllipsisVertical, RadioTower, ScrollText, Swords, type LucideIcon } from "lucide-react";
+import {
+  BookOpen,
+  ChevronLeft,
+  EllipsisVertical,
+  RadioTower,
+  ScrollText,
+  Swords,
+  Volume2,
+  VolumeX,
+  type LucideIcon,
+} from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Show, UserButton } from "@wg/auth/react";
 import { UNSEEN_ID, type RuleEntry } from "@wg/shared";
@@ -25,7 +35,8 @@ import { freshCount } from "@/lib/seen/seen";
 import { Fight } from "./components/fight/fight";
 import { Intel } from "./components/intel/intel";
 import { VitalsStrip } from "./components/vitals-strip/vitals-strip";
-import { FOLD_UNDER_PX, PLAYER_TABS, TAB_PARAM, TURN_VIBRATION, type PlayerTab } from "./constants";
+import { FOLD_UNDER_PX, PLAYER_TABS, TAB_PARAM, type PlayerTab } from "./constants";
+import { useTurnAlert } from "./hooks/use-turn-alert/use-turn-alert";
 
 type PlayerAppProps = { campaignId: string; characterId: string; rules: RuleEntry[] };
 
@@ -55,12 +66,7 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
     if (r.ok) window.location.href = "/leave";
   };
 
-  // External system: the device vibration motor (navigator.vibrate). Buzz once when it becomes your turn.
-  const wasMyTurn = useRef(false);
-  useEffect(() => {
-    if (myTurn && !wasMyTurn.current) navigator.vibrate?.(TURN_VIBRATION);
-    wasMyTurn.current = myTurn;
-  }, [myTurn]);
+  const turnAlert = useTurnAlert(myTurn);
 
   // External system: the page scroll (IntersectionObserver). Once the marker near the top of the body slides under the
   // open header, the vitals strip folds to one line; the folded header is shorter, so it only opens again near the top.
@@ -110,8 +116,14 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
       <RulesProvider rules={rules}>
         <PictureProvider campaignId={campaignId}>
           <MentionsProvider codex={codex} missing="(unknown)">
-            <div className="pl">
-              <header className={`pl-head band torn slate-card ${myTurn ? "up" : ""}`}>
+            <div className="pl" onPointerUpCapture={turnAlert.handleTap}>
+              {/* Always mounted, so a screen reader announces the text when it appears. */}
+              <div className={`turn-flash ${turnAlert.flashing ? "on" : ""}`} aria-live="assertive">
+                {turnAlert.flashing && "Your turn"}
+              </div>
+              <header
+                className={`pl-head band torn slate-card ${myTurn ? "up" : ""} ${turnAlert.flashing ? "alert" : ""}`}
+              >
                 {/* In the header, not fixed over it, so it never covers the menu or the account button. */}
                 {!online && <div className="badge-offline">NO SIGNAL</div>}
                 <div className="pl-top">
@@ -129,11 +141,26 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                   <Show when="signed-in">
                     <UserButton />
                   </Show>
-                  <button type="button" className="pl-ic" popoverTarget="pl-menu" aria-label="Menu: theme, leave">
+                  <button
+                    type="button"
+                    className="pl-ic"
+                    popoverTarget="pl-menu"
+                    aria-label="Menu: theme, turn sound, leave"
+                  >
                     <EllipsisVertical size={20} aria-hidden />
                   </button>
                   <div id="pl-menu" popover="auto" className="pl-menu">
                     <ThemeToggle />
+                    <button
+                      type="button"
+                      className="btn sm"
+                      aria-label="Turn alert sound"
+                      aria-pressed={turnAlert.sound}
+                      title={turnAlert.sound ? "Turn sound: on" : "Turn sound: off"}
+                      onClick={() => void turnAlert.toggleSound()}
+                    >
+                      {turnAlert.sound ? <Volume2 size={16} aria-hidden /> : <VolumeX size={16} aria-hidden />}
+                    </button>
                     <button className="btn sm" onClick={leave}>
                       LEAVE
                     </button>
