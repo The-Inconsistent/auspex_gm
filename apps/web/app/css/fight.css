@@ -433,3 +433,64 @@
 .vis-pick[aria-pressed="true"] .dim {
   color: inherit;
 }
+
+/* The attack guide in the tracker's side column: the book's five attack steps (Core pp.182–183) with the numbers. */
+.atk {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.atk-steps {
+  margin: 0;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.atk-steps li > b,
+.atk-then > b {
+  font-family: var(--display);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+.atk p {
+  margin: 2px 0 0;
+}
+.atk-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+.atk-dmg {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+.atk-dmg label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--display);
+  font-size: 11px;
+}
+.atk-input {
+  width: 64px;
+  min-height: 40px;
+  padding: 4px 8px;
+  border: 1px solid var(--ink);
+  background: var(--vellum);
+  color: var(--ink);
+  font: inherit;
+  font-size: 18px;
+  text-align: center;
+}
+.atk-result {
+  color: var(--red);
+}
+.atk-then {
+  border: 1px solid var(--line);
+  padding: 8px 10px;
+}
