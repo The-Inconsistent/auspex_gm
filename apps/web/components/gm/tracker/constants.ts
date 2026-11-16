@@ -41,5 +41,19 @@ export const TURN_MARK_LABEL: Record<TurnMark, string> = {
 };
 export const SETUP_MARK_LABEL = { ready: "ACTS", ambushed: "AMBUSHED" } as const;
 
+// What a row's turn dialog can ask for; the tracker maps each to its action.
+export const TURN_DOS = [
+  "start",
+  "justGo",
+  "seize",
+  "end",
+  "hold",
+  "markDone",
+  "notYet",
+  "interrupt",
+  "aware",
+  "ambush",
+] as const;
+
 // The key bar's two fold-open panels.
 export const KEY_PANELS = ["conditions", "more"] as const;

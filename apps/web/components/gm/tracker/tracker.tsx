@@ -279,18 +279,18 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
   // START / SEIZE / JUST GO: starts the combatant's turn (the api ends the current one first, §11.168), then lists Conditions
   // that tick at turn end for the one that was cut off and at turn start for this one, and the timed ones the api will
   // end with this Turn (§11.8).
-  const startTurn = async (c: Combatant, mode: "start" | "seize" | "force") => {
+  const startTurn = async (c: Combatant, mode: Extract<TurnDo, "start" | "justGo" | "seize">) => {
     const name = nameOf(c).toUpperCase();
     const prev = current && current.id !== c.id ? current : null;
     const r = await run(
       mode === "seize"
         ? { type: "turn.seize", id: c.id }
-        : mode === "force"
+        : mode === "justGo"
           ? { type: "turn.start", id: c.id, force: true }
           : { type: "turn.start", id: c.id },
       mode === "seize"
         ? `SEIZE · ${name} ACTING`
-        : mode === "force"
+        : mode === "justGo"
           ? `JUST GO · ${name} ACTING (out of order)`
           : `${name} ACTING`,
     );
@@ -333,7 +333,7 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
       case "start":
         return startTurn(c, "start");
       case "justGo":
-        return startTurn(c, "force");
+        return startTurn(c, "justGo");
       case "seize":
         return startTurn(c, "seize");
       case "end":
@@ -348,6 +348,8 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
         return run({ type: "turn.interrupt", id: c.id }, `${name} INTERRUPTS`);
       case "aware":
         return run({ type: "combatant.aware", id: c.id }, `${name} AWARE (${costOf(c)})`);
+      case "ambush":
+        return run({ type: "combatant.update", id: c.id, ambushed: true }, `${name} AMBUSHED`);
     }
   };
 
@@ -371,7 +373,7 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
     if (a.type === "encounter.newRound") return newRound();
     if (a.type === "turn.back") return turnBack();
     const c = (a.type === "turn.start" || a.type === "turn.seize") && enc.combatants.find((x) => x.id === a.id);
-    if (c) return startTurn(c, a.type === "turn.seize" ? "seize" : a.force ? "force" : "start");
+    if (c) return startTurn(c, a.type === "turn.seize" ? "seize" : a.force ? "justGo" : "start");
     return run(a, `> ${cmd.toUpperCase()}`);
   };
 
@@ -551,6 +553,7 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
                       nextSide: offSide ? next : null,
                       seizeCost: canSeize(state, sideOf(c)) ? costOf(c) : null,
                       awareCost: costOf(c),
+                      canAmbush: enc.round === 1,
                       onDo: (d) => doTurn(c, d),
                     }}
                     portrait={portraits ? portraitOf(c) : undefined}

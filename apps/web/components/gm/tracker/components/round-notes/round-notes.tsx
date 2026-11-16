@@ -12,8 +12,8 @@ export function RoundNotes({ head, items }: RoundNotesProps) {
       <span className="label">{head}</span>
       {items.length > 0 && (
         <ul>
-          {items.map((t) => (
-            <li key={t}>{t}</li>
+          {items.map((t, i) => (
+            <li key={i}>{t}</li>
           ))}
         </ul>
       )}
