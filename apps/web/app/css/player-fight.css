@@ -341,7 +341,7 @@ button.pf-hdr {
 .pf-pick[aria-pressed="true"]::after {
   content: "\25A0 CHOSEN";
   margin-left: auto;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--bone-2);

@@ -3,7 +3,7 @@ import { z } from "zod";
 // A spend a player asks the GM to make from their phone (rules-flow.md §11.122). The request is a convenience: the GM's
 // ACCEPT runs the same pool, Wrath and Seize handlers the tablet already has, so the rules stay in one place.
 // determination: the Icons the Agent rolled for Determination (p.196); the GM's ACCEPT turns that many of its Wounds
-// into Shock (rules-flow §11.171). It costs nothing.
+// into Shock (rules-flow §11.172). It costs nothing.
 export const SpendKind = z.enum(["reroll", "restoreShock", "gloryDice", "gloryDamage", "seize", "determination"]);
 export type SpendKind = z.infer<typeof SpendKind>;
 export const SPEND_KINDS = SpendKind.options;

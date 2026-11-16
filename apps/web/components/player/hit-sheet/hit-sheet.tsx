@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-import { deriveStats, pcStatus, type Character, type LiveState } from "@wg/shared";
+import { deriveStats, isExhausted, type Character, type LiveState } from "@wg/shared";
 
 import { TURN_VIBRATION } from "@/components/player/player-app/constants";
 import { Refusal } from "@/components/ui/refusal/refusal";
@@ -15,8 +15,9 @@ const MAX_CHIPS = 10;
 
 // YOU'RE HIT: when this Agent's Wounds go up during a fight, a bottom sheet (the called Test's pattern) says what to roll.
 // Determination (Core p.196): roll Toughness dice, each Icon turns 1 Wound into 1 Shock, never against Mortal Wounds
-// (p.193). The phone only reports the Icons; the GM accepts it from SPEND ASKED (§11.171). The previous Wounds are kept
-// in state and compared during render, so the first render and any decrease (healing, GM edits) open nothing.
+// (p.193). The phone only reports the Icons; the GM accepts it from SPEND ASKED (§11.172). The previous Wounds are kept
+// in state and compared during render, so the first render and any decrease (healing, GM edits) open nothing. A second
+// hit while it's open adds to it; TURN BACK below the first hit, or the fight ending, closes it.
 export function HitSheet({ me, state, send }: HitSheetProps) {
   const [prev, setPrev] = useState(me.wounds);
   const [hit, setHit] = useState<Hit | null>(null);
@@ -25,10 +26,11 @@ export function HitSheet({ me, state, send }: HitSheetProps) {
   if (me.wounds !== prev) {
     setPrev(me.wounds);
     if (me.wounds > prev && fighting) {
-      setHit({ from: prev, to: me.wounds });
+      setHit({ from: hit?.from ?? prev, to: me.wounds });
       setError(null);
-    }
+    } else if (hit) setHit(me.wounds <= hit.from ? null : { ...hit, to: me.wounds });
   }
+  if (hit && !fighting) setHit(null);
 
   // External system: the device vibration motor. Buzz once for each hit as it opens.
   const opened = hit ? `${hit.from}-${hit.to}` : null;
@@ -38,7 +40,7 @@ export function HitSheet({ me, state, send }: HitSheetProps) {
 
   if (!hit || !fighting) return null;
   const d = deriveStats({ stats: me.stats, overrides: me.overrides, tier: state.campaign.tier });
-  const exhausted = pcStatus(me, d).includes("Exhausted");
+  const exhausted = isExhausted({ shock: me.shock, maxShock: d.maxShock, conditions: me.conditions });
   const n = hit.to - hit.from;
   const chips = Array.from({ length: Math.min(n, MAX_CHIPS) + 1 }, (_, i) => i);
 
@@ -65,7 +67,7 @@ export function HitSheet({ me, state, send }: HitSheetProps) {
       </div>
       <div className="pt-body">
         {exhausted ? (
-          <p className="ph-note">You&rsquo;re Exhausted, so you can&rsquo;t roll Determination (p.196).</p>
+          <p className="ph-note">You&rsquo;re Exhausted, so you can&rsquo;t roll Determination (p.199).</p>
         ) : (
           <section className="ph-det" aria-label="Determination">
             <h3 className="pt-pool-roll">DETERMINATION (p.196)</h3>

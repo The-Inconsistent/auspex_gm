@@ -16,8 +16,8 @@ import { useCallback, useState } from "react";
 import { Show, UserButton } from "@wg/auth/react";
 import { UNSEEN_ID, type RuleEntry } from "@wg/shared";
 
-import { PlayerSheet } from "@/components/player/player-sheet/player-sheet";
 import { HitSheet } from "@/components/player/hit-sheet/hit-sheet";
+import { PlayerSheet } from "@/components/player/player-sheet/player-sheet";
 import { TestPrompt } from "@/components/player/test-prompt/test-prompt";
 import { WhisperSheet } from "@/components/player/whisper-sheet/whisper-sheet";
 import { ArchivedBanner } from "@/components/ui/archived-banner/archived-banner";
