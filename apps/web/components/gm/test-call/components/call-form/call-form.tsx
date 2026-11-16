@@ -25,14 +25,16 @@ import { NEW_CALL, SKILL_NAMES } from "../../constants";
 
 type CallFormProps = { agents: Character[]; send: Send; onResult: (r: ActionResult) => void };
 
-// CALL A TEST: what it rolls, its DN, and who rolls it. Collapsed until wanted, so it costs the tablet one line. Every
-// seated Agent rolls unless the GM unticks them, so one who sits down later is in, and one who leaves is out.
+// CALL A TEST: what it rolls, its DN, and who rolls it. Collapsed until wanted, so it costs the tablet one line. A tapped
+// name picks that Agent, as the scene's chips do (a GM who tapped names here once took them out and their phones got
+// nothing); ALL picks every seated Agent. Only seated Agents are offered, so one who leaves drops out of the pick.
 export function CallForm({ agents, send, onResult }: CallFormProps) {
   const [test, setTest] = useState<BeatTest>(NEW_CALL);
   const [fear, setFear] = useState(false);
   const [hideDn, setHideDn] = useState(false);
-  const [left, setLeft] = useState<Set<string>>(new Set()); // Agents the GM unticked
-  const who = agents.filter((c) => !left.has(c.id)).map((c) => c.id);
+  // A lone seated Agent needs no picking (as the scene's ONE Test).
+  const [picked, setPicked] = useState<ReadonlySet<string>>(() => new Set(agents.length === 1 ? [agents[0]!.id] : []));
+  const who = agents.filter((c) => picked.has(c.id)).map((c) => c.id);
   const pool = TEST_POOL[test.kind];
   const dns: readonly number[] = test.kind === "corruption" ? CORRUPTION_DNS : DN_TABLE.map((r) => r.dn);
 
@@ -57,10 +59,13 @@ export function CallForm({ agents, send, onResult }: CallFormProps) {
 
   // An Agent in or out of the call.
   const handleWho = (id: string) => {
-    const next = new Set(left);
+    const next = new Set(picked);
     if (!next.delete(id)) next.add(id);
-    setLeft(next);
+    setPicked(next);
   };
+
+  // ALL: every seated Agent rolls.
+  const handleAll = () => setPicked(new Set(agents.map((c) => c.id)));
 
   // CALL: replaces any open call (§11.143).
   const handleCall = async () => onResult(await send({ type: "test.call", test, who, fear, hideDn }));
@@ -119,11 +124,16 @@ export function CallForm({ agents, send, onResult }: CallFormProps) {
         )}
       </div>
       <div className="keys" role="group" aria-label="Agents who roll" style={{ marginTop: 6 }}>
+        {agents.length > 1 && (
+          <button className="btn sm" disabled={who.length === agents.length} onClick={handleAll}>
+            ALL
+          </button>
+        )}
         {agents.map((c) => (
           <button
             key={c.id}
-            className={`btn sm ${left.has(c.id) ? "" : "primary"}`}
-            aria-pressed={!left.has(c.id)}
+            className={`btn sm ${picked.has(c.id) ? "primary" : ""}`}
+            aria-pressed={picked.has(c.id)}
             onClick={() => handleWho(c.id)}
           >
             {c.name.toUpperCase()}
