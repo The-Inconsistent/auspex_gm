@@ -474,11 +474,11 @@
   align-items: center;
   gap: 6px;
   font-family: var(--display);
-  font-size: 11px;
+  font-size: 12px;
 }
 .atk-input {
   width: 64px;
-  min-height: 40px;
+  min-height: 44px;
   padding: 4px 8px;
   border: 1px solid var(--ink);
   background: var(--vellum);

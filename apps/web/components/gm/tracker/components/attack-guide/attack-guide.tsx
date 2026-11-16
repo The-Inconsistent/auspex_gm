@@ -5,6 +5,8 @@ import {
   deriveStats,
   effectiveStrength,
   hitDn,
+  mobBonusDice,
+  pcStatus,
   threatAttackPool,
   threatStatus,
   woundsFromDamage,
@@ -36,7 +38,7 @@ function look(c: Combatant, state: LiveState) {
     const d = deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: state.campaign.tier });
     return {
       name: ch.name,
-      wounded: ch.wounds > 0,
+      wounded: pcStatus(ch, d).includes("Wounded"),
       defence: d.defence,
       resilience: d.resilience,
       maxWounds: d.maxWounds,
@@ -77,6 +79,9 @@ export function AttackGuide({ state, attacker, target, run }: AttackGuideProps) 
   const base = weapon ? weapon.damage + (weapon.addStrength ? strength : 0) : 0;
   const brutal = weapon?.traits.some((x) => x === "Brutal") ? rules.find("Brutal")[0]?.gist : undefined;
   const mob = target?.kind === "threat" && target.mobCount !== null;
+  // Troops can't inflict Critical Hits or suffer Complications unless the stat block says so (p.323).
+  const troop = attacker.kind === "threat" && attacker.threatClass === "T";
+  const mobBonus = attacker.kind === "threat" && attacker.mobCount ? mobBonusDice(attacker.mobCount) : 0;
   const visibility = target?.kind === "threat" ? target.visibility : "stats";
 
   return (
@@ -114,7 +119,9 @@ export function AttackGuide({ state, attacker, target, run }: AttackGuideProps) 
         <li>
           <b>DICE POOL</b>
           <p>
-            {pool?.dice != null ? `${pool.dice} dice · ${pool.skill}, one of them the Wrath Die` : "Pool not printed"}
+            {pool?.dice != null
+              ? `${pool.dice + mobBonus} dice · ${pool.skill}${mobBonus ? `, +${mobBonus} for the Mob (p.324)` : ""}${troop ? "" : ", one of them the Wrath Die"}`
+              : "Pool not printed"}
           </p>
         </li>
         {!t ? (
@@ -147,7 +154,10 @@ export function AttackGuide({ state, attacker, target, run }: AttackGuideProps) 
             <li>
               <b>WOUNDS</b>
               {mob ? (
-                <p>Mob: one hit kills a member; each Icon over Defence hits one more (p.325) — use the Wounds pad.</p>
+                <p>
+                  Mob: damage over its Resilience kills a member; each Icon over Defence hits one more (p.325). Use the
+                  Wounds pad.
+                </p>
               ) : t.resilience === undefined || !target ? (
                 <p className="dim">No Resilience on this stat block.</p>
               ) : (
@@ -157,6 +167,7 @@ export function AttackGuide({ state, attacker, target, run }: AttackGuideProps) 
                   name={t.name}
                   resilience={t.resilience}
                   ap={weapon?.ap ?? 0}
+                  takesShock={target.kind === "pc" || target.maxShock !== null}
                   run={run}
                 />
               )}
@@ -167,7 +178,11 @@ export function AttackGuide({ state, attacker, target, run }: AttackGuideProps) 
       {t && target && !mob && (
         <div className="atk-then">
           <b>THEN</b>
-          <p>Wrath Die 6 on a hit: Critical Hit, +1 Glory (pp.183, 197). A 1: Complication (p.191).</p>
+          <p>
+            {troop
+              ? "A Troop: no Critical Hits or Complications unless its stat block gives it a Wrath or Complication ability (p.323)."
+              : `Wrath Die 6 on a hit: Critical Hit${attacker.kind === "pc" ? ", +1 Glory" : ""} (pp.183, 197); one that doesn't beat Resilience still does 1 Wound (p.197). A 1: Complication (p.191).`}
+          </p>
           <p>{determination(target)}</p>
           <p>{death(target, t.maxWounds)}</p>
         </div>
@@ -200,14 +215,15 @@ type WoundsProps = {
   name: string;
   resilience: number;
   ap: number;
+  takesShock: boolean; // false for a Threat whose Shock is "–" (p.324)
   run: AttackGuideProps["run"];
 };
 
 // The damage total the table rolled, and what it does. Keyed by attacker, target and weapon so it clears itself.
-function Wounds({ target, name, resilience, ap, run }: WoundsProps) {
+function Wounds({ target, name, resilience, ap, takesShock, run }: WoundsProps) {
   const [text, setText] = useState("");
   const damage = /^\d{1,3}$/.test(text) ? Number(text) : null;
-  const out = damage === null ? null : woundsFromDamage({ damage, resilience, ap });
+  const out = damage === null ? null : woundsFromDamage({ damage, resilience, ap, takesShock });
   const result = !out ? "" : out.wounds ? `${out.wounds} WOUNDS` : out.shock ? "1 SHOCK" : "NO WOUNDS";
 
   const apply = async () => {
