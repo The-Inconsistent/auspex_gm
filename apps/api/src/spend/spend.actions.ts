@@ -51,7 +51,7 @@ export async function applySpendAction(
   switch (a.type) {
     case "spend.request": {
       const row = await ownCharacter(tx, { campaignId: cid, id: a.characterId });
-      const amount = spendTakesAmount(a.kind) ? a.amount : 1; // only the Glory kinds have an amount to keep
+      const amount = spendTakesAmount(a.kind) ? a.amount : 1; // only the Glory kinds and Determination have an amount to keep
       if (a.kind === "seize" && !(await activeEncounterId(tx, cid))) fail("No fight to Seize the Initiative in");
       const mine = await tx
         .select({ kind: spendRequest.kind })
@@ -147,7 +147,8 @@ async function spendIt(tx: Tx, { ctx, request: r }: { ctx: Ctx; request: typeof 
       return;
 
     // Each Icon rolled turns one Wound into Shock (p.196), never while Exhausted (p.199). It costs nothing, so there's
-    // no pool to check; k is capped by the Wounds there are to turn.
+    // no pool to check; k is capped by the Wounds there are to turn. Raw: it reduces the Wounds the hit dealt, so an
+    // Agent the hit made Dying stays Dying unless the Icons bring them back to max (pcHit's healing clamp would not).
     case "determination": {
       const tier = await campaignTier(tx, cid);
       const c = toCharacter(row);
@@ -158,7 +159,7 @@ async function spendIt(tx: Tx, { ctx, request: r }: { ctx: Ctx; request: typeof 
       if (k <= 0) fail("No Wounds to turn into Shock");
       await applyCharacterAction(tx, {
         ctx,
-        action: { type: "character.adjust", id: row.id, wounds: -k, shock: k },
+        action: { type: "character.adjust", id: row.id, wounds: -k, shock: k, raw: true },
       });
       return;
     }

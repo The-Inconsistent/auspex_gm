@@ -356,34 +356,6 @@ test("GM and player share a table", async (t) => {
     (s) => s.encounter?.round === 2 && s.encounter.combatants.every((c) => !c.acted) && s.encounter.lastSide === null,
   );
 
-  // Round start: only the GM can Seize (1 Ruin) to let a Threat go first; not twice in a row.
-  await gm.send({ type: "pool.adjust", pool: "ruin", delta: 3 });
-  assert.ok((await gm.send({ type: "turn.seize", id: ork.id })).ok, "GM seizes the first turn");
-  await gm.send({ type: "turn.end" });
-  // TURN BACK (§11.170) undoes END TURN; HOLD keeps the action for an INTERRUPT, MARK fixes a row.
-  assert.ok((await gm.send({ type: "turn.back" })).ok);
-  await gm.until(
-    (s) => s.encounter?.currentId === ork.id && !s.encounter?.combatants.find((c) => c.id === ork.id)?.acted,
-  );
-  assert.ok((await gm.send({ type: "turn.end" })).ok);
-  assert.ok((await gm.send({ type: "turn.start", id: heroC.id })).ok);
-  assert.ok((await gm.send({ type: "turn.hold" })).ok);
-  await gm.until((s) => s.encounter?.combatants.find((c) => c.id === heroC.id)?.held === true);
-  assert.ok((await gm.send({ type: "turn.interrupt", id: heroC.id })).ok);
-  assert.deepEqual(await gm.send({ type: "turn.interrupt", id: heroC.id }), {
-    ok: false,
-    error: "Not holding an action",
-  });
-  // An interrupt is the held action, not a Turn (p.187): the row stays done until NOT YET gives it another.
-  assert.ok((await gm.send({ type: "turn.mark", id: heroC.id, acted: false })).ok);
-  assert.ok((await gm.send({ type: "turn.start", id: heroC.id })).ok);
-  assert.deepEqual(await gm.send({ type: "turn.mark", id: heroC.id, acted: true }), {
-    ok: false,
-    error: "Acting now: END TURN first",
-  });
-  assert.ok((await gm.send({ type: "turn.end" })).ok);
-  assert.ok((await gm.send({ type: "turn.mark", id: otherC.id, acted: true })).ok);
-  assert.ok((await gm.send({ type: "turn.mark", id: otherC.id, acted: false })).ok);
   const seatedOnly = await player.until((s) => !!s.encounter);
   assert.equal(seatedOnly.encounter?.back, null, "the undo trail is the GM's");
 
@@ -397,11 +369,14 @@ test("GM and player share a table", async (t) => {
   await gm.send({ type: "encounter.start" });
   const amb = await gm.send({ type: "combatant.addCharacter", characterId: hero.id });
   assert.ok(amb.ok && amb.id);
+  assert.deepEqual(await gm.send({ type: "turn.back" }), { ok: false, error: "Nothing to take back" });
   // Round 0: the side is marked ambushed with the one tap, and BEGIN ROUND 1 keeps it (p.176).
   assert.ok((await gm.send({ type: "encounter.ambush", side: "agents", ambushed: true })).ok);
   await gm.until((s) => s.encounter?.combatants.find((c) => c.id === amb.id)?.ambushed === true);
+  // A done mark tapped in Round 0 by mistake doesn't carry into Round 1; the ambush does.
+  assert.ok((await gm.send({ type: "turn.mark", id: amb.id, acted: true })).ok);
   assert.ok((await gm.send({ type: "encounter.begin" })).ok);
-  await gm.until((s) => s.encounter?.round === 1 && s.encounter.combatants.every((c) => c.ambushed));
+  await gm.until((s) => s.encounter?.round === 1 && s.encounter.combatants.every((c) => c.ambushed && !c.acted));
   assert.equal((await gm.send({ type: "turn.start", id: amb.id })).ok, false);
   await gm.send({ type: "pool.adjust", pool: "glory", delta: 1 });
   assert.ok((await gm.send({ type: "combatant.aware", id: amb.id })).ok);
@@ -937,6 +912,65 @@ test("GM and player share a table", async (t) => {
   assert.ok((await gm.send({ type: "token.revoke", characterId: hero.id })).ok);
   await kicked;
   assert.equal((await post("/join", { token: issued.token })).status, 401);
+});
+
+// The turn tools past Round 1 (rules-flow §11.168–171), on their own campaign: the table test above is near the 120
+// actions a minute one socket may send.
+test("fight turns: Seize at Round start, TURN BACK, HOLD, INTERRUPT, NOT YET", async (t) => {
+  const gm = await newCampaign("Fight turns", 2, "10.19.6.1");
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "Hero" });
+  const b = await gm.send({ type: "character.create", name: "Other" });
+  assert.ok(a.ok && a.id && b.ok && b.id);
+  assert.ok((await gm.send({ type: "encounter.start" })).ok);
+  const heroC = await gm.send({ type: "combatant.addCharacter", characterId: a.id });
+  const otherC = await gm.send({ type: "combatant.addCharacter", characterId: b.id });
+  const ork = await gm.send({ type: "combatant.addThreat", threatId: "ork-boy" });
+  assert.ok(heroC.ok && heroC.id && otherC.ok && otherC.id && ork.ok && ork.id);
+  assert.ok((await gm.send({ type: "encounter.begin" })).ok);
+  await gm.until((s) => s.encounter?.round === 1 && s.encounter.combatants.length === 3);
+
+  // Round start: only the GM can Seize (1 Ruin) to let a Threat go first; not twice in a row.
+  await gm.send({ type: "pool.adjust", pool: "ruin", delta: 3 });
+  assert.ok((await gm.send({ type: "turn.seize", id: ork.id })).ok, "GM seizes the first turn");
+  await gm.send({ type: "turn.end" });
+  // TURN BACK (§11.170) undoes END TURN; HOLD keeps the action for an INTERRUPT, MARK fixes a row.
+  assert.ok((await gm.send({ type: "turn.back" })).ok);
+  await gm.until(
+    (s) => s.encounter?.currentId === ork.id && !s.encounter?.combatants.find((c) => c.id === ork.id)?.acted,
+  );
+  assert.ok((await gm.send({ type: "turn.end" })).ok);
+  assert.ok((await gm.send({ type: "turn.start", id: heroC.id })).ok);
+  assert.ok((await gm.send({ type: "turn.hold" })).ok);
+  await gm.until((s) => s.encounter?.combatants.find((c) => c.id === heroC.id)?.held === true);
+  assert.ok((await gm.send({ type: "turn.interrupt", id: heroC.id })).ok);
+  assert.deepEqual(await gm.send({ type: "turn.interrupt", id: heroC.id }), {
+    ok: false,
+    error: "Not holding an action",
+  });
+  // An interrupt is the held action, not a Turn (p.187): the row stays done until NOT YET gives it another.
+  assert.deepEqual(await gm.send({ type: "turn.start", id: heroC.id, force: true }), {
+    ok: false,
+    error: "Already acted: mark it NOT YET for another Turn",
+  });
+  assert.ok((await gm.send({ type: "turn.mark", id: heroC.id, acted: false })).ok);
+  assert.ok((await gm.send({ type: "turn.start", id: heroC.id })).ok);
+  assert.deepEqual(await gm.send({ type: "turn.mark", id: heroC.id, acted: true }), {
+    ok: false,
+    error: "Acting now: END TURN first",
+  });
+  assert.ok((await gm.send({ type: "turn.end" })).ok);
+  assert.ok((await gm.send({ type: "turn.mark", id: otherC.id, acted: true })).ok);
+  assert.ok((await gm.send({ type: "turn.mark", id: otherC.id, acted: false })).ok);
+  // JUST GO over a Turn in progress is one step: one TURN BACK gives the ended Turn back too.
+  assert.ok((await gm.send({ type: "turn.mark", id: heroC.id, acted: false })).ok);
+  assert.ok((await gm.send({ type: "turn.start", id: otherC.id, force: true })).ok);
+  assert.ok((await gm.send({ type: "turn.start", id: heroC.id, force: true })).ok);
+  assert.ok((await gm.send({ type: "turn.back" })).ok);
+  await gm.until(
+    (s) => s.encounter?.currentId === otherC.id && !s.encounter?.combatants.find((c) => c.id === otherC.id)?.acted,
+  );
+  assert.ok((await gm.send({ type: "turn.end" })).ok);
 });
 
 test("private notes: a handout's audience and an Agent's objectives reach only that Agent's player", async (t) => {
@@ -3827,7 +3861,9 @@ test("spend requests: a player asks, the GM's ACCEPT is the spend (rules-flow §
   assert.equal((await pa.send({ type: "spend.request", characterId: a.id, kind: "seize" })).ok, false);
   assert.ok((await gm.send({ type: "encounter.start" })).ok);
   assert.ok((await pa.send({ type: "spend.request", characterId: a.id, kind: "seize" })).ok);
-  await gm.until((s) => s.spendRequests.length === 1);
+  assert.ok((await pa.send({ type: "spend.request", characterId: a.id, kind: "determination", amount: 1 })).ok);
+  await gm.until((s) => s.spendRequests.length === 2);
+  // ...and its Determination asks: they were about that fight's hits.
   assert.ok((await gm.send({ type: "encounter.start" })).ok);
   await gm.until((s) => s.spendRequests.length === 0);
 

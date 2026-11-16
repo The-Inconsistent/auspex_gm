@@ -3,36 +3,7 @@ import type { CombatantKind, Marker, Side, Threat, ThreatClass, Visibility } fro
 import { campaign } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { conditions, createdAt } from "../core/sql.ts";
-
-// One TURN BACK step (rules-flow §11.170): the fight's turn state, the damage on everyone in it and what a Seize or AWARE
-// cost, as they stood before a turn-flow action. Only this api writes it, so the jsonb is typed and not parsed.
-export type TurnStep = {
-  label: string;
-  round: number;
-  currentId: string | null;
-  lastSide: Side | null;
-  seizedSide: Side | null;
-  refund: { pool: "glory" | "ruin"; n: number } | null;
-  combatants: {
-    id: string;
-    acted: boolean;
-    ambushed: boolean;
-    held: boolean;
-    expiring: string[];
-    wounds: number;
-    shock: number;
-    mobCount: number | null;
-    conditions: string[];
-  }[];
-  characters: {
-    id: string;
-    wounds: number;
-    shock: number;
-    conditions: string[];
-    traumatic: number;
-    annihilated: boolean;
-  }[];
-};
+import type { TurnStep } from "./turn-step.ts";
 
 export const encounter = pgTable("encounter", {
   id: uuid().primaryKey().defaultRandom(),

@@ -78,7 +78,7 @@ export const Action = z.union([
       nextSessionPlace: NextSessionPlace.optional(),
     }),
     z.object({ type: z.literal("pool.adjust"), pool: Pool, delta }),
-    // A player asks for a spend, the GM answers (rules-flow.md §11.122). `amount` only counts for the Glory kinds.
+    // A player asks for a spend, the GM answers (rules-flow.md §11.122). `amount` only counts for the Glory kinds and Determination (its Icons).
     // Accepting runs pool.adjust, character.adjust or turn.seize, so their refusals are the answer.
     z.object({
       type: z.literal("spend.request"),

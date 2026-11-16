@@ -19,6 +19,7 @@ import {
   type Marker,
   type ProfileId,
   type Side,
+  type SpendKind,
   type Threat,
   type Visibility,
 } from "@wg/shared";
@@ -36,9 +37,11 @@ import { bump } from "../core/sql.ts";
 import { clearSpendRequests } from "../spend/spend.clear.ts";
 import { loadState } from "../table/table.state.ts";
 import { loadThreats } from "../threat/threat.service.ts";
-import { combatant, encounter, type TurnStep } from "./encounter.schema.ts";
+import { combatant, encounter } from "./encounter.schema.ts";
+import { TurnStep } from "./turn-step.ts";
 
 const TURN_HISTORY = 30; // TURN BACK steps kept (rules-flow §11.170)
+const FIGHT_SPENDS: SpendKind[] = ["seize", "determination"]; // asks that mean nothing once their fight is over
 
 export type EncounterAction = Extract<
   Action,
@@ -160,7 +163,7 @@ async function addPc(tx: Tx, { encounterId, characterId }: { encounterId: string
 
 async function startEncounter(tx: Tx, campaignId: string) {
   await tx.update(encounter).set({ active: false }).where(eq(encounter.campaignId, campaignId));
-  await clearSpendRequests(tx, { campaignId, kind: "seize" }); // asked against the fight this one replaces
+  await clearSpendRequests(tx, { campaignId, kinds: FIGHT_SPENDS }); // asked against the fight this one replaces
   const [e] = await tx.insert(encounter).values({ campaignId, round: 0 }).returning({ id: encounter.id });
   return e!.id; // the row was just inserted
 }
@@ -233,7 +236,7 @@ async function pushStep(
 // Glory or Ruin a Seize or AWARE cost goes back to its pool.
 async function takeBack(tx: Tx, { campaignId }: { campaignId: string }) {
   const enc = await activeEncounter(tx, campaignId);
-  const step = enc.history.at(-1) ?? fail("Nothing to take back");
+  const step = TurnStep.parse(enc.history.at(-1) ?? fail("Nothing to take back"));
   const rows = await tx.select({ id: combatant.id }).from(combatant).where(eq(combatant.encounterId, enc.id));
   const here = new Set(rows.map((r) => r.id));
   for (const { id, ...c } of step.combatants.filter((x) => here.has(x.id)))
@@ -266,16 +269,21 @@ async function takeBack(tx: Tx, { campaignId }: { campaignId: string }) {
 }
 
 // End the Turn in progress, for END TURN, HOLD, and anything that starts another Turn (the order is a suggestion,
-// §11.168). Returns false when no one was acting.
-async function endCurrentTurn(tx: Tx, { campaignId, hold }: { campaignId: string; hold?: boolean }) {
+// §11.168). Returns false when no one was acting. `step: false` when the caller already kept its own TURN BACK step, so
+// one tap is one step back.
+async function endCurrentTurn(
+  tx: Tx,
+  { campaignId, hold, step = true }: { campaignId: string; hold?: boolean; step?: boolean },
+) {
   const { state, enc } = await liveTable(tx, campaignId);
   const current = enc.combatants.find((x) => x.id === enc.currentId);
   if (!current) return false;
-  await pushStep(tx, {
-    encounterId: enc.id,
-    who: current.id,
-    label: (n) => `${n}'s ${hold ? "HOLD" : "END TURN"}`,
-  });
+  if (step)
+    await pushStep(tx, {
+      encounterId: enc.id,
+      who: current.id,
+      label: (n) => `${n}'s ${hold ? "HOLD" : "END TURN"}`,
+    });
   const side = sideOf(current);
   // "Until the end of your next Turn" (pp.199-200): drop the timed Conditions armed at turn.start.
   // ponytail: one that was removed and gained again this Turn ends too; per-Condition start times if that matters.
@@ -315,14 +323,15 @@ export async function applyEncounterAction(
 
     case "encounter.end":
       await tx.update(encounter).set({ active: false }).where(eq(encounter.campaignId, cid));
-      await clearSpendRequests(tx, { campaignId: cid, kind: "seize" }); // there is no fight left to Seize in
+      await clearSpendRequests(tx, { campaignId: cid, kinds: FIGHT_SPENDS }); // there is no fight left to spend in
       return { ok: true };
 
-    // Round 0 → Round 1 (p.176): the ambushes set in Round 0 stay.
+    // Round 0 → Round 1 (p.176): the ambushes set in Round 0 stay; a done or held mark tapped there by mistake doesn't.
     case "encounter.begin": {
       const enc = await activeEncounter(tx, cid);
       if (enc.round !== 0) fail("Round 1 has already begun");
       await pushStep(tx, { encounterId: enc.id, label: () => "Round 1 begins" });
+      await tx.update(combatant).set({ acted: false, held: false }).where(eq(combatant.encounterId, enc.id));
       await tx
         .update(encounter)
         .set({ round: 1, currentId: null, lastSide: null, seizedSide: null })
@@ -334,10 +343,9 @@ export async function applyEncounterAction(
     case "encounter.newRound": {
       const before = await activeEncounter(tx, cid);
       if (before.round === 0) fail("BEGIN ROUND 1 first");
-      await endCurrentTurn(tx, { campaignId: cid });
-      const enc = await activeEncounter(tx, cid);
-      await pushStep(tx, { encounterId: enc.id, label: () => `Round ${enc.round + 1}` });
-      await newRound(tx, { encounterId: enc.id, round: enc.round });
+      await pushStep(tx, { encounterId: before.id, label: () => `Round ${before.round + 1}` });
+      await endCurrentTurn(tx, { campaignId: cid, step: false });
+      await newRound(tx, { encounterId: before.id, round: before.round });
       return { ok: true };
     }
 
@@ -365,8 +373,17 @@ export async function applyEncounterAction(
 
     case "turn.start":
     case "turn.seize": {
-      // The order is a suggestion (§11.168): whoever is acting ends their Turn, then the pick is checked.
-      await endCurrentTurn(tx, { campaignId: cid });
+      // The order is a suggestion (§11.168): whoever is acting ends their Turn, then the pick is checked. One TURN BACK
+      // step covers both; a refusal rolls all of it back.
+      const before = await activeEncounter(tx, cid);
+      const picked = await combatantOf(tx, { encounterId: before.id, id: a.id });
+      await pushStep(tx, {
+        encounterId: before.id,
+        who: a.id,
+        label: (n) => `${n}'s ${a.type === "turn.seize" ? "Seize" : "Turn"}`,
+        refund: a.type === "turn.seize" ? { pool: picked.kind === "pc" ? "glory" : "ruin", n: 1 } : undefined,
+      });
+      await endCurrentTurn(tx, { campaignId: cid, step: false });
       const { state, enc } = await liveTable(tx, cid);
       if (enc.round === 0) fail("BEGIN ROUND 1 first");
       const c = enc.combatants.find((x) => x.id === a.id) ?? fail("Combatant not found");
@@ -385,18 +402,11 @@ export async function applyEncounterAction(
                 ? `No need to Seize: the ${sideName(side)} act next anyway`
                 : "Seizing lets the side that just acted go again",
           );
-        await pushStep(tx, {
-          encounterId: enc.id,
-          who: a.id,
-          label: (n) => `${n}'s Seize`,
-          refund: { pool: side === "agents" ? "glory" : "ruin", n: 1 },
-        });
         await spend(tx, { campaignId: cid, side });
         await tx.update(encounter).set({ currentId: a.id, seizedSide: side }).where(eq(encounter.id, enc.id));
       } else {
         // Normal order: the other side, unless it has no one left (p.177); JUST GO takes it anyway.
         if (side !== up && !a.force) fail(`It's the ${sideName(up ?? side)}' pick: SEIZE or JUST GO`);
-        await pushStep(tx, { encounterId: enc.id, who: a.id, label: (n) => `${n}'s Turn` });
         await tx.update(encounter).set({ currentId: a.id }).where(eq(encounter.id, enc.id));
       }
       // Timed Conditions held now end with this Turn; ones gained during it last until the end of the next (§11.8).
@@ -413,8 +423,8 @@ export async function applyEncounterAction(
         ? { ok: true }
         : fail("No one is taking a turn");
 
-    // A held action used (pp.177-178). The opposed Initiative Test is played at the table; the row is READY again, so
-    // it can start its Turn (JUST GO) wherever the table puts it.
+    // A held action used, at any point later in the Round (p.187); interrupting someone's Turn takes an opposed Initiative
+    // Test at the table (pp.177-178). The row stays done: NOT YET only if the GM gives it another Turn.
     case "turn.interrupt": {
       const enc = await activeEncounter(tx, cid);
       const c = await combatantOf(tx, { encounterId: enc.id, id: a.id });

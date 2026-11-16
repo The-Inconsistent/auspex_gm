@@ -113,8 +113,16 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
     .from(character)
     .where(eq(character.campaignId, campaignId))
     .orderBy(asc(character.createdAt));
+  // Only the newest TURN BACK label, not the whole history: this runs on every broadcast.
   const [enc] = await conn
-    .select()
+    .select({
+      id: encounter.id,
+      round: encounter.round,
+      currentId: encounter.currentId,
+      lastSide: encounter.lastSide,
+      seizedSide: encounter.seizedSide,
+      back: sql<string | null>`${encounter.history} -> -1 ->> 'label'`,
+    })
     .from(encounter)
     .where(and(eq(encounter.campaignId, campaignId), eq(encounter.active, true)));
   const rows = enc
@@ -185,7 +193,7 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
           currentId: enc.currentId,
           lastSide: enc.lastSide,
           seizedSide: enc.seizedSide,
-          back: enc.history.at(-1)?.label ?? null,
+          back: enc.back,
           // A pc row always has characterId; a threat row always has threatId, threatClass and statSnapshot (see addThreat).
           combatants: rows.map((r): Combatant =>
             r.kind === "pc"

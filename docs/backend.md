@@ -371,14 +371,14 @@ Snapshots: S = `state`, C = `codex`. Rule pages are printed Core pages; behaviou
 | `member.seat` | admin | `{ userId }`: seats a known `app_user` as this table's GM, or turns their existing seat into the GM's (`character_id` null). `"Admin only"` without `ctx.admin`, `"User not found"` for an id the app hasn't seen | S | |
 | `encounter.start` | GM | Deactivate any active encounter, insert an empty one. Returns `id` | S | |
 | `encounter.end` | GM | Deactivate all the campaign's encounters | S | |
-| `encounter.begin` | GM | BEGIN ROUND 1: leaves Round 0 (Steps 1 and 2, rules-flow §11.167). Refused outside Round 0 | S | p.176 |
-| `encounter.ambush` | GM | Round 0: set `ambushed` on one combatant or a whole side (`side`) | S | p.176–177 |
+| `encounter.begin` | GM | BEGIN ROUND 1: leaves Round 0 (Steps 1 and 2, rules-flow §11.167). Refused outside Round 0. Clears any `acted` and `held` marks set by mistake in Round 0; the ambushes stay | S | p.176 |
+| `encounter.ambush` | GM | `{ side, ambushed }`: set `ambushed` on a whole side's rows that haven't acted, in Round 0 or 1 (refused after). One row is `combatant.update { ambushed }` | S | p.176–177 |
 | `encounter.newRound` | GM | BEGIN ROUND N: Round + 1. Clear `acted`, `ambushed`, `currentId`, `lastSide`, `seizedSide`, `held`. The Round never rolls over by itself (rules-flow §11.169) | S | p.176–177 |
 | `turn.start` | GM | Set `currentId`, ending a running Turn first. Refused if the combatant is out (`isOut`: `"Dead: no more Turns"` / `"Slain: no more Turns"`), already acted or ambushed in Round 1. Order is a suggestion: `force: true` (JUST GO, free) starts a combatant whose side isn't `sideUpNext`, and is noted in the chronicle (§11.168) | S | p.177, p.193, p.324 |
 | `turn.seize` | GM | As `turn.start`, but out of order. Needs `canSeize` (refused with `"No need to Seize: the <side> act next anyway"` when that side is up anyway), then spends 1 Glory (Agent) or 1 Ruin (Threat) and sets `seizedSide` | S | p.176–177, p.320 |
 | `turn.end` | GM | Mark current `acted`, set `lastSide`, keep `seizedSide` only if the same side. When no combatant `canAct` (Slain and Dead ones don't hold it up) the Round is complete; the GM's `encounter.newRound` starts the next | S | p.176 |
-| `turn.hold` | GM | End the current Turn with a HELD mark instead of `acted` (§11.171) | S | p.177, p.187 |
-| `turn.interrupt` | GM | Clear a combatant's HELD mark and start its Turn (the opposed Initiative Test is at the table) | S | p.177, p.187 |
+| `turn.hold` | GM | End the current Turn as `turn.end` does (`acted`) and also set `held` (§11.171) | S | p.177, p.187 |
+| `turn.interrupt` | GM | `{ id }`: clear the combatant's `held`. It does not start a Turn: the held Combat Action is used inside someone else's Turn (the opposed Initiative Test is at the table), and the row stays `acted` until the GM marks it NOT YET with `turn.mark` | S | p.177–178, p.187 |
 | `turn.mark` | GM | Set a row's mark: `acted` or NOT YET (an extra Turn in the Round, §11.168) | S | p.176 |
 | `turn.back` | GM | TURN BACK: restore the fight to before the last turn step from the server's last 30 snapshots (turn marks, Round, Wounds, Shock, Conditions, Mob counts, Traumatic Injuries, Annihilation); refunds the Glory or Ruin a Seize or AWARE cost (§11.170) | S | |
 | `combatant.addThreat` | GM | Add a threat from `@wg/data` to the active encounter. Snapshots its stat block and its class at the campaign Tier. `mobCount` makes it a Mob (`mobStart` = `mobCount`). `visibility` defaults to `bars` (rules-flow §11.56). `profiles` (VoA p.126) and `scale` (Core p.326) are applied by `prepareThreat` before the snapshot, scaling by the Agents holding a seat (`claimedCharacterIds`). Returns `id` | S | VoA p.126, Core p.326 |
@@ -604,8 +604,8 @@ It covers:
 - **Mobs:** Wounds remove members, healing is capped at `mobStart`.
 - **Player permissions:** own `character.adjust` passes and clamps at 0. Glory is allowed, Ruin is `"GM only"`,
   `combatant.remove` is `"GM only"`, another character is `"Not your character"`, and an invalid payload is refused.
-- **Turns:** alternation, "End the current turn first", "Already acted this round", Seize refusal and cost, auto new
-  Round, GM Seize at Round start.
+- **Turns:** the suggested order and JUST GO, "Already acted", Seize refusal and cost, GM Seize at Round start, the
+  Round waiting for the GM's `encounter.newRound`.
 - **Ambush:** blocked in Round 1, then `combatant.aware`.
 - **Sessions:** `session.start` resets and `session.end` awards XP.
 - **Pools:** caps, asserted against `poolMax`.
@@ -620,7 +620,7 @@ It covers:
   - Dying: falling Prone, a Wound becoming a Traumatic Injury, healing ending Dying.
   - Respite refused while Dying and while Dead.
   - A duplicate `combatant.addCharacter` is refused.
-  - `turn.start` refused for a Dead Agent and a Slain Troop, and the Round rolls over past them.
+  - `turn.start` refused for a Dead Agent and a Slain Troop, and the Round doesn't wait on them.
   - A no-need Seize is refused.
   - `encounter.newRound`, `combatant.remove` and `encounter.end`.
   - Mob size set by hand (`mobStart` follows), and Mob Shock above and below max.

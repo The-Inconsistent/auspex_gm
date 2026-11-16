@@ -562,7 +562,7 @@ export function sideUpNext(s: LiveState): Side | null {
 // go first. Never needed, so never allowed, when that side is up next anyway.
 export function canSeize(s: LiveState, side: Side): boolean {
   const e = s.encounter;
-  if (!e || e.seizedSide === side || sideUpNext(s) === side) return false;
+  if (!e || e.round === 0 || e.seizedSide === side || sideUpNext(s) === side) return false; // Round 0: no Turns yet
   return e.lastSide === null ? side === "threats" : e.lastSide === side;
 }
 

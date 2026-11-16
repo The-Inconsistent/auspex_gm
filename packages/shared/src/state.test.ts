@@ -499,6 +499,7 @@ test("canSeize: same side once, GM-only at round start", () => {
     false,
     "no Threat left to act: the Agents go again without paying",
   );
+  assert.equal(canSeize(table(enc([], { round: 0 })), "threats"), false, "no Turns before Round 1 (§11.167)");
 });
 
 test("Slain threats and Dead characters are out: no Turns, and they don't hold up the Round", () => {
