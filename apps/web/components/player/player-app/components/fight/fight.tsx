@@ -6,8 +6,9 @@ import {
   UNSEEN_ID,
   canAct,
   deriveStats,
+  pcStatus,
+  turnMark,
   effectiveStrength,
-  isOut,
   sideOf,
   skillTotal,
   threatStatus,
@@ -18,7 +19,6 @@ import {
 } from "@wg/shared";
 
 import { RuleLink } from "@/components/ui/rule-link/rule-link";
-import { RequestSpend } from "@/components/ui/request-spend/request-spend";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { Track } from "@/components/ui/track/track";
@@ -28,18 +28,22 @@ import type { Send } from "@/hooks/use-table/use-table";
 import { weaponSkill } from "@/lib/sheet-pools/sheet-pools";
 
 import { CombatOptions } from "./components/combat-options/combat-options";
+import { SpendSheet } from "./components/spend-sheet/spend-sheet";
+import { StrikeSteps } from "./components/strike-steps/strike-steps";
 
 type FightProps = { state: LiveState; characterId: string; send: Send; legend: RuleEntry[]; actions: RuleEntry[] };
 
-// What a combatant is doing this Round, in words (state is never colour alone): out of the fight (Slain, Dead) and
-// ambushed in Round 1 (p.177) as @wg/shared's isOut and canAct decide, so the phone agrees with the tracker.
-function turnWord(state: LiveState, c: Combatant) {
-  const enc = state.encounter;
-  if (c.id === enc?.currentId) return "ACTING";
-  if (isOut(state, c)) return "OUT";
-  if (c.acted) return "DONE";
-  return canAct(state, c) ? "READY" : "AMBUSHED";
-}
+// What a combatant is doing this Round, in words (state is never colour alone): @wg/shared's turnMark decides, so the
+// phone agrees with the tracker (out of the fight, ambushed in Round 1 p.177, held p.177).
+const TURN_WORDS = {
+  out: "OUT",
+  acting: "ACTING",
+  ambushed: "AMBUSHED",
+  held: "HELD",
+  done: "DONE",
+  ready: "READY",
+} as const;
+const turnWord = (state: LiveState, c: Combatant) => TURN_WORDS[turnMark(state, c)];
 
 export function Fight({ state, characterId, send, legend, actions }: FightProps) {
   const [open, setOpen] = useState<string | null>(null);
@@ -60,6 +64,7 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
       ? "Unseen threat" // a hidden threat taking its Turn (§11.56)
       : null;
   const next = enc.upNext ?? null;
+  const setting = enc.round === 0; // Determine Ambushes, Set the Scene (p.176)
   const rows = (side: Side) => enc.combatants.filter((c) => sideOf(c) === side);
   const nextRows = next ? rows(next) : [];
   const after = next
@@ -80,13 +85,21 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
         <MyTurn me={me} state={state} send={send} after={after} onField={goToField} actions={actions} />
       ) : (
         <section className="pf-now slate-card cut" aria-label="Now acting">
-          <span className="xmit">+++ NOW ACTING +++</span>
-          <b className="pf-now-name">{currentName ?? `${(next ?? "—").toUpperCase()} PICK`}</b>
-          <span className="mono pf-now-next">
-            UP NEXT: {next ? `${next.toUpperCase()} PICK` : "—"}
-            {mine ? ` · YOU: ${turnWord(state, mine)}` : ""}
+          <span className="xmit">{setting ? "+++ BEFORE ROUND 1 +++" : "+++ NOW ACTING +++"}</span>
+          <b className="pf-now-name">
+            {setting ? "THE GM IS SETTING THE SCENE" : (currentName ?? `${(next ?? "—").toUpperCase()} PICK`)}
+          </b>
+          {!setting && (
+            <span className="mono pf-now-next">
+              UP NEXT: {next ? `${next.toUpperCase()} PICK` : "—"}
+              {mine ? ` · YOU: ${turnWord(state, mine)}` : ""}
+            </span>
+          )}
+          <span className="pf-now-note">
+            {mine && turnMark(state, mine) === "ambushed"
+              ? "You're ambushed: no Turn in Round 1 (p.177)."
+              : "When the GM picks you, this phone buzzes and the header turns crimson."}
           </span>
-          <span className="pf-now-note">When the GM picks you, this phone buzzes and the header turns crimson.</span>
         </section>
       )}
 
@@ -197,9 +210,13 @@ type MyTurnProps = {
   actions: RuleEntry[];
 };
 
-// Your Turn: what it allows (one OPTIONS dialog of the combat-action entries, Core pp.177–190), your guns, and the two spend pools. One RequestSpend dialog per pool lists that pool's spends.
+// Your Turn: what it allows (one OPTIONS dialog of the combat-action entries, Core pp.177–190), your guns step by
+// step (the chosen weapon drives the steps under the list), and one SPEND button for both pools.
 function MyTurn({ me, state, send, after, onField, actions }: MyTurnProps) {
-  const spend = { state, characterId: me.id, send };
+  const [picked, setPicked] = useState(0);
+  const weapons = me.stats.weapons;
+  const weapon = weapons[Math.min(picked, weapons.length - 1)]; // the list can shrink under a held pick
+  const status = pcStatus(me, deriveStats({ stats: me.stats, overrides: me.overrides, tier: state.campaign.tier }));
   return (
     <>
       <section className="pf-sec">
@@ -207,67 +224,45 @@ function MyTurn({ me, state, send, after, onField, actions }: MyTurnProps) {
           <h2>THIS TURN</h2>
           <i />
         </div>
-        {actions.length > 0 && <CombatOptions actions={actions} weapons={me.stats.weapons} />}
+        {actions.length > 0 && <CombatOptions actions={actions} weapons={weapons} />}
         <span className="pf-cap">One of each per Turn, Core pp.177–190. Tap one to read it.</span>
       </section>
 
-      {me.stats.weapons.length > 0 && (
+      {weapon && (
         <section className="pf-sec">
           <div className="pf-h">
-            <h2>STRIKE</h2>
+            <h2>1 · STRIKE</h2>
             <i />
+            <span className="mono">PICK A WEAPON</span>
           </div>
-          {me.stats.weapons.map((w) => {
+          {weapons.map((w, i) => {
             const skill = weaponSkill(w);
+            const on = w === weapon;
             return (
-              <div key={w.name} className="pf-weapon slate-card cut">
-                <span className="pool-badge" aria-label={`${skill} pool`}>
-                  {skillTotal(me.stats, skill)}
-                </span>
-                <div className="pf-weapon-text">
-                  <b>{w.name}</b>
-                  <span className="pf-wl">
-                    <WeaponLine weapon={w} strength={effectiveStrength(me.stats)} />
+              // The WeaponLine holds rule-link buttons, so the pick is its own button and not the whole card.
+              <div key={`${w.name}-${i}`} className={`pf-weapon slate-card cut ${on ? "on" : ""}`}>
+                <button type="button" className="pf-pick" aria-pressed={on} onClick={() => setPicked(i)}>
+                  <span className="pool-badge" aria-label={`${skill} pool`}>
+                    {skillTotal(me.stats, skill)}
                   </span>
-                </div>
+                  <b>{w.name}</b>
+                </button>
+                <span className="pf-wl">
+                  <WeaponLine weapon={w} strength={effectiveStrength(me.stats)} />
+                </span>
               </div>
             );
           })}
+          <div className="pf-h">
+            <h2>THEN, WITH YOUR DICE</h2>
+            <i />
+          </div>
+          <StrikeSteps me={me} weapon={weapon} wounded={status.includes("Wounded")} />
         </section>
       )}
 
       <section className="pf-sec">
-        <div className="pf-h">
-          <h2>SPEND</h2>
-          <i />
-          <span className="mono">THE GM ANSWERS</span>
-        </div>
-        <div className="pf-spends">
-          <RequestSpend
-            pool="wrath"
-            {...spend}
-            className="pf-spend wrath cut"
-            label={
-              <>
-                <span className="pf-spend-w">WRATH</span>
-                <span className="pf-spend-s">REROLL · RESTORE SHOCK</span>
-                <span className="mono pf-spend-c">YOU HOLD {me.wrath}</span>
-              </>
-            }
-          />
-          <RequestSpend
-            pool="glory"
-            {...spend}
-            className="pf-spend glory cut"
-            label={
-              <>
-                <span className="pf-spend-w">GLORY</span>
-                <span className="pf-spend-s">DICE · DAMAGE · SEIZE</span>
-                <span className="mono pf-spend-c">PARTY HOLDS {state.campaign.glory}</span>
-              </>
-            }
-          />
-        </div>
+        <SpendSheet state={state} me={me} send={send} />
       </section>
 
       <div className="mono pf-after">

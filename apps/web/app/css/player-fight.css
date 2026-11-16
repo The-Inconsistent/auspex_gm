@@ -91,16 +91,6 @@
   gap: 10px;
   padding: 8px 12px 8px 8px;
 }
-.pf-weapon-text {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  min-width: 0;
-}
-.pf-weapon-text > b {
-  font-family: var(--display);
-  font-size: 15px;
-}
 .pf-wl {
   font-size: 14.5px;
   color: var(--bone-2);
@@ -320,4 +310,92 @@ button.pf-hdr {
 .co-need {
   font-size: 12px;
   color: var(--ink-3);
+}
+
+/* STRIKE: a weapon card is a pick; the chosen one wears a crimson stripe and a mark (not colour alone). */
+.pf-weapon {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+.pf-weapon.on {
+  box-shadow: inset 4px 0 0 var(--red-on-iron);
+}
+.pf-pick {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.pf-pick > b {
+  font-family: var(--display);
+  font-size: 15px;
+}
+.pf-pick[aria-pressed="true"]::after {
+  content: "\25A0 CHOSEN";
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--bone-2);
+}
+.pf-pick:focus-visible {
+  outline: 2px solid var(--red-on-iron);
+  outline-offset: 2px;
+}
+.pf-steps {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: pf-step 1;
+}
+.pf-steps > li {
+  counter-increment: pf-step;
+  display: grid;
+  gap: 2px;
+  padding-left: 34px;
+  position: relative;
+  font-size: 15.5px;
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+.pf-steps > li::before {
+  content: counter(pf-step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--red-fill);
+  color: var(--bone);
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 14px;
+}
+.pf-steps > li > b {
+  font-family: var(--display);
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.pf-spend-open {
+  min-height: 56px;
+  width: 100%;
+  font-family: var(--display);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+dialog.spend .pf-spends {
+  padding: 10px;
 }

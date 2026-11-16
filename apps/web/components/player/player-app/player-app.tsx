@@ -17,6 +17,7 @@ import { Show, UserButton } from "@wg/auth/react";
 import { UNSEEN_ID, type RuleEntry } from "@wg/shared";
 
 import { PlayerSheet } from "@/components/player/player-sheet/player-sheet";
+import { HitSheet } from "@/components/player/hit-sheet/hit-sheet";
 import { TestPrompt } from "@/components/player/test-prompt/test-prompt";
 import { WhisperSheet } from "@/components/player/whisper-sheet/whisper-sheet";
 import { ArchivedBanner } from "@/components/ui/archived-banner/archived-banner";
@@ -104,12 +105,14 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
       : null;
   // Worked out before hidden threats were dropped from this view; sideUpNext here would miss their Turns.
   const next = enc?.upNext ?? null;
-  const round = enc ? `RND ${String(enc.round).padStart(2, "0")}` : "";
+  const round = enc ? (enc.round === 0 ? "BEFORE RND 1" : `RND ${String(enc.round).padStart(2, "0")}`) : "";
   const status = !enc
     ? "NO COMBAT · STANDING BY"
     : myTurn
       ? `▶ ${round} · YOUR TURN`
-      : `${round} · ${currentName ? `${currentName.toUpperCase()} ACTING` : `${(next ?? "—").toUpperCase()} PICK`}${myCombatant?.acted ? " · YOU: DONE" : ""}`;
+      : enc.round === 0
+        ? `${round} · SETTING THE SCENE`
+        : `${round} · ${currentName ? `${currentName.toUpperCase()} ACTING` : `${(next ?? "—").toUpperCase()} PICK`}${myCombatant?.acted ? " · YOU: DONE" : ""}`;
 
   return (
     <BooksProvider books={books} requestPage={requestPage}>
@@ -192,6 +195,8 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                 {!state.testCall && (
                   <WhisperSheet campaignId={campaignId} characterId={me.id} whispers={state.whispers} send={send} />
                 )}
+                {/* Last of the sheets, so a fresh hit sits over a Test or whisper still open. */}
+                <HitSheet me={me} state={state} send={send} />
                 {tab === "SHEET" && <PlayerSheet me={me} state={state} codex={codex} send={send} />}
                 {tab === "FIGHT" && (
                   <Fight

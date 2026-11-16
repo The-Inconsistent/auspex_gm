@@ -206,3 +206,40 @@
   min-width: 0;
   min-height: 44px;
 }
+
+/* YOU'RE HIT: the same bottom sheet; Determination's Icon chips, one tap each (0 just closes). */
+.ph-det,
+.ph-means {
+  display: grid;
+  gap: 10px;
+}
+.ph-det h3,
+.ph-means h3 {
+  margin: 0;
+}
+.ph-note {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--red);
+}
+.ph-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ph-chip {
+  min-width: 52px;
+  min-height: 52px;
+  border: 0;
+  background: var(--iron);
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.ph-chip:focus-visible {
+  outline: 2px solid var(--red-on-iron);
+  outline-offset: 2px;
+}
