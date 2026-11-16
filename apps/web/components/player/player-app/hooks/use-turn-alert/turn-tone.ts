@@ -8,7 +8,8 @@ let audio: AudioContext | null = null;
 export async function unlockTurnTone() {
   try {
     audio ??= new AudioContext();
-    if (audio.state === "suspended") await audio.resume();
+    // Not just "suspended": Safari parks it as "interrupted" after a call, a lock or an app switch.
+    if (audio.state !== "running") await audio.resume();
   } catch {
     // no Web Audio, or the browser refused: the flash and vibration still work
   }

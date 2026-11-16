@@ -1,4 +1,4 @@
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
 import { TURN_VIBRATION } from "../../constants";
 import { TURN_FLASH_MS } from "./constants";
@@ -21,11 +21,19 @@ export function useTurnAlert(myTurn: boolean) {
   }
 
   // External systems: the vibration motor (navigator.vibrate) and Web Audio, once per new turn; plus the flash's timer.
+  // The ref keeps Strict Mode's second dev run from buzzing and chiming twice when the page loads mid-turn.
+  const cued = useRef(false);
   useEffect(() => {
-    if (!myTurn) return;
-    navigator.vibrate?.(TURN_VIBRATION);
-    // Read from the store, not `sound`, so toggling SOUND mid-turn doesn't re-run this and buzz again.
-    if (readTurnSound()) playTurnTone();
+    if (!myTurn) {
+      cued.current = false;
+      return;
+    }
+    if (!cued.current) {
+      cued.current = true;
+      navigator.vibrate?.(TURN_VIBRATION);
+      // Read from the store, not `sound`, so toggling SOUND mid-turn doesn't re-run this and buzz again.
+      if (readTurnSound()) playTurnTone();
+    }
     const t = setTimeout(() => setFlashing(false), TURN_FLASH_MS);
     return () => clearTimeout(t);
   }, [myTurn]);
@@ -42,7 +50,8 @@ export function useTurnAlert(myTurn: boolean) {
     writeTurnSound(!sound);
     if (sound) return;
     await unlockTurnTone();
-    playTurnTone();
+    // Still on after the await: a quick ON then OFF plays nothing.
+    if (readTurnSound()) playTurnTone();
   };
 
   return { flashing, sound, handleTap, toggleSound };
