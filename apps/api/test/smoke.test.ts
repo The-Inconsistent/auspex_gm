@@ -3855,7 +3855,17 @@ test("spend requests: a player asks, the GM's ACCEPT is the spend (rules-flow §
   assert.equal((await gm.send({ type: "spend.resolve", id: det.id, accept: true })).ok, false, "no Wounds");
   assert.ok((await gm.send({ type: "character.adjust", id: a.id, wounds: 1 })).ok);
   assert.ok((await gm.send({ type: "spend.resolve", id: det.id, accept: true })).ok);
-  await gm.until((s) => charOf(s, a.id!).wounds === 0 && charOf(s, a.id!).shock === 1);
+  const healed = await gm.until((s) => charOf(s, a.id!).wounds === 0 && charOf(s, a.id!).shock === 1);
+  // It takes Icons off the hit's Wounds (p.196): a hit that made the Agent Dying stays Dying unless they bring the
+  // Wounds back to max, never the Dying clamp's free heal down to max.
+  const maxW = deriveStats({ stats: charOf(healed, a.id!).stats, overrides: {}, tier: 2 }).maxWounds;
+  assert.ok((await gm.send({ type: "character.adjust", id: a.id, wounds: maxW + 2 })).ok);
+  const dying = await pa.send({ type: "spend.request", characterId: a.id, kind: "determination", amount: 1 });
+  assert.ok(dying.ok && dying.id);
+  assert.ok((await gm.send({ type: "spend.resolve", id: dying.id, accept: true })).ok);
+  await gm.until((s) => charOf(s, a.id!).wounds === maxW + 1 && charOf(s, a.id!).shock === 2);
+  assert.ok((await gm.send({ type: "character.adjust", id: a.id, wounds: -(maxW + 1), shock: -2 })).ok);
+  await gm.until((s) => charOf(s, a.id!).wounds === 0 && charOf(s, a.id!).shock === 0);
 
   // Seize needs a fight; a new fight clears the old one's Seize requests.
   assert.equal((await pa.send({ type: "spend.request", characterId: a.id, kind: "seize" })).ok, false);

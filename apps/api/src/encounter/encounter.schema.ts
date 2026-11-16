@@ -3,7 +3,7 @@ import type { CombatantKind, Marker, Side, Threat, ThreatClass, Visibility } fro
 import { campaign } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { conditions, createdAt } from "../core/sql.ts";
-import type { TurnStep } from "./turn-step.ts";
+import type { TurnStep } from "./encounter.turn-step.ts";
 
 export const encounter = pgTable("encounter", {
   id: uuid().primaryKey().defaultRandom(),

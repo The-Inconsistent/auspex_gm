@@ -38,7 +38,7 @@ import { clearSpendRequests } from "../spend/spend.clear.ts";
 import { loadState } from "../table/table.state.ts";
 import { loadThreats } from "../threat/threat.service.ts";
 import { combatant, encounter } from "./encounter.schema.ts";
-import { TurnStep } from "./turn-step.ts";
+import { TurnStep } from "./encounter.turn-step.ts";
 
 const TURN_HISTORY = 30; // TURN BACK steps kept (rules-flow §11.170)
 const FIGHT_SPENDS: SpendKind[] = ["seize", "determination"]; // asks that mean nothing once their fight is over

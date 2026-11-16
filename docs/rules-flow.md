@@ -1062,10 +1062,15 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      attacker is Wounded, p.193), Damage + ED, and Resilience − AP. The GM types the damage total and the app applies
      Wounds (damage over Resilience), 1 Shock (damage equal, p.192) or nothing. The phone shows the same steps for the
      weapon the player picks. Mobs stay on the Wounds pad (p.325). The helpers are `woundsFromDamage`, `hitDn` and
-     `threatAttackPool` in `attack.ts`. The guide follows the Threat rules: a Troop attacker gets no Wrath Die line and
-     no Critical or Complication line (p.323); a Mob attacker adds +1 die per Troop in the Mob, at most half the Troops
-     (p.324); a Mob target loses members only if the damage beats its Resilience (p.325); a Threat whose Shock is "–"
-     takes no Shock on a tie (p.324). *User ruling, 2026-11-16.*
+     `threatAttackPool` and `mobBonusDice` in `attack.ts`. The guide follows the Threat rules: a Troop attacker still
+     rolls its Wrath Die (it may have Wrath abilities) but gets no Critical or Complication line (p.323); a Mob attacker
+     adds +1 die per Troop in the Mob, at most half the Troops (p.324), an odd count rounding up as the book's split
+     attacks do (p.324; the whole-Mob text gives no rounding); a Mob target loses members only if the damage beats its
+     Resilience (p.325); a Threat whose Shock is "–" takes no Shock on a tie (p.324). *User ruling, 2026-11-16.*
+174. **A bars-only threat on the phone** (no book rule; a table prompt). Where the GM shows only bars (§11.56), the
+     phone says there is no information on the threat and suggests asking the GM for a Scholar (Int) Test (Core p.126:
+     recalling lore) to learn more. No DN or result is set by the app: the GM decides what a pass reveals.
+     *User ruling, 2026-11-17.*
 
 ---
 

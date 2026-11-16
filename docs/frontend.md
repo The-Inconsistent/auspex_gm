@@ -594,8 +594,8 @@ on the row (AMBUSH and AWARE are on the row's mark and dialog, NEW ROUND stays i
   in `packages/shared/src/attack.ts`): with an acting combatant and a selected target it lists the five steps of Core
   pp.182–183: the pool, the DN (Defence, +1 if the attacker is Wounded), Damage + ED and Resilience − AP. The GM types the
   damage total; APPLY sends the Wounds, the 1 Shock or nothing through `character.adjust` / `combatant.adjust`. Dice stay
-  physical. A Mob target stays on the delta pad. It follows the Threat rules: a Troop attacker gets no Wrath Die line and
-  no Critical or Complication line (p.323); a Mob attacker adds +1 die per Troop in the Mob, at most half the Troops
+  physical. A Mob target stays on the delta pad. It follows the Threat rules (§11.173): a Troop attacker gets no Critical or
+  Complication line (p.323); a Mob attacker adds +1 die per Troop in the Mob, at most half the Troops, rounded up
   (p.324); a Mob target loses members only if the damage beats its Resilience (p.325); a Threat with Shock "–" takes no
   Shock on a tie (p.324).
 - A selected PC shows archetype and keywords; DEF, RES, Determination and Resolve; Wrath; Traumatic `n/max` with a
