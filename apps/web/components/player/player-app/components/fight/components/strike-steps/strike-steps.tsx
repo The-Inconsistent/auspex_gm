@@ -31,7 +31,7 @@ export function StrikeSteps({ me, weapon: w, wounded }: StrikeStepsProps) {
       </li>
       <li>
         <b>HIT: ICONS ≥ THE TARGET&rsquo;S DEFENCE</b>
-        <span>The GM says it.{wounded && " +1: you're Wounded (p.193)."} Spare 6s become +1 ED each (p.183).</span>
+        <span>{wounded && "+1: you're Wounded (p.193). "}Spare 6s become +1 ED each (p.183).</span>
       </li>
       <li>
         <b>
