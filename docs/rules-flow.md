@@ -783,21 +783,18 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      the GM's own work lives. A custom threat is campaign content, like an NPC or a scene: it rides that campaign's codex,
      its export and its import, and there is no shared library across tables. A GM who wants one in a second game exports
      and imports, or writes it again. *(User ruling, 2026-10-03.)*
-112. **Giving a found item uses the Agent's Wargear Test for the session** (Core pp.205–206; GitHub issue #51). The
-     books put Wargear in an Agent's hands by requisition; a found item is the GM's other way in. GIVE takes no
-     Influence Test and needs no Keyword in common, but it counts as that Agent's Wargear Test: it needs an open
-     session, and it is refused once the Agent has made this session's Wargear Test, by requisition or an earlier GIVE.
-     *(User ruling, 2026-10-03, over the issue's "skip all three".)*
+112. **Giving a found item takes no Test** (Core pp.205–206; GitHub issue #51). The books put Wargear in an Agent's
+     hands by requisition; a found item is the GM's other way in. GIVE takes no Influence Test, needs no Keyword in
+     common and does not use the Agent's Wargear Test, which stays for a requisition. It needs an open session. *(User
+     ruling, 2026-11-16, replacing the 2026-10-03 one that made GIVE the Agent's Wargear Test for the session: at the
+     table, one found item per Agent per session blocked every GIVE once a session ran over two sittings.)*
 113. **One item is one piece** (GitHub issue #51). "4 Respirators" is four items, each a gear line once given. A loot
      row with a count makes that many items, up to 20 at once. Ammo and grenades are counted by type on the sheet, so
      GIVE refuses them: the GM awards them with PARTY's supply or a requisition. *(User ruling, 2026-10-03.)*
 114. **TAKE BACK undoes a GIVE** (GitHub issue #51). The given weapon comes off the sheet and any upgrades fitted to it
      return as gear lines, as REMOVE does. A given upgrade that has since been fitted comes off its weapon. A
      gear line the GM already deleted just ends the record. The item is loose again (no place, no NPC) and can be
-     given again. Taken back in the session it was given in, the GIVE's Wargear Test is refunded, so a GIVE to the
-     wrong Agent can be undone and the item given again that session; taken back in a later session, nothing is
-     refunded. *(User ruling, 2026-10-03, over the issue's "not built"; the same-session refund added 2026-11-12, after
-     a GIVE to Tirrow could not be redone.)*
+     given again. *(User ruling, 2026-10-03, over the issue's "not built".)*
 115. **Trinkets & Charms are keepsakes and loot** (Core p.247; Darktide p.15). The Core Rulebook rolls them for a past
      life; Darktide hands them out as finds. FROM LOOT TABLE lists the three Trinket tables beside the books' loot
      tables. *(User ruling, 2026-10-03.)*
@@ -1055,5 +1052,5 @@ Implementation details: [game-logic.md](game-logic.md).
 | Location hazards | done | `HazardTable` and `HazardRow` in `scene-presets.ts` (Tests with a printed or Tier DN, Conditions, Threats, intensities); `scene-presets/hazards/<source>.json` for Threat Assessment pp.9–21, Core pp.201–202, Darktide pp.14–27 and RR1 p.11, served on `/scene-presets`; `location.hazardList` with `checkHazards`, a scene's `beat.hazards` picks with SPOTTED (§11.92–95); the CODEX editor's HAZARDS list and the STORY card's HAZARDS fold |
 | Location tree and places from the books | done | `wouldCycle`, `placeTree`, `flatTree` in `codex.ts`; the `codex.save` and import guards; CODEX LOCATIONS as a tree, tree-ordered selects, the phone's nested KNOWN LOCATIONS; `Place` and `placeNotes` in `places.ts`, `places/<source>.json`, GM-only `/places`, `codex.addPlaces`, the `PlacePicker` (§11.96–100); the Space Hulk Generator (RR1 pp.6–11): `SpaceHulkGenerator`, `hulkNotes`, `roomNotes`, `scene-presets/space-hulk.json` on `/scene-presets`, `codex.addHulk`, the `HulkGenerator` (§11.101–102) |
 | NPC name and look | done | `rollOn` reads a flavour table's shape (a name list, Element columns, a Features grid, 2d6 and d66 rows; "roll twice") with `roll`/`rowsFor`; `rollLook` and `LOOK` (Core p.32: Aeldari +3, capped, §11.90; Orks blood-red, no hair) in `flavour.ts`; ROLL NAME and ROLL LOOK in CODEX › NPCS, fed by GM-only `/flavour`, write NAME and DESCRIPTION without saving (§11.91) |
-| Items | done | `CodexInput.item` (a catalogue `wargearId` or a custom name, a place or an NPC, a relic's `mods`), server-owned `givenTo`, `beat.itemIds`; `character.giveItem` on the session's Wargear Test and `character.takeItem` through `grantWargear` (§11.112–105, 109); `Weapon.mods` applied by `withUpgrades` (§11.116); CODEX ITEMS with GIVE TO / TAKE BACK, the scene's ITEMS TO FIND |
+| Items | done | `CodexInput.item` (a catalogue `wargearId` or a custom name, a place or an NPC, a relic's `mods`), server-owned `givenTo`, `beat.itemIds`; `character.giveItem` (no Test) and `character.takeItem` through `grantWargear` (§11.112–105, 109); `Weapon.mods` applied by `withUpgrades` (§11.116); CODEX ITEMS with GIVE TO / TAKE BACK, the scene's ITEMS TO FIND |
 | Critical Hit and Perils lookup | done | `lookups.ts` (`perilsResult`, `perilsRow`, `lookup`, `applyActions`, `planApply`, `addCondition`, `diceRange`), `lookups/*.json` on `/scene-presets`, the tracker's CRIT / PERILS panel (§11.125, §11.154–156). Left to the GM: area effects, durations |

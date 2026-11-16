@@ -22,7 +22,7 @@ export function holderOf(item: Item, { codex, characters }: { codex: Codex; char
 }
 
 // GIVE TO an Agent, or TAKE BACK once given (rules-flow.md §11.112–§11.114). The server builds the sheet line and refuses
-// what the rules refuse (no session, the Wargear Test spent, a full gear list); the refusal shows where it was tapped.
+// what the rules refuse (no session, a weapon already carried, a full gear list); the refusal shows where it was tapped.
 export function ItemGive({ item, characters, send, onError }: ItemGiveProps) {
   const [to, setTo] = useState("");
   const holder = characters.find((c) => c.id === item.givenTo);

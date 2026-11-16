@@ -227,8 +227,8 @@ export const Action = z.union([
     // the mutated part cut off, which leaves the Corruption as it is (p.287).
     z.object({ type: z.literal("character.mutate"), id, mutationId: slug, subId: slug.optional() }),
     z.object({ type: z.literal("character.unmutate"), id, mutationId: slug }),
-    // GM only: a codex item handed to an Agent, which uses their Wargear Test for the session (rules-flow.md §11.112),
-    // and taken back again (§11.114). The server builds the sheet line from the item.
+    // GM only: a codex item handed to an Agent, with no Test (rules-flow.md §11.112), and taken back again (§11.114).
+    // The server builds the sheet line from the item.
     z.object({ type: z.literal("character.giveItem"), id, itemId: id }),
     z.object({ type: z.literal("character.takeItem"), id, itemId: id }),
     // GM only: a requisition Influence Test rolled at the table (pp.205–206, p.229). The server checks the Keywords and

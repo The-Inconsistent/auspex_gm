@@ -137,6 +137,4 @@ export const item = pgTable("item", {
   npcId: uuid().references(() => npc.id, { onDelete: "set null" }),
   mods: jsonb().$type<unknown[]>().notNull().default([]), // UpgradeMod[]: a relic's Powers (rules-flow.md §11.116)
   givenTo: uuid().references(() => character.id, { onDelete: "set null" }),
-  // The session the GIVE was in: a TAKE BACK in that same session refunds the Wargear Test it used (rules-flow §11.114).
-  givenIn: uuid(),
 });

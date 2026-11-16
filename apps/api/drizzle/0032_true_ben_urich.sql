@@ -1,0 +1,1 @@
+ALTER TABLE "item" DROP COLUMN "given_in";

@@ -2591,10 +2591,7 @@ test("GIVE and TAKE BACK: a found item onto an Agent's sheet and off it again (i
     mods: [{ kind: "damage", delta: 1 }],
   });
 
-  await refused(
-    give(kael, pistol),
-    "Start a session first: giving an item uses the Agent's Wargear Test (rules-flow.md §11.112)",
-  );
+  await refused(give(kael, pistol), "Start a session first: items are given at the table (rules-flow.md §11.112)");
   assert.ok((await gm.send({ type: "session.start" })).ok);
   await refused(
     give(kael, frag),
@@ -2615,7 +2612,10 @@ test("GIVE and TAKE BACK: a found item onto an Agent's sheet and off it again (i
   assert.deepEqual([bolt.name, bolt.wargearId], ["Bolt Pistol", "bolt-pistol"]);
   await eventually(() => itemOf(pistol).givenTo === kael, "the codex records the gift");
   assert.equal(itemOf(pistol).locationId, null);
-  await refused(give(kael, scope), "Kael already made this session's wargear Test (p.205)");
+  // GIVE uses no Wargear Test (§11.112): it stays for a requisition, and a second item the same session goes through.
+  assert.equal((await sheet(kael)).requisitioned.wargear, undefined);
+  assert.ok((await give(kael, scope)).ok);
+  assert.ok((await take(kael, scope)).ok);
   await refused(give(vex, pistol), "Bolt Pistol was given already: take it back first");
   await refused(
     gm.send({ type: "codex.save", kind: "item", id: pistol, data: { name: "Bolt Pistol", locationId: shaft } }),
@@ -2700,11 +2700,6 @@ test("GIVE and TAKE BACK: a found item onto an Agent's sheet and off it again (i
   assert.deepEqual((await sheet(vex)).weapons[0]!.upgradeNames, ["Red-Dot Sight"]);
   assert.ok((await take(vex, sight)).ok);
   await gm.until((s) => !s.characters.find((c) => c.id === vex)?.stats.weapons[0]?.fitted);
-  // Taken back in the session it was given in, its Wargear Test comes back: the GM can give it again (§11.114).
-  assert.equal((await sheet(vex)).requisitioned.wargear, undefined);
-  assert.ok((await give(vex, sight)).ok);
-  await refused(give(vex, await newItem({ name: "Vox Bead" })), "Vex already made this session's wargear Test (p.205)");
-  assert.ok((await take(vex, sight)).ok);
   // Deleting the Agent leaves what they were given loose.
   assert.ok((await gm.send({ type: "character.delete", id: vex })).ok);
   await eventually(() => itemOf(relic).givenTo === null && itemOf(slate).givenTo === null, "Vex's items are loose");
