@@ -93,11 +93,11 @@ export function CampaignSetup({
 
   // The writing panel beside IN THIS CAMPAIGN: CODEX's own form (its quick-edit sheet), so a place gets its DESCRIPTION,
   // GM NOTES and hazards and a faction its STANCE, Keywords, NOTES and SECRETS. DONE saves; a removed entry closes it.
-  const panel = (kind: TypedKind, what: string) => {
+  const panel = (kind: TypedKind) => {
     const row = (kind === "location" ? codex.locations : codex.factions).find((r) => r.id === editing);
     return (
-      <section className="plate stack" aria-label={row ? `Write ${row.name}` : `Write a ${what}`}>
-        {row ? (
+      row && (
+        <section className="plate stack" aria-label={`Write ${row.name}`}>
           <CodexEditor
             key={row.id}
             kind={kind}
@@ -114,12 +114,8 @@ export function CampaignSetup({
             onDone={() => setEditing(null)}
             sheet={{ codexHref: gmPath.codex({ campaignId, kind, entryId: row.id, edit: true }) }}
           />
-        ) : (
-          <i className="dim">
-            Tap a {what} in the list to write about it. Only a name is needed now; CODEX keeps the rest.
-          </i>
-        )}
-      </section>
+        </section>
+      )
     );
   };
 
@@ -152,7 +148,7 @@ export function CampaignSetup({
                 {spaceHulk && (
                   <HulkGenerator generator={spaceHulk} hazards={hazards} codex={codex} send={send} onError={setError} />
                 )}
-                <div className="nc-split">
+                <div className="su-split">
                   <div className="stack">
                     <AddByName id="setup-place" kind="location" send={send} onError={setError} />
                     <InCampaign
@@ -165,7 +161,7 @@ export function CampaignSetup({
                       onError={setError}
                     />
                   </div>
-                  {panel("location", "place")}
+                  {panel("location")}
                 </div>
               </>
             )}
@@ -182,7 +178,7 @@ export function CampaignSetup({
                     onError={setError}
                   />
                 )}
-                <div className="nc-split">
+                <div className="su-split">
                   <div className="stack">
                     <AddByName id="setup-faction" kind="faction" send={send} onError={setError} />
                     <InCampaign
@@ -195,7 +191,7 @@ export function CampaignSetup({
                       onError={setError}
                     />
                   </div>
-                  {panel("faction", "faction")}
+                  {panel("faction")}
                 </div>
               </>
             )}

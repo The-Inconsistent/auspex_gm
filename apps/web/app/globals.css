@@ -1880,9 +1880,18 @@ summary {
 /* NEW CAMPAIGN (both halves) spans the whole screen: its pickers list a book beside a preview, and a tablet has room. */
 .bld-main.wide {
   max-width: none;
-  /* Room under NEXT, so a REMOVE near the foot shortens the page without the browser pulling the view up (to the top,
-     on a short page): the next row slides up under the finger instead. */
-  padding-bottom: 50dvh;
+}
+/* SET-UP's SETTING and FACTIONS: the list, and the writing panel right beside it once a name is tapped. */
+.su-split {
+  display: grid;
+  grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .su-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 /* NEW CAMPAIGN's PREMISE: the form, and the book's advice for writing a Framework beside it on a tablet. */
 .nc-split {

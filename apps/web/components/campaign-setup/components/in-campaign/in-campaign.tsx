@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { ConfirmAction } from "@/components/ui/confirm-action/confirm-action";
 import type { Send } from "@/hooks/use-table/use-table";
@@ -27,11 +27,15 @@ type InCampaignProps = {
 // or a double tap back without leaving the wizard for CODEX.
 export function InCampaign({ kind, rows, empty, editing, onEdit, send, onError }: InCampaignProps) {
   const [busy, setBusy] = useState<string | null>(null);
+  const list = useRef<HTMLDivElement>(null);
 
   // REMOVE: a place goes with the places inside it (deleting only the parent would leave them at the top level), the
   // deepest first; the first refusal stops it.
   const remove = async (row: InCampaignRow) => {
     setBusy(row.id);
+    // The list keeps its height: a shorter page near its foot makes the browser pull the view up (to the top, on a
+    // short page), and the next row's REMOVE should land under the same finger instead.
+    if (list.current) list.current.style.minHeight = `${list.current.offsetHeight}px`;
     for (const id of [...row.inside, row.id]) {
       const r = await send({ type: "codex.delete", kind, id });
       if (!r.ok) {
@@ -44,10 +48,10 @@ export function InCampaign({ kind, rows, empty, editing, onEdit, send, onError }
   };
 
   return (
-    <div className="field" style={{ maxWidth: 720 }}>
+    <div className="field">
       <span className="label">IN THIS CAMPAIGN · {rows.length}</span>
-      {rows.length === 0 && <i className="dim">{empty}</i>}
-      <div className="list">
+      {rows.length === 0 ? <i className="dim">{empty}</i> : <i className="dim">Tap a name to write about it.</i>}
+      <div className="list" ref={list}>
         {rows.map((row) => (
           <div key={row.id} className="ed-pick" style={{ paddingLeft: row.depth * 16 }}>
             {/* Tap a name to write it (the panel beside the list). */}
