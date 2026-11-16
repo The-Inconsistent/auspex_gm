@@ -71,7 +71,10 @@ export function RulesProvider({ rules, children }: RulesProviderProps) {
 }
 
 export function useRules(): Rules {
-  const rules = use(RulesContext);
+  const rules = useRulesIfAny();
   if (!rules) throw new Error("useRules outside RulesProvider");
   return rules;
 }
+
+// For a card that only links a rule when there are rules to open (Pop on NEW CAMPAIGN, which has no seat yet).
+export const useRulesIfAny = (): Rules | null => use(RulesContext);

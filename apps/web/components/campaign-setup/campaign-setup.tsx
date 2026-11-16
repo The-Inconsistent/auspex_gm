@@ -21,6 +21,7 @@ import { PlacePicker } from "@/components/gm/codex/components/place-picker/place
 import { RoomInvite } from "@/components/gm/party/components/room-invite/room-invite";
 import { PictureProvider } from "@/components/ui/codex-picture/codex-picture";
 import { MentionsProvider } from "@/components/ui/mentions/mentions-provider";
+import { Help } from "@/components/ui/term/term";
 import { StatusScreen } from "@/components/ui/status-screen/status-screen";
 import { ThemeToggle } from "@/components/ui/theme-toggle/theme-toggle";
 import { STEP_LABELS } from "@/components/ui/wizard-steps/constants";
@@ -139,7 +140,16 @@ export function CampaignSetup({
           <main className="bld-main wide">
             {step === "setting" && (
               <>
-                <div className="rule">WHERE DOES IT START?</div>
+                <div className="rule">
+                  <span>
+                    WHERE DOES IT START?{" "}
+                    <Help title="Setting" cite="Core Rulebook pp.315, 320">
+                      Keep the adventures to a limited area, like the Gilead System, so the players see their actions
+                      have consequences and meet the people they help. For each place, a few defining features (smells,
+                      colours, sounds) beat long paragraphs. Places start hidden: players see one once you reveal it.
+                    </Help>
+                  </span>
+                </div>
                 <p className="dim">
                   Keep the adventures to one limited area, so the players see their actions have consequences. Core
                   Rulebook p.320
@@ -167,7 +177,17 @@ export function CampaignSetup({
             )}
             {step === "factions" && (
               <>
-                <div className="rule">WHO&apos;S OUT THERE?</div>
+                <div className="rule">
+                  <span>
+                    WHO&apos;S OUT THERE?{" "}
+                    <Help title="Factions" cite="Core Rulebook pp.167, 315, 317">
+                      The powers the Agents deal with: patrons, rivals, villains. Know what each wants and what it does
+                      while an adventure runs, so the world stays alive. A faction&apos;s Keywords mark who belongs to
+                      it, and an Agent sharing one may have an easier time with them. Factions stay on your tablet;
+                      players meet them through NPCs.
+                    </Help>
+                  </span>
+                </div>
                 <p className="dim">Who can work together, and who needs a reason. Core Rulebook pp.167, 317</p>
                 {factionPresets.length > 0 && (
                   <FactionPicker

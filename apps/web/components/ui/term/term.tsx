@@ -1,9 +1,10 @@
 "use client";
+import { Info } from "lucide-react";
 import { useId, type ReactNode } from "react";
 
 import type { RuleEntry } from "@wg/shared";
 
-import { useRules } from "@/components/ui/rules-provider/rules-provider";
+import { useRules, useRulesIfAny } from "@/components/ui/rules-provider/rules-provider";
 import { SHEET_TERMS, type SheetTermKey } from "@/lib/sheet-terms/sheet-terms";
 
 type PopProps = {
@@ -18,12 +19,12 @@ type PopProps = {
 // rule to open. A native popover: light dismiss, Escape, no state.
 export function Pop({ title, cite, body, rule, children }: PopProps) {
   const id = useId();
-  const { open } = useRules();
+  const rules = useRulesIfAny();
 
   // FULL RULE: close the card, then open the rule's own dialog.
   const handleFull = () => {
     document.getElementById(id)?.hidePopover();
-    if (rule) open([rule]);
+    if (rule) rules?.open([rule]);
   };
 
   return (
@@ -40,7 +41,7 @@ export function Pop({ title, cite, body, rule, children }: PopProps) {
         </span>
         <span className="term-pop-text">{body}</span>
         <span className="term-pop-keys">
-          {rule && (
+          {rule && rules && (
             <button type="button" className="btn sm" onClick={handleFull}>
               FULL RULE
             </button>
@@ -52,6 +53,17 @@ export function Pop({ title, cite, body, rule, children }: PopProps) {
         </span>
       </span>
     </>
+  );
+}
+
+type HelpProps = { title: string; cite: string; children: ReactNode };
+
+// ⓘ beside a label or heading: what the book means by it, in our words, with its page (NEW CAMPAIGN's steps).
+export function Help({ title, cite, children }: HelpProps) {
+  return (
+    <Pop title={title} cite={cite} body={children}>
+      <Info size={15} aria-hidden="true" style={{ verticalAlign: "-2px" }} />
+    </Pop>
   );
 }
 
