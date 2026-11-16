@@ -74,6 +74,12 @@
   margin-top: 6px;
   color: var(--red-on-iron);
 }
+/* A typed field on the iron panel (CALL A TEST's DN): the page's light field left bone text on pale grey. */
+.hd-pop-panel .input {
+  background: transparent;
+  border-color: var(--bone-line);
+  color: var(--bone);
+}
 
 /* SETUP at the rail's foot: used before a campaign, not during it, so it sits apart and quieter. */
 .tabs.rail .tab.foot {

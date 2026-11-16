@@ -19,6 +19,7 @@ import {
   type Character,
 } from "@wg/shared";
 
+import { NumberInput } from "@/components/ui/number-input/number-input";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { NEW_CALL, SKILL_NAMES } from "../../constants";
@@ -36,7 +37,10 @@ export function CallForm({ agents, send, onResult }: CallFormProps) {
   const [picked, setPicked] = useState<ReadonlySet<string>>(() => new Set(agents.length === 1 ? [agents[0]!.id] : []));
   const who = agents.filter((c) => picked.has(c.id)).map((c) => c.id);
   const pool = TEST_POOL[test.kind];
-  const dns: readonly number[] = test.kind === "corruption" ? CORRUPTION_DNS : DN_TABLE.map((r) => r.dn);
+  const corruption = test.kind === "corruption";
+  const table: readonly number[] = corruption ? CORRUPTION_DNS : DN_TABLE.map((r) => r.dn);
+  // A DN typed in the box that the table doesn't print still needs its option, or the select shows another.
+  const dns = test.dn === null || table.includes(test.dn) ? table : [...table, test.dn].sort((a, b) => a - b);
 
   // KIND: keep what still fits (retypeTest); a Corruption DN is one p.285 prints; a Fear mark only stays on a Resolve
   // Test (Core p.199).
@@ -56,6 +60,9 @@ export function CallForm({ agents, send, onResult }: CallFormProps) {
 
   // DN: one of the table's (p.161), or of p.285 for Corruption.
   const handleDn = (e: ChangeEvent<HTMLSelectElement>) => setTest({ ...test, dn: Number(e.target.value) });
+
+  // DN typed: any from 1 to 20 (the schema's cap), as the scene editor allows; an emptied box keeps the last DN.
+  const handleDnTyped = (dn: number | null) => setTest({ ...test, dn: dn ?? test.dn });
 
   // An Agent in or out of the call.
   const handleWho = (id: string) => {
@@ -111,6 +118,9 @@ export function CallForm({ agents, send, onResult }: CallFormProps) {
               </option>
             ))}
           </select>
+        )}
+        {pool !== "either" && !corruption && (
+          <NumberInput value={test.dn} label="DN, typed" max={20} onChange={handleDnTyped} />
         )}
         {test.kind === "resolve" && (
           <label>
