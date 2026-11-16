@@ -1076,7 +1076,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 175. **INCOMING on the phone** (no book rule; a table aid). Whenever a Threat acts, seen or unseen, every Agent still in
      the fight sees what a hit on them comes down to, from their own sheet: their Defence (the Icons it needs, before
      cover, p.182), their Resilience (damage over it after AP is Wounds, equal is 1 Shock, p.192), Determination ready
-     (Toughness dice, p.196; none while Exhausted, p.199), no Critical Hit from a Troop (p.323), and their held action's
+     (Toughness dice, p.196; none while Exhausted, p.199), no Critical Hit from a Troop (p.323; only when its stat block is shown, §11.56), and their held action's
      interrupt (pp.177–178, 187). The GM selects nothing: the tracker's selection stays on the tablet.
      *User ruling, 2026-11-17.*
 

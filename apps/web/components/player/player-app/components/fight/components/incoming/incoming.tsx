@@ -15,7 +15,8 @@ type IncomingProps = {
 export function Incoming({ me, state, attacker, held }: IncomingProps) {
   const d = deriveStats({ stats: me.stats, overrides: me.overrides, tier: state.campaign.tier });
   const exhausted = isExhausted({ shock: me.shock, maxShock: d.maxShock, conditions: me.conditions });
-  const troop = attacker?.threatClass === "T";
+  // Only when its stat block is shown: a bars-only threat's class is the GM's to keep (§11.56).
+  const troop = !!attacker?.stats && attacker.threatClass === "T";
   return (
     <section className="pf-sec" aria-label="Incoming">
       <div className="pf-h">
