@@ -23,7 +23,7 @@ export function MissionView({ codex, state, me, fresh, onOpen }: MissionViewProp
   return (
     <>
       <Orders me={me} />
-      <Carried codex={codex} fresh={fresh} onOpen={onOpen} />
+      <Inventory codex={codex} fresh={fresh} onOpen={onOpen} />
       <Mission state={state} />
       <MissionLog codex={codex} />
     </>
@@ -58,11 +58,11 @@ function Orders({ me }: { me: Character }) {
 
 // What the GM gave this Agent (rules-flow.md §11.166); a tap reads what the GM said of it. A weapon's profile is on the
 // sheet.
-function Carried({ codex, fresh, onOpen }: Omit<MissionViewProps, "state" | "me">) {
+function Inventory({ codex, fresh, onOpen }: Omit<MissionViewProps, "state" | "me">) {
   const items = asEntries.items(codex);
   return (
     <div className="stack" style={{ gap: 4 }}>
-      <div className="rule">YOU CARRY</div>
+      <div className="rule">INVENTORY</div>
       {items.length === 0 ? (
         <span className="dim">Nothing given to you yet.</span>
       ) : (

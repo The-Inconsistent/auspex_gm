@@ -1010,7 +1010,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
 166. **A given item reaches its holder's phone, in INTEL › MISSION** (no book rule; a table aid). GIVE still writes the
      sheet line (§11.112), but a custom item's line is only its name, so the player also gets the item itself: its name
      and what the GM reads out, never its GM NOTES or where it lay, and only the Agent holding it. It arrives in INBOX
-     as ITEM RECEIVED and is listed under YOU CARRY. The DOSSIER leaves out the gear line a GIVE wrote, so the item lives
+     as ITEM RECEIVED and is listed under INVENTORY. The DOSSIER leaves out the gear line a GIVE wrote, so the item lives
      in one place; a given weapon stays in the armament, where its profile is rolled. The GM's ORDERS to an Agent moved
      to the same MISSION view, out of the DOSSIER's NOTES. *(User ruling, 2026-11-16, after a given Stasis casket showed
      only as a bare line at the foot of the DOSSIER.)*
