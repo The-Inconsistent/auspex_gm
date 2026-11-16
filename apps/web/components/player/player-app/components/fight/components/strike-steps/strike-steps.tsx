@@ -50,8 +50,8 @@ export function StrikeSteps({ me, weapon: w, wounded }: StrikeStepsProps) {
       <li>
         <b>SAY THE TOTAL{w.ap ? ` · AP ${w.ap}` : ""}</b>
         <span>
-          The GM takes off Resilience. Wrath Die 6 on a hit: a <Term k="critical">Critical Hit</Term>, +1 Glory (pp.183,
-          197).
+          Over the threat&rsquo;s Resilience, after AP: Wounds. Equal: 1 Shock (p.192). Wrath Die 6 on a hit: a{" "}
+          <Term k="critical">Critical Hit</Term>, +1 Glory (pp.183, 197).
         </span>
       </li>
     </ol>
