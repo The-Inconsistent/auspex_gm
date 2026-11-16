@@ -1,11 +1,10 @@
 "use client";
-import { Info } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 
 import type { FrameworkCatalogue } from "@wg/shared";
 
 import { FrameworkPicker } from "@/components/gm/setup/components/framework-picker/framework-picker";
-import { Pop } from "@/components/ui/term/term";
+import { Help } from "@/components/ui/term/term";
 
 import type { Draft } from "../../constants";
 
@@ -15,16 +14,6 @@ type PremiseStepProps = Premise & {
   tier: number;
   onChange: (patch: Partial<Premise>) => void;
 };
-type HelpProps = { title: string; cite: string; children: ReactNode };
-
-// ⓘ beside a field's label: what the book means by it, in our words, with its page.
-function Help({ title, cite, children }: HelpProps) {
-  return (
-    <Pop title={title} cite={cite} body={children}>
-      <Info size={15} aria-hidden="true" style={{ verticalAlign: "-2px" }} />
-    </Pop>
-  );
-}
 
 // PREMISE: the Framework, "a sentence or two" saying who the Agents are, what they do and their shared goal (Core p.18).
 // SETUP's picker fills in the printed names only (rules-flow §11.80). The book's advice for writing one sits beside it.

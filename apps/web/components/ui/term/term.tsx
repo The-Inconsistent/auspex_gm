@@ -1,4 +1,5 @@
 "use client";
+import { Info } from "lucide-react";
 import { useId, type ReactNode } from "react";
 
 import type { RuleEntry } from "@wg/shared";
@@ -52,6 +53,17 @@ export function Pop({ title, cite, body, rule, children }: PopProps) {
         </span>
       </span>
     </>
+  );
+}
+
+type HelpProps = { title: string; cite: string; children: ReactNode };
+
+// ⓘ beside a label or heading: what the book means by it, in our words, with its page (NEW CAMPAIGN's steps).
+export function Help({ title, cite, children }: HelpProps) {
+  return (
+    <Pop title={title} cite={cite} body={children}>
+      <Info size={15} aria-hidden="true" style={{ verticalAlign: "-2px" }} />
+    </Pop>
   );
 }
 
