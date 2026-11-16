@@ -13,7 +13,7 @@ type StrikeStepsProps = {
   me: Character;
   weapon: Character["stats"]["weapons"][number];
   wounded: boolean;
-  target: ThreatCombatant | null; // the threat opened in THE FIELD; its stats are null while the GM shows bars (§11.56)
+  target: ThreatCombatant | null; // the threat picked in 2 · PICK A TARGET; its stats are null while the GM shows bars (§11.56)
 };
 
 // THEN, WITH YOUR DICE: what to roll and say for the chosen weapon, the Attack's steps (Core pp.182–184). The dice stay on
@@ -58,7 +58,7 @@ export function StrikeSteps({ me, weapon: w, wounded, target }: StrikeStepsProps
         <span>
           {t && `Defence ${t.defence}. `}
           {wounded && "+1: you're Wounded (p.193). "}Spare 6s become +1 ED each (p.183).
-          {!target && " Tap a threat in THE FIELD to aim at it."}
+          {!target && " Pick a target above for its numbers."}
           {target && !t && " Its stat block isn't shown to you."}
         </span>
       </li>

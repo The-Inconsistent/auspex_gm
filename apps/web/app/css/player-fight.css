@@ -242,6 +242,7 @@ button.pf-hdr {
   font-weight: 700;
   letter-spacing: 0.1em;
 }
+/* A bars-only threat's wound bar (§11.56). */
 .pf-bar {
   display: inline-flex;
   flex: none;
@@ -249,6 +250,20 @@ button.pf-hdr {
 }
 .pf-bar .track {
   width: 100%;
+}
+/* Wounds and Shock left as numbers, like the tracker's (the bars were hard to read). */
+.pf-hp {
+  display: inline-flex;
+  flex: none;
+  gap: 10px;
+  font-size: 13.5px;
+  font-weight: 700;
+}
+.pf-hp-k {
+  color: var(--ink-3);
+}
+.pf-row.me .pf-hp-k {
+  color: var(--bone-2);
 }
 .pf-mob {
   flex: none;
@@ -356,7 +371,7 @@ button.pf-hdr {
   margin: 0;
   padding: 0;
   list-style: none;
-  counter-reset: pf-step 1;
+  counter-reset: pf-step; /* I. under 3 · THEN, WITH YOUR DICE */
 }
 .pf-steps > li {
   counter-increment: pf-step;

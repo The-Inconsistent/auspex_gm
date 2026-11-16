@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, type ReactNode } from "react";
 
 import {
   Side,
@@ -23,8 +23,8 @@ import { CombatOptions } from "@/components/ui/combat-options/combat-options";
 import { RuleLink } from "@/components/ui/rule-link/rule-link";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
-import { Term } from "@/components/ui/term/term";
 import { Track } from "@/components/ui/track/track";
+import { Term } from "@/components/ui/term/term";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 
@@ -81,6 +81,83 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
     fieldRef.current?.focus();
   };
 
+  // One combatant's row. On your Turn the Threats' rows are 2 · PICK A TARGET: opening one is the pick, the same tap that
+  // shows its stat block anywhere else.
+  const renderRow = (c: Combatant) => {
+    const now = c.id === enc.currentId;
+    const word = turnWord(state, c);
+    const isMe = c.id === mine?.id;
+    const ch = c.kind === "pc" ? chars.get(c.characterId) : undefined;
+    const name = c.kind === "pc" ? (ch?.name ?? "?") : c.label;
+    const conds = c.kind === "pc" ? (ch?.conditions ?? []) : c.conditions;
+    const d = ch && deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: state.campaign.tier });
+    // A threat shows numbers once its stat block is shown; a bars-only one keeps the bar, as its maxima are stat block
+    // values the GM is holding back (§11.56).
+    const harm =
+      c.kind === "pc" ? (
+        ch && d && <Harm wounds={ch.wounds} maxWounds={d.maxWounds} shock={ch.shock} maxShock={d.maxShock} />
+      ) : c.mobCount !== null ? (
+        <span className="mono pf-mob">
+          ×{c.mobCount} OF {c.mobStart}
+        </span>
+      ) : c.stats ? (
+        <Harm wounds={c.wounds} maxWounds={c.maxWounds} shock={c.shock} maxShock={c.maxShock} />
+      ) : (
+        <span className="pf-bar">
+          <Track value={Math.max(0, c.maxWounds - c.wounds)} max={c.maxWounds} label="Wounds" />
+        </span>
+      );
+    const head = (
+      <>
+        {c.kind === "threat" && c.marker && (
+          <span
+            role="img"
+            aria-label={`${c.marker} marker`}
+            className="pf-mk"
+            style={{ background: `var(--marker-${c.marker})` }}
+          />
+        )}
+        <b className="pf-name">{name}</b>
+        {isMe && <span className="pf-you">YOU</span>}
+        {harm}
+        <span className={`mono pf-st ${now ? "now" : ""}`}>{word}</span>
+      </>
+    );
+    // Only the header is a button, so the expanded stat block isn't read out as the button's name.
+    return (
+      <li key={c.id} className={`pf-row ${now ? "now" : ""} ${isMe ? "me" : ""} ${c.acted && !now ? "done" : ""}`}>
+        {c.kind === "threat" ? (
+          <button className="pf-hdr" aria-expanded={open === c.id} onClick={() => toggleOpen(c.id)}>
+            {head}
+          </button>
+        ) : (
+          <div className="pf-hdr">{head}</div>
+        )}
+        {(conds.length > 0 || (c.kind === "threat" && threatStatus(c).length > 0)) && (
+          <div className="pf-tags">
+            {c.kind === "threat" && <StatusChips items={threatStatus(c)} />}
+            {conds.map((k) => (
+              <RuleLink key={k} name={k}>
+                <span className="chip">{k.toUpperCase()}</span>
+              </RuleLink>
+            ))}
+          </div>
+        )}
+        {open === c.id &&
+          c.kind === "threat" &&
+          (c.stats ? (
+            <div className="pf-stats">
+              <StatBlock t={c.stats} tier={state.campaign.tier} legend={legend} />
+            </div>
+          ) : (
+            <span className="pf-restricted">
+              No information on this threat. Ask the GM for a Scholar (Int) Test to learn more.
+            </span>
+          ))}
+      </li>
+    );
+  };
+
   return (
     <div className="pf">
       {myTurn && me ? (
@@ -91,8 +168,8 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
           after={after}
           onField={goToField}
           actions={actions}
-          // The threat opened in THE FIELD is the one the steps aim at: tapping it is the pick, no extra control.
           target={enc.combatants.find((c): c is ThreatCombatant => c.kind === "threat" && c.id === open) ?? null}
+          targets={<ul className="pf-rows threats">{rows("threats").map(renderRow)}</ul>}
         />
       ) : (
         <section className="pf-now slate-card cut" aria-label="Now acting">
@@ -115,7 +192,8 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
       )}
 
       <div className="pf-field" ref={fieldRef} tabIndex={-1} aria-label="The field">
-        {Side.options.map((side) => (
+        {/* On your Turn the Threats sit in 2 · PICK A TARGET, so the field below is the Agents. */}
+        {(myTurn ? (["agents"] as const) : Side.options).map((side) => (
           <section key={side} className="pf-side" aria-label={side}>
             <div className="pf-h">
               <h2>{side.toUpperCase()}</h2>
@@ -124,93 +202,35 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
                 {rows(side).filter((c) => c.acted).length}/{rows(side).length} DONE
               </span>
             </div>
-            <ul className={`pf-rows ${side}`}>
-              {rows(side).map((c) => {
-                const now = c.id === enc.currentId;
-                const word = turnWord(state, c);
-                const isMe = c.id === mine?.id;
-                const ch = c.kind === "pc" ? chars.get(c.characterId) : undefined;
-                const name = c.kind === "pc" ? (ch?.name ?? "?") : c.label;
-                const conds = c.kind === "pc" ? (ch?.conditions ?? []) : c.conditions;
-                const left = ch
-                  ? deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: state.campaign.tier }).maxWounds
-                  : 0;
-                const wounds = ch ? Math.max(0, left - ch.wounds) : 0;
-                const head = (
-                  <>
-                    {c.kind === "threat" && c.marker && (
-                      <span
-                        role="img"
-                        aria-label={`${c.marker} marker`}
-                        className="pf-mk"
-                        style={{ background: `var(--marker-${c.marker})` }}
-                      />
-                    )}
-                    <b className="pf-name">{name}</b>
-                    {isMe && <span className="pf-you">YOU</span>}
-                    {c.kind === "pc" && ch && (
-                      <span className="pf-bar">
-                        <Track value={wounds} max={left} />
-                        <span className="sr-only">
-                          Wounds left {wounds}/{left}
-                        </span>
-                      </span>
-                    )}
-                    {c.kind === "threat" &&
-                      (c.mobCount !== null ? (
-                        <span className="mono pf-mob">
-                          ×{c.mobCount} OF {c.mobStart}
-                        </span>
-                      ) : (
-                        <span className="pf-bar">
-                          <Track value={Math.max(0, c.maxWounds - c.wounds)} max={c.maxWounds} label="Wounds" />
-                        </span>
-                      ))}
-                    <span className={`mono pf-st ${now ? "now" : ""}`}>{word}</span>
-                  </>
-                );
-                // Only the header is a button, so the expanded stat block isn't read out as the button's name.
-                return (
-                  <li
-                    key={c.id}
-                    className={`pf-row ${now ? "now" : ""} ${isMe ? "me" : ""} ${c.acted && !now ? "done" : ""}`}
-                  >
-                    {c.kind === "threat" ? (
-                      <button className="pf-hdr" aria-expanded={open === c.id} onClick={() => toggleOpen(c.id)}>
-                        {head}
-                      </button>
-                    ) : (
-                      <div className="pf-hdr">{head}</div>
-                    )}
-                    {(conds.length > 0 || (c.kind === "threat" && threatStatus(c).length > 0)) && (
-                      <div className="pf-tags">
-                        {c.kind === "threat" && <StatusChips items={threatStatus(c)} />}
-                        {conds.map((k) => (
-                          <RuleLink key={k} name={k}>
-                            <span className="chip">{k.toUpperCase()}</span>
-                          </RuleLink>
-                        ))}
-                      </div>
-                    )}
-                    {open === c.id &&
-                      c.kind === "threat" &&
-                      (c.stats ? (
-                        <div className="pf-stats">
-                          <StatBlock t={c.stats} tier={state.campaign.tier} legend={legend} />
-                        </div>
-                      ) : (
-                        <span className="pf-restricted">
-                          No information on this threat. Ask the GM for a Scholar (Int) Test to learn more.
-                        </span>
-                      ))}
-                  </li>
-                );
-              })}
-            </ul>
+            <ul className={`pf-rows ${side}`}>{rows(side).map(renderRow)}</ul>
           </section>
         ))}
       </div>
     </div>
+  );
+}
+
+type HarmProps = { wounds: number; maxWounds: number; shock: number; maxShock: number | null };
+
+// Wounds and Shock left out of max, as numbers the way the GM's tracker shows them: a bar was hard to read at a glance.
+// No Shock track ("–", p.324) shows Wounds alone.
+function Harm({ wounds, maxWounds, shock, maxShock }: HarmProps) {
+  const w = Math.max(0, maxWounds - wounds);
+  const s = maxShock === null ? null : Math.max(0, maxShock - shock);
+  return (
+    <span className="mono pf-hp">
+      <span>
+        <span className="pf-hp-k">W</span> {w}/{maxWounds}
+      </span>
+      {s !== null && (
+        <span>
+          <span className="pf-hp-k">S</span> {s}/{maxShock}
+        </span>
+      )}
+      <span className="sr-only">
+        Wounds {w} of {maxWounds} left{s === null ? "" : `, Shock ${s} of ${maxShock} left`}
+      </span>
+    </span>
   );
 }
 
@@ -221,12 +241,13 @@ type MyTurnProps = {
   after: string;
   onField: () => void;
   actions: RuleEntry[];
-  target: ThreatCombatant | null;
+  target: ThreatCombatant | null; // the threat opened in 2 · PICK A TARGET
+  targets: ReactNode; // the Threats' rows, built by Fight so a tap there opens the same stat block
 };
 
-// Your Turn: what it allows (one OPTIONS dialog of the combat-action entries, Core pp.177–190), your guns step by
-// step (the chosen weapon drives the steps under the list), and one SPEND button for both pools.
-function MyTurn({ me, state, send, after, onField, actions, target }: MyTurnProps) {
+// Your Turn: what it allows (one OPTIONS dialog of the combat-action entries, Core pp.177–190), then the attack in the
+// order it's made: 1 a weapon, 2 a target, 3 the dice steps for that pair; one SPEND button for both pools.
+function MyTurn({ me, state, send, after, onField, actions, target, targets }: MyTurnProps) {
   const [picked, setPicked] = useState(0);
   const weapons = me.stats.weapons;
   const weapon = weapons[Math.min(picked, weapons.length - 1)]; // the list can shrink under a held pick
@@ -252,7 +273,7 @@ function MyTurn({ me, state, send, after, onField, actions, target }: MyTurnProp
           <div className="pf-h">
             <h2>1 · STRIKE</h2>
             <i />
-            <span className="mono">{target ? `› ${target.label.toUpperCase()}` : "PICK A WEAPON"}</span>
+            <span className="mono">PICK A WEAPON</span>
           </div>
           {weapons.map((w, i) => {
             const skill = weaponSkill(w);
@@ -273,7 +294,13 @@ function MyTurn({ me, state, send, after, onField, actions, target }: MyTurnProp
             );
           })}
           <div className="pf-h">
-            <h2>THEN, WITH YOUR DICE</h2>
+            <h2>2 · PICK A TARGET</h2>
+            <i />
+            <span className="mono">{target ? `› ${target.label.toUpperCase()}` : "TAP A THREAT"}</span>
+          </div>
+          {targets}
+          <div className="pf-h">
+            <h2>3 · THEN, WITH YOUR DICE</h2>
             <i />
           </div>
           <StrikeSteps
