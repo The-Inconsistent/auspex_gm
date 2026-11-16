@@ -386,8 +386,12 @@ export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
     handouts: c.handouts
       .filter((h) => h.revealed && (!h.audience.length || (!!characterId && h.audience.includes(characterId))))
       .map((h) => ({ ...pictured(h), audience: h.audience.length && characterId ? [characterId] : [] })),
-    // An Agent sees a found item as a line on their sheet once it's given; a found object's text goes in a handout.
-    items: [],
+    // Only what was given to this Agent, for INTEL's MISSION (rules-flow.md §11.166): where it lay and the GM's notes stay.
+    items: characterId
+      ? c.items
+          .filter((i) => i.givenTo === characterId)
+          .map((i) => ({ ...i, gmNotes: "", locationId: null, npcId: null }))
+      : [],
     sessions: c.sessions.map((s) => ({ ...s, notes: "" })), // every recap, for a player who missed one (§11.151)
     customThreats: [], // a custom threat is a stat block: players never receive one
   };

@@ -165,7 +165,7 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                 {!state.testCall && (
                   <WhisperSheet campaignId={campaignId} characterId={me.id} whispers={state.whispers} send={send} />
                 )}
-                {tab === "SHEET" && <PlayerSheet me={me} state={state} send={send} />}
+                {tab === "SHEET" && <PlayerSheet me={me} state={state} codex={codex} send={send} />}
                 {tab === "FIGHT" && (
                   <Fight
                     state={state}

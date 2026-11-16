@@ -101,7 +101,8 @@ Campaign ── name, tier, framework, frameworkBonus (core pp.18–19, party sh
   book leaves are [rules-flow.md](rules-flow.md) §11.82.
 - **Reveal**: NPCs, locations and handouts have a `revealed` flag. Only revealed ones reach player phones, trimmed
   by the same server-side view as hidden threat stats.
-- **Items** (issue #51): what the Agents can find, never sent to phones (`toPlayerCodex` → `items: []`). A scene
+- **Items** (issue #51): what the Agents can find. A phone gets only the items given to its own Agent, without GM
+  NOTES (`toPlayerCodex`, rules-flow.md §11.166), shown in INTEL › MISSION. A scene
   lists them (`beat.itemIds`); GIVE TO (`character.giveItem`) builds the sheet line from the catalogue and spends the
   Agent's Wargear Test for the session (§11.112), TAKE BACK (`character.takeItem`) undoes it (§11.114).
 - **Handout style** (issue #204): how the handout looks as a prop, on the phone and on paper. `plain` (the default,

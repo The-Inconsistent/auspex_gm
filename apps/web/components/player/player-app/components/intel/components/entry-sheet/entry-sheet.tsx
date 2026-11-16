@@ -73,6 +73,15 @@ function Body({ codex, e }: { codex: Codex; e: IntelEntry }) {
       </>
     );
   }
+  // A given item: what the GM read out when it was found. Its rules, if any, are on the sheet.
+  if (e.kind === "item")
+    return e.entry.description ? (
+      <pre className="text">
+        <Mentions text={e.entry.description} self={e.entry.id} />
+      </pre>
+    ) : (
+      <span className="dim">Nothing more is known about it.</span>
+    );
   const { description, id, imageId, name } = e.entry;
   const parent = e.kind === "location" ? parentName(codex, e.entry) : null;
   return (

@@ -13,13 +13,14 @@ const codex = {
   ],
   npcs: [at("n1", { name: "Tessaly" })],
   locations: [at("l1", { name: "Volkus", parentId: null }), at("l2", { name: "Pump-house", parentId: "l1" })],
+  items: [{ id: "c1", name: "Stasis casket" }],
 } as unknown as Codex;
 
-test("inbox holds only fresh entries: handouts newest first, then persons, then places", () => {
-  const fresh = new Set(["handout:h-old", "handout:h-new", "npc:n1", "location:l2"]);
+test("inbox holds only fresh entries: handouts newest first, then given items, persons, places", () => {
+  const fresh = new Set(["handout:h-old", "handout:h-new", "item:c1", "npc:n1", "location:l2"]);
   assert.deepEqual(
     inboxEntries(codex, fresh).map((e) => e.entry.id),
-    ["h-new", "h-old", "n1", "l2"],
+    ["h-new", "h-old", "c1", "n1", "l2"],
   );
   assert.deepEqual(inboxEntries(codex, new Set()), []);
 });
