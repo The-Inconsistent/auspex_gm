@@ -76,7 +76,7 @@ export function NewCampaign({ catalogue }: NewCampaignProps) {
         <ThemeToggle />
       </header>
       <WizardSteps step={step} here={BEFORE_CREATE} onStep={(s) => isNewStep(s) && go(s)} />
-      <main className="bld-main" style={{ margin: "0 auto" }}>
+      <main className="bld-main wide">
         {step === "tier" && <TierStep tier={draft.tier} onTier={(tier) => patch({ tier })} />}
         {step === "premise" && (
           <PremiseStep

@@ -32,6 +32,7 @@ export default async function CampaignSetupPage({ params }: SetupProps) {
       campaignId={me.campaignId}
       places={places}
       factionPresets={factionPresets.presets}
+      keywords={factionPresets.keywords}
       spaceHulk={presets.spaceHulk}
       hazards={presets.hazards}
     />

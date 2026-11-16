@@ -52,12 +52,15 @@ export function PlacePicker({ places, codex, send, onError, open }: PlacePickerP
   const q = fold(query.trim());
   const books = source ? [source] : sources;
   const holds = picked ? (inside.get(picked.id) ?? 0) : 0;
+  // shortcut: a copied place keeps no link to its book entry, so "already added" is a same-name match; give locations a
+  // source id if two printed places ever share a name.
+  const inCodex = !!picked && codex.locations.some((l) => fold(l.name) === fold(picked.name));
   // INSIDE falls back to top level once its place is deleted (here or on another tablet), so ADD never sends a stale id.
   const parent = codex.locations.some((l) => l.id === parentId) ? parentId : "";
 
   // ADD TO CODEX: one codex.addPlaces; the button waits until it lands.
   const add = async () => {
-    if (!picked) return;
+    if (!picked || inCodex) return;
     setAdding(true);
     const r = await send({ type: "codex.addPlaces", placeId: picked.id, parentId: parent || null });
     setAdding(false);
@@ -184,13 +187,14 @@ export function PlacePicker({ places, codex, send, onError, open }: PlacePickerP
                   ))}
                 </select>
               </div>
-              <button className="btn primary" disabled={adding || holds >= MAX_PLACES_PER_ADD} onClick={add}>
-                ADD TO CODEX
+              <button className="btn primary" disabled={adding || inCodex || holds >= MAX_PLACES_PER_ADD} onClick={add}>
+                {inCodex ? "✓ IN CODEX" : "ADD TO CODEX"}
               </button>
               {holds >= MAX_PLACES_PER_ADD && (
                 <div className="red">! Too many places at once: add the places inside it one by one.</div>
               )}
-              {added && <div>{added}</div>}
+              {/* Only while that place is still here: REMOVE (or another tablet) can take it back out. */}
+              {added && inCodex && <div>{added}</div>}
               <div className="dim">
                 Up to {MAX_PLACES_PER_ADD} places per add, so a whole system goes in world by world. The printed text is
                 copied into this campaign and its export file.
