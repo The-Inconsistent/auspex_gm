@@ -42,7 +42,8 @@ export function HitSheet({ me, state, send }: HitSheetProps) {
   const d = deriveStats({ stats: me.stats, overrides: me.overrides, tier: state.campaign.tier });
   const exhausted = isExhausted({ shock: me.shock, maxShock: d.maxShock, conditions: me.conditions });
   const n = hit.to - hit.from;
-  const chips = Array.from({ length: Math.min(n, MAX_CHIPS) + 1 }, (_, i) => i);
+  // No more Icons than the Wounds to turn, or than the Toughness dice can show (a 6 is 2 Icons).
+  const chips = Array.from({ length: Math.min(n, MAX_CHIPS, 2 * d.determination) + 1 }, (_, i) => i);
 
   const roll = async (icons: number) => {
     if (icons === 0) return setHit(null);
