@@ -8,10 +8,10 @@ test("damage over Resilience is Wounds, equal is 1 Shock, less is nothing (p.192
   assert.deepEqual(woundsFromDamage({ damage: 4, resilience: 5 }), { wounds: 0, shock: 0 });
 });
 
-test('a Shock of "–" takes nothing on a tie (p.324); a Mob of 7 adds 3 dice (p.324)', () => {
+test('a Shock of "–" takes nothing on a tie (p.324); a Mob of 10 adds 5 dice, 7 rounds up to 4 (p.324)', () => {
   assert.deepEqual(woundsFromDamage({ damage: 5, resilience: 5, takesShock: false }), { wounds: 0, shock: 0 });
-  assert.equal(mobBonusDice(7), 3);
-  assert.equal(mobBonusDice(1), 0);
+  assert.equal(mobBonusDice(10), 5, "the book's ten Ork Boyz");
+  assert.equal(mobBonusDice(7), 4);
 });
 
 test("negative AP lowers Resilience", () => {

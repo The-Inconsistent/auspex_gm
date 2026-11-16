@@ -21,8 +21,9 @@ export function woundsFromDamage({
   return { wounds: Math.max(0, damage - effective), shock: takesShock && damage === effective ? 1 : 0 };
 }
 
-// A Mob attacks as one Threat with +1 bonus die per Troop in it, at most half the Troops (p.324).
-export const mobBonusDice = (mobCount: number) => Math.floor(mobCount / 2);
+// A Mob attacks as one Threat with +1 bonus die per Troop in it, at most half the Troops (p.324). An odd count rounds
+// up, as the book's split attacks do; the whole-Mob text gives no rounding (rules-flow §11.173).
+export const mobBonusDice = (mobCount: number) => Math.ceil(mobCount / 2);
 
 // The DN to hit: the target's Defence, +1 while the attacker is Wounded (p.193). Cover, range and vision stay the GM's.
 export const hitDn = ({ defence, attackerWounded }: { defence: number; attackerWounded: boolean }) =>

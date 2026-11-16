@@ -120,7 +120,7 @@ export function AttackGuide({ state, attacker, target, run }: AttackGuideProps) 
           <b>DICE POOL</b>
           <p>
             {pool?.dice != null
-              ? `${pool.dice + mobBonus} dice · ${pool.skill}${mobBonus ? `, +${mobBonus} for the Mob (p.324)` : ""}${troop ? "" : ", one of them the Wrath Die"}`
+              ? `${pool.dice + mobBonus} dice · ${pool.skill}${mobBonus ? `, +${mobBonus} for the Mob (p.324)` : ""}, one of them the Wrath Die`
               : "Pool not printed"}
           </p>
         </li>
