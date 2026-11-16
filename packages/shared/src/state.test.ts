@@ -253,6 +253,35 @@ test("toPlayerCodex: a handout with an audience reaches only those Agents", () =
   assert.deepEqual(toPlayerCodex(codex, "a").handouts[1]!.audience, ["a"], "the rest of the audience isn't sent");
 });
 
+test("toPlayerCodex: an Agent gets only the items given to them, without GM notes (§11.166)", () => {
+  const i = (id: string, givenTo: string | null): Codex["items"][number] => ({
+    id,
+    name: id,
+    wargearId: null,
+    description: "Under the altar",
+    gmNotes: "Opening it wakes the Plasmacyte",
+    locationId: givenTo ? null : "shrine",
+    npcId: null,
+    mods: [],
+    givenTo,
+  });
+  const codex: Codex = {
+    customThreats: [],
+    factions: [],
+    adventures: [],
+    locations: [],
+    npcs: [],
+    handouts: [],
+    items: [i("casket", "a"), i("slate", "b"), i("loose", null)],
+    sessions: [],
+  };
+  assert.deepEqual(
+    toPlayerCodex(codex, "a").items.map((x) => [x.name, x.description, x.gmNotes]),
+    [["casket", "Under the altar", ""]],
+  );
+  assert.deepEqual(toPlayerCodex(codex, null).items, [], "a seatless view gets none");
+});
+
 test("toPlayerCodex: every session's recap, never the GM's notes (issue #195)", () => {
   const s = (n: number, recap: string): Codex["sessions"][number] => ({
     id: `s${n}`,
@@ -791,7 +820,7 @@ test("threatCite uses the SOURCES cite, or the threat-only one", () => {
   assert.equal(threatCite({ source: "gutshivas-kommandos", page: 8 }), "GK p.8");
 });
 
-test("phones get no items: an Agent sees one as a line on their sheet once it's given (issue #51)", () => {
+test("an item defaults to no Powers, and another Agent's phone doesn't get it (issue #51, §11.166)", () => {
   const item = {
     id: "00000000-0000-4000-8000-000000000003",
     givenTo: "a",
@@ -809,7 +838,7 @@ test("phones get no items: an Agent sees one as a line on their sheet once it's 
     sessions: [],
     customThreats: [],
   };
-  assert.deepEqual(toPlayerCodex(codex, "a").items, []);
+  assert.deepEqual(toPlayerCodex(codex, "b").items, []);
 });
 
 test("toPlayerView: every phone sees every pending spend request (rules-flow §11.123)", () => {

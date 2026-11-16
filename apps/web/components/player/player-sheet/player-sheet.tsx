@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-import { deriveStats, type Character, type LiveState } from "@wg/shared";
+import { deriveStats, type Character, type Codex, type LiveState } from "@wg/shared";
 
 import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
@@ -11,11 +11,11 @@ import { Dossier } from "./components/dossier/dossier";
 import { Glance } from "./components/glance/glance";
 import { SHEET_VIEWS, type SheetView } from "./constants";
 
-type PlayerSheetProps = { me: Character; state: LiveState; send: Send };
+type PlayerSheetProps = { me: Character; state: LiveState; codex: Codex; send: Send };
 
 // The player's SHEET tab (replaces `<Sheet requests />` there): AT A GLANCE for the middle of a fight, the DOSSIER for the
 // whole Agent. The shell's strip above already holds Wounds, Shock, Wrath, Glory and Conditions, so they aren't repeated.
-export function PlayerSheet({ me, state, send }: PlayerSheetProps) {
+export function PlayerSheet({ me, state, codex, send }: PlayerSheetProps) {
   const tier = state.campaign.tier;
   const d = deriveStats({ stats: me.stats, overrides: me.overrides, tier });
   const [view, setView] = useState<SheetView>("glance");
@@ -38,7 +38,7 @@ export function PlayerSheet({ me, state, send }: PlayerSheetProps) {
       {view === "glance" ? (
         <Glance me={me} d={d} onAllSkills={handleAllSkills} />
       ) : (
-        <Dossier me={me} state={state} send={send} onError={setError} />
+        <Dossier me={me} state={state} codex={codex} send={send} onError={setError} />
       )}
       <Refusal error={error} onDismiss={() => setError(null)} />
     </div>

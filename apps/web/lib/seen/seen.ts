@@ -1,6 +1,6 @@
 import type { Codex } from "@wg/shared";
 
-export const SEEN_KINDS = ["handout", "npc", "location"] as const;
+export const SEEN_KINDS = ["handout", "npc", "location", "item"] as const; // item: given to this Agent (§11.166)
 export type SeenKind = (typeof SEEN_KINDS)[number];
 
 type Shown = { id: string; imageId?: string | null };
@@ -12,25 +12,30 @@ export const entryKeys = (kind: SeenKind, e: Shown): string[] => [
   ...(e.imageId ? [`picture:${e.imageId}`] : []),
 ];
 
-const shown = (codex: Pick<Codex, "handouts" | "npcs" | "locations">): [SeenKind, Shown][] => [
+const shown = (codex: Pick<Codex, "handouts" | "npcs" | "locations" | "items">): [SeenKind, Shown][] => [
   ...codex.handouts.map((e): [SeenKind, Shown] => ["handout", e]),
   ...codex.npcs.map((e): [SeenKind, Shown] => ["npc", e]),
   ...codex.locations.map((e): [SeenKind, Shown] => ["location", e]),
+  ...codex.items.map((e): [SeenKind, Shown] => ["item", e]),
 ];
 
 // Every key this phone is shown now (the player's codex holds only revealed entries).
-export const shownKeys = (codex: Pick<Codex, "handouts" | "npcs" | "locations">): string[] =>
+export const shownKeys = (codex: Pick<Codex, "handouts" | "npcs" | "locations" | "items">): string[] =>
   shown(codex).flatMap(([kind, e]) => entryKeys(kind, e));
 
 // The keys not yet seen. `seen: null` is a device that has never opened this campaign (or can't remember): nothing is
 // new, so a fresh phone isn't flooded; the caller then stores shownKeys as the baseline.
-export const freshKeys = (codex: Pick<Codex, "handouts" | "npcs" | "locations">, seen: ReadonlySet<string> | null) =>
-  new Set(seen ? shownKeys(codex).filter((k) => !seen.has(k)) : []);
+export const freshKeys = (
+  codex: Pick<Codex, "handouts" | "npcs" | "locations" | "items">,
+  seen: ReadonlySet<string> | null,
+) => new Set(seen ? shownKeys(codex).filter((k) => !seen.has(k)) : []);
 
 // Whether this entry (or its picture) is new.
 export const isFresh = ({ fresh, kind, entry }: { fresh: ReadonlySet<string>; kind: SeenKind; entry: Shown }) =>
   entryKeys(kind, entry).some((k) => fresh.has(k));
 
 // How many entries are new (an entry with a new picture counts once).
-export const freshCount = (codex: Pick<Codex, "handouts" | "npcs" | "locations">, fresh: ReadonlySet<string>) =>
-  shown(codex).filter(([kind, e]) => isFresh({ fresh, kind, entry: e })).length;
+export const freshCount = (
+  codex: Pick<Codex, "handouts" | "npcs" | "locations" | "items">,
+  fresh: ReadonlySet<string>,
+) => shown(codex).filter(([kind, e]) => isFresh({ fresh, kind, entry: e })).length;

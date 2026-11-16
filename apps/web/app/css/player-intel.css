@@ -3,7 +3,8 @@
 /* INBOX / ARCHIVE: a two-way segmented control on an iron frame. */
 .pl-seg {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-flow: column; /* one row, however many views INTEL_VIEWS holds */
+  grid-auto-columns: minmax(0, 1fr);
   border: 1px solid var(--iron-2);
 }
 .pl-seg button {

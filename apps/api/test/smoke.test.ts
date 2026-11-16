@@ -2547,7 +2547,7 @@ test("items: what the Agents can find, in a place, with an NPC or on a scene (is
   assert.ok((await gm.send({ type: "codex.delete", kind: "item", id: pistol })).ok);
   await eventually(() => gm.codex()!.adventures[0]!.beats[0]!.itemIds.join() === oil, "the scene lists the rest");
 
-  // Players see no item list.
+  // A player sees only what was given to their Agent (§11.166): none yet.
   const kael = await id(gm.send({ type: "character.create", name: "Kael" }));
   const token = await gm.send({ type: "token.issue", characterId: kael });
   assert.ok(token.ok && token.token);
@@ -2636,6 +2636,8 @@ test("GIVE and TAKE BACK: a found item onto an Agent's sheet and off it again (i
       })
     ).ok,
   );
+  // The holder's phone gets the item for INTEL, without the GM's notes (§11.166).
+  await eventually(() => phone.codex()!.items.some((i) => i.id === pistol && i.gmNotes === ""), "Kael's phone has it");
   // The same weapon again would be a silent no-op, and TAKE BACK would then take the Agent's own (§11.118).
   await nextSession();
   const spare = await newItem({ name: "Bolt Pistol", wargearId: "bolt-pistol" });

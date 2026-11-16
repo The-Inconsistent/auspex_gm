@@ -45,6 +45,7 @@ export function ShowTable({ ref, entry, onClose }: ShowTableProps) {
         {entry.kind === "handout" ? (
           <HandoutDoc handout={entry.entry} />
         ) : (
+          "imageId" in entry.entry &&
           entry.entry.imageId && (
             // eslint-disable-next-line @next/next/no-img-element -- seat-gated bytes, see components/ui/codex-picture
             <img className="pl-table-img" src={imageSrc(campaignId, entry.entry.imageId)} alt={name} />

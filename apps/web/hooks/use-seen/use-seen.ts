@@ -5,7 +5,7 @@ import type { Codex } from "@wg/shared";
 
 import { freshKeys, shownKeys } from "@/lib/seen/seen";
 
-type Shown = Pick<Codex, "handouts" | "npcs" | "locations">;
+type Shown = Pick<Codex, "handouts" | "npcs" | "locations" | "items">;
 
 const keyOf = (campaignId: string) => `wg:seen:${campaignId}`;
 const listeners = new Set<() => void>();

@@ -10,6 +10,7 @@ import { freshCount } from "@/lib/seen/seen";
 import { Archive } from "./components/archive/archive";
 import { EntrySheet } from "./components/entry-sheet/entry-sheet";
 import { Inbox } from "./components/inbox/inbox";
+import { MissionView } from "./components/mission/mission";
 import { ShowTable } from "./components/show-table/show-table";
 import { INTEL_VIEWS, type IntelView } from "./constants";
 import { findEntry, type EntryRef, type IntelEntry } from "./utils";
@@ -24,7 +25,8 @@ type IntelProps = {
   markSeen: () => void;
 };
 
-// INTEL: an INBOX of what is new, an ARCHIVE of everything shown, one entry sheet over both, and SHOW THE TABLE.
+// INTEL: an INBOX of what is new, this Agent's MISSION (orders, what they carry), an ARCHIVE of everything shown, one
+// entry sheet over all three, and SHOW THE TABLE.
 export function Intel({ codex, state, characterId, send, fresh, markSeen }: IntelProps) {
   const [view, setView] = useState<IntelView>("INBOX");
   const [opened, setOpened] = useState<EntryRef | null>(null);
@@ -32,6 +34,7 @@ export function Intel({ codex, state, characterId, send, fresh, markSeen }: Inte
   const sheet = useRef<HTMLDialogElement>(null);
   const table = useRef<HTMLDivElement>(null);
   const newCount = freshCount(codex, fresh);
+  const me = state.characters.find((c) => c.id === characterId);
 
   // Render the entry before showModal() picks what to focus.
   const handleOpen = (e: IntelEntry) => {
@@ -87,6 +90,8 @@ export function Intel({ codex, state, characterId, send, fresh, markSeen }: Inte
           onOpen={handleOpen}
           onShow={handleShow}
         />
+      ) : view === "MISSION" ? (
+        me && <MissionView codex={codex} state={state} me={me} fresh={fresh} onOpen={handleOpen} />
       ) : (
         <Archive codex={codex} fresh={fresh} onOpen={handleOpen} />
       )}

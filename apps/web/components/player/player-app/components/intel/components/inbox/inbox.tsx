@@ -6,7 +6,7 @@ import { headerOf } from "@/components/ui/handout-doc/constants";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { entryName, firstLine, inboxEntries, parentName, stampOf, type IntelEntry } from "../../utils";
-import { Mission, MissionLog, NextSession } from "../mission/mission";
+import { NextSession } from "../mission/mission";
 
 type InboxProps = {
   codex: Codex;
@@ -19,7 +19,8 @@ type InboxProps = {
   onShow: (e: IntelEntry) => void;
 };
 
-// INBOX: what the GM revealed since this phone last left INTEL, as transmissions, then the mission and when we meet next.
+// INBOX: what the GM revealed or gave since this phone last left INTEL, as transmissions, then when we meet next. The
+// mission itself is under MISSION.
 export function Inbox({ codex, state, characterId, send, fresh, markSeen, onOpen, onShow }: InboxProps) {
   const entries = inboxEntries(codex, fresh);
   return (
@@ -44,9 +45,7 @@ export function Inbox({ codex, state, characterId, send, fresh, markSeen, onOpen
           <WhisperReply whisper={w} characterId={characterId} send={send} />
         </article>
       ))}
-      <Mission state={state} />
       <NextSession state={state} />
-      <MissionLog codex={codex} />
     </>
   );
 }
