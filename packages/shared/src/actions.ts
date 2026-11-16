@@ -18,6 +18,7 @@ import {
   Objectives,
   Overrides,
   Pool,
+  Side,
   Tier,
   Visibility,
 } from "./state.ts";
@@ -334,14 +335,24 @@ export const Action = z.union([
     }),
     z.object({ type: z.literal("threat.delete"), slug }),
 
-    z.object({ type: z.literal("encounter.start") }),
+    z.object({ type: z.literal("encounter.start") }), // opens at Round 0, before Round 1 (rules-flow §11.167)
     z.object({ type: z.literal("encounter.end") }),
-    z.object({ type: z.literal("encounter.newRound") }),
+    z.object({ type: z.literal("encounter.begin") }), // Round 0 → Round 1, ambushes kept (p.176)
+    z.object({ type: z.literal("encounter.newRound") }), // the GM's tap; a Round never ends by itself (§11.169)
+    // Step 1 (p.176): mark a whole side ambushed or not, before Round 1 or during it.
+    z.object({ type: z.literal("encounter.ambush"), side: Side, ambushed: z.boolean() }),
 
-    // Turns (p.177): the GM starts whoever the table picks on the side that's up; Seize costs 1 Glory/Ruin.
-    z.object({ type: z.literal("turn.start"), id }),
+    // Turns (p.177). The side that's up is a suggestion (§11.168): `force` (JUST GO) starts anyone READY for free and
+    // the chronicle notes it; Seize costs 1 Glory/Ruin. Starting a Turn ends the current one first.
+    z.object({ type: z.literal("turn.start"), id, force: z.boolean().optional() }),
     z.object({ type: z.literal("turn.seize"), id }),
     z.object({ type: z.literal("turn.end") }),
+    z.object({ type: z.literal("turn.hold") }), // end the current Turn holding the action (p.177)
+    z.object({ type: z.literal("turn.interrupt"), id }), // a held action used: clears the mark (pp.177–178)
+    // A fix: mark a row done, or not yet (also ANOTHER TURN for one that gets more than one, p.176).
+    z.object({ type: z.literal("turn.mark"), id, acted: z.boolean() }),
+    // TURN BACK (§11.170): undo the last turn step and the damage dealt since it, refunding a Seize or AWARE.
+    z.object({ type: z.literal("turn.back") }),
 
     z.object({
       type: z.literal("combatant.addThreat"),

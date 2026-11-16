@@ -312,23 +312,32 @@ test("GM and player share a table", async (t) => {
   const heroC = await gm.send({ type: "combatant.addCharacter", characterId: hero.id });
   const otherC = await gm.send({ type: "combatant.addCharacter", characterId: other.id });
   assert.ok(heroC.ok && heroC.id && otherC.ok && otherC.id);
+  // A fight opens at Round 0 (§11.167): no Turns until BEGIN ROUND 1, and it takes no NEXT ROUND either.
+  assert.deepEqual(await gm.send({ type: "turn.start", id: heroC.id }), { ok: false, error: "BEGIN ROUND 1 first" });
+  assert.deepEqual(await gm.send({ type: "encounter.newRound" }), { ok: false, error: "BEGIN ROUND 1 first" });
+  assert.ok((await gm.send({ type: "encounter.begin" })).ok);
+  assert.deepEqual(await gm.send({ type: "encounter.begin" }), { ok: false, error: "Round 1 has already begun" });
+  await gm.until((s) => s.encounter?.round === 1);
+  // The order is a suggestion (§11.168): the other side is refused unless JUST GO (force).
   assert.deepEqual(await gm.send({ type: "turn.start", id: ork.id }), {
     ok: false,
-    error: "It's the Agents' turn; Seize to go out of order",
+    error: "It's the Agents' pick: SEIZE or JUST GO",
   });
   assert.ok((await gm.send({ type: "turn.start", id: heroC.id })).ok);
-  assert.deepEqual(await gm.send({ type: "turn.start", id: ork.id }), {
+  // Starting another Turn ends the current one first; a refusal rolls that back too, so the Agent is still acting.
+  assert.deepEqual(await gm.send({ type: "turn.start", id: otherC.id }), {
     ok: false,
-    error: "End the current turn first",
+    error: "It's the Threats' pick: SEIZE or JUST GO",
   });
+  await gm.until((s) => s.encounter?.currentId === heroC.id);
   assert.ok((await gm.send({ type: "turn.end" })).ok);
   assert.deepEqual(await gm.send({ type: "turn.start", id: heroC.id }), {
     ok: false,
-    error: "Already acted this round",
+    error: "Already acted: mark it NOT YET for another Turn",
   });
   assert.deepEqual(await gm.send({ type: "turn.start", id: otherC.id }), {
     ok: false,
-    error: "It's the Threats' turn; Seize to go out of order",
+    error: "It's the Threats' pick: SEIZE or JUST GO",
   });
   assert.deepEqual(await gm.send({ type: "turn.seize", id: ork.id }), {
     ok: false,
@@ -340,6 +349,9 @@ test("GM and player share a table", async (t) => {
   await gm.send({ type: "turn.end" });
   await gm.send({ type: "turn.start", id: ork.id });
   await gm.send({ type: "turn.end" });
+  // The Round doesn't roll over by itself (§11.169): the GM taps NEXT ROUND.
+  await gm.until((s) => s.encounter?.round === 1 && s.encounter.combatants.every((c) => c.acted));
+  assert.ok((await gm.send({ type: "encounter.newRound" })).ok);
   await gm.until(
     (s) => s.encounter?.round === 2 && s.encounter.combatants.every((c) => !c.acted) && s.encounter.lastSide === null,
   );
@@ -348,6 +360,32 @@ test("GM and player share a table", async (t) => {
   await gm.send({ type: "pool.adjust", pool: "ruin", delta: 3 });
   assert.ok((await gm.send({ type: "turn.seize", id: ork.id })).ok, "GM seizes the first turn");
   await gm.send({ type: "turn.end" });
+  // TURN BACK (§11.170) undoes END TURN; HOLD keeps the action for an INTERRUPT, MARK fixes a row.
+  assert.ok((await gm.send({ type: "turn.back" })).ok);
+  await gm.until(
+    (s) => s.encounter?.currentId === ork.id && !s.encounter?.combatants.find((c) => c.id === ork.id)?.acted,
+  );
+  assert.ok((await gm.send({ type: "turn.end" })).ok);
+  assert.ok((await gm.send({ type: "turn.start", id: heroC.id })).ok);
+  assert.ok((await gm.send({ type: "turn.hold" })).ok);
+  await gm.until((s) => s.encounter?.combatants.find((c) => c.id === heroC.id)?.held === true);
+  assert.ok((await gm.send({ type: "turn.interrupt", id: heroC.id })).ok);
+  assert.deepEqual(await gm.send({ type: "turn.interrupt", id: heroC.id }), {
+    ok: false,
+    error: "Not holding an action",
+  });
+  // An interrupt is the held action, not a Turn (p.187): the row stays done until NOT YET gives it another.
+  assert.ok((await gm.send({ type: "turn.mark", id: heroC.id, acted: false })).ok);
+  assert.ok((await gm.send({ type: "turn.start", id: heroC.id })).ok);
+  assert.deepEqual(await gm.send({ type: "turn.mark", id: heroC.id, acted: true }), {
+    ok: false,
+    error: "Acting now: END TURN first",
+  });
+  assert.ok((await gm.send({ type: "turn.end" })).ok);
+  assert.ok((await gm.send({ type: "turn.mark", id: otherC.id, acted: true })).ok);
+  assert.ok((await gm.send({ type: "turn.mark", id: otherC.id, acted: false })).ok);
+  const seatedOnly = await player.until((s) => !!s.encounter);
+  assert.equal(seatedOnly.encounter?.back, null, "the undo trail is the GM's");
 
   // Mobs: every member has 1 Wound, so damage removes members (p.325).
   await gm.send({ type: "combatant.adjust", id: ork.id, wounds: 4 });
@@ -359,9 +397,19 @@ test("GM and player share a table", async (t) => {
   await gm.send({ type: "encounter.start" });
   const amb = await gm.send({ type: "combatant.addCharacter", characterId: hero.id });
   assert.ok(amb.ok && amb.id);
-  await gm.send({ type: "combatant.update", id: amb.id, ambushed: true });
+  // Round 0: the side is marked ambushed with the one tap, and BEGIN ROUND 1 keeps it (p.176).
+  assert.ok((await gm.send({ type: "encounter.ambush", side: "agents", ambushed: true })).ok);
+  await gm.until((s) => s.encounter?.combatants.find((c) => c.id === amb.id)?.ambushed === true);
+  assert.ok((await gm.send({ type: "encounter.begin" })).ok);
+  await gm.until((s) => s.encounter?.round === 1 && s.encounter.combatants.every((c) => c.ambushed));
   assert.equal((await gm.send({ type: "turn.start", id: amb.id })).ok, false);
   await gm.send({ type: "pool.adjust", pool: "glory", delta: 1 });
+  assert.ok((await gm.send({ type: "combatant.aware", id: amb.id })).ok);
+  // TURN BACK refunds the Glory AWARE cost.
+  assert.ok((await gm.send({ type: "turn.back" })).ok);
+  await gm.until(
+    (s) => s.campaign.glory === 1 && s.encounter?.combatants.find((c) => c.id === amb.id)?.ambushed === true,
+  );
   assert.ok((await gm.send({ type: "combatant.aware", id: amb.id })).ok);
   assert.ok((await gm.send({ type: "turn.start", id: amb.id })).ok);
 
@@ -1361,6 +1409,7 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   });
   const ork = await gm.send({ type: "combatant.addThreat", threatId: "ork-boy" });
   assert.ok(heroC.ok && heroC.id && bC.ok && bC.id && cC.ok && cC.id && ork.ok && ork.id);
+  assert.ok((await gm.send({ type: "encounter.begin" })).ok);
   assert.deepEqual(await gm.send({ type: "turn.start", id: heroC.id }), {
     ok: false,
     error: "Dead: no more Turns (p.193)",
@@ -1378,6 +1427,8 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   });
   assert.ok((await gm.send({ type: "turn.start", id: cC.id })).ok);
   assert.ok((await gm.send({ type: "turn.end" })).ok);
+  await gm.until((s) => s.encounter?.round === 1 && s.encounter.lastSide === "agents"); // no automatic rollover
+  assert.ok((await gm.send({ type: "encounter.newRound" })).ok);
   await gm.until((s) => s.encounter?.round === 2);
   assert.ok((await gm.send({ type: "encounter.newRound" })).ok);
   await gm.until((s) => s.encounter?.round === 3);
@@ -1656,6 +1707,7 @@ test("rule gaps: Exhausted Shock, Annihilation, timed Conditions, raw undo (pp.1
   const wraith = await gm.send({ type: "combatant.addThreat", threatId: "canoptek-wraith" }); // Elite at Tier 3
   assert.ok(heroC.ok && heroC.id && wraith.ok && wraith.id);
   await gm.send({ type: "character.update", id: hero.id, conditions: ["Vulnerable (2)", "Prone"] });
+  assert.ok((await gm.send({ type: "encounter.begin" })).ok);
   assert.ok((await gm.send({ type: "turn.start", id: heroC.id })).ok);
   await gm.send({ type: "character.update", id: hero.id, conditions: ["Vulnerable (2)", "Prone", "Hindered"] });
   assert.ok((await gm.send({ type: "turn.end" })).ok);
@@ -3762,6 +3814,14 @@ test("spend requests: a player asks, the GM's ACCEPT is the spend (rules-flow §
   assert.ok((await gm.send({ type: "spend.resolve", id: shock.id, accept: true })).ok);
   await gm.until((s) => charOf(s, a.id!).wrath === 0 && charOf(s, a.id!).shock === 0);
   assert.equal((await pa.send({ type: "spend.request", characterId: a.id, kind: "reroll" })).ok, false, "no Wrath");
+
+  // Determination (p.196): each Icon turns a Wound into Shock, for free; nothing to turn is refused.
+  const det = await pa.send({ type: "spend.request", characterId: a.id, kind: "determination", amount: 2 });
+  assert.ok(det.ok && det.id);
+  assert.equal((await gm.send({ type: "spend.resolve", id: det.id, accept: true })).ok, false, "no Wounds");
+  assert.ok((await gm.send({ type: "character.adjust", id: a.id, wounds: 1 })).ok);
+  assert.ok((await gm.send({ type: "spend.resolve", id: det.id, accept: true })).ok);
+  await gm.until((s) => charOf(s, a.id!).wounds === 0 && charOf(s, a.id!).shock === 1);
 
   // Seize needs a fight; a new fight clears the old one's Seize requests.
   assert.equal((await pa.send({ type: "spend.request", characterId: a.id, kind: "seize" })).ok, false);

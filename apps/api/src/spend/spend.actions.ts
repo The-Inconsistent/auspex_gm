@@ -2,6 +2,7 @@ import { and, eq } from "drizzle-orm";
 import {
   MAX_PENDING_SPENDS,
   deriveStats,
+  isExhausted,
   isGone,
   pcStatus,
   rankOf,
@@ -144,6 +145,23 @@ async function spendIt(tx: Tx, { ctx, request: r }: { ctx: Ctx; request: typeof 
     case "gloryDamage":
       await applyCampaignAction(tx, { ctx, action: { type: "pool.adjust", pool: "glory", delta: -cost.glory } });
       return;
+
+    // Each Icon rolled turns one Wound into Shock (p.196), never while Exhausted (p.199). It costs nothing, so there's
+    // no pool to check; k is capped by the Wounds there are to turn.
+    case "determination": {
+      const tier = await campaignTier(tx, cid);
+      const c = toCharacter(row);
+      const { maxShock } = deriveStats({ stats: c.stats, overrides: c.overrides, tier });
+      if (isExhausted({ shock: row.shock, maxShock, conditions: row.conditions }))
+        fail(`${row.name} is Exhausted: no Determination (p.199)`);
+      const k = Math.min(r.amount, row.wounds);
+      if (k <= 0) fail("No Wounds to turn into Shock");
+      await applyCharacterAction(tx, {
+        ctx,
+        action: { type: "character.adjust", id: row.id, wounds: -k, shock: k },
+      });
+      return;
+    }
 
     // The existing turn.seize pays the Glory and checks canSeize; the requester's combatant is the one that goes.
     case "seize": {

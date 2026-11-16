@@ -185,15 +185,24 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
           currentId: enc.currentId,
           lastSide: enc.lastSide,
           seizedSide: enc.seizedSide,
+          back: enc.history.at(-1)?.label ?? null,
           // A pc row always has characterId; a threat row always has threatId, threatClass and statSnapshot (see addThreat).
           combatants: rows.map((r): Combatant =>
             r.kind === "pc"
-              ? { id: r.id, kind: "pc", characterId: r.characterId!, acted: r.acted, ambushed: r.ambushed }
+              ? {
+                  id: r.id,
+                  kind: "pc",
+                  characterId: r.characterId!,
+                  acted: r.acted,
+                  ambushed: r.ambushed,
+                  held: r.held,
+                }
               : {
                   id: r.id,
                   kind: "threat",
                   acted: r.acted,
                   ambushed: r.ambushed,
+                  held: r.held,
                   marker: r.marker,
                   threatId: r.threatId!,
                   threatClass: r.threatClass!,

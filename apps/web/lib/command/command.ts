@@ -2,7 +2,7 @@ import { CONDITIONS, type ActionInput, type LiveState } from "@wg/shared";
 
 import { COUNTER_ACTIONS, type CounterAction } from "./constants.ts";
 
-// The Auspex command line: `hollan dmg 3`, `boyz +2`, `iskra shock 1`, `+pinned iskra`, `end`, `ruin +1`.
+// The Auspex command line: `hollan dmg 3`, `boyz +2`, `iskra shock 1`, `+pinned iskra`, `end`, `hold`, `back`, `begin`, `next`, `go <name>`, `ruin +1`.
 // Wounds count up in W&G, so `+3` = 3 Wounds taken and `-3` = heal 3. Without a target, the selected row is used.
 
 type Target = { name: string; combatantId: string; characterId: string | null };
@@ -21,7 +21,7 @@ const VERBS: Record<string, string> = {
   recover: "recover",
   r: "recover",
   start: "start",
-  go: "start",
+  go: "go", // JUST GO: start anyone READY out of order (§11.168)
   seize: "seize",
   aware: "aware",
   ambush: "ambush",
@@ -78,7 +78,11 @@ export function parseCommand({
   const [first, second] = words.map((w) => w.toLowerCase());
 
   if (words.length === 1 && first === "end") return { actions: [{ type: "turn.end" }] };
-  if (words.length === 1 && first === "round") return { actions: [{ type: "encounter.newRound" }] };
+  if (words.length === 1 && (first === "round" || first === "next"))
+    return { actions: [{ type: "encounter.newRound" }] };
+  if (words.length === 1 && first === "begin") return { actions: [{ type: "encounter.begin" }] };
+  if (words.length === 1 && first === "hold") return { actions: [{ type: "turn.hold" }] };
+  if (words.length === 1 && first === "back") return { actions: [{ type: "turn.back" }] };
   if ((first === "glory" || first === "ruin") && second && /^[+-]?\d+$/.test(second))
     return { actions: [{ type: "pool.adjust", pool: first, delta: Number(second) }] };
 
@@ -100,7 +104,8 @@ export function parseCommand({
     else if (VERBS[lw] && !verb) verb = VERBS[lw]!;
     else rest.push(w);
   }
-  if (!verb && !condition) return { error: `Unknown command. Try: <name> dmg 3 · <name> +2 · +Pinned <name> · end` };
+  if (!verb && !condition)
+    return { error: `Unknown command. Try: <name> dmg 3 · <name> +2 · +Pinned <name> · end · hold · back` };
 
   const t = resolve({ words: rest, targets, selected });
   if (typeof t === "string") return { error: t };
@@ -142,6 +147,8 @@ export function parseCommand({
         : { error: "Threats don't have Wrath" };
     case "start":
       return { actions: [{ type: "turn.start", id: t.combatantId }] };
+    case "go":
+      return { actions: [{ type: "turn.start", id: t.combatantId, force: true }] };
     case "seize":
       return { actions: [{ type: "turn.seize", id: t.combatantId }] };
     case "aware":

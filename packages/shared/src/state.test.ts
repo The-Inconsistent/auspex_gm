@@ -34,6 +34,7 @@ import {
   pcStatus,
   poolMax,
   roundEndReminders,
+  turnMark,
   sideUpNext,
   threatStatus,
   toPlayerCodex,
@@ -56,6 +57,7 @@ const threat = (id: string, o: Partial<ThreatCombatant> = {}): ThreatCombatant =
   kind: "threat",
   acted: false,
   ambushed: false,
+  held: false,
   threatId: "ork-boy",
   threatClass: "T",
   label: "Boyz",
@@ -73,7 +75,7 @@ const threat = (id: string, o: Partial<ThreatCombatant> = {}): ThreatCombatant =
   ...o,
 });
 const pc = (id: string, o: Partial<Combatant> = {}): Combatant =>
-  ({ id, kind: "pc", characterId: `ch-${id}`, acted: false, ambushed: false, ...o }) as Combatant;
+  ({ id, kind: "pc", characterId: `ch-${id}`, acted: false, ambushed: false, held: false, ...o }) as Combatant;
 const enc = (combatants: Combatant[], o: Partial<Encounter> = {}): Encounter => ({
   id: "e",
   round: 1,
@@ -81,6 +83,7 @@ const enc = (combatants: Combatant[], o: Partial<Encounter> = {}): Encounter => 
   lastSide: null,
   seizedSide: null,
   combatants,
+  back: null,
   ...o,
 });
 const noAccess: LiveState["access"] = { members: [], invites: [], guests: [] };
@@ -930,4 +933,40 @@ test("a phone gets only the whispers to its Agent, without the other recipients 
   assert.deepEqual(toPlayerView(s, "b").whispers[0]?.replies, { b: { text: "!", at } });
   assert.deepEqual(toPlayerView(s, "c").whispers, [], "an Agent not whispered to");
   assert.deepEqual(toPlayerView(s, null).whispers, [], "the table screen");
+});
+
+test("Round 0 is setup: nobody can act until Round 1 begins (p.176)", () => {
+  const s = table(enc([pc("a"), threat("t")], { round: 0 }));
+  assert.equal(canAct(s, pc("a")), false);
+  assert.equal(canAct(table(enc([pc("a")], { round: 1 })), pc("a")), true);
+});
+
+test("turnMark: what the GM taps on a row", () => {
+  const s = (o: Partial<Encounter> = {}) => table(enc([pc("a"), threat("t")], o));
+  const mark = (c: Combatant, o: Partial<Encounter> = {}) => turnMark(s(o), c);
+  assert.equal(mark(pc("a")), "ready");
+  assert.equal(mark(pc("a", { acted: true })), "done");
+  assert.equal(mark(pc("a", { acted: true, held: true })), "held");
+  assert.equal(mark(pc("a"), { currentId: "a" }), "acting");
+  assert.equal(mark(pc("a", { ambushed: true })), "ambushed");
+  assert.equal(mark(pc("a", { ambushed: true }), { round: 0 }), "ambushed", "marked in setup, before Round 1");
+  assert.equal(mark(pc("a", { ambushed: true }), { round: 2 }), "ready", "ambush ends with Round 1");
+  assert.equal(turnMark(table(enc([threat("t", { wounds: 99, maxWounds: 6 })])), threat("t", { wounds: 99 })), "out");
+});
+
+test("roundEndReminders: held actions are lost and ambushes end (p.177)", () => {
+  const e = enc([pc("h", { acted: true, held: true }), threat("t", { label: "Boyz", ambushed: true })]);
+  assert.deepEqual(
+    roundEndReminders(e, (c) => (c.kind === "pc" ? "Aurelian" : c.label)),
+    ["Aurelian: the held action is lost (p.187)", "Boyz: no longer ambushed, acts in Round 2 (p.177)"],
+  );
+  assert.deepEqual(
+    roundEndReminders({ ...e, round: 2 }, () => "x"),
+    ["x: the held action is lost (p.187)"],
+  );
+});
+
+test("toPlayerView: the undo trail stays off the phones", () => {
+  const s = table(enc([pc("a")], { back: "Aurelian's Turn" }));
+  assert.equal(toPlayerView(s, null).encounter!.back, null);
 });

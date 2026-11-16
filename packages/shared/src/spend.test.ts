@@ -17,8 +17,10 @@ test("Restore Shock recovers Rank + Tier (p.164, p.196)", () => {
   assert.equal(restoreShockAmount({ rank: 2, tier: 4 }), 6);
 });
 
-test("only Glory dice and damage take an amount", () => {
-  assert.deepEqual(SPEND_KINDS.filter(spendTakesAmount), ["gloryDice", "gloryDamage"]);
+test("Glory dice and damage take an amount, and Determination its Icons", () => {
+  assert.deepEqual(SPEND_KINDS.filter(spendTakesAmount), ["gloryDice", "gloryDamage", "determination"]);
+  assert.equal(spendLabel("determination", 2), "DETERMINATION · 2 ICONS");
+  assert.deepEqual(spendCost("determination", 3), { wrath: 0, glory: 0 });
 });
 
 test("every kind has a label that names its cost", () => {

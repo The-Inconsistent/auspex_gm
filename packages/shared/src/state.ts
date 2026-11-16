@@ -369,7 +369,9 @@ export const Character = z.object({
 });
 export type Character = z.infer<typeof Character>;
 
-const turnFields = { acted: z.boolean(), ambushed: z.boolean() };
+// acted: had its Turn this Round. held: had it and held its action to use later in the Round (pp.177, 187); a held
+// combatant counts as acted. ambushed: no Turn in Round 1 (p.177).
+const turnFields = { acted: z.boolean(), ambushed: z.boolean(), held: z.boolean() };
 
 export const PcCombatant = z.object({
   id: z.string(),
@@ -491,11 +493,13 @@ export const LiveState = z.object({
   encounter: z
     .object({
       id: z.string(),
-      round: z.number().int(),
+      round: z.number().int(), // 0 = before Round 1: Determine Ambushes, Set the Scene (p.176, rules-flow §11.167)
       currentId: z.string().nullable(), // combatant taking its turn
       lastSide: Side.nullable(), // side that acted last; null at the start of a Round
       seizedSide: Side.nullable(), // side that Seized; it can't Seize again until the other side acts
       combatants: z.array(Combatant),
+      // What TURN BACK would take back ("Aurelian Tarsus's Turn"); null when there's nothing to go back to. GM view only.
+      back: z.string().nullable(),
       // Player view only: sideUpNext before hidden Threats are dropped, so a hidden Threat's Turn still shows as due.
       upNext: Side.nullable().optional(),
     })
@@ -539,7 +543,7 @@ export function isOut(s: LiveState, c: Combatant): boolean {
 // Whether c can take a Turn now. Ambushed characters get no Turn in Round 1 (p.177).
 export function canAct(s: LiveState, c: Combatant): boolean {
   const e = s.encounter;
-  return !!e && !c.acted && c.id !== e.currentId && !(c.ambushed && e.round === 1) && !isOut(s, c);
+  return !!e && e.round > 0 && !c.acted && c.id !== e.currentId && !(c.ambushed && e.round === 1) && !isOut(s, c);
 }
 
 // Alternating Turns (p.176-177): after an Agent a Threat acts and vice versa; if the other side has no one left,
@@ -560,6 +564,18 @@ export function canSeize(s: LiveState, side: Side): boolean {
   const e = s.encounter;
   if (!e || e.seizedSide === side || sideUpNext(s) === side) return false;
   return e.lastSide === null ? side === "threats" : e.lastSide === side;
+}
+
+// A row's turn mark (rules-flow §11.168): what the GM taps to act on it. The order is a suggestion, so a READY row on
+// the side that isn't up can still start (JUST GO or SEIZE).
+export type TurnMark = "out" | "acting" | "ambushed" | "held" | "done" | "ready";
+export function turnMark(s: LiveState, c: Combatant): TurnMark {
+  const e = s.encounter;
+  if (isOut(s, c)) return "out";
+  if (e?.currentId === c.id) return "acting";
+  if (c.ambushed && (e?.round ?? 0) <= 1 && !c.acted) return "ambushed";
+  if (c.held) return "held";
+  return c.acted ? "done" : "ready";
 }
 
 // Automatic states from damage (pp.193-196, p.324).
@@ -710,6 +726,7 @@ export const toPlayerView = (s: LiveState, characterId: string | null): LiveStat
     : [],
   encounter: s.encounter && {
     ...s.encounter,
+    back: null, // the GM's undo trail stays off the phones
     upNext: sideUpNext(s),
     // A hidden threat's real id would let players count them, and match it once it shows.
     currentId: s.encounter.combatants.some((c) => c.id === s.encounter?.currentId && isHidden(c))
@@ -759,12 +776,21 @@ export const TURN_END_REMINDERS: Record<string, string> = {
 export const TIMED_CONDITIONS = ["Hindered", "Staggered", "Vulnerable"] as const;
 export const isTimed = (k: string) => TIMED_CONDITIONS.some((t) => k === t || k.startsWith(`${t} (`));
 
-// Reminders when a Round ends: each Mob with half or more slain tests Resolve (p.325).
-export const roundEndReminders = (e: Encounter): string[] =>
-  e.combatants.flatMap((c) =>
+// Reminders when a Round ends: each Mob with half or more slain tests Resolve (p.325); unused held actions are lost (p.187);
+// ambushed combatants act from Round 2 (p.177). `name` labels a combatant (the GM's tracker names Agents).
+export const roundEndReminders = (
+  e: Encounter,
+  name: (c: Combatant) => string = (c) => (c.kind === "threat" ? c.label : ""),
+): string[] => [
+  ...e.combatants.flatMap((c) =>
     c.kind === "threat" && halfSlain(c)
       ? [
           `${c.label}: half slain, DN 3 Resolve Test; fail = the Mob flees as if in Terror, a Complication slays 1d3 more (p.325)`,
         ]
       : [],
-  );
+  ),
+  ...e.combatants.filter((c) => c.held).map((c) => `${name(c)}: the held action is lost (p.187)`),
+  ...(e.round === 1
+    ? e.combatants.filter((c) => c.ambushed).map((c) => `${name(c)}: no longer ambushed, acts in Round 2 (p.177)`)
+    : []),
+];

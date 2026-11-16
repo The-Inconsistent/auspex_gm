@@ -125,11 +125,12 @@ phones/tablets ──HTTPS──▶ Pangolin (prod TLS) ──▶ Next ──rew
 
 ### Game flow (details in docs/rules-flow.md)
 
-- **Turns alternate between sides.** Initiative is not a fixed order. After an Agent acts, a Threat acts; if one
-  side runs out, the other goes back to back. The players pick first each Round.
+- **Turns alternate between sides, as a suggestion.** Initiative is not a fixed order. After an Agent acts, a Threat
+  acts; if one side runs out, the other goes back to back. The players pick first each Round. The GM may start anyone
+  READY (JUST GO, free). The GM ends each Round (BEGIN ROUND N), and TURN BACK undoes the last step.
 - **Seizing the Initiative** costs 1 Glory or 1 Ruin, and lets the side that just acted go again, once. The GM can
   also Seize at the start of a Round.
-- **Ambush:** ambushed combatants skip Round 1. Paying 1 Glory or Ruin makes one aware.
+- **Ambush:** the GM marks it in Round 0, before Round 1; ambushed combatants skip Round 1. Paying 1 Glory or Ruin makes one aware.
 - **Mobs:** every member has 1 Wound, so Wounds remove members. Once half are slain, the app prompts a DN 3 Resolve
   Test.
 - **Death by threat class:** a Troop over max Shock is slain. Troops, Elites and Monstrous Creatures over max

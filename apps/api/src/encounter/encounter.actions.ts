@@ -1,8 +1,7 @@
-import { and, count, eq, max, sql } from "drizzle-orm";
+import { and, count, eq, inArray, max, sql } from "drizzle-orm";
 import {
   EncounterEntry,
   MONSTROUS_IMMUNE,
-  canAct,
   canSeize,
   exhaustedShock,
   isExhausted,
@@ -37,7 +36,9 @@ import { bump } from "../core/sql.ts";
 import { clearSpendRequests } from "../spend/spend.clear.ts";
 import { loadState } from "../table/table.state.ts";
 import { loadThreats } from "../threat/threat.service.ts";
-import { combatant, encounter } from "./encounter.schema.ts";
+import { combatant, encounter, type TurnStep } from "./encounter.schema.ts";
+
+const TURN_HISTORY = 30; // TURN BACK steps kept (rules-flow §11.170)
 
 export type EncounterAction = Extract<
   Action,
@@ -73,6 +74,14 @@ async function spend(tx: Tx, { campaignId, side }: { campaignId: string; side: S
     .where(and(eq(campaign.id, campaignId), sql`${col} > 0`))
     .returning({ id: campaign.id });
   if (!r.length) fail(side === "agents" ? "No Glory to spend" : "No Ruin to spend");
+}
+
+async function combatantOf(tx: Tx, { encounterId, id }: { encounterId: string; id: string }) {
+  const [c] = await tx
+    .select()
+    .from(combatant)
+    .where(and(eq(combatant.id, id), eq(combatant.encounterId, encounterId)));
+  return c ?? fail("Combatant not found");
 }
 
 async function nextOrder(tx: Tx, encounterId: string) {
@@ -152,17 +161,146 @@ async function addPc(tx: Tx, { encounterId, characterId }: { encounterId: string
 async function startEncounter(tx: Tx, campaignId: string) {
   await tx.update(encounter).set({ active: false }).where(eq(encounter.campaignId, campaignId));
   await clearSpendRequests(tx, { campaignId, kind: "seize" }); // asked against the fight this one replaces
-  const [e] = await tx.insert(encounter).values({ campaignId }).returning({ id: encounter.id });
+  const [e] = await tx.insert(encounter).values({ campaignId, round: 0 }).returning({ id: encounter.id });
   return e!.id; // the row was just inserted
 }
 
-// Everyone gets a Turn each Round; the players pick first again; ambush only applies to Round 1 (p.176-177).
+// Everyone gets a Turn each Round; the players pick first again; ambush only applies to Round 1 (p.176-177). Held
+// actions are lost at the Round's end (p.187).
 async function newRound(tx: Tx, { encounterId, round }: { encounterId: string; round: number }) {
-  await tx.update(combatant).set({ acted: false, ambushed: false }).where(eq(combatant.encounterId, encounterId));
+  await tx
+    .update(combatant)
+    .set({ acted: false, ambushed: false, held: false })
+    .where(eq(combatant.encounterId, encounterId));
   await tx
     .update(encounter)
     .set({ round: round + 1, currentId: null, lastSide: null, seizedSide: null })
     .where(eq(encounter.id, encounterId));
+}
+
+// TURN BACK (§11.170): before a turn-flow action, keep the fight's turn state and everyone's damage as they stand.
+// `who` names the combatant the label speaks of ("Aurelian Tarsus's Turn"); `refund` is what a Seize or AWARE is about to
+// cost, to give back.
+async function pushStep(
+  tx: Tx,
+  {
+    encounterId,
+    who,
+    label,
+    refund,
+  }: { encounterId: string; who?: string; label: (name: string) => string; refund?: TurnStep["refund"] },
+) {
+  const [enc] = await tx.select().from(encounter).where(eq(encounter.id, encounterId));
+  const rows = await tx.select().from(combatant).where(eq(combatant.encounterId, encounterId));
+  const pcIds = rows.flatMap((r) => (r.characterId ? [r.characterId] : []));
+  const chars = pcIds.length ? await tx.select().from(character).where(inArray(character.id, pcIds)) : [];
+  const row = rows.find((r) => r.id === who);
+  const name = row ? (row.kind === "pc" ? chars.find((c) => c.id === row.characterId)?.name : row.label) : "";
+  const step: TurnStep = {
+    label: label(name ?? "?"),
+    round: enc!.round, // the encounter was looked up by the caller
+    currentId: enc!.currentId,
+    lastSide: enc!.lastSide,
+    seizedSide: enc!.seizedSide,
+    refund: refund ?? null,
+    combatants: rows.map((r) => ({
+      id: r.id,
+      acted: r.acted,
+      ambushed: r.ambushed,
+      held: r.held,
+      expiring: r.expiring,
+      wounds: r.wounds,
+      shock: r.shock,
+      mobCount: r.mobCount,
+      conditions: r.conditions,
+    })),
+    characters: chars.map((c) => ({
+      id: c.id,
+      wounds: c.wounds,
+      shock: c.shock,
+      conditions: c.conditions,
+      traumatic: c.traumatic,
+      annihilated: c.annihilated,
+    })),
+  };
+  await tx
+    .update(encounter)
+    .set({ history: [...enc!.history, step].slice(-TURN_HISTORY) })
+    .where(eq(encounter.id, encounterId));
+}
+
+// Pop the newest step and put all of it back, damage included (the GM's ruling); what was added since stays. Then the
+// Glory or Ruin a Seize or AWARE cost goes back to its pool.
+async function takeBack(tx: Tx, { campaignId }: { campaignId: string }) {
+  const enc = await activeEncounter(tx, campaignId);
+  const step = enc.history.at(-1) ?? fail("Nothing to take back");
+  const rows = await tx.select({ id: combatant.id }).from(combatant).where(eq(combatant.encounterId, enc.id));
+  const here = new Set(rows.map((r) => r.id));
+  for (const { id, ...c } of step.combatants.filter((x) => here.has(x.id)))
+    await tx
+      .update(combatant)
+      .set(c)
+      .where(and(eq(combatant.id, id), eq(combatant.encounterId, enc.id)));
+  for (const { id, ...c } of step.characters)
+    await tx
+      .update(character)
+      .set(c)
+      .where(and(eq(character.id, id), eq(character.campaignId, campaignId)));
+  await tx
+    .update(encounter)
+    .set({
+      round: step.round,
+      currentId: step.currentId && here.has(step.currentId) ? step.currentId : null,
+      lastSide: step.lastSide,
+      seizedSide: step.seizedSide,
+      history: enc.history.slice(0, -1),
+    })
+    .where(eq(encounter.id, enc.id));
+  if (step.refund) {
+    const col = step.refund.pool === "glory" ? campaign.glory : campaign.ruin;
+    await tx
+      .update(campaign)
+      .set({ [step.refund.pool]: sql`${col} + ${step.refund.n}` })
+      .where(eq(campaign.id, campaignId));
+  }
+}
+
+// End the Turn in progress, for END TURN, HOLD, and anything that starts another Turn (the order is a suggestion,
+// §11.168). Returns false when no one was acting.
+async function endCurrentTurn(tx: Tx, { campaignId, hold }: { campaignId: string; hold?: boolean }) {
+  const { state, enc } = await liveTable(tx, campaignId);
+  const current = enc.combatants.find((x) => x.id === enc.currentId);
+  if (!current) return false;
+  await pushStep(tx, {
+    encounterId: enc.id,
+    who: current.id,
+    label: (n) => `${n}'s ${hold ? "HOLD" : "END TURN"}`,
+  });
+  const side = sideOf(current);
+  // "Until the end of your next Turn" (pp.199-200): drop the timed Conditions armed at turn.start.
+  // ponytail: one that was removed and gained again this Turn ends too; per-Condition start times if that matters.
+  const [{ expiring } = { expiring: [] }] = await tx
+    .select({ expiring: combatant.expiring })
+    .from(combatant)
+    .where(eq(combatant.id, current.id));
+  const left = conditionsOf(state, current).filter((k) => !expiring.includes(k));
+  if (current.kind === "pc" && expiring.length)
+    await tx.update(character).set({ conditions: left }).where(eq(character.id, current.characterId));
+  await tx
+    .update(combatant)
+    .set({
+      acted: true,
+      held: !!hold, // holding the action keeps the Turn spent but lets it interrupt later (p.187)
+      expiring: [],
+      ...(current.kind === "threat" && expiring.length ? { conditions: left } : {}),
+    })
+    .where(eq(combatant.id, current.id));
+  // A Seize holds until the other side acts.
+  await tx
+    .update(encounter)
+    .set({ currentId: null, lastSide: side, seizedSide: enc.seizedSide === side ? side : null })
+    .where(eq(encounter.id, enc.id));
+  return true;
 }
 
 export async function applyEncounterAction(
@@ -180,20 +318,61 @@ export async function applyEncounterAction(
       await clearSpendRequests(tx, { campaignId: cid, kind: "seize" }); // there is no fight left to Seize in
       return { ok: true };
 
-    case "encounter.newRound": {
+    // Round 0 → Round 1 (p.176): the ambushes set in Round 0 stay.
+    case "encounter.begin": {
       const enc = await activeEncounter(tx, cid);
+      if (enc.round !== 0) fail("Round 1 has already begun");
+      await pushStep(tx, { encounterId: enc.id, label: () => "Round 1 begins" });
+      await tx
+        .update(encounter)
+        .set({ round: 1, currentId: null, lastSide: null, seizedSide: null })
+        .where(eq(encounter.id, enc.id));
+      return { ok: true };
+    }
+
+    // The GM's tap: a Round never ends by itself (§11.169).
+    case "encounter.newRound": {
+      const before = await activeEncounter(tx, cid);
+      if (before.round === 0) fail("BEGIN ROUND 1 first");
+      await endCurrentTurn(tx, { campaignId: cid });
+      const enc = await activeEncounter(tx, cid);
+      await pushStep(tx, { encounterId: enc.id, label: () => `Round ${enc.round + 1}` });
       await newRound(tx, { encounterId: enc.id, round: enc.round });
+      return { ok: true };
+    }
+
+    // Step 1 (p.176): a whole side ambushed or not, while the fight is being set up or in Round 1.
+    case "encounter.ambush": {
+      const enc = await activeEncounter(tx, cid);
+      if (enc.round > 1) fail("Ambushes are settled by Round 1 (p.177)");
+      const word = a.side === "agents" ? "Agents" : "Threats";
+      await pushStep(tx, {
+        encounterId: enc.id,
+        label: () => `${word} ${a.ambushed ? "ambushed" : "no longer ambushed"}`,
+      });
+      await tx
+        .update(combatant)
+        .set({ ambushed: a.ambushed })
+        .where(
+          and(
+            eq(combatant.encounterId, enc.id),
+            eq(combatant.kind, a.side === "agents" ? "pc" : "threat"),
+            eq(combatant.acted, false),
+          ),
+        );
       return { ok: true };
     }
 
     case "turn.start":
     case "turn.seize": {
+      // The order is a suggestion (§11.168): whoever is acting ends their Turn, then the pick is checked.
+      await endCurrentTurn(tx, { campaignId: cid });
       const { state, enc } = await liveTable(tx, cid);
-      if (enc.currentId) fail("End the current turn first");
+      if (enc.round === 0) fail("BEGIN ROUND 1 first");
       const c = enc.combatants.find((x) => x.id === a.id) ?? fail("Combatant not found");
       if (isOut(state, c)) fail(c.kind === "pc" ? "Dead: no more Turns (p.193)" : "Slain: no more Turns (p.324)");
-      if (c.acted) fail("Already acted this round");
-      if (c.ambushed && enc.round === 1) fail("Ambushed: no turn in Round 1 (pay 1 Glory/Ruin to be aware)");
+      if (c.acted) fail("Already acted: mark it NOT YET for another Turn");
+      if (c.ambushed && enc.round === 1) fail("Ambushed: no turn in Round 1 (AWARE first, pay 1 Glory/Ruin)");
       const side = sideOf(c);
       const up = sideUpNext(state);
       const sideName = (x: Side) => (x === "agents" ? "Agents" : "Threats");
@@ -206,11 +385,18 @@ export async function applyEncounterAction(
                 ? `No need to Seize: the ${sideName(side)} act next anyway`
                 : "Seizing lets the side that just acted go again",
           );
+        await pushStep(tx, {
+          encounterId: enc.id,
+          who: a.id,
+          label: (n) => `${n}'s Seize`,
+          refund: { pool: side === "agents" ? "glory" : "ruin", n: 1 },
+        });
         await spend(tx, { campaignId: cid, side });
         await tx.update(encounter).set({ currentId: a.id, seizedSide: side }).where(eq(encounter.id, enc.id));
       } else {
-        // Normal order: the other side, unless it has no one left (p.177).
-        if (side !== up) fail(`It's the ${sideName(up ?? side)}' turn; Seize to go out of order`);
+        // Normal order: the other side, unless it has no one left (p.177); JUST GO takes it anyway.
+        if (side !== up && !a.force) fail(`It's the ${sideName(up ?? side)}' pick: SEIZE or JUST GO`);
+        await pushStep(tx, { encounterId: enc.id, who: a.id, label: (n) => `${n}'s Turn` });
         await tx.update(encounter).set({ currentId: a.id }).where(eq(encounter.id, enc.id));
       }
       // Timed Conditions held now end with this Turn; ones gained during it last until the end of the next (§11.8).
@@ -221,37 +407,44 @@ export async function applyEncounterAction(
       return { ok: true };
     }
 
-    case "turn.end": {
-      const { state, enc } = await liveTable(tx, cid);
-      const current = enc.combatants.find((x) => x.id === enc.currentId) ?? fail("No one is taking a turn");
-      const side = sideOf(current);
-      // "Until the end of your next Turn" (pp.199-200): drop the timed Conditions armed at turn.start.
-      // ponytail: one that was removed and gained again this Turn ends too; per-Condition start times if that matters.
-      const [{ expiring } = { expiring: [] }] = await tx
-        .select({ expiring: combatant.expiring })
-        .from(combatant)
-        .where(eq(combatant.id, current.id));
-      const left = conditionsOf(state, current).filter((k) => !expiring.includes(k));
-      if (current.kind === "pc" && expiring.length)
-        await tx.update(character).set({ conditions: left }).where(eq(character.id, current.characterId));
-      await tx
-        .update(combatant)
-        .set({
-          acted: true,
-          expiring: [],
-          ...(current.kind === "threat" && expiring.length ? { conditions: left } : {}),
-        })
-        .where(eq(combatant.id, current.id));
-      // A Seize holds until the other side acts.
-      await tx
-        .update(encounter)
-        .set({ currentId: null, lastSide: side, seizedSide: enc.seizedSide === side ? side : null })
-        .where(eq(encounter.id, enc.id));
-      // The Round ends once everyone able to act has had a Turn (p.176). canAct already excludes the current
-      // combatant, the Slain and the Dead.
-      if (!enc.combatants.some((x) => canAct(state, x))) await newRound(tx, { encounterId: enc.id, round: enc.round });
+    case "turn.end":
+    case "turn.hold":
+      return (await endCurrentTurn(tx, { campaignId: cid, hold: a.type === "turn.hold" }))
+        ? { ok: true }
+        : fail("No one is taking a turn");
+
+    // A held action used (pp.177-178). The opposed Initiative Test is played at the table; the row is READY again, so
+    // it can start its Turn (JUST GO) wherever the table puts it.
+    case "turn.interrupt": {
+      const enc = await activeEncounter(tx, cid);
+      const c = await combatantOf(tx, { encounterId: enc.id, id: a.id });
+      if (!c.held) fail("Not holding an action");
+      await pushStep(tx, { encounterId: enc.id, who: c.id, label: (n) => `${n}'s INTERRUPT` });
+      // The held Combat Action is used now, inside another Turn; it is not a Turn of its own (p.187).
+      await tx.update(combatant).set({ held: false }).where(eq(combatant.id, c.id));
       return { ok: true };
     }
+
+    // A fix: done or not yet, also ANOTHER TURN for a row that gets more than one (p.176).
+    case "turn.mark": {
+      const enc = await activeEncounter(tx, cid);
+      const c = await combatantOf(tx, { encounterId: enc.id, id: a.id });
+      if (enc.currentId === c.id) fail("Acting now: END TURN first");
+      await pushStep(tx, {
+        encounterId: enc.id,
+        who: c.id,
+        label: (n) => `${n} marked ${a.acted ? "done" : "not yet"}`,
+      });
+      await tx
+        .update(combatant)
+        .set(a.acted ? { acted: true } : { acted: false, held: false })
+        .where(eq(combatant.id, c.id));
+      return { ok: true };
+    }
+
+    case "turn.back":
+      await takeBack(tx, { campaignId: cid });
+      return { ok: true };
 
     case "combatant.addThreat": {
       // The bestiary plus this campaign's own stat blocks (issue #43).
@@ -293,6 +486,12 @@ export async function applyEncounterAction(
       const { type, id, ambushed, ...threatOnly } = a;
       const where = and(eq(combatant.id, id), eq(combatant.encounterId, enc.id));
       if (ambushed !== undefined) {
+        await combatantOf(tx, { encounterId: enc.id, id }); // a stranger's id is refused before anything is kept
+        await pushStep(tx, {
+          encounterId: enc.id,
+          who: id,
+          label: (n) => `${n} ${ambushed ? "ambushed" : "no longer ambushed"}`,
+        });
         const r = await tx.update(combatant).set({ ambushed }).where(where).returning({ id: combatant.id });
         if (!r.length) fail("Combatant not found");
       }
@@ -373,6 +572,12 @@ export async function applyEncounterAction(
         .where(and(eq(combatant.id, a.id), eq(combatant.encounterId, enc.id)));
       if (!c) fail("Combatant not found");
       if (!c.ambushed) fail("Not ambushed");
+      await pushStep(tx, {
+        encounterId: enc.id,
+        who: c.id,
+        label: (n) => `${n} AWARE`,
+        refund: { pool: c.kind === "pc" ? "glory" : "ruin", n: 1 },
+      });
       await spend(tx, { campaignId: cid, side: sideOfKind(c.kind) });
       await tx.update(combatant).set({ ambushed: false }).where(eq(combatant.id, a.id));
       return { ok: true };
