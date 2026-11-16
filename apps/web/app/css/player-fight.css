@@ -242,6 +242,31 @@ button.pf-hdr {
   font-weight: 700;
   letter-spacing: 0.1em;
 }
+/* INCOMING (§11.175): the two numbers a hit on you comes down to. */
+.pf-tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.pf-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  font-size: 14px;
+  line-height: 1.3;
+}
+.pf-tile > b {
+  font-size: 30px;
+  line-height: 1;
+}
+.pf-tile > .label {
+  color: var(--bone-2);
+}
+/* Unnumbered points under INCOMING: no counter, a rule mark instead. */
+.pf-steps.pf-plain > li::before {
+  content: "—";
+}
 /* A bars-only threat's wound bar (§11.56). */
 .pf-bar {
   display: inline-flex;

@@ -1073,6 +1073,12 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      phone says there is no information on the threat and suggests asking the GM for a Scholar (Int) Test (Core p.126:
      recalling lore) to learn more. No DN or result is set by the app: the GM decides what a pass reveals.
      *User ruling, 2026-11-17.*
+175. **INCOMING on the phone** (no book rule; a table aid). Whenever a Threat acts, seen or unseen, every Agent still in
+     the fight sees what a hit on them comes down to, from their own sheet: their Defence (the Icons it needs, before
+     cover, p.182), their Resilience (damage over it after AP is Wounds, equal is 1 Shock, p.192), Determination ready
+     (Toughness dice, p.196; none while Exhausted, p.199), no Critical Hit from a Troop (p.323), and their held action's
+     interrupt (pp.177–178, 187). The GM selects nothing: the tracker's selection stays on the tablet.
+     *User ruling, 2026-11-17.*
 
 ---
 

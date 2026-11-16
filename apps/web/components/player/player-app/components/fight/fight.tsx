@@ -7,6 +7,7 @@ import {
   canAct,
   deriveStats,
   effectiveStrength,
+  isOut,
   pcStatus,
   sideOf,
   skillTotal,
@@ -31,6 +32,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 import { weaponSkill } from "@/lib/sheet-pools/sheet-pools";
 
 import { Harm } from "./components/harm/harm";
+import { Incoming } from "./components/incoming/incoming";
 import { SpendSheet } from "./components/spend-sheet/spend-sheet";
 import { StrikeSteps } from "./components/strike-steps/strike-steps";
 
@@ -195,6 +197,11 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
               : "When the GM picks you, this phone buzzes and the header turns crimson."}
           </span>
         </section>
+      )}
+
+      {/* A Threat acting, seen or not: every Agent still in the fight gets INCOMING (§11.175). */}
+      {!myTurn && me && mine && !isOut(state, mine) && (current?.kind === "threat" || enc.currentId === UNSEEN_ID) && (
+        <Incoming me={me} state={state} attacker={current?.kind === "threat" ? current : null} held={mine.held} />
       )}
 
       <div className="pf-field" ref={fieldRef} tabIndex={-1} aria-label="The field">
