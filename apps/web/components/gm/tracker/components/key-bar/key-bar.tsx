@@ -6,13 +6,14 @@ import { CONDITIONS } from "@wg/shared";
 import type { KeyAction, KeyPanel } from "../../types";
 
 type KeyBarProps = {
-  // The one turn button; null when nothing is due (a Round with someone still to act, nobody acting).
+  // The one turn button: BEGIN ROUND I, END <NAME>'S TURN, BEGIN ROUND N+1; null while a Round runs with nobody acting
+  // (the rows' turn marks start Turns).
   primary: KeyAction | null;
-  seize: KeyAction | null;
+  // HOLD ACTION, only while someone acts.
+  hold: KeyAction | null;
   // The selected row's Conditions; null with no row selected.
   conditions: { name: string; active: string[]; onToggle: (k: string) => void } | null;
   more: {
-    ambush: KeyAction | null;
     remove: KeyAction | null;
     newRound: KeyAction | null;
     endFight: KeyAction;
@@ -21,11 +22,11 @@ type KeyBarProps = {
   children?: ReactNode;
 };
 
-// The turn's key bar: at most four turn controls, then ADD TO FIGHT. One primary turn button, SEIZE when it's open,
-// + CONDITION and MORE, whose panels fold open above the bar (one at a time, each one line with its own CLOSE at the
+// The turn's key bar: at most four turn controls, then ADD TO FIGHT. One primary turn button, HOLD ACTION while someone
+// acts, + CONDITION and MORE, whose panels fold open above the bar (one at a time, each one line with its own CLOSE at the
 // end; MORE hides while its panel is open). PLAYERS SEE lives on each threat row's chip. The tracker keys it by the
 // selected row, so a new selection starts with both folded.
-export function KeyBar({ primary, seize, conditions, more, children }: KeyBarProps) {
+export function KeyBar({ primary, hold, conditions, more, children }: KeyBarProps) {
   const [open, setOpen] = useState<KeyPanel | null>(null);
   const toggle = (p: KeyPanel) => setOpen(open === p ? null : p);
   const close = () => setOpen(null);
@@ -41,12 +42,7 @@ export function KeyBar({ primary, seize, conditions, more, children }: KeyBarPro
   };
 
   // MORE names what's inside it, so it's not a mystery meat button.
-  const moreList = [
-    more.ambush?.label.split(" ")[0]?.toLowerCase(), // AMBUSH or AWARE · cost
-    more.remove && "remove",
-    more.newRound && "new round",
-    "end fight",
-  ].filter(Boolean);
+  const moreList = [more.remove && "remove", more.newRound && "new round", "end fight"].filter(Boolean);
 
   const run = (a: KeyAction) => () => {
     close();
@@ -84,11 +80,6 @@ export function KeyBar({ primary, seize, conditions, more, children }: KeyBarPro
         <div className="fight-panel" role="group" aria-label="More actions">
           <span className="label">MORE</span>
           <div className="fight-chips">
-            {more.ambush && (
-              <button type="button" className="btn" onClick={run(more.ambush)}>
-                {more.ambush.label}
-              </button>
-            )}
             {more.newRound && (
               <button type="button" className="btn" onClick={run(more.newRound)}>
                 {more.newRound.label}
@@ -115,9 +106,9 @@ export function KeyBar({ primary, seize, conditions, more, children }: KeyBarPro
             {primary.label}
           </button>
         )}
-        {seize && (
-          <button type="button" className="btn" onClick={run(seize)}>
-            {seize.label}
+        {hold && (
+          <button type="button" className="btn" onClick={run(hold)}>
+            {hold.label}
           </button>
         )}
         {conditions && (

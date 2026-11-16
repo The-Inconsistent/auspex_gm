@@ -20,3 +20,6 @@ export type Vitals = {
 // A button on the key bar.
 export type KeyAction = { label: string; onClick: () => void };
 export type KeyPanel = (typeof KEY_PANELS)[number];
+
+// What a turn dialog can ask for; the tracker maps each to its action.
+export type TurnDo = "start" | "justGo" | "seize" | "end" | "hold" | "markDone" | "notYet" | "interrupt" | "aware";
