@@ -368,21 +368,38 @@ button.pf-hdr {
   line-height: 1.35;
   color: var(--ink-2);
 }
+/* A step reads as a numbered paragraph in the book (II., III.), never a filled box: the crimson boxes on this screen are
+   dice counts, and a boxed step number was being read as one. */
 .pf-steps > li::before {
-  content: counter(pf-step);
+  content: counter(pf-step, upper-roman) ".";
   position: absolute;
   left: 0;
-  top: 0;
-  width: 24px;
-  height: 24px;
+  top: 1px;
+  width: 28px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink-3);
+}
+/* The total typed here reads as Wounds on the chosen target (§11.173). */
+.pf-total {
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: var(--red-fill);
-  color: var(--bone);
-  font-family: var(--display);
-  font-weight: 800;
-  font-size: 14px;
+  gap: 10px;
+  margin-top: 4px;
+}
+.pf-total-in {
+  width: 72px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--ink);
+  background: var(--vellum);
+  color: var(--ink);
+  font-size: 18px;
+}
+.pf-total > b {
+  color: var(--red);
+  font-size: 16px;
 }
 .pf-steps > li > b {
   font-family: var(--display);

@@ -1061,7 +1061,9 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      five steps for the acting combatant and the selected target: the pool, the DN (the target's Defence, +1 if the
      attacker is Wounded, p.193), Damage + ED, and Resilience − AP. The GM types the damage total and the app applies
      Wounds (damage over Resilience), 1 Shock (damage equal, p.192) or nothing. The phone shows the same steps for the
-     weapon the player picks. Mobs stay on the Wounds pad (p.325). The helpers are `woundsFromDamage`, `hitDn` and
+     weapon the player picks, aimed at the threat the player opens in THE FIELD: with its stat block shown (§11.56) the
+     DN and Resilience are that threat's, and a damage total typed on the phone reads as Wounds, 1 Shock or nothing for
+     the player to say; the GM still applies it. Mobs stay on the Wounds pad (p.325). The helpers are `woundsFromDamage`, `hitDn` and
      `threatAttackPool` and `mobBonusDice` in `attack.ts`. The guide follows the Threat rules: a Troop attacker still
      rolls its Wrath Die (it may have Wrath abilities) but gets no Critical or Complication line (p.323); a Mob attacker
      adds +1 die per Troop in the Mob, at most half the Troops (p.324), an odd count rounding up as the book's split

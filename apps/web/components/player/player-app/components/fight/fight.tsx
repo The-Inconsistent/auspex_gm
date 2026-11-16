@@ -16,6 +16,7 @@ import {
   type Combatant,
   type LiveState,
   type RuleEntry,
+  type ThreatCombatant,
 } from "@wg/shared";
 
 import { CombatOptions } from "@/components/ui/combat-options/combat-options";
@@ -83,7 +84,16 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
   return (
     <div className="pf">
       {myTurn && me ? (
-        <MyTurn me={me} state={state} send={send} after={after} onField={goToField} actions={actions} />
+        <MyTurn
+          me={me}
+          state={state}
+          send={send}
+          after={after}
+          onField={goToField}
+          actions={actions}
+          // The threat opened in THE FIELD is the one the steps aim at: tapping it is the pick, no extra control.
+          target={enc.combatants.find((c): c is ThreatCombatant => c.kind === "threat" && c.id === open) ?? null}
+        />
       ) : (
         <section className="pf-now slate-card cut" aria-label="Now acting">
           <span className="xmit">{setting ? "+++ BEFORE ROUND 1 +++" : "+++ NOW ACTING +++"}</span>
@@ -211,11 +221,12 @@ type MyTurnProps = {
   after: string;
   onField: () => void;
   actions: RuleEntry[];
+  target: ThreatCombatant | null;
 };
 
 // Your Turn: what it allows (one OPTIONS dialog of the combat-action entries, Core pp.177–190), your guns step by
 // step (the chosen weapon drives the steps under the list), and one SPEND button for both pools.
-function MyTurn({ me, state, send, after, onField, actions }: MyTurnProps) {
+function MyTurn({ me, state, send, after, onField, actions, target }: MyTurnProps) {
   const [picked, setPicked] = useState(0);
   const weapons = me.stats.weapons;
   const weapon = weapons[Math.min(picked, weapons.length - 1)]; // the list can shrink under a held pick
@@ -241,7 +252,7 @@ function MyTurn({ me, state, send, after, onField, actions }: MyTurnProps) {
           <div className="pf-h">
             <h2>1 · STRIKE</h2>
             <i />
-            <span className="mono">PICK A WEAPON</span>
+            <span className="mono">{target ? `› ${target.label.toUpperCase()}` : "PICK A WEAPON"}</span>
           </div>
           {weapons.map((w, i) => {
             const skill = weaponSkill(w);
@@ -265,7 +276,13 @@ function MyTurn({ me, state, send, after, onField, actions }: MyTurnProps) {
             <h2>THEN, WITH YOUR DICE</h2>
             <i />
           </div>
-          <StrikeSteps me={me} weapon={weapon} wounded={status.includes("Wounded")} />
+          <StrikeSteps
+            key={`${picked}-${target?.id ?? ""}`}
+            me={me}
+            weapon={weapon}
+            wounded={status.includes("Wounded")}
+            target={target}
+          />
         </section>
       )}
 
