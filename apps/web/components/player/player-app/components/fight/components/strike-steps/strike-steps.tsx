@@ -3,6 +3,7 @@ import { effectiveStrength, type Character } from "@wg/shared";
 
 import { RuleIdLink, RuleLink } from "@/components/ui/rule-link/rule-link";
 import { useRules } from "@/components/ui/rules-provider/rules-provider";
+import { Term } from "@/components/ui/term/term";
 
 import { weaponPool } from "@/lib/sheet-pools/sheet-pools";
 
@@ -48,7 +49,10 @@ export function StrikeSteps({ me, weapon: w, wounded }: StrikeStepsProps) {
       </li>
       <li>
         <b>SAY THE TOTAL{w.ap ? ` · AP ${w.ap}` : ""}</b>
-        <span>The GM takes off Resilience. Wrath Die 6 on a hit: a Critical, +1 Glory (pp.183, 197).</span>
+        <span>
+          The GM takes off Resilience. Wrath Die 6 on a hit: a <Term k="critical">Critical Hit</Term>, +1 Glory (pp.183,
+          197).
+        </span>
       </li>
     </ol>
   );

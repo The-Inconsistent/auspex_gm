@@ -17,8 +17,10 @@ import {
   type Weapon,
 } from "@wg/shared";
 
+import { CombatOptions } from "@/components/ui/combat-options/combat-options";
 import { RuleIdLink } from "@/components/ui/rule-link/rule-link";
 import { useRules } from "@/components/ui/rules-provider/rules-provider";
+import { Term } from "@/components/ui/term/term";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import { weaponPool, weaponSkill } from "@/lib/sheet-pools/sheet-pools";
 
@@ -44,6 +46,7 @@ function look(c: Combatant, state: LiveState) {
       maxWounds: d.maxWounds,
       ch,
       weapons: ch.stats.weapons as AttackWeapon[],
+      psyker: (ch.stats.skills["Psychic Mastery"] ?? 0) > 0,
     };
   }
   const weapons = (c.stats?.abilities ?? []).filter((a) => a.type === "ACTION").flatMap((a) => a.weapons ?? []);
@@ -55,6 +58,7 @@ function look(c: Combatant, state: LiveState) {
     maxWounds: c.maxWounds,
     ch: null,
     weapons: weapons as AttackWeapon[],
+    psyker: !!c.stats?.keywords.includes("PSYKER"),
   };
 }
 
@@ -83,6 +87,7 @@ export function AttackGuide({ state, attacker, target, run }: AttackGuideProps) 
   const troop = attacker.kind === "threat" && attacker.threatClass === "T";
   const mobBonus = attacker.kind === "threat" && attacker.mobCount ? mobBonusDice(attacker.mobCount) : 0;
   const visibility = target?.kind === "threat" ? target.visibility : "stats";
+  const actions = rules.all.filter((r) => r.kind === "action");
 
   return (
     <section className="atk" aria-label="Attack guide">
@@ -111,10 +116,11 @@ export function AttackGuide({ state, attacker, target, run }: AttackGuideProps) 
             <p className="dim">No weapon on the stat block.</p>
           )}
           <p className="dim">
-            Options: <RuleIdLink id="aim">Aim</RuleIdLink> (p.189),{" "}
-            <RuleIdLink id="called-shot">Called Shot</RuleIdLink> (p.186),{" "}
-            <RuleIdLink id="multi-attack">Multi-Attack</RuleIdLink> (p.187).
+            Often: <RuleIdLink id="aim">Aim</RuleIdLink> (p.189), <RuleIdLink id="called-shot">Called Shot</RuleIdLink>{" "}
+            (p.186), <RuleIdLink id="multi-attack">Multi-Attack</RuleIdLink> (p.187).
           </p>
+          {/* Every combat option, grouped, as the Agent's phone shows it on their Turn (Core pp.177–190). */}
+          {actions.length > 0 && <CombatOptions actions={actions} weapons={a.weapons} />}
         </li>
         <li>
           <b>DICE POOL</b>
@@ -123,6 +129,12 @@ export function AttackGuide({ state, attacker, target, run }: AttackGuideProps) 
               ? `${pool.dice + mobBonus} dice · ${pool.skill}${mobBonus ? `, +${mobBonus} for the Mob (p.324)` : ""}, one of them the Wrath Die`
               : "Pool not printed"}
           </p>
+          {pool?.dice != null && (
+            <p className="dim">
+              <RuleIdLink id="test-shifting">4–5 = 1 Icon, 6 = 2 Icons.</RuleIdLink> Hit: Icons ≥ the DN; spare 6s
+              become +1 ED each (p.183).
+            </p>
+          )}
         </li>
         {!t ? (
           <li className="dim">Tap the target&apos;s row.</li>
@@ -179,10 +191,21 @@ export function AttackGuide({ state, attacker, target, run }: AttackGuideProps) 
         <div className="atk-then">
           <b>THEN</b>
           <p>
-            {troop
-              ? "A Troop: no Critical Hits or Complications unless its stat block gives it a Wrath or Complication ability (p.323)."
-              : `Wrath Die 6 on a hit: Critical Hit${attacker.kind === "pc" ? ", +1 Glory" : ""} (pp.183, 197); one that doesn't beat Resilience still does 1 Wound (p.197). A 1: Complication (p.191).`}
+            {troop ? (
+              "A Troop: no Critical Hits or Complications unless its stat block gives it a Wrath or Complication ability (p.323)."
+            ) : (
+              <>
+                Wrath Die 6 on a hit: <Term k="critical">Critical Hit</Term>
+                {attacker.kind === "pc" ? ", +1 Glory" : ""} (pp.183, 197): the CRIT panel below reads the d66; one that
+                doesn&apos;t beat Resilience still does 1 Wound (p.197). A 1: Complication (p.191).
+              </>
+            )}
           </p>
+          {a.psyker && (
+            <p>
+              A psychic power: a 1 on a Wrath Die is <Term k="perils">Perils of the Warp</Term>, the PERILS tab below.
+            </p>
+          )}
           <p>{determination(target)}</p>
           <p>{death(target, t.maxWounds)}</p>
         </div>

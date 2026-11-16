@@ -18,16 +18,17 @@ import {
   type RuleEntry,
 } from "@wg/shared";
 
+import { CombatOptions } from "@/components/ui/combat-options/combat-options";
 import { RuleLink } from "@/components/ui/rule-link/rule-link";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
+import { Term } from "@/components/ui/term/term";
 import { Track } from "@/components/ui/track/track";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { weaponSkill } from "@/lib/sheet-pools/sheet-pools";
 
-import { CombatOptions } from "./components/combat-options/combat-options";
 import { SpendSheet } from "./components/spend-sheet/spend-sheet";
 import { StrikeSteps } from "./components/strike-steps/strike-steps";
 
@@ -188,7 +189,9 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
                           <StatBlock t={c.stats} tier={state.campaign.tier} legend={legend} />
                         </div>
                       ) : (
-                        <span className="pf-restricted">Data restricted by the GM.</span>
+                        <span className="pf-restricted">
+                          No information on this threat. Ask the GM for a Scholar (Int) Test to learn more.
+                        </span>
                       ))}
                   </li>
                 );
@@ -226,6 +229,11 @@ function MyTurn({ me, state, send, after, onField, actions }: MyTurnProps) {
         </div>
         {actions.length > 0 && <CombatOptions actions={actions} weapons={weapons} />}
         <span className="pf-cap">One of each per Turn, Core pp.177–190. Tap one to read it.</span>
+        {(me.stats.skills["Psychic Mastery"] ?? 0) > 0 && (
+          <span className="pf-cap">
+            A power: a 1 on a Wrath Die is <Term k="perils">Perils of the Warp</Term>.
+          </span>
+        )}
       </section>
 
       {weapon && (
