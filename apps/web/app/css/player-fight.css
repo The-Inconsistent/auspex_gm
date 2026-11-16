@@ -383,7 +383,7 @@ button.pf-hdr {
   line-height: 1.35;
   color: var(--ink-2);
 }
-/* A step reads as a numbered paragraph in the book (II., III.), never a filled box: the crimson boxes on this screen are
+/* Steps are numbered I.–IV. in plain text, never a filled box: the crimson boxes on this screen are
    dice counts, and a boxed step number was being read as one. */
 .pf-steps > li::before {
   content: counter(pf-step, upper-roman) ".";
@@ -412,9 +412,12 @@ button.pf-hdr {
   color: var(--ink);
   font-size: 18px;
 }
-.pf-total > b {
+.pf-total-out {
   color: var(--red);
   font-size: 16px;
+}
+.pf-total-out:empty {
+  display: none;
 }
 .pf-steps > li > b {
   font-family: var(--display);

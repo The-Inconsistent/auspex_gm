@@ -23,13 +23,14 @@ import { CombatOptions } from "@/components/ui/combat-options/combat-options";
 import { RuleLink } from "@/components/ui/rule-link/rule-link";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
-import { Track } from "@/components/ui/track/track";
 import { Term } from "@/components/ui/term/term";
+import { Track } from "@/components/ui/track/track";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { weaponSkill } from "@/lib/sheet-pools/sheet-pools";
 
+import { Harm } from "./components/harm/harm";
 import { SpendSheet } from "./components/spend-sheet/spend-sheet";
 import { StrikeSteps } from "./components/strike-steps/strike-steps";
 
@@ -75,11 +76,15 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
 
   // Threat card header: expand its stat block, or collapse it if already open.
   const toggleOpen = (id: string) => setOpen(open === id ? null : id);
-  // THE FIELD ›: scroll to both sides' lists and move focus there.
+  // AGENTS ›: scroll to the field below (on your Turn, the Agents) and move focus there.
   const goToField = () => {
     fieldRef.current?.scrollIntoView({ block: "start" });
     fieldRef.current?.focus();
   };
+
+  // The threat picked in 2 · PICK A TARGET; a slain one (a Mob at 0, Slain, p.324) is no target to aim at.
+  const picked = enc.combatants.find((c): c is ThreatCombatant => c.kind === "threat" && c.id === open);
+  const target = picked && !threatStatus(picked).includes("Slain") ? picked : null;
 
   // One combatant's row. On your Turn the Threats' rows are 2 · PICK A TARGET: opening one is the pick, the same tap that
   // shows its stat block anywhere else.
@@ -119,6 +124,7 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
         )}
         <b className="pf-name">{name}</b>
         {isMe && <span className="pf-you">YOU</span>}
+        {myTurn && c.id === target?.id && <span className="pf-you">TARGET</span>}
         {harm}
         <span className={`mono pf-st ${now ? "now" : ""}`}>{word}</span>
       </>
@@ -168,7 +174,7 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
           after={after}
           onField={goToField}
           actions={actions}
-          target={enc.combatants.find((c): c is ThreatCombatant => c.kind === "threat" && c.id === open) ?? null}
+          target={target}
           targets={<ul className="pf-rows threats">{rows("threats").map(renderRow)}</ul>}
         />
       ) : (
@@ -210,30 +216,6 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
   );
 }
 
-type HarmProps = { wounds: number; maxWounds: number; shock: number; maxShock: number | null };
-
-// Wounds and Shock left out of max, as numbers the way the GM's tracker shows them: a bar was hard to read at a glance.
-// No Shock track ("–", p.324) shows Wounds alone.
-function Harm({ wounds, maxWounds, shock, maxShock }: HarmProps) {
-  const w = Math.max(0, maxWounds - wounds);
-  const s = maxShock === null ? null : Math.max(0, maxShock - shock);
-  return (
-    <span className="mono pf-hp">
-      <span>
-        <span className="pf-hp-k">W</span> {w}/{maxWounds}
-      </span>
-      {s !== null && (
-        <span>
-          <span className="pf-hp-k">S</span> {s}/{maxShock}
-        </span>
-      )}
-      <span className="sr-only">
-        Wounds {w} of {maxWounds} left{s === null ? "" : `, Shock ${s} of ${maxShock} left`}
-      </span>
-    </span>
-  );
-}
-
 type MyTurnProps = {
   me: Character;
   state: LiveState;
@@ -250,7 +232,8 @@ type MyTurnProps = {
 function MyTurn({ me, state, send, after, onField, actions, target, targets }: MyTurnProps) {
   const [picked, setPicked] = useState(0);
   const weapons = me.stats.weapons;
-  const weapon = weapons[Math.min(picked, weapons.length - 1)]; // the list can shrink under a held pick
+  const at = Math.min(picked, weapons.length - 1); // the list can shrink under a held pick
+  const weapon = weapons[at];
   const status = pcStatus(me, deriveStats({ stats: me.stats, overrides: me.overrides, tier: state.campaign.tier }));
   return (
     <>
@@ -293,18 +276,27 @@ function MyTurn({ me, state, send, after, onField, actions, target, targets }: M
               </div>
             );
           })}
-          <div className="pf-h">
-            <h2>2 · PICK A TARGET</h2>
-            <i />
-            <span className="mono">{target ? `› ${target.label.toUpperCase()}` : "TAP A THREAT"}</span>
-          </div>
-          {targets}
+        </section>
+      )}
+
+      {/* Outside the weapon guard: an Agent with no weapon still sees the Threats on their Turn (a psyker, a fresh sheet). */}
+      <section className="pf-sec">
+        <div className="pf-h">
+          <h2>{weapon ? "2 · PICK A TARGET" : "THREATS"}</h2>
+          <i />
+          <span className="mono">{target ? `› ${target.label.toUpperCase()}` : "TAP A THREAT"}</span>
+        </div>
+        {targets}
+      </section>
+
+      {weapon && (
+        <section className="pf-sec">
           <div className="pf-h">
             <h2>3 · THEN, WITH YOUR DICE</h2>
             <i />
           </div>
           <StrikeSteps
-            key={`${picked}-${target?.id ?? ""}`}
+            key={`${at}-${target?.id ?? ""}`}
             me={me}
             weapon={weapon}
             wounded={status.includes("Wounded")}
@@ -320,7 +312,7 @@ function MyTurn({ me, state, send, after, onField, actions, target, targets }: M
       <div className="mono pf-after">
         <span>AFTER YOU: {after}</span>
         <button type="button" className="pf-link" onClick={onField}>
-          THE FIELD ›
+          AGENTS ›
         </button>
       </div>
     </>

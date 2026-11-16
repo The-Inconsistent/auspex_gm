@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 
 import { effectiveStrength, hitDn, woundsFromDamage, type Character, type ThreatCombatant } from "@wg/shared";
 
@@ -22,6 +22,9 @@ type StrikeStepsProps = {
 export function StrikeSteps({ me, weapon: w, wounded, target }: StrikeStepsProps) {
   const { find } = useRules();
   const [total, setTotal] = useState("");
+  // Digits only, three at most: a damage total, never a sign or a decimal.
+  const handleTotalChange = (e: ChangeEvent<HTMLInputElement>) =>
+    setTotal(e.target.value.replace(/\D/g, "").slice(0, 3));
   const strength = effectiveStrength(me.stats);
   const damage = "addStrength" in w && w.addStrength ? strength + w.damage : w.damage; // melee S + X (p.183)
   // An ED-changing trait's own table, from the rules data the phone already holds (Brutal: weapon-traits).
@@ -57,7 +60,8 @@ export function StrikeSteps({ me, weapon: w, wounded, target }: StrikeStepsProps
         )}
         <span>
           {t && `Defence ${t.defence}. `}
-          {wounded && "+1: you're Wounded (p.193). "}Spare 6s become +1 ED each (p.183).
+          {wounded && "+1: you're Wounded (p.193). "}A 6 you can spare with the DN still met Shifts for +1 ED (pp.165,
+          183).
           {!target && " Pick a target above for its numbers."}
           {target && !t && " Its stat block isn't shown to you."}
         </span>
@@ -89,18 +93,16 @@ export function StrikeSteps({ me, weapon: w, wounded, target }: StrikeStepsProps
         {t && !mob && (
           <label className="pf-total">
             <span className="label">DAMAGE TOTAL</span>
-            <input
-              className="pf-total-in mono"
-              inputMode="numeric"
-              value={total}
-              onChange={(e) => setTotal(e.target.value.replace(/\D/g, "").slice(0, 3))}
-            />
-            {out && (
-              <b className="mono" role="status">
-                = {out.wounds ? `${out.wounds} WOUND${out.wounds === 1 ? "" : "S"}` : out.shock ? "1 SHOCK" : "NOTHING"}
-              </b>
-            )}
+            <input className="pf-total-in mono" inputMode="numeric" value={total} onChange={handleTotalChange} />
           </label>
+        )}
+        {t && !mob && (
+          // Outside the label (it would join the input's name) and always mounted, so the reading is announced.
+          <b className="mono pf-total-out" role="status" aria-live="polite">
+            {out
+              ? `= ${out.wounds ? `${out.wounds} WOUND${out.wounds === 1 ? "" : "S"}` : out.shock ? "1 SHOCK" : "NOTHING"}`
+              : ""}
+          </b>
         )}
       </li>
     </ol>
