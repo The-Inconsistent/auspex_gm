@@ -174,7 +174,6 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
 
   return (
     <div className="pf">
-      {dying && me && myStats && <Dying traumatic={me.traumatic} maxTraumatic={myStats.maxTraumatic} />}
       {myTurn && me ? (
         <MyTurn
           me={me}
@@ -198,14 +197,14 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
               {mine ? ` · YOU: ${turnWord(state, mine)}` : ""}
             </span>
           )}
-          <span className="pf-now-note">
-            {mine && turnMark(state, mine) === "ambushed"
-              ? "You're ambushed: no Turn in Round 1 (p.177)."
-              : "When the GM picks you, this phone buzzes and the header turns crimson."}
-          </span>
+          <span className="pf-now-note">When the GM picks you, this phone buzzes and the header turns crimson.</span>
         </section>
       )}
 
+      {/* Under the plate, so the fight's state stays first; only for an Agent still in the fight. */}
+      {dying && me && myStats && mine && !isOut(state, mine) && (
+        <Dying traumatic={me.traumatic} maxTraumatic={myStats.maxTraumatic} />
+      )}
       {mine && turnMark(state, mine) === "ambushed" && <Ambushed state={state} characterId={characterId} send={send} />}
 
       {/* A Threat acting, seen or not: every Agent still in the fight gets INCOMING (§11.175). */}
@@ -255,6 +254,7 @@ function MyTurn({ me, state, send, after, onField, actions, target, targets }: M
   const power = weapon ? undefined : powers[at - weapons.length];
   const status = pcStatus(me, deriveStats({ stats: me.stats, overrides: me.overrides, tier: state.campaign.tier }));
   const dying = status.includes("Dying"); // a basic Combat Action only, no options (p.193)
+  const wounded = dying || status.includes("Wounded"); // "Whilst Dying, you are Wounded" (p.193)
   const pm = skillTotal(me.stats, "Psychic Mastery");
   return (
     <>
@@ -346,23 +346,10 @@ function MyTurn({ me, state, send, after, onField, actions, target, targets }: M
             <i />
           </div>
           {weapon ? (
-            <StrikeSteps
-              key={`${at}-${target?.id ?? ""}`}
-              me={me}
-              weapon={weapon}
-              wounded={status.includes("Wounded")}
-              target={target}
-            />
+            <StrikeSteps key={`${at}-${target?.id ?? ""}`} me={me} weapon={weapon} wounded={wounded} target={target} />
           ) : (
             power && (
-              <PowerSteps
-                key={at}
-                me={me}
-                power={power}
-                tier={state.campaign.tier}
-                wounded={status.includes("Wounded")}
-                target={target}
-              />
+              <PowerSteps key={at} me={me} power={power} tier={state.campaign.tier} wounded={wounded} target={target} />
             )
           )}
         </section>

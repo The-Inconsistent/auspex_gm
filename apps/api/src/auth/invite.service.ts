@@ -62,10 +62,12 @@ const previewSheet = (c: Character, signedIn: boolean): Character => {
   const weapons = c.stats.weapons.map(({ notes: _, upgradeNames: __, effects: ___, ...w }) => w);
   const { weaponEffects: _effects, ...stats } = c.stats;
   const { notes: _n, upgradeNames: _u, ...armour } = c.stats.armour;
+  // A power's Potency lines are printed prose; its profile stays, like a weapon's (§11.176).
+  const powers = signedIn ? c.stats.powers : c.stats.powers?.map((p) => ({ ...p, potency: [] }));
   return {
     ...c,
     objectives: [],
-    stats: { ...stats, abilities: bare(c.stats.abilities), talents: bare(c.stats.talents), weapons, armour },
+    stats: { ...stats, abilities: bare(c.stats.abilities), talents: bare(c.stats.talents), weapons, armour, powers },
   };
 };
 

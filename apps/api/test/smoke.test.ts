@@ -2015,6 +2015,19 @@ test("character builder: the creation catalogue for seats, and character.build d
     signedIn.stats.abilities.some((r) => r.text !== ""),
     "a signed-in visitor reads the abilities",
   );
+  // A psychic power's Potency lines are prose too (§11.176): a guest keeps the profile, not the text.
+  const power = {
+    name: "Assail",
+    page: "Core p.277",
+    dn: "Target's Defence",
+    activation: "Action",
+    duration: "Instant",
+    range: "20 m",
+    potency: ["[1] +1ED damage."],
+  };
+  assert.ok((await gm.send({ type: "character.update", id: made.id!, stats: { ...veyl.stats, powers: [power] } })).ok);
+  const psyker = ((await (await get(`/invites/${veylInvite.token}`)).json()) as { character: Character }).character;
+  assert.deepEqual(psyker.stats.powers, [{ ...power, potency: [] }]);
   assert.ok(veyl.builtAt && veyl.builtAt <= Date.now(), "the save is stamped, so older device drafts go stale");
   assert.equal(veyl.xpSpent, 0, "a character just made has spent no XP in play");
 

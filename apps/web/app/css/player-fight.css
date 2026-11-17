@@ -481,14 +481,11 @@ dialog.spend .pf-spends {
   cursor: pointer;
 }
 .pf-level > b {
-  max-width: 100%;
   font-family: var(--display);
-  font-size: 11px;
-  letter-spacing: 0.02em;
-  overflow-wrap: anywhere; /* TRANSCENDENT in a third of a 320 px phone */
+  font-size: 12px;
 }
 .pf-level > .mono {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--ink-3);
 }
@@ -502,6 +499,15 @@ dialog.spend .pf-spends {
 }
 .pf-level[aria-pressed="true"] > b::before {
   content: "\25A0 ";
+}
+/* TRANSCENDENT · 4 SHOCK won't fit a third of a narrow phone at 12px: one pick per line there. */
+@media (max-width: 359px) {
+  .pf-levels {
+    grid-template-columns: 1fr;
+  }
+  .pf-level {
+    min-height: 44px;
+  }
 }
 .pf-level:focus-visible {
   outline: 2px solid var(--red);

@@ -1944,7 +1944,7 @@ export function resolveBuild({
           activation: pw.activation.slice(0, 60),
           duration: pw.duration.slice(0, 60),
           range: pw.range.slice(0, 60),
-          potency: pw.potency.slice(0, 10).map((x) => x.slice(0, 200)),
+          potency: pw.potency.slice(0, 10).map((x) => x.slice(0, 500)),
         }))
       : undefined,
     wealth: s.wealth,

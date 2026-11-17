@@ -25,7 +25,6 @@ import { spendRequest } from "./spend.schema.ts";
 
 export type SpendAction = Extract<Action, { type: `spend.${string}` }>;
 
-// The active encounter's id, or null: a Seize needs a fight to Seize in.
 // The asker's row in the fight, ambushed: AWARE means nothing otherwise (p.177).
 async function ambushedCombatant(tx: Tx, { campaignId, characterId }: { campaignId: string; characterId: string }) {
   const encId = (await activeEncounterId(tx, campaignId)) ?? fail("No fight to be ambushed in");
@@ -33,10 +32,12 @@ async function ambushedCombatant(tx: Tx, { campaignId, characterId }: { campaign
     .select({ id: combatant.id, ambushed: combatant.ambushed })
     .from(combatant)
     .where(and(eq(combatant.encounterId, encId), eq(combatant.characterId, characterId)));
-  if (!c?.ambushed) fail("Not ambushed");
+  if (!c) fail("Not in the fight");
+  if (!c.ambushed) fail("Not ambushed");
   return c.id;
 }
 
+// The active encounter's id, or null: a Seize needs a fight to Seize in.
 async function activeEncounterId(tx: Tx, campaignId: string) {
   const [enc] = await tx
     .select({ id: encounter.id })

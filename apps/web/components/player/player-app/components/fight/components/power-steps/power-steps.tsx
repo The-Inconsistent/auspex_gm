@@ -32,14 +32,17 @@ export function PowerSteps({ me, power: p, tier, wounded, target }: PowerStepsPr
   const rank = rankOf(me.xp);
   const dice = powerLevelDice({ level, rank, tier });
   const base = skillTotal(me.stats, "Psychic Mastery");
-  // A DN of "Target's Defence" reads as the picked threat's Defence once its stat block is shown.
-  const defence = typeof p.dn === "string" && /defence/i.test(p.dn) ? (target?.stats?.defence ?? null) : null;
+  // A DN of exactly "Target's Defence" reads as the picked threat's Defence once its stat block is shown; any other
+  // DN in words (Willpower, Resolve, "+2") stays as printed.
+  const byDefence = typeof p.dn === "string" && /^target.s defence$/i.test(p.dn.trim());
+  const defence = byDefence ? (target?.stats?.defence ?? null) : null;
   const dn = typeof p.dn === "number" ? p.dn : defence;
   const shown = dn === null ? p.dn.toString().toUpperCase() : `${dn + (wounded ? 1 : 0)}+`;
   return (
     <ol className="pf-steps" aria-label={`Manifest ${p.name}`}>
       <li>
         <b>PICK A POWER LEVEL</b>
+        <span>One power per Round (p.259).</span>
         <div className="pf-levels" role="group" aria-label="Power Level">
           {POWER_LEVELS.map((l) => {
             const d = powerLevelDice({ level: l, rank, tier });
@@ -72,12 +75,13 @@ export function PowerSteps({ me, power: p, tier, wounded, target }: PowerStepsPr
       </li>
       <li>
         <b>
-          MANIFEST: {shown} ICONS{dn === null && target ? ` · ${target.label.toUpperCase()}` : ""}
+          MANIFEST: {shown} ICONS{byDefence && dn === null && target ? ` · ${target.label.toUpperCase()}` : ""}
         </b>
         <span>
           {defence !== null && `${target?.label}'s Defence ${defence}. `}
-          {wounded && "+1: you're Wounded (p.193). "}A 6 on a Wrath Die is an Exalted Icon: no Critical Hit or Glory,
-          but you may Shift it for Potency while the DN is still met (p.259).
+          {wounded && (dn === null ? "Add 1 to that DN: you're Wounded (p.193). " : "+1: you're Wounded (p.193). ")}A 6
+          on a Wrath Die is an Exalted Icon: no Critical Hit or Glory, but you may Shift it for Potency while the DN is
+          still met (p.259).
           {p.potency.length > 0 && ` Potency: ${p.potency.join(" · ")}`}
         </span>
       </li>
@@ -85,7 +89,7 @@ export function PowerSteps({ me, power: p, tier, wounded, target }: PowerStepsPr
         <b>ANY WRATH DIE ON 1</b>
         <span>
           <Term k="perils">Perils of the Warp</Term>, success or not: roll d66 on the table (p.263), +10 for each extra
-          1 (p.262). One power per Round (p.259).
+          1 (p.262).
         </span>
       </li>
     </ol>

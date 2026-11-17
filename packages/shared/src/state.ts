@@ -138,7 +138,7 @@ export const SheetPower = z.object({
   activation: z.string().max(60),
   duration: z.string().max(60),
   range: z.string().max(60),
-  potency: z.array(z.string().max(200)).max(10).default([]),
+  potency: z.array(z.string().max(500)).max(10).default([]), // Dominate's second line runs 414 characters (Apocrypha p.289)
 });
 export type SheetPower = z.infer<typeof SheetPower>;
 

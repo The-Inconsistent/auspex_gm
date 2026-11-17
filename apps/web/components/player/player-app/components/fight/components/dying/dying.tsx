@@ -19,7 +19,8 @@ export function Dying({ traumatic, maxTraumatic }: DyingProps) {
           <b>YOUR TURN: ONE OF THESE</b>
           <span>
             <RuleIdLink id="crawling">Crawl</RuleIdLink>, a basic Combat Action with no options such as Aim or
-            Multi-Attack, or <RuleIdLink id="fall-back">Fall Back</RuleIdLink>. You can&apos;t stand up (p.193).
+            Multi-Attack, or <RuleIdLink id="fall-back">Fall Back</RuleIdLink>. You can&apos;t stand up, and you are
+            Wounded: +1 DN to every Test (p.193).
           </span>
         </li>
         <li>
@@ -31,8 +32,8 @@ export function Dying({ traumatic, maxTraumatic }: DyingProps) {
         <li>
           <b>IT ENDS</b>
           <span>
-            When you recover any Wounds, from a Medicae (Int) Test (p.124). An ally can drag you with a Combat Action
-            (p.193).
+            When you recover any Wounds: a Medicae (Int) Test (p.124) or Resting (p.196). An ally can drag you with a
+            Combat Action (p.193).
           </span>
         </li>
       </ul>
