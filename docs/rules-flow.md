@@ -962,7 +962,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      71–106 come only from extra 1s; it doesn't say what a higher total does). *Proposed; awaiting the GM.*
 156. **CRIT / PERILS applies a row's mechanical part, as ruled on GitHub issue #183** (Core pp.193, 197, 287, 323–324).
      A Critical Hit that doesn't beat the target's Resilience inflicts 1 Wound and no other effects (p.197): the
-     panel's BEAT RESILIENCE toggle (default yes) sends exactly that. Mortal Wounds are applied as Wounds (they ignore
+     panel's DAMAGE OVER RESILIENCE toggle (default yes) sends exactly that. Mortal Wounds are applied as Wounds (they ignore
      Resilience, p.193, and the app counts Wounds after it). The Glory stepper appears only on rows whose Glorious
      Critical is a single effect; a row that offers a choice shows its printed text alone and the GM applies it. Glory is
      spent from the pool last, after every other step has landed. Corruption goes to the psyker through
