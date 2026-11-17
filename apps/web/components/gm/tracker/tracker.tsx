@@ -42,6 +42,7 @@ import { counterKey } from "@/lib/fight-delta/fight-delta";
 import { combatantPortrait } from "@/lib/portraits/portraits";
 
 import { AddCombatants } from "./components/add-combatants/add-combatants";
+import { AttackGuide } from "./components/attack-guide/attack-guide";
 import { CritPerils } from "./components/crit-perils/crit-perils";
 import { DeltaPad } from "./components/delta-pad/delta-pad";
 import { FightRow } from "./components/fight-row/fight-row";
@@ -614,6 +615,12 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
       </section>
 
       <aside className="tracker-side">
+        <AttackGuide
+          state={state}
+          attacker={current}
+          target={sel && current && sideOf(sel) !== sideOf(current) ? sel : null}
+          run={run}
+        />
         {sel?.kind === "threat" && sel.stats && (
           <>
             <div
