@@ -31,6 +31,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 
 import { weaponSkill } from "@/lib/sheet-pools/sheet-pools";
 
+import { Ambushed } from "./components/ambushed/ambushed";
 import { Dying } from "./components/dying/dying";
 import { Harm } from "./components/harm/harm";
 import { Incoming } from "./components/incoming/incoming";
@@ -204,6 +205,8 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
           </span>
         </section>
       )}
+
+      {mine && turnMark(state, mine) === "ambushed" && <Ambushed state={state} characterId={characterId} send={send} />}
 
       {/* A Threat acting, seen or not: every Agent still in the fight gets INCOMING (§11.175). */}
       {!myTurn && me && mine && !isOut(state, mine) && (current?.kind === "threat" || enc.currentId === UNSEEN_ID) && (

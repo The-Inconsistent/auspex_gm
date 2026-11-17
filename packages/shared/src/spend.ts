@@ -3,8 +3,17 @@ import { z } from "zod";
 // A spend a player asks the GM to make from their phone (rules-flow.md §11.122). The request is a convenience: the GM's
 // ACCEPT runs the same pool, Wrath and Seize handlers the tablet already has, so the rules stay in one place.
 // determination: the Icons the Agent rolled for Determination (p.196); the GM's ACCEPT turns that many of its Wounds
-// into Shock (rules-flow §11.172). It costs nothing.
-export const SpendKind = z.enum(["reroll", "restoreShock", "gloryDice", "gloryDamage", "seize", "determination"]);
+// into Shock (rules-flow §11.172). It costs nothing. aware: an ambushed Agent's 1 Glory to act in Round 1 (p.177,
+// §11.177).
+export const SpendKind = z.enum([
+  "reroll",
+  "restoreShock",
+  "gloryDice",
+  "gloryDamage",
+  "seize",
+  "determination",
+  "aware",
+]);
 export type SpendKind = z.infer<typeof SpendKind>;
 export const SPEND_KINDS = SpendKind.options;
 
@@ -36,6 +45,7 @@ export function spendCost(kind: SpendKind, amount = 1): { wrath: number; glory: 
     case "gloryDamage": // Glory: +n damage (p.165)
       return { wrath: 0, glory: amount };
     case "seize": // Seize the Initiative, 1 Glory (p.177)
+    case "aware": // aware of an ambush, 1 Glory (p.177)
       return { wrath: 0, glory: 1 };
     case "determination": // a roll, not a spend (p.196)
       return { wrath: 0, glory: 0 };
@@ -52,6 +62,7 @@ const WORDS: Record<SpendKind, string> = {
   gloryDamage: "GLORY DAMAGE",
   seize: "SEIZE THE INITIATIVE",
   determination: "DETERMINATION",
+  aware: "AWARE OF THE AMBUSH",
 };
 export const spendWord = (kind: SpendKind) => WORDS[kind];
 

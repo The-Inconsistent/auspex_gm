@@ -1089,6 +1089,12 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      the GM's pad does that, as for any damage. While Dying, the phone shows DYING on every Turn (the three Actions,
      Traumatic Injuries taken of the Tier + 1 allowed, how Dying ends; p.193) and hides OPTIONS on your Turn (no Aim or
      Multi-Attack while Dying, p.193). *Built from the canvas design the user asked for, 2026-11-17.*
+177. **AWARE from the phone** (a table aid on p.177's Glory spend). While an Agent is ambushed (Round 0, or Round 1
+     before its Turn), the phone's FIGHT tab shows AMBUSHED with one ask: `spend.request` kind `aware`, 1 Glory,
+     refused unless that Agent's row is ambushed. The GM's ACCEPT runs the tracker's own `combatant.aware`, so the
+     Glory is paid there and TURN BACK refunds it. Asks still pending when Round 2 begins, or the fight ends, are
+     cleared: the ambush only cost Round 1. AWARE is not in the SPEND dialog's Glory list. *Built from the canvas
+     design, 2026-11-17.*
 
 ---
 
@@ -1105,6 +1111,7 @@ Implementation details: [game-logic.md](game-logic.md).
 | TURN BACK | done | `turn.back`: the server keeps the fight's last 30 steps and restores turn marks, Round, Wounds, Shock, Conditions, Mob counts, Traumatic Injuries and Annihilation, and refunds a Seize's or AWARE's Glory or Ruin; an accepted spend's Wrath is not refunded (§11.170) |
 | Hold your Action | done | `turn.hold` (ends the Turn, done and held), `turn.interrupt` (clears HELD, starts no Turn; the row stays done); lost at Round end; `turn.mark` sets a row back to NOT YET (§11.168, §11.171) |
 | Determination request | done | `spend.request` kind `determination` (the Icons rolled), ACCEPT turns that many of the Agent's Wounds into Shock; refused while Exhausted; the phone notes "Not against Mortal Wounds" and the GM judges before ACCEPT; pending asks cleared when a fight ends or another starts (§11.172) |
+| AWARE ask (phone) | done | `spend.request` kind `aware`, ACCEPT → `combatant.aware`; the phone's `ambushed` panel; cleared at Round 2 (§11.177) |
 | Psychic power, Dying (phone) | done | `stats.powers` from `resolveBuild`; `powerLevelDice` (`attack.ts`); the phone's `power-steps` and `dying` (§11.176) |
 | Attack guide | done | `packages/shared/src/attack.ts` (`hitDn`, `woundsFromDamage`, `threatAttackPool`: the DN, damage against Resilience − AP, Wounds, Shock or nothing); the tablet's side panel and the phone's STRIKE show the steps, dice stay physical (§11.173) |
 | Mob damage | done | Wounds remove members, capped at `mobStart`; one hit of Shock over max removes one member, less does nothing (§11.9) (`combatant.adjust`); `combatant.update` sizing sets `mobStart`; half-slain chip (`threatStatus`); `roundEndReminders` in the vox log when a Round ends (§11.13) |

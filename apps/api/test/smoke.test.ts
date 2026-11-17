@@ -3877,6 +3877,28 @@ test("spend requests: a player asks, the GM's ACCEPT is the spend (rules-flow §
   assert.ok((await gm.send({ type: "encounter.start" })).ok);
   await gm.until((s) => s.spendRequests.length === 0);
 
+  // AWARE (p.177): only while ambushed; ACCEPT pays 1 Glory and clears the ambush; Round 2 clears a moot ask.
+  const aware = { type: "spend.request", characterId: a.id, kind: "aware" } as const;
+  assert.ok((await gm.send({ type: "combatant.addCharacter", characterId: a.id })).ok);
+  assert.ok((await gm.send({ type: "combatant.addCharacter", characterId: b.id })).ok);
+  assert.deepEqual(await pa.send(aware), { ok: false, error: "Not ambushed" });
+  assert.ok((await gm.send({ type: "encounter.ambush", side: "agents", ambushed: true })).ok);
+  const asked = await pa.send(aware);
+  assert.ok(asked.ok && asked.id);
+  assert.ok((await pb.send({ type: "spend.request", characterId: b.id, kind: "aware" })).ok);
+  const before = (await gm.until((s) => s.spendRequests.length === 2)).campaign.glory;
+  assert.ok((await gm.send({ type: "spend.resolve", id: asked.id, accept: true })).ok);
+  const paid = await gm.until((s) => s.spendRequests.length === 1);
+  assert.equal(paid.campaign.glory, before - 1);
+  assert.deepEqual(
+    paid.encounter?.combatants.filter((c) => c.ambushed).map((c) => c.kind === "pc" && c.characterId),
+    [b.id],
+  );
+  assert.ok((await gm.send({ type: "encounter.begin" })).ok);
+  assert.ok((await gm.send({ type: "encounter.newRound" })).ok);
+  await gm.until((s) => s.spendRequests.length === 0);
+  assert.ok((await glory(1)).ok); // AWARE spent the last of it
+
   // The asker cancels; session.end clears whatever is left.
   const damage = await pa.send({ type: "spend.request", characterId: a.id, kind: "gloryDamage" });
   assert.ok(damage.ok && damage.id);

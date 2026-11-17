@@ -41,7 +41,7 @@ import { combatant, encounter } from "./encounter.schema.ts";
 import { TurnStep } from "./encounter.turn-step.ts";
 
 const TURN_HISTORY = 30; // TURN BACK steps kept (rules-flow §11.170)
-const FIGHT_SPENDS: SpendKind[] = ["seize", "determination"]; // asks that mean nothing once their fight is over
+const FIGHT_SPENDS: SpendKind[] = ["seize", "determination", "aware"]; // asks that mean nothing once their fight is over
 
 export type EncounterAction = Extract<
   Action,
@@ -346,6 +346,8 @@ export async function applyEncounterAction(
       await pushStep(tx, { encounterId: before.id, label: () => `Round ${before.round + 1}` });
       await endCurrentTurn(tx, { campaignId: cid, step: false });
       await newRound(tx, { encounterId: before.id, round: before.round });
+      // An ambush costs only Round 1's Turn (p.177): an AWARE still asked is moot once Round 2 begins.
+      if (before.round === 1) await clearSpendRequests(tx, { campaignId: cid, kinds: ["aware"] });
       return { ok: true };
     }
 
