@@ -34,3 +34,11 @@ export function registerFonts(base: string) {
   });
   Font.registerHyphenationCallback((word) => [word]); // names and rules terms stay whole
 }
+
+let ready = false; // react-pdf keeps registered fonts per page load
+
+// The browser's way in: every print dialog calls this before its first build.
+export function registerFontsOnce(base: string) {
+  if (!ready) registerFonts(base);
+  ready = true;
+}

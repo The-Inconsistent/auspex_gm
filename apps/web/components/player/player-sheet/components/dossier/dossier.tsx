@@ -1,7 +1,9 @@
 "use client";
 import type { Character, Codex, LiveState } from "@wg/shared";
 
+import { fromCharacter } from "@/components/print/character-sheet/sheet-input";
 import { BookSheet } from "@/components/ui/book-sheet/book-sheet";
+import { SheetExport } from "@/components/ui/sheet-export/sheet-export";
 import { SheetGuide } from "@/components/ui/sheet-guide/sheet-guide";
 import type { Send } from "@/hooks/use-table/use-table";
 
@@ -18,12 +20,15 @@ type DossierProps = {
 
 // DOSSIER: the book's character sheet (ui/book-sheet), live on the player's own phone, under HOW TO READ THIS SHEET
 // and a jump strip to its boxes. Our own parts stay: the name bar and Tier strip, WARGEAR as a datacard, and
-// tap-for-meaning on every term.
+// tap-for-meaning on every term. EXPORT SHEET prints it on the official paper sheet.
 export function Dossier({ me, state, codex, send, onError }: DossierProps) {
   const sheet = { ...me, stats: { ...me.stats, gear: ungivenGear(me.stats.gear, codex.items) } };
   return (
     <>
       <SheetGuide />
+      <div className="keys">
+        <SheetExport sheet={fromCharacter(sheet, state.campaign.tier)} />
+      </div>
       <nav className="ps-jump" aria-label="Jump to">
         {DOSSIER_JUMPS.map((j) => (
           <a key={j.id} href={`#${j.id}`}>

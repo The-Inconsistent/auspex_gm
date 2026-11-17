@@ -46,10 +46,13 @@ in `docs/rules-flow.md` §11. Add new ones there, not silently in code.
   Book pages reach seated players only live: the GM's tablet renders the one tapped page from the GM's own PDF, and
   the api relays it without storing anything (`book:*` socket events, `docs/architecture.md`). Printed cards follow the
   screen's gates: only `GmApp` mounts the print dialog, and the GM's own browser builds the PDF from what it already
-  holds; nothing is uploaded or stored (`docs/frontend.md` §5.1). **One exception:** faction Keyword text (the
-  Keyword entries in `packages/data/creation/keywords`, which the publisher also prints on its website) may be shown
-  in full to anyone, the JOIN page's guests included: the publisher approved it (October 2026). It reaches the
-  browser only through `@wg/data/keyword-texts`; nothing else in `packages/data` is bundled into the web app.
+  holds; nothing is uploaded or stored (`docs/frontend.md` §5.1). The character-sheet export also mounts on the
+  player's DOSSIER and the builder's REVIEW: it prints only what that seat already sees, in its own browser.
+  `apps/web/public/sheet/` is artwork cut from Cubicle 7's free official character sheet, used with their permission.
+  **One exception:** faction Keyword text (the Keyword entries in `packages/data/creation/keywords`, which the
+  publisher also prints on its website) may be shown in full to anyone, the JOIN page's guests included: the
+  publisher approved it (October 2026). It reaches the browser only through `@wg/data/keyword-texts`; nothing else in
+  `packages/data` is bundled into the web app.
 
 ## Stack
 
@@ -200,10 +203,12 @@ apps/web/components/ui/      rules-ref (the RULES tab, GM and player), rules-pro
                              status-screen, refusal, table-talk (kind of game and limits), wizard-steps (NEW CAMPAIGN's step strip),
                              field-error (a refused field's reason), threat-builder + threat-starts (a custom stat block, from
                              CODEX › THREATS or a scene), print-dialog (PrintProvider, usePrint: the printed cards and handouts PDF), print-pick (a row's tick for PRINT N),
+                             sheet-export (EXPORT SHEET: the official character sheet as a PDF, outside PrintProvider),
                              handout-doc (a handout drawn as its prop: plain, slate, form, vox, decree; issue #204),
                              codex-picture (PictureProvider + CodexPicture: an NPC, place or handout picture; issue #199)
 apps/web/components/print/   card-sheet (the react-pdf Document: tent, Threat and item cards on a 3 × 3 poker grid),
-                             handout-sheet (handouts as printed props, one to a page), fonts.ts (registerFonts)
+                             handout-sheet (handouts as printed props, one to a page), character-sheet (Cubicle 7's
+                             two-page character sheet, print-friendly or full art; sheet-input), fonts.ts (registerFonts)
 apps/web/hooks/use-table/    socket + wake lock
 apps/web/hooks/use-reorder/  drag a row by its handle (touch, pen, mouse, arrow keys): the scene editor's Tests, spends, fight
 apps/web/hooks/use-seen/     what this phone has seen of the codex (localStorage), for INTEL's NEW
