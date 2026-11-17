@@ -7,7 +7,7 @@ import type { Paper } from "@/lib/print-cards/constants";
 
 import { PageOne } from "./components/page-one/page-one";
 import { PageTwo } from "./components/page-two/page-two";
-import type { SheetInput } from "./sheet-input";
+import type { SheetInput } from "@/lib/sheet-input/sheet-input";
 import { st, type SheetStyle } from "./styles";
 
 // `art`: the origin /sheet/*.png is served from (location.origin in the browser).
@@ -31,8 +31,9 @@ function Backdrop({ style, art, paper }: { style: SheetStyle; art: string; paper
     <>
       {style === "art" && (
         <>
-          <PdfImage fixed src={`${art}/sheet/art-page.jpg`} style={bleed} />
-          <PdfImage fixed src={`${art}/sheet/art-border.png`} style={bleed} />
+          {/* The parchment is cropped to the page; the frame is drawn at each paper's shape, so neither is squeezed. */}
+          <PdfImage fixed src={`${art}/sheet/art-page.jpg`} style={[...bleed, { objectFit: "cover" }]} />
+          <PdfImage fixed src={`${art}/sheet/art-border-${paper.toLowerCase()}.png`} style={bleed} />
         </>
       )}
       <Text fixed style={style === "art" ? [st.foot, st.footArt] : st.foot}>

@@ -7,7 +7,7 @@ import { DISPLAY, SERIF } from "../fonts";
 export type { SheetStyle } from "./constants";
 
 export const INK = TOKENS.ink;
-const FAINT = "#8f8c86"; // the sheet's grey formula captions ("= Wil − 1")
+const FAINT = TOKENS.ink3; // the sheet's grey formula captions ("= Wil − 1")
 
 export const st = StyleSheet.create({
   page: { fontFamily: SERIF, fontSize: 9, color: INK, paddingTop: 26, paddingBottom: 30, paddingHorizontal: 26 },

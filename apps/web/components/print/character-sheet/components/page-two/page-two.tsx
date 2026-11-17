@@ -2,7 +2,7 @@ import { Text, View } from "@react-pdf/renderer";
 
 import type { DerivedStats } from "@wg/shared";
 
-import type { SheetInput } from "../../sheet-input";
+import type { SheetInput } from "@/lib/sheet-input/sheet-input";
 import { st } from "../../styles";
 import { padTo, Row, SheetBox, Stat } from "../sheet-parts/sheet-parts";
 
@@ -38,7 +38,7 @@ export function PageTwo({ sheet, d, art }: PageTwoProps) {
         </View>
       </SheetBox>
 
-      <SheetBox title="INJURIES & CORRUPTION" art={art}>
+      <SheetBox title="INJURIES & CORRUPTION" art={art} wrap>
         <View style={st.row}>
           <View style={{ flex: 1, paddingRight: 5 }}>
             <Text style={[st.labelBold, { textAlign: "center" }]}>TRAUMATIC INJURIES</Text>

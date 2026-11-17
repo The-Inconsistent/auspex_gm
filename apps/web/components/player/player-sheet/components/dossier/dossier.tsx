@@ -1,7 +1,7 @@
 "use client";
 import type { Character, Codex, LiveState } from "@wg/shared";
 
-import { fromCharacter } from "@/components/print/character-sheet/sheet-input";
+import { fromCharacter } from "@/lib/sheet-input/sheet-input";
 import { BookSheet } from "@/components/ui/book-sheet/book-sheet";
 import { SheetExport } from "@/components/ui/sheet-export/sheet-export";
 import { SheetGuide } from "@/components/ui/sheet-guide/sheet-guide";
@@ -27,7 +27,7 @@ export function Dossier({ me, state, codex, send, onError }: DossierProps) {
     <>
       <SheetGuide />
       <div className="keys">
-        <SheetExport sheet={fromCharacter(sheet, state.campaign.tier)} />
+        <SheetExport toSheet={() => fromCharacter(sheet, state.campaign.tier)} />
       </div>
       <nav className="ps-jump" aria-label="Jump to">
         {DOSSIER_JUMPS.map((j) => (

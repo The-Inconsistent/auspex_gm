@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   SHEET_PAPER_KEY,
@@ -8,7 +8,7 @@ import {
   SHEET_STYLES,
   type SheetStyle,
 } from "@/components/print/character-sheet/constants";
-import type { SheetInput } from "@/components/print/character-sheet/sheet-input";
+import type { SheetInput } from "@/lib/sheet-input/sheet-input";
 import { PAPERS, type Paper } from "@/lib/print-cards/constants";
 
 type Built = { url: string } | { error: string } | "building" | null;
@@ -24,8 +24,10 @@ const saved = <T extends string>(key: string, options: readonly T[]): T => {
 // EXPORT SHEET: the Agent on Cubicle 7's official character sheet as a PDF (print/character-sheet), print-friendly or
 // full art. Built in this browser from what the screen already holds, nothing uploaded, so it needs no PrintProvider
 // and mounts wherever a seat sees its own sheet: the player's DOSSIER, GM PARTY's SHEET, the builder's REVIEW.
-export function SheetExport({ sheet }: { sheet: SheetInput }) {
+// `toSheet` runs when the dialog opens, not on every render of the live sheet behind it; the PDF is that moment's.
+export function SheetExport({ toSheet }: { toSheet: () => SheetInput }) {
   const dialog = useRef<HTMLDialogElement>(null);
+  const [sheet, setSheet] = useState<SheetInput | null>(null);
   const [style, setStyle] = useState<SheetStyle>("print");
   const [paper, setPaper] = useState<Paper>("A4");
   const [built, setBuilt] = useState<Built>(null);
@@ -39,16 +41,26 @@ export function SheetExport({ sheet }: { sheet: SheetInput }) {
     setBuilt(null);
   };
 
+  // Leaving the screen with a PDF built (or building) frees it too: the GM's SHEET unmounts this when it closes.
+  useEffect(
+    () => () => {
+      generation.current++;
+      if (url.current) URL.revokeObjectURL(url.current);
+    },
+    [],
+  );
+
   const handleOpen = () => {
     reset();
+    setSheet(toSheet());
     setStyle(saved(SHEET_STYLE_KEY, SHEET_STYLES));
     setPaper(saved(SHEET_PAPER_KEY, PAPERS));
     dialog.current?.showModal();
   };
 
-  const pick = <T extends string>(key: string, value: T, set: (v: T) => void) => {
+  // A new pick drops the PDF built for the old one.
+  const remember = (key: string, value: string) => {
     reset();
-    set(value);
     try {
       localStorage.setItem(key, value);
     } catch {} // the pick just isn't remembered
@@ -56,6 +68,7 @@ export function SheetExport({ sheet }: { sheet: SheetInput }) {
 
   // The renderer and its fonts load on the first build only.
   const build = async () => {
+    if (!sheet) return;
     const mine = generation.current;
     setBuilt("building");
     try {
@@ -73,7 +86,7 @@ export function SheetExport({ sheet }: { sheet: SheetInput }) {
     }
   };
 
-  const file = `${sheet.name.trim().replace(/[^\p{L}\p{N}]+/gu, "-") || "agent"}.sheet.pdf`;
+  const file = `${sheet?.name.replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "") || "agent"}.sheet.pdf`;
 
   return (
     <>
@@ -91,7 +104,7 @@ export function SheetExport({ sheet }: { sheet: SheetInput }) {
           <div className="sb-title">
             <span>CHARACTER SHEET</span>
           </div>
-          <div>{sheet.name}, on the official Wrath & Glory sheet.</div>
+          <div>{sheet?.name}, on the official Wrath & Glory sheet.</div>
           <div className="keys" role="group" aria-label="Style">
             <span className="label">STYLE</span>
             {SHEET_STYLES.map((s) => (
@@ -100,7 +113,10 @@ export function SheetExport({ sheet }: { sheet: SheetInput }) {
                 type="button"
                 className={`btn sm ${style === s ? "primary" : ""}`}
                 aria-pressed={style === s}
-                onClick={() => pick(SHEET_STYLE_KEY, s, setStyle)}
+                onClick={() => {
+                  remember(SHEET_STYLE_KEY, s);
+                  setStyle(s);
+                }}
               >
                 {SHEET_STYLE_LABELS[s]}
               </button>
@@ -114,7 +130,10 @@ export function SheetExport({ sheet }: { sheet: SheetInput }) {
                 type="button"
                 className={`btn sm ${paper === p ? "primary" : ""}`}
                 aria-pressed={paper === p}
-                onClick={() => pick(SHEET_PAPER_KEY, p, setPaper)}
+                onClick={() => {
+                  remember(SHEET_PAPER_KEY, p);
+                  setPaper(p);
+                }}
               >
                 {p}
               </button>

@@ -1,11 +1,18 @@
 import { Image as PdfImage, Text, View } from "@react-pdf/renderer";
 
-import { ATTRIBUTES, attributeTotals, effectiveStrength, withMutations, type DerivedStats } from "@wg/shared";
+import {
+  ATTRIBUTES,
+  attributeTotals,
+  deriveStats,
+  effectiveStrength,
+  withMutations,
+  type DerivedStats,
+} from "@wg/shared";
 
 import { skillRows, weaponPool } from "@/lib/sheet-pools/sheet-pools";
 
-import type { SheetInput } from "../../sheet-input";
-import { st, type SheetStyle } from "../../styles";
+import type { SheetInput } from "@/lib/sheet-input/sheet-input";
+import { INK, st, type SheetStyle } from "../../styles";
 import { Field, padTo, Row, SheetBox, Stat } from "../sheet-parts/sheet-parts";
 
 type PageOneProps = { sheet: SheetInput; d: DerivedStats; style: SheetStyle; art: string };
@@ -24,10 +31,20 @@ export function PageOne({ sheet, d, style, art }: PageOneProps) {
   const rating = withMutations(s).skills;
   const skills = skillRows(s);
   const strength = effectiveStrength(s);
+  // Resilience's BASE before armour, bonuses and the GM's override, as the screen's SURVIVAL box shows it (= T + 1).
+  const base = deriveStats({
+    stats: { ...s, mods: {}, armour: { ...s.armour, ar: 0 } },
+    overrides: {},
+    tier: sheet.tier,
+  }).resilience;
+  const resilienceBonus = d.resilience - base - s.armour.ar;
+  // A mutation's Horn, Claw or Bile is a weapon too (Core pp.288–295), drawn on screen under INJURIES.
+  const weapons = [...s.weapons, ...s.mutations.flatMap((m) => m.weapons)];
   const armourNote = [
     s.armour.invulnerable ? "Invulnerable" : null,
     s.armour.powered ? `Powered (${s.armour.powered})` : null,
     ...s.armour.traits,
+    ...(s.armour.notes ?? []), // what a fitted upgrade leaves to the GM (Core p.227)
   ].filter(Boolean);
 
   return (
@@ -55,7 +72,7 @@ export function PageOne({ sheet, d, style, art }: PageOneProps) {
       </View>
 
       <View style={st.row}>
-        <View style={{ flex: 1.45, borderRightWidth: 2.4, borderRightColor: "#1c1b1a" }}>
+        <View style={{ flex: 1.45, borderRightWidth: 2.4, borderRightColor: INK }}>
           <SheetBox title="ATTRIBUTES" art={art}>
             <Row head cells={["", ...ATTRIBUTES]} flex={[1.3, 1, 1, 1, 1, 1, 1, 1]} />
             <Row cells={["Rating", ...ATTRIBUTES.map((a) => s.attributes[a])]} flex={[1.3, 1, 1, 1, 1, 1, 1, 1]} />
@@ -74,7 +91,7 @@ export function PageOne({ sheet, d, style, art }: PageOneProps) {
                     <Row
                       key={r.skill}
                       height={15}
-                      cells={[r.skill, r.attribute, rating[r.skill] ?? 0, r.total]}
+                      cells={[r.skill, r.attribute, rating[r.skill] || "–", r.total]}
                       flex={[2.4, 0.7, 1, 1]}
                     />
                   ))}
@@ -115,9 +132,13 @@ export function PageOne({ sheet, d, style, art }: PageOneProps) {
               <View style={{ flexGrow: 2.2, flexBasis: 0, borderLeftWidth: 0.5 }}>
                 <Text style={[st.labelBold, { textAlign: "center", marginTop: 2 }]}>RESILIENCE</Text>
                 <View style={st.row}>
-                  <Stat label="BASE +" value={d.resilience - s.armour.ar} cap="T + 1" />
+                  <Stat label="BASE +" value={base} cap="= T + 1" />
                   <Stat label="ARMOUR =" value={s.armour.ar} />
-                  <Stat label="TOTAL" value={d.resilience} />
+                  <Stat
+                    label="TOTAL"
+                    value={d.resilience}
+                    cap={resilienceBonus ? `incl. ${signed(resilienceBonus)}` : undefined}
+                  />
                 </View>
               </View>
             </View>
@@ -151,7 +172,7 @@ export function PageOne({ sheet, d, style, art }: PageOneProps) {
           cells={["Weapons", "Dice Pool", "Damage", "ED", "AP", "Salvo", "Range", "", "", "Traits"]}
           flex={WEAPON_FLEX}
         />
-        {padTo(s.weapons, 4).map((w, i) =>
+        {padTo(weapons, 4).map((w, i) =>
           w ? (
             <Row
               key={i}
@@ -165,7 +186,7 @@ export function PageOne({ sheet, d, style, art }: PageOneProps) {
                 w.ap ?? "–",
                 w.salvo === undefined ? "" : (w.salvo ?? "–"),
                 ...(w.range.length === 3 ? w.range : [w.range[0], "", ""]),
-                [...w.traits, ...(w.upgradeNames ?? []), ...(w.effects ?? [])].join(", "),
+                [...w.traits, ...(w.upgradeNames ?? []), ...(w.effects ?? []), ...(w.notes ?? [])].join(", "),
               ]}
             />
           ) : (

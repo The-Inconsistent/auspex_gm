@@ -1,7 +1,7 @@
 import { Font } from "@react-pdf/renderer";
 
-// The faces every printed sheet uses (cards, issue #203; handouts, issue #204). Plex Mono is the data-slate, form and
-// vox face, as on the phone.
+// The faces every printed sheet uses (cards, issue #203; handouts, issue #204; the character sheet). Plex Mono is the
+// data-slate, form and vox face, as on the phone.
 export const DISPLAY = "Cinzel";
 export const SERIF = "Crimson Pro";
 export const MONO = "IBM Plex Mono";
@@ -37,7 +37,7 @@ export function registerFonts(base: string) {
 
 let ready = false; // react-pdf keeps registered fonts per page load
 
-// The browser's way in: every print dialog calls this before its first build.
+// The browser's way in: the print dialog and EXPORT SHEET call this before their first build.
 export function registerFontsOnce(base: string) {
   if (!ready) registerFonts(base);
   ready = true;
