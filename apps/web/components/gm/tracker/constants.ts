@@ -1,4 +1,4 @@
-import type { Visibility } from "@wg/shared";
+import type { TurnMark, Visibility } from "@wg/shared";
 
 import type { CounterField } from "@/lib/command/constants";
 import type { Direction } from "@/lib/fight-delta/fight-delta";
@@ -27,8 +27,33 @@ export const DIRECTION_LABEL: Record<CounterField, Record<Direction, string>> = 
   shock: { deal: "DEAL +", heal: "RECOVER −" },
 };
 
-// The turn button's label when nobody is left to act; MORE offers the same early otherwise.
+// MORE's early NEW ROUND (the Round-complete key bar says BEGIN ROUND N+1 instead).
 export const NEW_ROUND = "NEW ROUND";
+
+// A row's turn mark (rules-flow §11.168). Before Round 1 the mark is the ambush toggle, so it says ACTS where it says READY.
+export const TURN_MARK_LABEL: Record<TurnMark, string> = {
+  out: "OUT",
+  acting: "▶ ACTING",
+  ambushed: "AMBUSHED",
+  held: "HELD",
+  done: "✓ DONE",
+  ready: "READY",
+};
+export const SETUP_MARK_LABEL = { ready: "ACTS", ambushed: "AMBUSHED" } as const;
+
+// What a row's turn dialog can ask for; the tracker maps each to its action.
+export const TURN_DOS = [
+  "start",
+  "justGo",
+  "seize",
+  "end",
+  "hold",
+  "markDone",
+  "notYet",
+  "interrupt",
+  "aware",
+  "ambush",
+] as const;
 
 // The key bar's two fold-open panels.
 export const KEY_PANELS = ["conditions", "more"] as const;

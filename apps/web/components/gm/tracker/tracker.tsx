@@ -21,6 +21,7 @@ import {
   sideOf,
   sideUpNext,
   threatStatus,
+  turnMark,
   type ActionInput,
   type Character,
   type Combatant,
@@ -45,8 +46,9 @@ import { CritPerils } from "./components/crit-perils/crit-perils";
 import { DeltaPad } from "./components/delta-pad/delta-pad";
 import { FightRow } from "./components/fight-row/fight-row";
 import { KeyBar } from "./components/key-bar/key-bar";
+import { RoundNotes } from "./components/round-notes/round-notes";
 import { LOG_LIMIT, NEW_ROUND } from "./constants";
-import type { KeyAction, LogEntry, Run, Vitals } from "./types";
+import type { KeyAction, LogEntry, Run, TurnDo, Vitals } from "./types";
 
 type TrackerProps = {
   state: LiveState;
@@ -203,7 +205,12 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
     combatantPortrait({ combatant: c, character: c.kind === "pc" ? chars.get(c.characterId) : undefined });
   const portraits = enc.combatants.some((c) => portraitOf(c));
   const done = (side: Side) => `${rows(side).filter((c) => c.acted).length}/${rows(side).length}`;
-  const seizeCost = sel && sideOf(sel) === "agents" ? "1 GLORY" : "1 RUIN";
+  // Seize and AWARE are paid from the combatant's own side's pool: Glory for Agents, Ruin for Threats (p.177).
+  const costOf = (c: Combatant) => (sideOf(c) === "agents" ? "1 GLORY" : "1 RUIN");
+  const setup = enc.round === 0; // Steps 1–2, before Round 1 (§11.167)
+  const nobodyCanAct = !enc.combatants.some((x) => canAct(state, x));
+  // Nobody left and nobody acting: the Round waits for the GM, it never rolls over by itself (§11.169).
+  const roundComplete = !setup && !current && nobodyCanAct;
   const vitalsOf = (c: Combatant): Vitals => {
     const ch = c.kind === "pc" ? chars.get(c.characterId) : undefined;
     const d = ch ? derivedOf(ch) : null;
@@ -269,46 +276,104 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
     };
   };
 
-  // START TURN / SEIZE: starts the combatant's turn, then lists Conditions that tick at turn start, and the timed ones
-  // the api will end with this Turn (§11.8).
-  const startTurn = async (c: Combatant, seize: boolean) => {
+  // START / SEIZE / JUST GO: starts the combatant's turn (the api ends the current one first, §11.168), then lists Conditions
+  // that tick at turn end for the one that was cut off and at turn start for this one, and the timed ones the api will
+  // end with this Turn (§11.8).
+  const startTurn = async (c: Combatant, mode: Extract<TurnDo, "start" | "justGo" | "seize">) => {
+    const name = nameOf(c).toUpperCase();
+    const prev = current && current.id !== c.id ? current : null;
     const r = await run(
-      { type: seize ? "turn.seize" : "turn.start", id: c.id },
-      `${seize ? "SEIZE · " : ""}${nameOf(c).toUpperCase()} ACTING`,
+      mode === "seize"
+        ? { type: "turn.seize", id: c.id }
+        : mode === "justGo"
+          ? { type: "turn.start", id: c.id, force: true }
+          : { type: "turn.start", id: c.id },
+      mode === "seize"
+        ? `SEIZE · ${name} ACTING`
+        : mode === "justGo"
+          ? `JUST GO · ${name} ACTING (out of order)`
+          : `${name} ACTING`,
     );
     if (!r.ok) return r;
+    if (prev) remind(prev, TURN_END_REMINDERS);
     remind(c, TURN_START_REMINDERS);
     for (const k of conditionsOf(c).filter(isTimed))
-      push({ text: `${nameOf(c).toUpperCase()}: ${k} ends at the end of this Turn`, warn: true });
+      push({ text: `${name}: ${k} ends at the end of this Turn`, warn: true });
     return r;
   };
 
-  // Round end: Mobs with half or more slain test Resolve (p.325).
-  const remindRoundEnd = () => {
-    for (const text of roundEndReminders(enc)) push({ text: text.toUpperCase(), warn: true });
-  };
-
-  // END TURN: ends the current turn, then lists Conditions that tick at turn end, and the Round-end Tests if this was the
-  // last Turn of the Round (the api rolls the Round over on the same rule, canAct).
-  const endTurn = async () => {
-    const roundEnds = !enc.combatants.some((x) => canAct(state, x));
-    const r = await run({ type: "turn.end" }, `${current ? nameOf(current).toUpperCase() : "TURN"} END TURN`);
+  // END TURN / HOLD ACTION: ends the current turn (p.177: a held action stays for an INTERRUPT), then lists Conditions
+  // that tick at turn end. The Round-end reminders wait in ROUND N COMPLETE.
+  const endTurn = async (hold = false) => {
+    const name = current ? nameOf(current).toUpperCase() : "TURN";
+    const r = await run({ type: hold ? "turn.hold" : "turn.end" }, `${name} ${hold ? "HOLDS ACTION" : "END TURN"}`);
     if (r.ok && current) remind(current, TURN_END_REMINDERS);
-    if (r.ok && roundEnds) remindRoundEnd();
     return r;
   };
 
-  // NEW ROUND: the GM ends the Round early.
+  // BEGIN ROUND I: ambushes are set (Step 1), the fight opens (p.176).
+  const begin = () => run({ type: "encounter.begin" }, "ROUND I BEGINS");
+
+  // BEGIN ROUND N+1, or NEW ROUND from MORE to end the Round early (then its reminders go to the log, as no panel showed them).
   const newRound = async () => {
-    const r = await run({ type: "encounter.newRound" }, "NEW ROUND");
-    if (r.ok) remindRoundEnd();
+    const early = !roundComplete;
+    const lines = roundEndReminders(enc, nameOf);
+    const r = await run({ type: "encounter.newRound" }, roundComplete ? `ROUND ${enc.round + 1} BEGINS` : "NEW ROUND");
+    if (r.ok && early) for (const text of lines) push({ text: text.toUpperCase(), warn: true });
+    return r;
   };
+
+  // TURN BACK (§11.170): the api undoes the last turn step and the damage since; it replaces undo for turn flow.
+  const turnBack = () => run({ type: "turn.back" }, `TURN BACK: ${enc.back}`);
+
+  // A row's turn dialog: each button is one turn action on that row.
+  const doTurn = (c: Combatant, d: TurnDo) => {
+    const name = nameOf(c).toUpperCase();
+    switch (d) {
+      case "start":
+        return startTurn(c, "start");
+      case "justGo":
+        return startTurn(c, "justGo");
+      case "seize":
+        return startTurn(c, "seize");
+      case "end":
+        return endTurn();
+      case "hold":
+        return endTurn(true);
+      case "markDone":
+        return run({ type: "turn.mark", id: c.id, acted: true }, `${name} MARKED DONE`);
+      case "notYet":
+        return run({ type: "turn.mark", id: c.id, acted: false }, `${name} NOT YET`);
+      case "interrupt":
+        return run({ type: "turn.interrupt", id: c.id }, `${name} INTERRUPTS`);
+      case "aware":
+        return run({ type: "combatant.aware", id: c.id }, `${name} AWARE (${costOf(c)})`);
+      case "ambush":
+        return run({ type: "combatant.update", id: c.id, ambushed: true }, `${name} AMBUSHED`);
+    }
+  };
+
+  // Step 1: one row's ACTS | AMBUSHED toggle, or a whole side's ALL AMBUSHED.
+  const toggleAmbush = (c: Combatant) =>
+    run(
+      { type: "combatant.update", id: c.id, ambushed: !c.ambushed },
+      `${nameOf(c).toUpperCase()} ${c.ambushed ? "ACTS" : "AMBUSHED"}`,
+    );
+  const toggleSideAmbush = (side: Side, ambushed: boolean) =>
+    run(
+      { type: "encounter.ambush", side, ambushed },
+      `ALL ${side.toUpperCase()} ${ambushed ? "AMBUSHED" : "ACT IN ROUND I"}`,
+    );
 
   // Typed turn commands go through the button handlers, so the same Condition reminders fire.
   const runCommand = (a: ActionInput) => {
     if (a.type === "turn.end") return endTurn();
+    if (a.type === "turn.hold") return endTurn(true);
+    if (a.type === "encounter.begin") return begin();
+    if (a.type === "encounter.newRound") return newRound();
+    if (a.type === "turn.back") return turnBack();
     const c = (a.type === "turn.start" || a.type === "turn.seize") && enc.combatants.find((x) => x.id === a.id);
-    if (c) return startTurn(c, a.type === "turn.seize");
+    if (c) return startTurn(c, a.type === "turn.seize" ? "seize" : a.force ? "justGo" : "start");
     return run(a, `> ${cmd.toUpperCase()}`);
   };
 
@@ -342,18 +407,6 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
       { type: "combatant.update", id: threat.id, visibility },
       `${nameOf(threat).toUpperCase()} ${VISIBILITY_LABEL[visibility]}`,
     );
-  };
-
-  // AWARE: pays to let an ambushed combatant act in Round 1.
-  const handleAware = () => {
-    if (!sel) return;
-    void run({ type: "combatant.aware", id: sel.id }, `${nameOf(sel).toUpperCase()} AWARE (${seizeCost})`);
-  };
-
-  // AMBUSH: the selected combatant skips Round 1.
-  const handleAmbush = () => {
-    if (!sel) return;
-    void run({ type: "combatant.update", id: sel.id, ambushed: true }, `${nameOf(sel).toUpperCase()} AMBUSHED`);
   };
 
   // REMOVE: takes the selected combatant out of the fight and clears the selection.
@@ -397,48 +450,73 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
     if (r.ok) setLog((x) => x.filter((y) => y.id !== entry.id)); // a refused undo keeps its button
   };
 
-  // The key bar: one turn button whose label follows the turn state, SEIZE when it's open to the selected row (§3.1).
-  const nobodyCanAct = !enc.combatants.some((x) => canAct(state, x));
-  const primary: KeyAction | null = current
-    ? { label: "END TURN", onClick: endTurn }
-    : sel && canAct(state, sel)
-      ? { label: `START ${nameOf(sel).toUpperCase()}'S TURN`, onClick: () => startTurn(sel, false) }
-      : nobodyCanAct
-        ? { label: NEW_ROUND, onClick: newRound }
+  // The key bar: one turn button whose label follows the Round (BEGIN ROUND I, END <NAME>'S TURN, BEGIN ROUND N+1);
+  // starting a Turn, SEIZE, JUST GO and the rest live on each row's turn mark.
+  const primary: KeyAction | null = setup
+    ? { label: "BEGIN ROUND I", onClick: begin }
+    : current
+      ? { label: `END ${nameOf(current).toUpperCase()}'S TURN`, onClick: () => endTurn() }
+      : roundComplete
+        ? { label: `BEGIN ROUND ${enc.round + 1}`, onClick: newRound }
         : null;
-  const seize: KeyAction | null =
-    sel && !current && canAct(state, sel) && canSeize(state, sideOf(sel))
-      ? { label: `SEIZE · ${seizeCost}`, onClick: () => startTurn(sel, true) }
-      : null;
-  const ambush: KeyAction | null =
-    sel && enc.round === 1 && !sel.acted
-      ? sel.ambushed
-        ? { label: `AWARE · ${seizeCost}`, onClick: handleAware }
-        : { label: "AMBUSH", onClick: handleAmbush }
-      : null;
+  const hold: KeyAction | null = current ? { label: "HOLD ACTION", onClick: () => endTurn(true) } : null;
+  const act = (side: Side) => rows(side).filter((c) => !c.ambushed);
+  const ambushedCount = enc.combatants.filter((c) => c.ambushed).length;
+  const endReminders = roundComplete ? roundEndReminders(enc, nameOf) : [];
 
   return (
     <div className="tracker">
       <section className="tracker-main">
         <div className="turn-strip">
-          {current ? (
+          {setup ? (
+            <span className="accent display">STEP 1 · WHO IS AMBUSHED?</span>
+          ) : current ? (
             <span className="now-chip">▶ {nameOf(current).toUpperCase()} ACTING</span>
+          ) : roundComplete ? (
+            <span className="accent display">ROUND {enc.round} COMPLETE · waits for you</span>
           ) : (
             <span className="accent display">{next ? `AWAITING: ${next.toUpperCase()} PICK` : "ROUND COMPLETE"}</span>
           )}
           {current && next && <i className="dim">Next: the {next} pick</i>}
           {enc.seizedSide && <span className="dim">{enc.seizedSide.toUpperCase()} SEIZED</span>}
           <span style={{ flex: 1 }} />
+          {enc.back && (
+            <button type="button" className="btn turn-back" aria-label={`Turn back: ${enc.back}`} onClick={turnBack}>
+              <b>TURN BACK</b>
+              <span className="dim">{enc.back}</span>
+            </button>
+          )}
           <span className="label">
             RND {enc.round} · AGENTS {done("agents")} · THREATS {done("threats")}
           </span>
         </div>
+        {setup && (
+          <RoundNotes
+            head={`ROUND I · ${act("agents").length} AGENTS AND ${act("threats").length} THREATS ACT · ${ambushedCount} AMBUSHED`}
+            items={[
+              "Step 1 · Determine ambushes: an ambushed combatant has no Turn in Round 1; paying 1 Glory or 1 Ruin makes it aware (pp.176–177).",
+              "Step 2 · Set the scene: narrate what each side sees, then begin the Round (p.176).",
+            ]}
+          />
+        )}
+        {endReminders.length > 0 && <RoundNotes head={`BEFORE ROUND ${enc.round + 1}`} items={endReminders} />}
 
         {Side.options.map((side) => (
           <div key={side} className="list table">
             <div className={`tbar ${side === "threats" ? "iron" : ""}`}>
               <span>{side.toUpperCase()}</span>
-              <span style={{ fontSize: 12 }}>{done(side)} ACTED</span>
+              {setup ? (
+                <button
+                  type="button"
+                  className="tbar-toggle"
+                  aria-pressed={rows(side).length > 0 && rows(side).every((c) => c.ambushed)}
+                  onClick={() => toggleSideAmbush(side, !rows(side).every((c) => c.ambushed))}
+                >
+                  ALL AMBUSHED
+                </button>
+              ) : (
+                <span style={{ fontSize: 12 }}>{done(side)} ACTED</span>
+              )}
             </div>
             <div className={`fight-head fight-${side}`}>
               <span>STATE</span>
@@ -456,13 +534,9 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
                 const d = ch ? derivedOf(ch) : null;
                 const now = c.id === enc.currentId;
                 const status = c.kind === "pc" ? (ch && d ? pcStatus(ch, d) : []) : threatStatus(c);
-                const stateLabel = now
-                  ? "▶ ACTING"
-                  : c.acted
-                    ? "DONE"
-                    : c.ambushed && enc.round === 1
-                      ? "AMBUSHED"
-                      : "READY";
+                const mark = turnMark(state, c);
+                // READY on the side that isn't up: the order is a suggestion, so it offers SEIZE or JUST GO (§11.168).
+                const offSide = mark === "ready" && next !== null && sideOf(c) !== next;
                 const padId = `fight-pad-${c.id}`;
                 return (
                   <FightRow
@@ -472,7 +546,16 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
                     vitals={vitalsOf(c)}
                     conditions={conditionsOf(c)}
                     status={status}
-                    stateLabel={stateLabel}
+                    mark={mark}
+                    setup={setup}
+                    onAmbush={() => toggleAmbush(c)}
+                    turn={{
+                      nextSide: offSide ? next : null,
+                      seizeCost: canSeize(state, sideOf(c)) ? costOf(c) : null,
+                      awareCost: costOf(c),
+                      canAmbush: enc.round === 1,
+                      onDo: (d) => doTurn(c, d),
+                    }}
                     portrait={portraits ? portraitOf(c) : undefined}
                     showPortrait={portraits}
                     now={now}
@@ -507,12 +590,11 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
         <KeyBar
           key={sel?.id ?? "none"}
           primary={primary}
-          seize={seize}
+          hold={hold}
           conditions={sel && { name: nameOf(sel), active: conditionsOf(sel), onToggle: handleConditionToggle }}
           more={{
-            ambush,
             remove: sel && { label: "REMOVE", onClick: handleRemove },
-            newRound: primary?.label === NEW_ROUND ? null : { label: NEW_ROUND, onClick: newRound },
+            newRound: setup || roundComplete ? null : { label: NEW_ROUND, onClick: newRound },
             endFight: { label: "END FIGHT", onClick: () => run({ type: "encounter.end" }, "ENCOUNTER ENDED") },
           }}
         >
@@ -526,7 +608,7 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
             aria-label="Command"
             value={cmd}
             onChange={(e) => setCmd(e.target.value)}
-            placeholder="hollan dmg 3 · +2 · +pinned iskra · seize daro · end"
+            placeholder="hollan dmg 3 · +2 · +pinned iskra · go daro · hold · back · begin · next"
           />
         </form>
       </section>

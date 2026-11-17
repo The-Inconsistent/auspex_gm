@@ -3,10 +3,10 @@
 /* The tracker's rows (components/gm/tracker). A row is a grid of cells for the eye; its select button lies under them
    (absolute), and the WOUNDS / SHOCK numbers and a threat's visibility chip are sibling buttons over it. */
 .fight-agents {
-  --cols: 78px minmax(0, 1fr) 150px 76px 34px 34px minmax(84px, 1fr);
+  --cols: 100px minmax(0, 1fr) 150px 76px 34px 34px minmax(84px, 1fr);
 }
 .fight-threats {
-  --cols: 78px minmax(0, 1fr) 150px 76px 34px 34px minmax(84px, 1fr) 84px;
+  --cols: 100px minmax(0, 1fr) 150px 76px 34px 34px minmax(84px, 1fr) 84px;
 }
 .fight-head,
 .fight-row {
@@ -149,6 +149,92 @@
   color: var(--ink-3);
 }
 
+/* The turn mark (rules-flow §11.168): the STATE cell's tap target. READY outline, ACTING crimson fill, DONE dim, HELD
+   brass, AMBUSHED dashed red. The cell's pointer-events are off, so the button turns them back on. */
+.turn-mark {
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+  min-height: 44px;
+  width: 100%;
+  padding: 0 6px;
+  border: 1px solid var(--ink-2);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.turn-mark.acting {
+  background: var(--red-fill);
+  border-color: var(--bone);
+  color: var(--bone);
+}
+.turn-mark.done {
+  border-color: var(--line);
+  color: var(--ink-3);
+}
+.turn-mark.held {
+  border-color: var(--brass);
+  color: var(--brass);
+}
+.turn-mark.ambushed {
+  border: 1px dashed var(--red);
+  color: var(--red);
+}
+.turn-mark.ambushed[aria-pressed="true"] {
+  background: var(--red-tint);
+}
+
+/* TURN BACK sits in the strip: the label and what it takes back. */
+.turn-back {
+  flex-direction: column;
+  gap: 0;
+  line-height: 1.15;
+  padding-block: 4px;
+}
+.turn-back .dim {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: normal;
+}
+
+/* Step 1's ALL AMBUSHED, on the side's title bar: bone outline, filled bone when on. */
+.tbar-toggle {
+  min-height: 44px;
+  margin-block: -6px;
+  padding: 0 12px;
+  border: 1px solid var(--bone-2);
+  background: transparent;
+  color: var(--bone);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.tbar-toggle[aria-pressed="true"] {
+  background: var(--bone);
+  color: var(--iron);
+}
+
+/* Before Round 1 and ROUND N COMPLETE: a quiet note above the lists. */
+.round-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  background: var(--vellum-2);
+}
+.round-notes ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
 /* The delta pad: under its row, one for WOUNDS and SHOCK. Its own ink, whatever the row's (the acting row is bone). */
 .fight-pad {
   position: absolute;
@@ -283,10 +369,10 @@
 /* Narrower than the full row: CLASS, DEF, RES and the portraits go; the container is .tracker-main. */
 @container tracker (max-width: 801px) {
   .fight-agents {
-    --cols: 78px minmax(0, 1fr) 150px 76px minmax(84px, 1fr);
+    --cols: 100px minmax(0, 1fr) 150px 76px minmax(84px, 1fr);
   }
   .fight-threats {
-    --cols: 78px minmax(0, 1fr) 150px 76px minmax(84px, 1fr) 84px;
+    --cols: 100px minmax(0, 1fr) 150px 76px minmax(84px, 1fr) 84px;
   }
   .fight-head .hide-sm,
   .fight-row .hide-sm {
@@ -297,7 +383,7 @@
 @container tracker (max-width: 599px) {
   .fight-agents,
   .fight-threats {
-    --cols: 64px minmax(0, 1fr) 84px 66px;
+    --cols: 92px minmax(0, 1fr) 84px 66px;
   }
   .fight-head > :nth-child(n + 7) {
     display: none;

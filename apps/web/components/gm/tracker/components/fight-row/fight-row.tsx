@@ -2,14 +2,15 @@
 import Image from "next/image";
 import { useId, type ComponentProps, type ReactNode } from "react";
 
-import { THREAT_CLASS_LABEL, Visibility, type Combatant } from "@wg/shared";
+import { THREAT_CLASS_LABEL, Visibility, type Combatant, type TurnMark } from "@wg/shared";
 
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
 import { Track } from "@/components/ui/track/track";
 import type { CounterField } from "@/lib/command/constants";
 
-import { VISIBILITY_SEEN, VISIBILITY_WORD } from "../../constants";
+import { SETUP_MARK_LABEL, TURN_MARK_LABEL, VISIBILITY_SEEN, VISIBILITY_WORD } from "../../constants";
 import type { Vitals } from "../../types";
+import { TurnDialog } from "../turn-dialog/turn-dialog";
 
 type FightRowProps = {
   combatant: Combatant;
@@ -17,7 +18,11 @@ type FightRowProps = {
   vitals: Vitals;
   conditions: string[];
   status: string[];
-  stateLabel: string;
+  mark: TurnMark;
+  // Before Round 1 the mark is the ambush toggle (ACTS | AMBUSHED) and has no dialog.
+  setup: boolean;
+  onAmbush: () => void;
+  turn: Omit<ComponentProps<typeof TurnDialog>, "id" | "name" | "mark">;
   portrait: ComponentProps<typeof Image>["src"] | null | undefined;
   showPortrait: boolean;
   now: boolean;
@@ -40,7 +45,10 @@ export function FightRow({
   vitals: v,
   conditions,
   status,
-  stateLabel,
+  mark,
+  setup,
+  onAmbush,
+  turn,
   portrait,
   showPortrait,
   now,
@@ -53,6 +61,9 @@ export function FightRow({
   children,
 }: FightRowProps) {
   const visId = useId();
+  const turnId = useId();
+  const stateLabel =
+    setup && mark !== "out" ? SETUP_MARK_LABEL[mark === "ambushed" ? "ambushed" : "ready"] : TURN_MARK_LABEL[mark];
   const mob = c.kind === "threat" && c.mobCount !== null;
   const woundsLeft = Math.max(0, v.maxWounds - v.wounds);
   const shockLeft = v.maxShock === null ? null : Math.max(0, v.maxShock - v.shock);
@@ -67,7 +78,7 @@ export function FightRow({
     ...status.map((s) => s.toLowerCase()),
   ].join(", ");
   const harm = `${woundsSaid}. ${shockLeft === null ? "No Shock" : `Shock ${shockLeft} of ${v.maxShock} left`}, Defence ${v.defence ?? "none"}, Resilience ${v.resilience ?? "none"}`;
-  const cls = ["fight-row", now && "now", selected && "sel", c.acted && "done"].filter(Boolean).join(" ");
+  const cls = ["fight-row", now && "now", selected && "sel", mark === "done" && "done"].filter(Boolean).join(" ");
 
   return (
     <div className={cls}>
@@ -78,9 +89,33 @@ export function FightRow({
         aria-label={`${summary}. ${harm}. ${selected ? "Tap to deselect" : "Tap to select"}`}
         onClick={onSelect}
       />
-      <span className="fight-cell tag" aria-hidden="true">
-        {stateLabel}
+      <span className="fight-cell tag">
+        {mark === "out" ? (
+          <span aria-hidden="true">{stateLabel}</span>
+        ) : setup ? (
+          <button
+            type="button"
+            className={`turn-mark ${mark}`}
+            aria-pressed={mark === "ambushed"}
+            aria-label={`${name}: ${mark === "ambushed" ? "ambushed, skips Round 1" : "acts in Round 1"}. Tap to ${mark === "ambushed" ? "let it act" : "mark ambushed"}`}
+            onClick={onAmbush}
+          >
+            {stateLabel}
+          </button>
+        ) : (
+          <button
+            type="button"
+            className={`turn-mark ${mark}`}
+            popoverTarget={turnId}
+            aria-label={`${name}: ${stateLabel.replace(/[▶✓] /, "").toLowerCase()}. Tap for turn actions`}
+            aria-haspopup="dialog"
+          >
+            {stateLabel}
+          </button>
+        )}
       </span>
+      {/* Outside the cell: its pointer-events are off, and a popover inherits them. */}
+      {!setup && mark !== "out" && <TurnDialog id={turnId} name={name} mark={mark} {...turn} />}
       <span className="fight-cell fight-name" aria-hidden="true">
         {showPortrait &&
           (portrait ? (
