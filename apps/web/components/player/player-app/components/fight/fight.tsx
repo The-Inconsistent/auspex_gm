@@ -171,9 +171,15 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
 
   const myStats = me && deriveStats({ stats: me.stats, overrides: me.overrides, tier: state.campaign.tier });
   const dying = !!me && !!myStats && pcStatus(me, myStats).includes("Dying");
+  // Only for an Agent still in the fight.
+  const dyingPanel = dying && me && myStats && mine && !isOut(state, mine) && (
+    <Dying traumatic={me.traumatic} maxTraumatic={myStats.maxTraumatic} />
+  );
 
   return (
     <div className="pf">
+      {/* On your Turn it leads, as the Turn's text points up to it; otherwise it sits under the plate. */}
+      {myTurn && dyingPanel}
       {myTurn && me ? (
         <MyTurn
           me={me}
@@ -201,10 +207,7 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
         </section>
       )}
 
-      {/* Under the plate, so the fight's state stays first; only for an Agent still in the fight. */}
-      {dying && me && myStats && mine && !isOut(state, mine) && (
-        <Dying traumatic={me.traumatic} maxTraumatic={myStats.maxTraumatic} />
-      )}
+      {!myTurn && dyingPanel}
       {mine && turnMark(state, mine) === "ambushed" && <Ambushed state={state} characterId={characterId} send={send} />}
 
       {/* A Threat acting, seen or not: every Agent still in the fight gets INCOMING (§11.175). */}

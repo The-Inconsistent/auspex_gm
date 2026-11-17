@@ -3907,10 +3907,16 @@ test("spend requests: a player asks, the GM's ACCEPT is the spend (rules-flow §
     paid.encounter?.combatants.filter((c) => c.ambushed).map((c) => c.kind === "pc" && c.characterId),
     [b.id],
   );
+  // The GM clearing B's ambush on the tablet leaves B's ask nothing to ask for; Round 2 clears a moot one too.
+  assert.ok((await gm.send({ type: "encounter.ambush", side: "agents", ambushed: false })).ok);
+  await gm.until((s) => s.spendRequests.length === 0);
+  assert.ok((await gm.send({ type: "encounter.ambush", side: "agents", ambushed: true })).ok);
+  assert.ok((await glory(1)).ok); // AWARE spent the last of it
+  assert.ok((await pb.send({ type: "spend.request", characterId: b.id, kind: "aware" })).ok);
+  await gm.until((s) => s.spendRequests.length === 1);
   assert.ok((await gm.send({ type: "encounter.begin" })).ok);
   assert.ok((await gm.send({ type: "encounter.newRound" })).ok);
   await gm.until((s) => s.spendRequests.length === 0);
-  assert.ok((await glory(1)).ok); // AWARE spent the last of it
 
   // The asker cancels; session.end clears whatever is left.
   const damage = await pa.send({ type: "spend.request", characterId: a.id, kind: "gloryDamage" });
