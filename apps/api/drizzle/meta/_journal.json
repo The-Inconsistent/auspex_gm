@@ -232,6 +232,13 @@
       "when": 1794837038848,
       "tag": "0032_true_ben_urich",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1794844479645,
+      "tag": "0033_lethal_valeria_richards",
+      "breakpoints": true
     }
   ]
 }

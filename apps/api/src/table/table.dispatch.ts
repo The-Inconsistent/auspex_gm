@@ -188,10 +188,16 @@ function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promis
 
     case "encounter.start":
     case "encounter.end":
+    case "encounter.begin":
     case "encounter.newRound":
+    case "encounter.ambush":
     case "turn.start":
     case "turn.seize":
     case "turn.end":
+    case "turn.hold":
+    case "turn.interrupt":
+    case "turn.mark":
+    case "turn.back":
     case "combatant.addThreat":
     case "combatant.addCharacter":
     case "combatant.update":

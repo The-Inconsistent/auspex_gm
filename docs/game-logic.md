@@ -165,16 +165,24 @@ DMG 3 → Traumatic +1, Wounds stay 9. HEAL 1 → Wounds 8. DMG 17 → Annihilat
 
 ## 4. Combat state machine (`encounter.actions.ts`, pp.176–178)
 
-State on the `encounter` row: `round` (starts 1), `currentId` (who is acting), `lastSide` (side that acted last;
-null at Round start), `seizedSide` (side that Seized and can't again yet). Per combatant: `acted`, `ambushed`.
+State on the `encounter` row: `round` (a new fight starts at **Round 0**, the book's Steps 1 and 2, then Round 1 and
+up), `currentId` (who is acting), `lastSide` (side that acted last; null at Round start), `seizedSide` (side that Seized
+and can't again yet). Per combatant: `acted`, `held` (HOLD ACTION), `ambushed`. The Round order is a suggestion and a
+Round never ends by itself (rules-flow §11.167–170).
 
 | Action | Checks | Writes |
 |---|---|---|
-| `encounter.start` | — | deactivates any active encounter, inserts an empty one (add PCs and threats after) |
-| `turn.start` (id) | no one is acting; combatant is in this encounter; not `isOut` ("Dead: no more Turns" / "Slain: no more Turns"); not `acted`; not ambushed in Round 1; its side is `sideUpNext` | `currentId`; combatant `expiring` = its timed Conditions (§7) |
-| `turn.seize` (id) | same first five checks; `canSeize(state, side)`; 1 Glory (Agent) / 1 Ruin (Threat) via `spend()` | `currentId`, `seizedSide = side`, `expiring` |
-| `turn.end` | someone is acting | removes the `expiring` Conditions (character or combatant), clears `expiring`; combatant `acted = true`; `lastSide = side`; `seizedSide` kept if it's this side, else cleared; **auto rollover** if no combatant `canAct` |
-| `encounter.newRound` | — | manual rollover (same `newRound()`) |
+| `encounter.start` | — | deactivates any active encounter, inserts an empty one at Round 0 (add PCs and threats after) |
+| `encounter.ambush` (side, ambushed) | Round 0 or 1 | sets `ambushed` on that whole side's rows that haven't acted (one row is `combatant.update { ambushed }`) |
+| `encounter.begin` | Round 0 only | BEGIN ROUND 1: `round = 1`, `currentId`, `lastSide`, `seizedSide` → null; clears any `acted` and `held` marks set by mistake in Round 0; the ambushes stay |
+| `turn.start` (id, `force`?) | combatant is in this encounter; not `isOut` ("Dead: no more Turns" / "Slain: no more Turns"); not `acted`; not ambushed in Round 1; Round 1 or later. Its side should be `sideUpNext`, but `force` (JUST GO, free) skips that check | ends the Turn in progress first; `currentId`; combatant `expiring` = its timed Conditions (§7) |
+| `turn.seize` (id) | same checks; `canSeize(state, side)`; 1 Glory (Agent) / 1 Ruin (Threat) via `spend()` | ends the Turn in progress first; `currentId`, `seizedSide = side`, `expiring` |
+| `turn.end` | someone is acting | removes the `expiring` Conditions (character or combatant), clears `expiring`; combatant `acted = true`; `lastSide = side`; `seizedSide` kept if it's this side, else cleared. **No rollover**: with no one left able to act the Round is complete and waits for the GM |
+| `turn.hold` | someone is acting | as `turn.end`, and the combatant is also `held = true` (§11.171) |
+| `turn.interrupt` (id) | the combatant is `held` | clears `held`. It starts no Turn: the held Combat Action is used inside someone else's Turn, and the row stays `acted` until the GM marks it NOT YET (p.187) |
+| `turn.mark` (id, acted) | the combatant isn't acting | `acted` on, or off (NOT YET, which also clears `held`): the way to take more than one Turn in a Round (p.176) |
+| `turn.back` | a step is on record | restores the fight to before the last turn step (§11.170) |
+| `encounter.newRound` | Round 1 or later | BEGIN ROUND N: ends a Turn still running, then `newRound()` |
 | `encounter.end` | — | `active = false` |
 
 **Pure helpers** (the tracker uses these to show buttons, and the api calls them to enforce the same rules). Each takes
@@ -183,8 +191,12 @@ the whole `LiveState`, since telling Dead needs the characters.
 - `isOut(s, c)`: a threat whose `threatStatus` includes Slain, or a PC whose `pcStatus` includes Dead. An Adversary
   over max Wounds is **not** out; the GM removes it (house §11.10). p.176, p.193, p.324.
 - `canAct(s, c)`: not `acted`, not the current combatant, not (`ambushed` and Round 1), not `isOut`. p.177.
-- `sideUpNext(s)`: prefer the side opposite `lastSide` (Agents when `lastSide` is null, so players pick first each
-  Round); if that side has no one able to act, the other side; `null` when the Round is done. p.176–177.
+- `sideUpNext(s)`: the suggested side: prefer the side opposite `lastSide` (Agents when `lastSide` is null, so players
+  pick first each Round); if that side has no one able to act, the other side; `null` when the Round is done.
+  p.176–177. Only a suggestion: JUST GO starts anyone else for free (§11.168).
+- `turnMark(s, c)`: the row's word on the tracker: out, acting, ambushed (Round 1 or 0, not yet acted), held, done,
+  ready.
+- `roundEndReminders(enc, nameOf)`: the lines for a Round's end (below).
 - `canSeize(s, side)`: false if `seizedSide === side`, or if `sideUpNext(s) === side` (it would go next anyway, so
   there's nothing to pay for: "No need to Seize"); at Round start (`lastSide` null) only `threats`; otherwise only
   the side that just acted. p.176–177, p.320.
@@ -198,24 +210,35 @@ the whole `LiveState`, since telling Dead needs the characters.
    ordinary Seize under the same once-per-turn limit: it sets `seizedSide = threats`, so the Threats can't chain a
    second Seize before the Agents act, but they can Seize again after that.
 
-**Round rollover** (`newRound()`, p.176): after `turn.end`, if no combatant `canAct` (everyone left has acted, is
-ambushed in Round 1, or is out), then all `acted` and `ambushed` reset to false, `round + 1`, `currentId`, `lastSide`,
-`seizedSide` → null.
+**Round end** (`newRound()`, p.176, rules-flow §11.169): the Round never rolls over by itself. After a `turn.end`, if
+no combatant `canAct` (everyone left has acted, is ambushed in Round 1, or is out) the tracker reads ROUND COMPLETE and
+waits. The GM's `encounter.newRound` (BEGIN ROUND N) then resets all `acted`, `held` and `ambushed` to false,
+`round + 1`, `currentId`, `lastSide`, `seizedSide` → null. A late arrival or an extra Turn (NOT YET) can still go
+first. The GM can also tap NEW ROUND from MORE before everyone has acted.
+
+**Round 0** (§11.167): a new fight (`encounter.start`) opens at Round 0, before Round 1. The GM marks who is ambushed,
+then `encounter.begin` starts Round 1. `turn.start`, `turn.seize` and `encounter.newRound` are refused in Round 0
+("BEGIN ROUND 1 first").
+
+**TURN BACK** (`turn.back`, §11.170): before every turn step the server records the fight's turn state and everyone's
+Wounds, Shock, Conditions, Mob counts, Traumatic Injuries and Annihilation (last 30 kept). `turn.back` puts the latest
+one back and refunds the Glory or Ruin a Seize or AWARE cost. A JUST GO, SEIZE or NEW ROUND over a Turn in progress is
+one step, so one TURN BACK also gives back the Turn it ended.
 
 **Ambush** (p.177)
 
-- GM marks one with `combatant.update { ambushed: true }` (free; the tracker offers AMBUSH only in Round 1 before it
-  acted).
-- Ambushed combatants fail `canAct` and `turn.start` in Round 1, and don't hold up the rollover.
+- The GM marks ambushes in Round 0: one row with `combatant.update { ambushed: true }` (free), a whole side with
+  `encounter.ambush`. In Round 1 a READY row's dialog can still mark it ambushed, for a latecomer or a forgotten ambush.
+- Ambushed combatants fail `canAct` and `turn.start` in Round 1, and don't hold up the Round's end.
 - `combatant.aware` pays 1 Glory (Agent) or 1 Ruin (Threat) and clears the flag, so it acts normally in Round 1.
 - `newRound()` clears every `ambushed` flag, so it never carries past Round 1.
 
 **Edge cases**
 
-- Slain threats and Dead PCs are out: they get no Turn and don't hold up the Round, so it rolls over without REMOVE.
-  An Adversary over max Wounds stays in the turn order until the GM removes it.
-- `combatant.remove` on the current combatant clears `currentId` through the FK (`on delete set null`), but doesn't
-  trigger a rollover; press NEW ROUND if it was the last one.
+- Slain threats and Dead PCs are out: they get no Turn and don't hold up the Round, so ROUND COMPLETE shows without
+  REMOVE. An Adversary over max Wounds stays in the turn order until the GM removes it.
+- `combatant.remove` on the current combatant clears `currentId` through the FK (`on delete set null`); the Round
+  still waits for the GM's BEGIN ROUND N.
 - A side can't Seize when it's up next anyway (the other side has no one left), so it never pays 1 for nothing.
 - `combatant.addCharacter` refuses a character already in the encounter ("Already in this encounter").
 
@@ -223,15 +246,16 @@ ambushed in Round 1, or is out), then all `acted` and `ambushed` reset to false,
 
 | # | Action | Result | `lastSide` / `seizedSide` |
 |---|---|---|---|
+| 0 | Round 0: T1 marked ambushed, BEGIN ROUND 1 (`encounter.begin`) | | null / null |
 | 1 | Round 1 opens | `sideUpNext` = agents; T1 shows AMBUSHED | null / null |
 | 2 | `turn.start` A1, `turn.end` | | agents / null |
 | 3 | `turn.seize` A2 | Glory 3 → 2; allowed because Agents just acted | agents / agents |
 | 4 | `turn.end` | Agents can't Seize again (and have no one left) | agents / agents |
 | 5 | `turn.start` T2, `turn.end` | the other side acted, so the Seize lock clears | threats / null |
 | 6 | `turn.start` T3 | expected side is Agents, but none can act, so Threats go back to back (`turn.seize` T3 would be refused: no need) | |
-| 7 | `turn.end` | only T1 is left, ambushed in Round 1 → **auto rollover** | null / null |
-| 8 | Round 2: `turn.seize` T1 | Ruin 5 → 4; GM Seize at Round start | null / threats → threats / threats after `turn.end` |
-| 9 | `turn.start` T2 | refused: "It's the Agents' turn"; `turn.seize` T2 also refused ("Already Seized") | |
+| 7 | `turn.end` | only T1 is left, ambushed in Round 1: ROUND COMPLETE | threats / null |
+| 8 | GM taps BEGIN ROUND 2 (`encounter.newRound`); `turn.seize` T1 | Ruin 5 → 4; GM Seize at Round start | null / threats → threats / threats after `turn.end` |
+| 9 | `turn.start` T2 | refused: "It's the Agents' pick: SEIZE or JUST GO"; `turn.seize` T2 also refused ("Already Seized"); `turn.start` T2 with `force` (JUST GO) is allowed, free | |
 
 Alternative at step 6: `combatant.aware` T1 (Ruin −1) makes T1 able to act in Round 1.
 
@@ -298,8 +322,9 @@ them as chips above the stat block. `combatant.update` refuses to add a `MONSTRO
 - Shock: one hit of more Shock than the members' max Shock adds 1 to `loss` (removes one member). A smaller hit has no
   effect (house §11.9), and a Mob keeps no Shock track: its `shock` counter isn't written.
 - Half-slain prompt: the `threatStatus` chip above, visible to GM and players while it holds, and a vox-log line from
-  `roundEndReminders` whenever a Round ends (the last END TURN, or NEW ROUND) (p.325, house §11.13). It's a prompt
-  only; the test and the flight are the table's.
+  `roundEndReminders` when the GM ends a Round: listed under ROUND COMPLETE (BEFORE ROUND N) while BEGIN ROUND N is
+  waiting, or put in the log when the GM taps NEW ROUND early (p.325, house §11.13, §11.169). It's a prompt only; the
+  test and the flight are the table's.
 - Setting `mobCount` directly with `combatant.update` also sets `mobStart = greatest(coalesce(mobStart, 0), mobCount)`,
   so a Threat turned into a Mob this way gets the half-slain prompt and the healing cap. `mobCount: null` turns it back
   into a single Threat and nulls `mobStart`.
@@ -401,7 +426,7 @@ per beat, `count` ≤ 500. See [campaign-model.md](campaign-model.md).
 | 10 | Adversary over max Wounds stays in the turn order | `isOut` (only Slain / Dead are out); the GM REMOVEs it |
 | 11 | A Wound while Dying = 1 Traumatic Injury per hit | `pcHit` |
 | 12 | Exhausted conversion starts after the hit that Exhausts | `exhaustedShock` (in `pcHit` and `combatant.adjust`) |
-| 13 | Mob Resolve prompted at every Round end while half slain | `roundEndReminders`, tracker `endTurn` / NEW ROUND |
+| 13 | Mob Resolve prompted at every Round end while half slain | `roundEndReminders`, tracker ROUND COMPLETE (BEGIN ROUND N) / NEW ROUND |
 
 Campaign-specific GM decisions live in the pack data, not in code; the ones the code depends on are in rules-flow.md §11.
 

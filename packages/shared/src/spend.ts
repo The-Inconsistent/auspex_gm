@@ -2,7 +2,9 @@ import { z } from "zod";
 
 // A spend a player asks the GM to make from their phone (rules-flow.md §11.122). The request is a convenience: the GM's
 // ACCEPT runs the same pool, Wrath and Seize handlers the tablet already has, so the rules stay in one place.
-export const SpendKind = z.enum(["reroll", "restoreShock", "gloryDice", "gloryDamage", "seize"]);
+// determination: the Icons the Agent rolled for Determination (p.196); the GM's ACCEPT turns that many of its Wounds
+// into Shock (rules-flow §11.171). It costs nothing.
+export const SpendKind = z.enum(["reroll", "restoreShock", "gloryDice", "gloryDamage", "seize", "determination"]);
 export type SpendKind = z.infer<typeof SpendKind>;
 export const SPEND_KINDS = SpendKind.options;
 
@@ -20,8 +22,8 @@ export const SpendRequest = z.object({
 });
 export type SpendRequest = z.infer<typeof SpendRequest>;
 
-const AMOUNT_KINDS: ReadonlySet<SpendKind> = new Set(["gloryDice", "gloryDamage"]);
-// Only Glory dice and damage take an amount; every other spend is one of its pool.
+const AMOUNT_KINDS: ReadonlySet<SpendKind> = new Set(["gloryDice", "gloryDamage", "determination"]);
+// Glory dice and damage take an amount, and Determination its Icons; every other spend is one of its pool.
 export const spendTakesAmount = (kind: SpendKind) => AMOUNT_KINDS.has(kind);
 
 // What a spend costs: Wrath comes off the Agent, Glory off the party's pool.
@@ -35,6 +37,8 @@ export function spendCost(kind: SpendKind, amount = 1): { wrath: number; glory: 
       return { wrath: 0, glory: amount };
     case "seize": // Seize the Initiative, 1 Glory (p.177)
       return { wrath: 0, glory: 1 };
+    case "determination": // a roll, not a spend (p.196)
+      return { wrath: 0, glory: 0 };
   }
 }
 
@@ -47,11 +51,13 @@ const WORDS: Record<SpendKind, string> = {
   gloryDice: "GLORY DICE",
   gloryDamage: "GLORY DAMAGE",
   seize: "SEIZE THE INITIATIVE",
+  determination: "DETERMINATION",
 };
 export const spendWord = (kind: SpendKind) => WORDS[kind];
 
 // "REROLL FAILURES · 1 WRATH", "GLORY DICE +3 · 3 GLORY".
 export function spendLabel(kind: SpendKind, amount = 1): string {
+  if (kind === "determination") return `DETERMINATION · ${amount} ICON${amount === 1 ? "" : "S"}`;
   const { wrath, glory } = spendCost(kind, amount);
   const plus = spendTakesAmount(kind) ? ` +${amount}` : "";
   return `${WORDS[kind]}${plus} · ${wrath ? `${wrath} WRATH` : `${glory} GLORY`}`;

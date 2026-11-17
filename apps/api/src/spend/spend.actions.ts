@@ -2,6 +2,7 @@ import { and, eq } from "drizzle-orm";
 import {
   MAX_PENDING_SPENDS,
   deriveStats,
+  isExhausted,
   isGone,
   pcStatus,
   rankOf,
@@ -50,7 +51,7 @@ export async function applySpendAction(
   switch (a.type) {
     case "spend.request": {
       const row = await ownCharacter(tx, { campaignId: cid, id: a.characterId });
-      const amount = spendTakesAmount(a.kind) ? a.amount : 1; // only the Glory kinds have an amount to keep
+      const amount = spendTakesAmount(a.kind) ? a.amount : 1; // only the Glory kinds and Determination have an amount to keep
       if (a.kind === "seize" && !(await activeEncounterId(tx, cid))) fail("No fight to Seize the Initiative in");
       const mine = await tx
         .select({ kind: spendRequest.kind })
@@ -144,6 +145,24 @@ async function spendIt(tx: Tx, { ctx, request: r }: { ctx: Ctx; request: typeof 
     case "gloryDamage":
       await applyCampaignAction(tx, { ctx, action: { type: "pool.adjust", pool: "glory", delta: -cost.glory } });
       return;
+
+    // Each Icon rolled turns one Wound into Shock (p.196), never while Exhausted (p.199). It costs nothing, so there's
+    // no pool to check; k is capped by the Wounds there are to turn. Raw: it reduces the Wounds the hit dealt, so an
+    // Agent the hit made Dying stays Dying unless the Icons bring them back to max (pcHit's healing clamp would not).
+    case "determination": {
+      const tier = await campaignTier(tx, cid);
+      const c = toCharacter(row);
+      const { maxShock } = deriveStats({ stats: c.stats, overrides: c.overrides, tier });
+      if (isExhausted({ shock: row.shock, maxShock, conditions: row.conditions }))
+        fail(`${row.name} is Exhausted: no Determination (p.199)`);
+      const k = Math.min(r.amount, row.wounds);
+      if (k <= 0) fail("No Wounds to turn into Shock");
+      await applyCharacterAction(tx, {
+        ctx,
+        action: { type: "character.adjust", id: row.id, wounds: -k, shock: k, raw: true },
+      });
+      return;
+    }
 
     // The existing turn.seize pays the Glory and checks canSeize; the requester's combatant is the one that goes.
     case "seize": {

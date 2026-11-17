@@ -10,6 +10,7 @@ const threat = ({ id, label }: { id: string; label: string }): ThreatCombatant =
   kind: "threat",
   acted: false,
   ambushed: false,
+  held: false,
   threatId: "x",
   threatClass: "T",
   label,
@@ -76,8 +77,9 @@ const s: LiveState = {
     currentId: null,
     lastSide: null,
     seizedSide: null,
+    back: null,
     combatants: [
-      { id: "pc1", kind: "pc", characterId: "ch1", acted: false, ambushed: false },
+      { id: "pc1", kind: "pc", characterId: "ch1", acted: false, ambushed: false, held: false },
       threat({ id: "t1", label: "Preacher Hollan" }),
       threat({ id: "t2", label: "Kommando ×6" }),
       threat({ id: "t3", label: "Kommando Nob" }),
@@ -121,6 +123,12 @@ test("damage, heal and shock resolve names to the right ids", () => {
 test("globals, turns, conditions", () => {
   assert.deepEqual(ok("end"), [{ type: "turn.end" }]);
   assert.deepEqual(ok("ruin +1"), [{ type: "pool.adjust", pool: "ruin", delta: 1 }]);
+  assert.deepEqual(ok("hold"), [{ type: "turn.hold" }]);
+  assert.deepEqual(ok("back"), [{ type: "turn.back" }]);
+  assert.deepEqual(ok("begin"), [{ type: "encounter.begin" }]);
+  assert.deepEqual(ok("next"), [{ type: "encounter.newRound" }]);
+  assert.deepEqual(ok("go hollan"), [{ type: "turn.start", id: "t1", force: true }], "JUST GO");
+  assert.deepEqual(ok("start hollan"), [{ type: "turn.start", id: "t1" }]);
   assert.deepEqual(ok("seize hollan"), [{ type: "turn.seize", id: "t1" }]);
   assert.deepEqual(ok("+pinned iskra"), [{ type: "character.update", id: "ch1", conditions: ["Pinned"] }]);
   assert.deepEqual(ok("hollan -prone"), [{ type: "combatant.update", id: "t1", conditions: [] }]);

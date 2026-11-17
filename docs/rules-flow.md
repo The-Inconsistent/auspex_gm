@@ -59,27 +59,33 @@ one on the SCENE page and it moves the pool through `pool.adjust`, capped as abo
 ## 3. Combat encounter — state machine (pp.176–178)
 
 ```
-Step 1  Determine ambushes (GM)            ambushed = no Turn in Round 1
-Step 2  Set the scene (GM narrates)
+Round 0 Step 1  Determine ambushes (GM)   ambushed = no Turn in Round 1 (p.176)
+        Step 2  Set the scene (GM narrates)
+        GM taps BEGIN ROUND 1.
 Step 3  Take Turns ─┐
         │  Round start: "start of Round" effects fire; players pick an Agent.
         │  GM may Seize (1 Ruin) so a Threat takes the first Turn.
-        │  After each Turn: the other side picks one of theirs.
+        │  After each Turn: the other side picks one of theirs (the tracker suggests it; §11.168).
         │    - Seize: the side that just acted spends 1 Glory/Ruin to act again.
         │      Once only before the other side acts ("once per turn", p.320).
+        │    - JUST GO: the GM starts anyone READY for free, to fix a slip.
         │    - If the other side has no one left, the rest act back to back.
         │  End of Turn: "until end of Turn" effects expire.
-Step 4  Round ends when everyone able to act has had a Turn.
-        "until end of Round" effects expire; unused held actions are lost;
-        Reflexive Action refreshes. New Round → Step 3.
-Encounter ends when the GM says so.
+        │  HOLD ACTION ends a Turn with a HELD mark; INTERRUPT clears it.
+Step 4  Round ends when everyone able to act has had a Turn: ROUND COMPLETE.
+        The GM taps BEGIN ROUND N (§11.169). "Until end of Round" effects expire;
+        unused held actions are lost; Reflexive Action refreshes. New Round → Step 3.
+Encounter ends when the GM says so. TURN BACK undoes the last turn step (§11.170).
 ```
 
 - **Ambush** (p.177): ambushed characters skip Round 1; once all non-ambushed characters have acted, normal
-  order resumes. Spend 1 Glory (Agent) / 1 Ruin (Threat) per character to act normally.
-- **Hold action** (p.177, p.187): skip the Combat Action and hold it; use it later in the Round, or interrupt
-  someone's Movement/Action with an opposed Initiative Test. Lost at end of Round.
-- **Multiple Turns per Round** happen before the Round ends (p.176).
+  order resumes. The GM marks them in Round 0 (§11.167). Spend 1 Glory (Agent) / 1 Ruin (Threat) per character to
+  act normally (AWARE).
+- **Suggested order** (p.177): the app says who picks next but never refuses a READY combatant (§11.168).
+- **Hold action** (p.177, p.187): skip the Combat Action and hold it; use it at any point later in the Round, or
+  interrupt another character's Movement/Action with an opposed Initiative Test (pp.177–178). Lost at end of Round
+  (§11.171).
+- **Multiple Turns per Round** happen before the Round ends (p.176); a row's mark goes back to NOT YET.
 - **Optional "I Wanna Roll!"** (p.177): fixed order by Initiative Icons; ties Agents first. Off by default.
 - **Battlecry** abilities fire once, at the start of combat or the Threat's first Turn (p.323).
 
@@ -97,10 +103,11 @@ Full Defence…) take the whole Turn. Movement: Speed; Run 2×; Sprint 3× (Full
 4. Effective Resilience = Resilience − AP (Invulnerable armour ignores AP, p.232).
    - Damage > Resilience → Wounds = the difference.
    - Damage = Resilience → 1 Shock.
-   - Damage < Resilience → nothing (Critical still hits).
+   - Damage < Resilience → nothing. A Critical Hit that doesn't exceed the target's Resilience inflicts 1 Wound and no
+     other effects (p.197).
 5. **Critical Hit**: hit + Wrath Die 6 → d66 Critical table (p.198), +1 Glory to the party. Misses never crit.
 6. **Determination** (Free Action, p.196): on taking ≥1 Wound, roll Toughness dice; each Icon turns 1 Wound
-   into 1 Shock. Not vs Mortal Wounds, not while Exhausted.
+   into 1 Shock. Not vs Mortal Wounds, not while Exhausted. The phone can send the Icons rolled (§11.172).
 7. **Mortal Wounds** ignore Resilience (p.193).
 
 ### Damage states — Agents (and Adversaries)
@@ -1011,6 +1018,59 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      in one place; a given weapon stays in the armament, where its profile is rolled. The GM's ORDERS to an Agent moved
      to the same MISSION view, out of the DOSSIER's NOTES. *(User ruling, 2026-11-16, after a given Stasis casket showed
      only as a bare line at the foot of the DOSSIER.)*
+167. **A fight opens at Round 0, before Round 1** (Core p.176 Steps 1 and 2, p.177). Round 0 is the book's Step 1,
+     Determine Ambushes, and Step 2, Set the Scene. The GM marks who is ambushed, one row at a time or a whole side
+     (`encounter.ambush`), then taps BEGIN ROUND 1 (`encounter.begin`). Ambushed characters take no Turn in Round 1.
+     AWARE costs 1 Glory for an Agent or 1 Ruin for a Threat (p.177). BEGIN ROUND 1 clears any done or held marks set
+     by mistake in Round 0; the ambush marks stay. In Round 1 a READY row's dialog can still mark it ambushed, for a
+     latecomer or a forgotten ambush. *User ruling, 2026-11-16.*
+168. **Turn order is suggested, never refused** (Core p.177). The tracker says which side picks next, but the GM may
+     start any READY combatant. Out of order, the GM picks SEIZE (1 Glory or 1 Ruin, the book's way, p.177) or JUST GO
+     (free, `turn.start` with `force`; a fix for a slip at the table, noted in the chronicle). Starting a Turn ends the
+     current one. A Dead or Slain combatant, one that has already acted and one ambushed in Round 1 still can't start.
+     A row's mark can be set back to NOT YET (`turn.mark`), which is also how a combatant takes more than one Turn in
+     a Round (p.176). *User ruling, 2026-11-16.*
+169. **A Round ends when the GM taps BEGIN ROUND N, not by itself** (Core p.176: "Once every character that is able to
+     act has taken their Turn, the Round ends"). The app waits so a late arrival or an extra Turn can go first. ROUND
+     COMPLETE lists the round-end reminders: the Mob Resolve Test (p.325), held actions lost (p.187) and ambushes
+     ending (p.177). They show when the GM ends the Round: under ROUND COMPLETE, or in the log when the GM taps NEW
+     ROUND before everyone has acted. *User ruling, 2026-11-16.*
+170. **TURN BACK undoes the last turn step and the damage dealt since it** (no book rule; a table aid). The server
+     keeps the fight's last 30 steps. Each one restores the turn marks and the Round, and the Wounds, Shock, Conditions,
+     Mob counts, Traumatic Injuries and Annihilation of everyone in the fight as they were before that step. It refunds
+     the Glory or Ruin a Seize or an AWARE cost. Pools, Wrath and XP are otherwise untouched. A JUST GO, SEIZE or NEW
+     ROUND over a Turn in progress is one step, so one TURN BACK also gives back the Turn it ended. Limits: damage
+     applied from elsewhere (PARTY) in that window is taken back too, and so are the Wounds, Shock and Conditions
+     changed by an accepted spend in it (Restore Shock, Determination), but that spend's Wrath is not refunded: the GM's
+     call. *User ruling, 2026-11-16.*
+171. **Hold your Action** (Core p.177, p.187). HOLD ACTION ends the Turn with a HELD mark (`turn.hold`). INTERRUPT
+     clears it when used (`turn.interrupt`). The held Combat Action is used inside someone else's Turn, so
+     `turn.interrupt` starts no Turn and the row stays done until the GM marks it NOT YET (p.187). A held action may be
+     used at any point later in the Round (p.187); only interrupting another character needs the opposed Initiative
+     Test (pp.177–178), which is played at the table. An unused hold is lost when the Round ends.
+     *User ruling, 2026-11-16.*
+172. **A player rolls Determination from the phone** (Core p.196; no book rule for the request; a table aid like the
+     spend requests in §11.122–123). When an Agent takes Wounds the phone shows what to roll: Toughness dice, each Icon
+     turns 1 Wound into 1 Shock. Its sheet notes "Not against Mortal Wounds" (p.193); the server does not refuse
+     Determination for them, so the GM judges before ACCEPT. The player taps the Icons rolled (`spend.request`, kind
+     `determination`). The GM's ACCEPT takes the Icons off the Wounds the Agent has, a straight conversion into Shock
+     (the book's "reduces the number of Wounds you suffer", p.196), so a hit that made the Agent Dying can bring them
+     back under max. It is refused while the Agent is Exhausted ("you may not roll Determination", p.199). Pending
+     Determination asks are cleared when a fight ends or another starts. *User ruling, 2026-11-16.*
+173. **The attack guide** (Core pp.182–183; no book rule; a table aid). Dice stay physical. The GM's tablet shows the
+     five steps for the acting combatant and the selected target: the pool, the DN (the target's Defence, +1 if the
+     attacker is Wounded, p.193), Damage + ED, and Resilience − AP. The GM types the damage total and the app applies
+     Wounds (damage over Resilience), 1 Shock (damage equal, p.192) or nothing. The phone shows the same steps for the
+     weapon the player picks. Mobs stay on the Wounds pad (p.325). The helpers are `woundsFromDamage`, `hitDn` and
+     `threatAttackPool` and `mobBonusDice` in `attack.ts`. The guide follows the Threat rules: a Troop attacker still
+     rolls its Wrath Die (it may have Wrath abilities) but gets no Critical or Complication line (p.323); a Mob attacker
+     adds +1 die per Troop in the Mob, at most half the Troops (p.324), an odd count rounding up as the book's split
+     attacks do (p.324; the whole-Mob text gives no rounding); a Mob target loses members only if the damage beats its
+     Resilience (p.325); a Threat whose Shock is "–" takes no Shock on a tie (p.324). *User ruling, 2026-11-16.*
+174. **A bars-only threat on the phone** (no book rule; a table prompt). Where the GM shows only bars (§11.56), the
+     phone says there is no information on the threat and suggests asking the GM for a Scholar (Int) Test (Core p.126:
+     recalling lore) to learn more. No DN or result is set by the app: the GM decides what a pass reveals.
+     *User ruling, 2026-11-17.*
 
 ---
 
@@ -1020,9 +1080,14 @@ Implementation details: [game-logic.md](game-logic.md).
 
 | Area | Status | Where / what's left |
 |---|---|---|
-| Seize limit | done | `canSeize` + `encounter.seizedSide`; set in `turn.seize`, kept or cleared in `turn.end` |
+| Seize limit | done | `canSeize` + `encounter.seizedSide`; set in `turn.seize`, kept or cleared in `turn.end`. Order is only suggested: `turn.start` with `force` (JUST GO) skips the side check (§11.168) |
 | Round-start Seize | done | `canSeize` (`lastSide` null → threats only; never when that side is up next anyway); 1 Ruin via `spend()` in `turn.seize` |
-| Ambush | done | `combatant.ambushed`; `canAct`, `turn.start` guard, `turn.end` rollover; `combatant.aware` (1 Glory/Ruin); cleared by `newRound()` |
+| Ambush | done | Round 0: `encounter.ambush` (a whole side; one row is `combatant.update { ambushed }`) marks `combatant.ambushed`, `encounter.begin` starts Round 1 (§11.167); `canAct`, `turn.start` guard; `combatant.aware` (1 Glory/Ruin); cleared by `newRound()` |
+| Round end | done | A Round no longer rolls over by itself: `turn.end` leaves ROUND COMPLETE and the GM's BEGIN ROUND N (`encounter.newRound`) ends it, and the round-end reminders show then (§11.169) |
+| TURN BACK | done | `turn.back`: the server keeps the fight's last 30 steps and restores turn marks, Round, Wounds, Shock, Conditions, Mob counts, Traumatic Injuries and Annihilation, and refunds a Seize's or AWARE's Glory or Ruin; an accepted spend's Wrath is not refunded (§11.170) |
+| Hold your Action | done | `turn.hold` (ends the Turn, done and held), `turn.interrupt` (clears HELD, starts no Turn; the row stays done); lost at Round end; `turn.mark` sets a row back to NOT YET (§11.168, §11.171) |
+| Determination request | done | `spend.request` kind `determination` (the Icons rolled), ACCEPT turns that many of the Agent's Wounds into Shock; refused while Exhausted; the phone notes "Not against Mortal Wounds" and the GM judges before ACCEPT; pending asks cleared when a fight ends or another starts (§11.172) |
+| Attack guide | done | `packages/shared/src/attack.ts` (`hitDn`, `woundsFromDamage`, `threatAttackPool`: the DN, damage against Resilience − AP, Wounds, Shock or nothing); the tablet's side panel and the phone's STRIKE show the steps, dice stay physical (§11.173) |
 | Mob damage | done | Wounds remove members, capped at `mobStart`; one hit of Shock over max removes one member, less does nothing (§11.9) (`combatant.adjust`); `combatant.update` sizing sets `mobStart`; half-slain chip (`threatStatus`); `roundEndReminders` in the vox log when a Round ends (§11.13) |
 | Troop Shock | done | `threatStatus` (T over max Shock → Slain); `combatant.adjust` refuses Shock when `maxShock` is null |
 | Threat outcomes | done | `threatStatus` per class (A → Dying or dead, T/E/M → Slain; Exhausted for E/A/M) |
@@ -1032,7 +1097,7 @@ Implementation details: [game-logic.md](game-logic.md).
 | Respite | done | `character.respite` (refused while Dying or Dead) |
 | Personal Ruin | done | `combatant.personalRuin`, seeded from the stat block; tracker SPEND / +1 |
 | Turn reminders | done (client) | `TURN_START_REMINDERS` / `TURN_END_REMINDERS`, fired by the tracker into the GM's vox log only |
-| Slain / Dead in turn order | done | `isOut` in `canAct` / `sideUpNext`; `turn.start` refuses them and the `turn.end` rollover skips them. An Adversary over max Wounds stays until the GM removes it (§11.10) |
+| Slain / Dead in turn order | done | `isOut` in `canAct` / `sideUpNext`; `turn.start` refuses them (even with `force`) and ROUND COMPLETE doesn't wait on them. An Adversary over max Wounds stays until the GM removes it (§11.10) |
 | Annihilation | done | `pcHit`: one hit over 2 × Max Wounds sets `character.annihilated` → Dead (p.194, §11.7); GM RESTORE / undo clears it. Agents only: an Adversary over max Wounds is already the GM's call (§11.10) |
 | Exhausted → Mortal Wounds | done | `exhaustedShock` in `pcHit` and `combatant.adjust` (p.199, §11.12); single Threats too, Mobs keep no Shock track |
 | Timed Conditions | done | Hindered, Staggered, Vulnerable (`isTimed`): `turn.start` / `turn.seize` arm the ones held (`combatant.expiring`), `turn.end` removes them (§11.8). Pinned doesn't expire (the attacker isn't tracked) |

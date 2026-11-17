@@ -414,7 +414,7 @@ prep, and the fight is a layer inside SCENE.
 | Tab | Component | Files |
 |---|---|---|
 | SCENE | `Scene` | `scene/scene.tsx`, `scene/constants.ts`, `scene/types.ts`, `scene/components/{no-scene,scene-strip,scene-preview,scene-page,test-rows,in-this-scene (with `reveal-row`),where-next,begun-notice}`, `lib/scene/scene.ts` (`currentScene`), `lib/scene-reveal` |
-| (FIGHT, a layer of SCENE) | `Tracker` | `tracker/tracker.tsx`, `tracker/constants.ts`, `tracker/types.ts`, `tracker/components/{key-bar,delta-pad,fight-row,add-combatants,crit-perils}`, `lib/fight-delta` |
+| (FIGHT, a layer of SCENE) | `Tracker` | `tracker/tracker.tsx`, `tracker/constants.ts`, `tracker/types.ts`, `tracker/components/{key-bar,turn-dialog,round-notes,attack-guide,delta-pad,fight-row,add-combatants,crit-perils}`, `lib/fight-delta` |
 | STORY | `Story` | `story/story.tsx`, `story/constants.ts`, `story/types.ts`, `story/components/{adventure-bar,import-adventure,scene-board,scene-page,story-section}`, `lib/story-scenes`; reused from the retired PREP: `prep/types.ts`, `prep/utils.ts`, `prep/components/beat-editor/{beat-editor.tsx,constants.ts}`, `prep/components/scene-picker`, `prep/components/scene-tests` (with `call-test`), `prep/components/scene-pools`, `prep/components/scene-hazards` (a scene's picked hazards with SPOTTED, issue #49), `prep/components/hazard-chips` (a hazard's Tests, Conditions and Threats, shared with CODEX), `lib/hazards`; the scene editor's ITEMS TO FIND chips and the page's items with `item-give` (issue #51) |
 
 ### 3.0 A called Test: `components/gm/test-call/` (issue #191)
@@ -488,9 +488,16 @@ The FIGHT layer of SCENE (§3.0a): `Tracker` mounts only while an encounter is l
 (`beat.startEncounter` or `encounter.start`). A scene's prepared encounter can also be started from SCENE's IN THIS SCENE.
 
 **Status strip** (`.turn-strip`):
-- The turn state: `▶ <NAME> ACTING`, `AWAITING: <SIDE> PICK` (from `sideUpNext(state)`), or `ROUND COMPLETE`.
-- `Next: the <side> pick` and `<SIDE> SEIZED`, when they apply.
+- The turn state: `STEP 1 · WHO IS AMBUSHED?` in Round 0, `▶ <NAME> ACTING`, `ROUND n COMPLETE · waits for you` when no
+  one can act (§11.169), else `AWAITING: <SIDE> PICK` (from `sideUpNext(state)`, a suggestion only, rules-flow §11.168).
+- `Next: the <side> pick` while someone acts, and `<SIDE> SEIZED`, when they apply.
+- **TURN BACK** (`.btn.turn-back`, rules-flow §11.170): a button in the strip itself, not in the key bar, with the step it
+  would undo under it. Shown only while the server has a step to undo (`enc.back`); sends `turn.back`.
 - The round, plus how many of each side have acted, as `RND n · AGENTS acted/total · THREATS acted/total`.
+
+Under the strip sits `RoundNotes` (`.round-notes`), a note and never a gate: in Round 0 `ROUND I · n AGENTS AND n THREATS
+ACT · n AMBUSHED` with Step 1 and Step 2 of Core pp.176–177; at ROUND COMPLETE `BEFORE ROUND n+1` with the round-end
+reminders.
 
 **Rows** are grouped by `Side.options` (agents, then threats) under a `.tbar` with `acted/total ACTED`. A `FightRow` is a
 grid of cells for the eye, with a select button under them (`aria-pressed`, its label reads the whole row); the WOUNDS
@@ -499,7 +506,7 @@ the delta pad.
 
 | Column | Content |
 |---|---|
-| STATE | A word, never colour alone: `▶ ACTING`, `DONE`, `AMBUSHED` (Round 1 only), `READY` |
+| STATE | A word, never colour alone: `▶ ACTING`, `✓ DONE`, `HELD`, `AMBUSHED` (Rounds 0 and 1, until it has acted), `READY`, `OUT` (Dead or Slain). The mark is a button that opens one dialog per row (below); in Round 0 it is the ambush toggle instead, `ACTS` or `AMBUSHED` |
 | DESIGNATION | A portrait slot (only when some combatant has one), the marker swatch of a threat that has one, the name, and the class (`AGENT`, or `THREAT_CLASS_LABEL[threatClass]`) |
 | WOUNDS | A `Track` of what's left and the number as `left/max`, a button that opens the delta pad. A Mob has no track and reads `×count/start` |
 | SHOCK | `left/max`, a button that opens the pad, or `—` when max Shock is `null` |
@@ -511,21 +518,41 @@ Row CSS classes: `.now` is the one acting (highlighted background), `.sel` is se
 acted (dimmed). The rows answer to the width `.tracker-main` actually gets (`@container tracker`): under 802px the `.hide-sm` cells (the
 class tag, DEF, RES, the portrait) go, and under 600px STATUS and PLAYERS SEE drop to a second line under the name.
 
-**Key bar** (`KeyBar`, `.fight-keys`): at most four controls, so the tablet never shows a wall of buttons. The tracker keys
-it by the selected row, so a new selection starts with both panels folded.
+**Turn marks, one dialog per row** (`TurnDialog`). From Round 1, a tap on a row's STATE mark opens one dialog for that
+row (rules-flow §11.168, §11.171), by what the mark says:
+- `READY` on the side that is up: START (`turn.start`) and MARK DONE (`turn.mark` acted, a fix). Off the suggested side it
+  reads "The <Side> pick next. Start <name>'s Turn anyway?" with SEIZE · 1 GLORY / 1 RUIN (`turn.seize`, when allowed),
+  JUST GO (`turn.start` with `force`, free, noted in the vox log) and MARK DONE.
+- `▶ ACTING`: END TURN and HOLD ACTION (`turn.end`, `turn.hold`).
+- `✓ DONE`: NOT YET (`turn.mark`), another Turn this Round or a fix for a slip.
+- `HELD`: INTERRUPT (`turn.interrupt`), which only clears the mark; it starts no Turn.
+- `AMBUSHED`: AWARE · 1 GLORY / 1 RUIN (`combatant.aware`).
+- In Round 1 a READY row's dialog can also mark it ambushed (`combatant.update { ambushed }`, AMBUSH), for a latecomer or
+  a forgotten ambush.
+- `OUT` rows have no dialog. No row of buttons sits on the page.
+
+**ROUND 0 setup** (§11.167). A new fight opens at `STEP 1 · WHO IS AMBUSHED?`. Each row's mark is an `ACTS | AMBUSHED`
+toggle (`combatant.update { ambushed }`), and each side's bar has an `ALL AMBUSHED` toggle (`encounter.ambush` with a
+`side`). The key bar's one turn button reads `BEGIN ROUND I` (`encounter.begin`); no Turn can start before it.
+
+**ROUND COMPLETE** (§11.169). When no one `canAct` and none is acting, the strip reads `ROUND n COMPLETE · waits for you`
+and the round-end reminders (Mob Resolve, held actions lost, ambushes ending) are listed under it in `BEFORE ROUND n+1`.
+The Round only turns over when the GM taps `BEGIN ROUND n+1` (`encounter.newRound`).
+
+**Key bar** (`KeyBar`, `.fight-keys`): a few controls, so the tablet never shows a wall of buttons. The tracker keys
+it by the selected row, so a new selection starts with both panels folded. TURN BACK is in the status strip, not here.
 
 | Control | Shown when | Sends |
 |---|---|---|
-| The turn button | One at a time. `END TURN` when someone is acting; `START <NAME>'S TURN` when nobody is and `canAct(state, sel)` (so never for a Slain threat or a Dead PC); `NEW ROUND` when nobody `canAct`; else none | `turn.end` / `turn.start` / `encounter.newRound` |
-| `SEIZE · 1 GLORY` / `1 RUIN` | As START, and also `canSeize(state, side)` (hidden when that side is up next anyway) | `turn.seize` |
+| The one turn button | `BEGIN ROUND I` in Round 0; `END <NAME>'S TURN` while someone acts; `BEGIN ROUND N` at ROUND COMPLETE; none while a Round runs with no one acting (the rows' marks start Turns) | `encounter.begin` / `turn.end` / `encounter.newRound` |
+| `HOLD ACTION` | Someone is acting | `turn.hold` |
 | `+ CONDITION` | A row is selected | Opens CONDITIONS · NAME: a toggle chip per `CONDITIONS` entry, ticked when on (`character.update` or `combatant.update` with the full list) |
 | `MORE` | Always | Opens the panel below; its accessible name lists what's inside |
 | `ADD TO FIGHT` | Always, last in the row (`AddCombatants`, passed as KeyBar's children) | Opens the add dialog (below) |
 
 MORE holds, in this order:
-- `AMBUSH` / `AWARE · cost`, in Round 1 when the selected row hasn't acted (`combatant.update { ambushed: true }` /
-  `combatant.aware`).
-- `NEW ROUND` (`encounter.newRound`), unless it is already the turn button.
+- `NEW ROUND`, mid-Round only (not in Round 0, not at ROUND COMPLETE, where `BEGIN ROUND N` is the turn button): ends the
+  Round early (`encounter.newRound`), and since no panel showed them, its round-end reminders go to the vox log.
 - `REMOVE`, when a row is selected: `combatant.remove`, then clears the selection.
 - `END FIGHT` (`encounter.end`), always.
 
@@ -557,12 +584,20 @@ key to a `field` and a `sign` (`counterKey`):
 **Kept as it was:** the side panel, the vox log and undo, the Condition reminders, `AddCombatants` and the command line
 (§3.2). Only the old key bar moved: DMG / HEAL / SHOCK / RECOVER and the amount pad are the delta pad, ±COND is
 + CONDITION, and the PLAYERS select, AMBUSH / AWARE, REMOVE, NEW ROUND and END ENC are in MORE (END ENC is END FIGHT) or
-on the row.
+on the row (AMBUSH and AWARE are on the row's mark and dialog, NEW ROUND stays in MORE mid-Round).
 
 **Side panel** (`.tracker-side`):
 - A selected threat shows its class rule chips (`THREAT_CLASS_RULES`, pp.323–324), then its snapshotted `StatBlock`.
   If the stat block has Personal Ruin, the panel also has a counter with SPEND (−1) and +1
   (`combatant.adjust { personalRuin }`).
+- **Attack guide** (§11.173, `tracker/components/attack-guide`, built on `hitDn`, `woundsFromDamage` and `threatAttackPool`
+  in `packages/shared/src/attack.ts`): with an acting combatant and a selected target it lists the five steps of Core
+  pp.182–183: the pool, the DN (Defence, +1 if the attacker is Wounded), Damage + ED and Resilience − AP. The GM types the
+  damage total; APPLY sends the Wounds, the 1 Shock or nothing through `character.adjust` / `combatant.adjust`. Dice stay
+  physical. A Mob target stays on the delta pad. It follows the Threat rules (§11.173): a Troop attacker gets no Critical or
+  Complication line (p.323); a Mob attacker adds +1 die per Troop in the Mob, at most half the Troops, rounded up
+  (p.324); a Mob target loses members only if the damage beats its Resilience (p.325); a Threat with Shock "–" takes no
+  Shock on a tie (p.324).
 - A selected PC shows archetype and keywords; DEF, RES, Determination and Resolve; Wrath; Traumatic `n/max` with a
   +TRAUMATIC button (`character.adjust { traumatic: 1 }`); ANNIHILATED with a RESTORE button when set; and weapon
   lines.
@@ -586,8 +621,7 @@ on the row.
 **Condition reminders.** After a successful START TURN or SEIZE, `remind()` checks the combatant's Conditions against
 `TURN_START_REMINDERS`. After END TURN, it checks the combatant that was acting against `TURN_END_REMINDERS`. Each
 match is pushed to the log as an amber (`warn`) entry. START TURN also lists the timed Conditions (`isTimed`) that the
-api will remove at the end of this Turn. When END TURN ends the Round (no one left `canAct`) or the GM presses NEW
-ROUND, `roundEndReminders` adds the Mob Resolve Tests. Typed `start`, `seize` and `end` commands go through the same
+api will remove at the end of this Turn. When the Round is complete (no one left `canAct`) or the GM taps BEGIN ROUND N, `roundEndReminders` adds the Mob Resolve Tests. Typed `start`, `seize` and `end` commands go through the same
 handlers (`runCommand`), so they fire the same reminders. What the reminders say is covered in
 [game-logic.md](game-logic.md).
 
@@ -1053,7 +1087,8 @@ a closed dialog can't be reopened; make a new one.
 | Tab | File | Shows | The player can change |
 |---|---|---|---|
 | SHEET | `components/player/player-sheet/player-sheet.tsx` | Two views, each opening with HOW TO READ THIS SHEET (`ui/sheet-guide`, folded) and every term a tap away from its meaning (`ui/term`, `lib/sheet-terms`: our own one-line wording with its Core page, plus FULL RULE when the seat is served it). AT A GLANCE: the Traits row, ARMAMENT (each weapon with its pool, `lib/sheet-pools`, and a key to the line), the five highest skill totals. DOSSIER: the Agent as the book's character sheet (Core pp.40–41), its two pages as two iron-framed sheets (`.bs-sheet`), each box (`ui/book-sheet/components/book-box`) titled over a quill rule, in the book's order. Page 1: Personal Details (our name bar and TIER · SPECIES · XP strip, then RANK, ARCHETYPE, KEYWORDS), ATTRIBUTES as RATING / BONUS / TOTAL (`attributeTotals`: mutations and Powered, §11.160), SKILLS in two columns of nine (Attribute in grey, Rating, the Total as the dice badge), WRATH (SPEND WRATH and USES FOR WRATH in our words), CONVICTION · RESOLVE · SPEED, SURVIVAL (Defence; Resilience as Base + Armour = Total; max Wounds, max Shock, Determination), each number with the book's grey formula as a caption and any bonus after it, then WARGEAR: the Kill Team-style datacard (`ui/book-sheet/components/wargear`: a ranged or melee icon, the name with its range, Salvo and traits, DICE, DMG +ED, AP), armour, `UpgradeRow`, gear, and SUPPLY (Ammo, Wealth) beside INFLUENCE. Page 2: TALENTS & ABILITIES folded (Talents stamped TALENT), INJURIES & CORRUPTION (Traumatic against the maximum, mutations, Corruption as five rows of five circles named by level), NOTES (WHO YOU ARE; the GM's ORDERS are in INTEL › MISSION). The DOSSIER leaves out the gear lines a GIVE wrote (`player-sheet/utils.ts` `ungivenGear`, §11.166), and PASSIVE AWARENESS · XP EARNED · CURRENT XP with LEVEL UP. A box the app has no data for (Objective, Faith, Memorable Injuries, Psychic Powers, Stealth, Size, Faction, Background) isn't drawn. The JOIN page's READ shows page 1 read-only (Personal Details to WARGEAR, `Wargear` without `live`) and TALENTS & ABILITIES. The sheet itself is one component, `ui/book-sheet` (`BookSheet`), drawn by the DOSSIER, GM PARTY's SHEET and the JOIN page's READ, so a change there reaches all three | Their own detail (WHO YOU ARE); spending their own Wealth and Ammo (−1, `character.supply`); fitting upgrades; asking for a spend. Granting Wealth or Ammo, Conditions, Wounds, Shock, Wrath, Glory and RESPITE are GM only |
-| FIGHT | `components/fight/fight.tsx` | No fight: one line. Your turn: THIS TURN (one OPTIONS button, `CombatOptions`: every combat-action entry, Core pp.177–190, in closed groups by what the player is doing — YOUR TURN, MOVE, ATTACK, MELEE, SHOOTING, NOT ATTACKING, TURN ORDER — from `lib/combat-options`; an option the Agent's weapons can't use (no ranged weapon, Salvo –, no Heavy) sinks to the end of its group, faded, and says what it needs), STRIKE (your weapons with their pools), SPEND (a Wrath and a Glory `RequestSpend`), and who picks after you. Otherwise a NOW ACTING plate (`Unseen threat` for `UNSEEN_ID`) and UP NEXT. Under either, both sides as lists (outlined in `--side-agents` / `--side-threats`): acted counts, a Wounds track with no number (mobs `×count of start`), the turn word, Conditions as `RuleLink`s, your own row marked YOU; a threat row toggles its `StatBlock`, or `Data restricted by the GM.` while it's `bars`; a hidden threat isn't there at all | Asking for a spend |
+| FIGHT | `components/fight/fight.tsx` | No fight: one line. Your turn: THIS TURN (one OPTIONS button, `CombatOptions`: every combat-action entry, Core pp.177–190, in closed groups by what the player is doing — YOUR TURN, MOVE, ATTACK, MELEE, SHOOTING, NOT ATTACKING, TURN ORDER — from `lib/combat-options`; an option the Agent's weapons can't use (no ranged weapon, Salvo –, no Heavy) sinks to the end of its group, faded, and says what it needs), STRIKE (your weapons with their pools; a tap on a weapon opens the five attack steps of Core pp.182–183 for it: pool, the DN against a chosen target, Damage + ED, Resilience − AP, §11.173; the GM types the damage), one SPEND button (a sheet holding the Wrath and Glory `RequestSpend` asks), and YOU'RE HIT, a sheet that opens when the Agent takes Wounds (§11.172): the Toughness dice to roll and a pad for the Icons rolled, sent as a `determination` spend request (the sheet notes "Not against Mortal Wounds"; while Exhausted a note replaces
+the pad), and who picks after you. Otherwise a NOW ACTING plate (`Unseen threat` for `UNSEEN_ID`) and UP NEXT. Under either, both sides as lists (outlined in `--side-agents` / `--side-threats`): acted counts, a Wounds track with no number (mobs `×count of start`), the turn word, Conditions as `RuleLink`s, your own row marked YOU; a threat row toggles its `StatBlock`, or `Data restricted by the GM.` while it's `bars`; a hidden threat isn't there at all | Asking for a spend |
 | INTEL | `components/intel/intel.tsx` | INBOX: what's new as transmission cards (handouts, then items given to this Agent, persons, places; READ, SHOW THE TABLE), MARK ALL READ, then NEXT SESSION (`lib/next-session`, ADD TO CALENDAR to `next.ics`; issue #197). MISSION (`mission/mission.tsx` `MissionView`): YOUR ORDERS (the GM's, folded), INVENTORY (the items given to this Agent, rules-flow §11.166; a row opens the entry sheet), THE MISSION and the MISSION LOG (issue #196). ARCHIVE: the codex search (`ui/codex-search`, issue #198), whose hits replace the list, then PERSONS · PLACES (nested by `placeTree`) · HANDOUTS · MISSIONS · RECAPS (issue #195). A row opens the entry sheet (a modal `<dialog>`: the entry, its picture only once the GM shows it, issue #199). SHOW THE TABLE puts a handout or a picture full screen (the Fullscreen API, else a fixed overlay) to hold up at the table | Nothing |
 | RULES | `components/ui/rules-ref/rules-ref.tsx` | The rules reference, shared with the GM's RULES tab | Nothing |
 

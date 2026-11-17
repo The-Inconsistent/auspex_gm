@@ -3,6 +3,7 @@ import type { CombatantKind, Marker, Side, Threat, ThreatClass, Visibility } fro
 import { campaign } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { conditions, createdAt } from "../core/sql.ts";
+import type { TurnStep } from "./encounter.turn-step.ts";
 
 export const encounter = pgTable("encounter", {
   id: uuid().primaryKey().defaultRandom(),
@@ -10,10 +11,11 @@ export const encounter = pgTable("encounter", {
     .notNull()
     .references(() => campaign.id, { onDelete: "cascade" }),
   active: boolean().notNull().default(true),
-  round: integer().notNull().default(1),
+  round: integer().notNull().default(0), // 0 = before Round 1 (rules-flow §11.167)
   currentId: uuid().references((): AnyPgColumn => combatant.id, { onDelete: "set null" }),
   lastSide: text().$type<Side>(),
   seizedSide: text().$type<Side>(),
+  history: jsonb().$type<TurnStep[]>().notNull().default([]), // newest last, at most TURN_HISTORY
   createdAt: createdAt(),
 });
 
@@ -25,6 +27,7 @@ export const combatant = pgTable("combatant", {
   order: integer().notNull(), // display order only; turn order is chosen at the table
   acted: boolean().notNull().default(false),
   ambushed: boolean().notNull().default(false),
+  held: boolean().notNull().default(false), // had its Turn and held the action (p.177); implies acted
   kind: text().$type<CombatantKind>().notNull(),
   characterId: uuid().references(() => character.id, { onDelete: "cascade" }),
   threatId: text(),
