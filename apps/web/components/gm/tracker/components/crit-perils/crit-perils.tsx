@@ -19,6 +19,7 @@ import {
 } from "@wg/shared";
 
 import { MutationRoll } from "@/components/gm/party/components/mutation-roll/mutation-roll";
+import { Help } from "@/components/ui/term/term";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import type { Run } from "../../types";
@@ -165,12 +166,24 @@ export function CritPerils({ lookups, target, run, send, mutations, character, g
 
   return (
     <div className="stack" style={{ gap: 6 }}>
-      <div className="rule">CRIT / PERILS</div>
-      {/* What the panel is for and who rolls: the dice stay at the table, the GM types what they show (§11.125). */}
+      <div className="rule">
+        <span>
+          CRIT / PERILS{" "}
+          {/* When each table is rolled and who rolls: the dice stay at the table, the GM types what they show (§11.125). */}
+          {table === "criticalHits" ? (
+            <Help title="Critical Hit" cite="Core Rulebook p.197">
+              A hit whose Wrath Die shows 6. The attacker rolls a d66; type it, then say whether the damage beat the
+              target&apos;s Resilience.
+            </Help>
+          ) : (
+            <Help title="Perils of the Warp" cite="Core Rulebook pp.259, 262">
+              Any Wrath Die on 1 in a Psychic Mastery Test, pass or fail. The psyker rolls a d66; type it and any extra
+              1s, +10 each.
+            </Help>
+          )}
+        </span>
+      </div>
       <div className="dim">
-        {table === "criticalHits"
-          ? "A hit whose Wrath Die shows 6 (p.197). The attacker rolls a d66; type it, then say whether the damage beat the target's Resilience."
-          : "Any Wrath Die on 1 in a Psychic Mastery Test, pass or fail (p.259). The psyker rolls a d66; type it and any extra 1s, +10 each (p.262)."}{" "}
         {target ? (
           <>
             On <b>{target.name}</b>.
