@@ -31,8 +31,10 @@ import type { Send } from "@/hooks/use-table/use-table";
 
 import { weaponSkill } from "@/lib/sheet-pools/sheet-pools";
 
+import { Dying } from "./components/dying/dying";
 import { Harm } from "./components/harm/harm";
 import { Incoming } from "./components/incoming/incoming";
+import { PowerSteps } from "./components/power-steps/power-steps";
 import { SpendSheet } from "./components/spend-sheet/spend-sheet";
 import { StrikeSteps } from "./components/strike-steps/strike-steps";
 
@@ -166,8 +168,12 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
     );
   };
 
+  const myStats = me && deriveStats({ stats: me.stats, overrides: me.overrides, tier: state.campaign.tier });
+  const dying = !!me && !!myStats && pcStatus(me, myStats).includes("Dying");
+
   return (
     <div className="pf">
+      {dying && me && myStats && <Dying traumatic={me.traumatic} maxTraumatic={myStats.maxTraumatic} />}
       {myTurn && me ? (
         <MyTurn
           me={me}
@@ -235,13 +241,18 @@ type MyTurnProps = {
 };
 
 // Your Turn: what it allows (one OPTIONS dialog of the combat-action entries, Core pp.177–190), then the attack in the
-// order it's made: 1 a weapon, 2 a target, 3 the dice steps for that pair; one SPEND button for both pools.
+// order it's made: 1 a weapon or a psychic power, 2 a target, 3 the dice steps for that pair; one SPEND button for both
+// pools.
 function MyTurn({ me, state, send, after, onField, actions, target, targets }: MyTurnProps) {
-  const [picked, setPicked] = useState(0);
+  const [picked, setPicked] = useState(0); // an index over the weapons, then the powers
   const weapons = me.stats.weapons;
-  const at = Math.min(picked, weapons.length - 1); // the list can shrink under a held pick
+  const powers = me.stats.powers ?? [];
+  const at = Math.min(picked, weapons.length + powers.length - 1); // the lists can shrink under a held pick
   const weapon = weapons[at];
+  const power = weapon ? undefined : powers[at - weapons.length];
   const status = pcStatus(me, deriveStats({ stats: me.stats, overrides: me.overrides, tier: state.campaign.tier }));
+  const dying = status.includes("Dying"); // a basic Combat Action only, no options (p.193)
+  const pm = skillTotal(me.stats, "Psychic Mastery");
   return (
     <>
       <section className="pf-sec">
@@ -249,21 +260,29 @@ function MyTurn({ me, state, send, after, onField, actions, target, targets }: M
           <h2>THIS TURN</h2>
           <i />
         </div>
-        {actions.length > 0 && <CombatOptions actions={actions} weapons={weapons} />}
-        <span className="pf-cap">One of each per Turn, Core pp.177–190. Tap one to read it.</span>
-        {(me.stats.skills["Psychic Mastery"] ?? 0) > 0 && (
+        {dying ? (
+          <span className="pf-cap">Dying: one of the three above, with no options (p.193).</span>
+        ) : (
+          <>
+            {actions.length > 0 && <CombatOptions actions={actions} weapons={weapons} />}
+            <span className="pf-cap">One of each per Turn, Core pp.177–190. Tap one to read it.</span>
+          </>
+        )}
+        {(me.stats.skills["Psychic Mastery"] ?? 0) > 0 && powers.length === 0 && (
           <span className="pf-cap">
             A power: a 1 on a Wrath Die is <Term k="perils">Perils of the Warp</Term>.
           </span>
         )}
       </section>
 
-      {weapon && (
+      {(weapon || power) && (
         <section className="pf-sec">
           <div className="pf-h">
             <h2>1 · STRIKE</h2>
             <i />
-            <span className="mono">PICK A WEAPON</span>
+            <span className="mono">
+              {powers.length ? (weapons.length ? "WEAPON OR POWER" : "PICK A POWER") : "PICK A WEAPON"}
+            </span>
           </div>
           {weapons.map((w, i) => {
             const skill = weaponSkill(w);
@@ -283,32 +302,66 @@ function MyTurn({ me, state, send, after, onField, actions, target, targets }: M
               </div>
             );
           })}
+          {powers.map((p, i) => {
+            const on = p === power;
+            return (
+              <div key={`${p.name}-${i}`} className={`pf-weapon slate-card cut ${on ? "on" : ""}`}>
+                <button
+                  type="button"
+                  className="pf-pick"
+                  aria-pressed={on}
+                  onClick={() => setPicked(weapons.length + i)}
+                >
+                  <span className="pool-badge" aria-label="Psychic Mastery pool">
+                    {pm}
+                  </span>
+                  <b>{p.name}</b>
+                </button>
+                <span className="pf-wl">
+                  DN {p.dn} · {p.range} · {p.activation} · {p.duration} · {p.page}
+                </span>
+              </div>
+            );
+          })}
         </section>
       )}
 
       {/* Outside the weapon guard: an Agent with no weapon still sees the Threats on their Turn (a psyker, a fresh sheet). */}
       <section className="pf-sec">
         <div className="pf-h">
-          <h2>{weapon ? "2 · PICK A TARGET" : "THREATS"}</h2>
+          <h2>{weapon || power ? "2 · PICK A TARGET" : "THREATS"}</h2>
           <i />
           <span className="mono">{target ? `› ${target.label.toUpperCase()}` : "TAP A THREAT"}</span>
         </div>
         {targets}
       </section>
 
-      {weapon && (
+      {(weapon || power) && (
         <section className="pf-sec">
           <div className="pf-h">
             <h2>3 · THEN, WITH YOUR DICE</h2>
             <i />
           </div>
-          <StrikeSteps
-            key={`${at}-${target?.id ?? ""}`}
-            me={me}
-            weapon={weapon}
-            wounded={status.includes("Wounded")}
-            target={target}
-          />
+          {weapon ? (
+            <StrikeSteps
+              key={`${at}-${target?.id ?? ""}`}
+              me={me}
+              weapon={weapon}
+              wounded={status.includes("Wounded")}
+              target={target}
+            />
+          ) : (
+            power && (
+              <PowerSteps
+                key={at}
+                me={me}
+                power={power}
+                tier={state.campaign.tier}
+                wounded={status.includes("Wounded")}
+                target={target}
+              />
+            )
+          )}
         </section>
       )}
 

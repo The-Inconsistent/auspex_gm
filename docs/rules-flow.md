@@ -1079,6 +1079,16 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      (Toughness dice, p.196; none while Exhausted, p.199), no Critical Hit from a Troop (p.323; only when its stat block is shown, §11.56), and their held action's
      interrupt (pp.177–178, 187). The GM selects nothing: the tracker's selection stays on the tablet.
      *User ruling, 2026-11-17.*
+176. **A psychic power and Dying on the phone** (table aids). A built sheet carries each psychic power's printed profile
+     (`stats.powers`: DN, range, activation, duration, Potency; Core pp.259–260); a sheet saved before has none until
+     its build is saved again, and the phone then keeps its one-line Perils note. On your Turn a power sits beside the
+     weapons in 1 · STRIKE; picked, step 3 is the Power Level (Bound +0, Unbound +1, Transcendent Rank or Tier + 1
+     Wrath Dice and that much Shock, p.260), the pool (Psychic Mastery (Wil), p.259), the DN (a "Target's Defence" reads
+     the picked threat's Defence; +1 while Wounded, p.193), Exalted Icons for Potency (p.259) and Perils on any Wrath Die
+     1 (pp.262–263). The scene's lock to Unbound or Transcendent is said, not tracked, and the Shock is not applied:
+     the GM's pad does that, as for any damage. While Dying, the phone shows DYING on every Turn (the three Actions,
+     Traumatic Injuries taken of the Tier + 1 allowed, how Dying ends; p.193) and hides OPTIONS on your Turn (no Aim or
+     Multi-Attack while Dying, p.193). *Built from the canvas design the user asked for, 2026-11-17.*
 
 ---
 
@@ -1095,6 +1105,7 @@ Implementation details: [game-logic.md](game-logic.md).
 | TURN BACK | done | `turn.back`: the server keeps the fight's last 30 steps and restores turn marks, Round, Wounds, Shock, Conditions, Mob counts, Traumatic Injuries and Annihilation, and refunds a Seize's or AWARE's Glory or Ruin; an accepted spend's Wrath is not refunded (§11.170) |
 | Hold your Action | done | `turn.hold` (ends the Turn, done and held), `turn.interrupt` (clears HELD, starts no Turn; the row stays done); lost at Round end; `turn.mark` sets a row back to NOT YET (§11.168, §11.171) |
 | Determination request | done | `spend.request` kind `determination` (the Icons rolled), ACCEPT turns that many of the Agent's Wounds into Shock; refused while Exhausted; the phone notes "Not against Mortal Wounds" and the GM judges before ACCEPT; pending asks cleared when a fight ends or another starts (§11.172) |
+| Psychic power, Dying (phone) | done | `stats.powers` from `resolveBuild`; `powerLevelDice` (`attack.ts`); the phone's `power-steps` and `dying` (§11.176) |
 | Attack guide | done | `packages/shared/src/attack.ts` (`hitDn`, `woundsFromDamage`, `threatAttackPool`: the DN, damage against Resilience − AP, Wounds, Shock or nothing); the tablet's side panel and the phone's STRIKE show the steps, dice stay physical (§11.173) |
 | Mob damage | done | Wounds remove members, capped at `mobStart`; one hit of Shock over max removes one member, less does nothing (§11.9) (`combatant.adjust`); `combatant.update` sizing sets `mobStart`; half-slain chip (`threatStatus`); `roundEndReminders` in the vox log when a Round ends (§11.13) |
 | Troop Shock | done | `threatStatus` (T over max Shock → Slain); `combatant.adjust` refuses Shock when `maxShock` is null |

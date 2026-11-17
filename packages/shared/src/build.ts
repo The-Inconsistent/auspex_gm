@@ -1911,10 +1911,8 @@ export function resolveBuild({
   if (movement(armour)) mods.speed = (mods.speed ?? 0) + movement(armour);
   for (const [k, v] of Object.entries(build.gm.mods) as [keyof typeof mods, number][])
     if (v) mods[k] = (mods[k] ?? 0) + v;
-  for (const p of s.powers) {
-    const pw = ix.powers.get(p);
-    if (pw) s.abilities.push({ name: pw.name, text: pw.effect, page: cite(pw) });
-  }
+  const powers = [...s.powers].flatMap((p) => ix.powers.get(p) ?? []);
+  for (const pw of powers) s.abilities.push({ name: pw.name, text: pw.effect, page: cite(pw) });
 
   const clip = (r: { name: string; text: string; page?: string }) => ({
     name: r.name.slice(0, 100),
@@ -1938,6 +1936,17 @@ export function resolveBuild({
     weapons: weapons.slice(0, 20),
     gear: gear.slice(0, 60).map((g) => g.slice(0, 200)),
     weaponEffects: weaponEffects.length ? weaponEffects.slice(0, 60) : undefined,
+    powers: powers.length
+      ? powers.slice(0, 30).map((pw) => ({
+          name: pw.name.slice(0, 100),
+          page: cite(pw).slice(0, 40),
+          dn: typeof pw.dn === "number" ? pw.dn : pw.dn.slice(0, 60),
+          activation: pw.activation.slice(0, 60),
+          duration: pw.duration.slice(0, 60),
+          range: pw.range.slice(0, 60),
+          potency: pw.potency.slice(0, 10).map((x) => x.slice(0, 200)),
+        }))
+      : undefined,
     wealth: s.wealth,
     corruption: s.corruption,
   });

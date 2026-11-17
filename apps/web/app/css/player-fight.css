@@ -459,3 +459,51 @@ button.pf-hdr {
 dialog.spend .pf-spends {
   padding: 10px;
 }
+/* A psychic power's Power Level (Core p.260): three picks, the chosen one inked and marked, not colour alone. */
+.pf-levels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 4px 0;
+}
+.pf-level {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: 52px;
+  padding: 6px 8px;
+  border: 1px solid var(--ink-2);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.pf-level > b {
+  max-width: 100%;
+  font-family: var(--display);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere; /* TRANSCENDENT in a third of a 320 px phone */
+}
+.pf-level > .mono {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-3);
+}
+.pf-level[aria-pressed="true"] {
+  background: var(--iron);
+  border-color: var(--iron);
+  color: var(--bone);
+}
+.pf-level[aria-pressed="true"] > .mono {
+  color: var(--bone-2);
+}
+.pf-level[aria-pressed="true"] > b::before {
+  content: "\25A0 ";
+}
+.pf-level:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
