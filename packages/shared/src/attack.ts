@@ -36,3 +36,12 @@ export function threatAttackPool(threat: Pick<Threat, "skills">, weapon: Pick<We
   const dice = threat.skills.list.find((s) => s.name === skill)?.dice ?? threat.skills.default;
   return { skill, dice } as const;
 }
+
+// Power Levels (Core p.260): the Wrath Dice a Psychic Mastery (Wil) Test adds over its one. Transcendent adds Rank or
+// Tier, whichever is higher, plus one, and costs Shock equal to the Wrath Dice in the pool.
+export const POWER_LEVELS = ["bound", "unbound", "transcendent"] as const;
+export type PowerLevel = (typeof POWER_LEVELS)[number];
+export function powerLevelDice({ level, rank, tier }: { level: PowerLevel; rank: number; tier: number }) {
+  const bonus = level === "bound" ? 0 : level === "unbound" ? 1 : Math.max(rank, tier) + 1;
+  return { bonus, wrath: 1 + bonus, shock: level === "transcendent" ? 1 + bonus : 0 };
+}

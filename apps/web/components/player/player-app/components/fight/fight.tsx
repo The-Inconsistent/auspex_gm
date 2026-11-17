@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, type ReactNode } from "react";
 
 import {
   Side,
@@ -8,38 +8,50 @@ import {
   deriveStats,
   effectiveStrength,
   isOut,
+  pcStatus,
   sideOf,
   skillTotal,
   threatStatus,
+  turnMark,
   type Character,
   type Combatant,
   type LiveState,
   type RuleEntry,
+  type ThreatCombatant,
 } from "@wg/shared";
 
+import { CombatOptions } from "@/components/ui/combat-options/combat-options";
 import { RuleLink } from "@/components/ui/rule-link/rule-link";
-import { RequestSpend } from "@/components/ui/request-spend/request-spend";
 import { StatBlock } from "@/components/ui/stat-block/stat-block";
 import { StatusChips } from "@/components/ui/status-chips/status-chips";
+import { Term } from "@/components/ui/term/term";
 import { Track } from "@/components/ui/track/track";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import { weaponSkill } from "@/lib/sheet-pools/sheet-pools";
 
-import { CombatOptions } from "./components/combat-options/combat-options";
+import { Ambushed } from "./components/ambushed/ambushed";
+import { Dying } from "./components/dying/dying";
+import { Harm } from "./components/harm/harm";
+import { Incoming } from "./components/incoming/incoming";
+import { PowerSteps } from "./components/power-steps/power-steps";
+import { SpendSheet } from "./components/spend-sheet/spend-sheet";
+import { StrikeSteps } from "./components/strike-steps/strike-steps";
 
 type FightProps = { state: LiveState; characterId: string; send: Send; legend: RuleEntry[]; actions: RuleEntry[] };
 
-// What a combatant is doing this Round, in words (state is never colour alone): out of the fight (Slain, Dead) and
-// ambushed in Round 1 (p.177) as @wg/shared's isOut and canAct decide, so the phone agrees with the tracker.
-function turnWord(state: LiveState, c: Combatant) {
-  const enc = state.encounter;
-  if (c.id === enc?.currentId) return "ACTING";
-  if (isOut(state, c)) return "OUT";
-  if (c.acted) return "DONE";
-  return canAct(state, c) ? "READY" : "AMBUSHED";
-}
+// What a combatant is doing this Round, in words (state is never colour alone): @wg/shared's turnMark decides, so the
+// phone agrees with the tracker (out of the fight, ambushed in Round 1 p.177, held p.177).
+const TURN_WORDS = {
+  out: "OUT",
+  acting: "ACTING",
+  ambushed: "AMBUSHED",
+  held: "HELD",
+  done: "DONE",
+  ready: "READY",
+} as const;
+const turnWord = (state: LiveState, c: Combatant) => TURN_WORDS[turnMark(state, c)];
 
 export function Fight({ state, characterId, send, legend, actions }: FightProps) {
   const [open, setOpen] = useState<string | null>(null);
@@ -60,6 +72,7 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
       ? "Unseen threat" // a hidden threat taking its Turn (§11.56)
       : null;
   const next = enc.upNext ?? null;
+  const setting = enc.round === 0; // Determine Ambushes, Set the Scene (p.176)
   const rows = (side: Side) => enc.combatants.filter((c) => sideOf(c) === side);
   const nextRows = next ? rows(next) : [];
   const after = next
@@ -68,30 +81,143 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
 
   // Threat card header: expand its stat block, or collapse it if already open.
   const toggleOpen = (id: string) => setOpen(open === id ? null : id);
-  // THE FIELD ›: scroll to both sides' lists and move focus there.
+  // AGENTS ›: scroll to the field below (on your Turn, the Agents) and move focus there.
   const goToField = () => {
     fieldRef.current?.scrollIntoView({ block: "start" });
     fieldRef.current?.focus();
   };
 
+  // The threat picked in 2 · PICK A TARGET; a slain one (a Mob at 0, Slain, p.324) is no target to aim at.
+  const picked = enc.combatants.find((c): c is ThreatCombatant => c.kind === "threat" && c.id === open);
+  const target = picked && !threatStatus(picked).includes("Slain") ? picked : null;
+
+  // One combatant's row. On your Turn the Threats' rows are 2 · PICK A TARGET: opening one is the pick, the same tap that
+  // shows its stat block anywhere else.
+  const renderRow = (c: Combatant) => {
+    const now = c.id === enc.currentId;
+    const word = turnWord(state, c);
+    const isMe = c.id === mine?.id;
+    const ch = c.kind === "pc" ? chars.get(c.characterId) : undefined;
+    const name = c.kind === "pc" ? (ch?.name ?? "?") : c.label;
+    const conds = c.kind === "pc" ? (ch?.conditions ?? []) : c.conditions;
+    const d = ch && deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: state.campaign.tier });
+    // A threat shows numbers once its stat block is shown; a bars-only one keeps the bar, as its maxima are stat block
+    // values the GM is holding back (§11.56).
+    const harm =
+      c.kind === "pc" ? (
+        ch && d && <Harm wounds={ch.wounds} maxWounds={d.maxWounds} shock={ch.shock} maxShock={d.maxShock} />
+      ) : c.mobCount !== null ? (
+        <span className="mono pf-mob">
+          ×{c.mobCount} OF {c.mobStart}
+        </span>
+      ) : c.stats ? (
+        <Harm wounds={c.wounds} maxWounds={c.maxWounds} shock={c.shock} maxShock={c.maxShock} />
+      ) : (
+        <span className="pf-bar">
+          <Track value={Math.max(0, c.maxWounds - c.wounds)} max={c.maxWounds} label="Wounds" />
+        </span>
+      );
+    const head = (
+      <>
+        {c.kind === "threat" && c.marker && (
+          <span
+            role="img"
+            aria-label={`${c.marker} marker`}
+            className="pf-mk"
+            style={{ background: `var(--marker-${c.marker})` }}
+          />
+        )}
+        <b className="pf-name">{name}</b>
+        {isMe && <span className="pf-you">YOU</span>}
+        {myTurn && c.id === target?.id && <span className="pf-you">TARGET</span>}
+        {harm}
+        <span className={`mono pf-st ${now ? "now" : ""}`}>{word}</span>
+      </>
+    );
+    // Only the header is a button, so the expanded stat block isn't read out as the button's name.
+    return (
+      <li key={c.id} className={`pf-row ${now ? "now" : ""} ${isMe ? "me" : ""} ${c.acted && !now ? "done" : ""}`}>
+        {c.kind === "threat" ? (
+          <button className="pf-hdr" aria-expanded={open === c.id} onClick={() => toggleOpen(c.id)}>
+            {head}
+          </button>
+        ) : (
+          <div className="pf-hdr">{head}</div>
+        )}
+        {(conds.length > 0 || (c.kind === "threat" && threatStatus(c).length > 0)) && (
+          <div className="pf-tags">
+            {c.kind === "threat" && <StatusChips items={threatStatus(c)} />}
+            {conds.map((k) => (
+              <RuleLink key={k} name={k}>
+                <span className="chip">{k.toUpperCase()}</span>
+              </RuleLink>
+            ))}
+          </div>
+        )}
+        {open === c.id &&
+          c.kind === "threat" &&
+          (c.stats ? (
+            <div className="pf-stats">
+              <StatBlock t={c.stats} tier={state.campaign.tier} legend={legend} />
+            </div>
+          ) : (
+            <span className="pf-restricted">
+              No information on this threat. Ask the GM for a Scholar (Int) Test to learn more.
+            </span>
+          ))}
+      </li>
+    );
+  };
+
+  const myStats = me && deriveStats({ stats: me.stats, overrides: me.overrides, tier: state.campaign.tier });
+  const dying = !!me && !!myStats && pcStatus(me, myStats).includes("Dying");
+  // Only for an Agent still in the fight.
+  const dyingPanel = dying && me && myStats && mine && !isOut(state, mine) && (
+    <Dying traumatic={me.traumatic} maxTraumatic={myStats.maxTraumatic} />
+  );
+
   return (
     <div className="pf">
+      {/* On your Turn it leads, as the Turn's text points up to it; otherwise it sits under the plate. */}
+      {myTurn && dyingPanel}
       {myTurn && me ? (
-        <MyTurn me={me} state={state} send={send} after={after} onField={goToField} actions={actions} />
+        <MyTurn
+          me={me}
+          state={state}
+          send={send}
+          after={after}
+          onField={goToField}
+          actions={actions}
+          target={target}
+          targets={<ul className="pf-rows threats">{rows("threats").map(renderRow)}</ul>}
+        />
       ) : (
         <section className="pf-now slate-card cut" aria-label="Now acting">
-          <span className="xmit">+++ NOW ACTING +++</span>
-          <b className="pf-now-name">{currentName ?? `${(next ?? "—").toUpperCase()} PICK`}</b>
-          <span className="mono pf-now-next">
-            UP NEXT: {next ? `${next.toUpperCase()} PICK` : "—"}
-            {mine ? ` · YOU: ${turnWord(state, mine)}` : ""}
-          </span>
+          <span className="xmit">{setting ? "+++ BEFORE ROUND 1 +++" : "+++ NOW ACTING +++"}</span>
+          <b className="pf-now-name">
+            {setting ? "THE GM IS SETTING THE SCENE" : (currentName ?? `${(next ?? "—").toUpperCase()} PICK`)}
+          </b>
+          {!setting && (
+            <span className="mono pf-now-next">
+              UP NEXT: {next ? `${next.toUpperCase()} PICK` : "—"}
+              {mine ? ` · YOU: ${turnWord(state, mine)}` : ""}
+            </span>
+          )}
           <span className="pf-now-note">When the GM picks you, this phone buzzes and the header turns crimson.</span>
         </section>
       )}
 
+      {!myTurn && dyingPanel}
+      {mine && turnMark(state, mine) === "ambushed" && <Ambushed state={state} characterId={characterId} send={send} />}
+
+      {/* A Threat acting, seen or not: every Agent still in the fight gets INCOMING (§11.175). */}
+      {!myTurn && me && mine && !isOut(state, mine) && (current?.kind === "threat" || enc.currentId === UNSEEN_ID) && (
+        <Incoming me={me} state={state} attacker={current?.kind === "threat" ? current : null} held={mine.held} />
+      )}
+
       <div className="pf-field" ref={fieldRef} tabIndex={-1} aria-label="The field">
-        {Side.options.map((side) => (
+        {/* On your Turn the Threats sit in 2 · PICK A TARGET, so the field below is the Agents. */}
+        {(myTurn ? (["agents"] as const) : Side.options).map((side) => (
           <section key={side} className="pf-side" aria-label={side}>
             <div className="pf-h">
               <h2>{side.toUpperCase()}</h2>
@@ -100,87 +226,7 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
                 {rows(side).filter((c) => c.acted).length}/{rows(side).length} DONE
               </span>
             </div>
-            <ul className={`pf-rows ${side}`}>
-              {rows(side).map((c) => {
-                const now = c.id === enc.currentId;
-                const word = turnWord(state, c);
-                const isMe = c.id === mine?.id;
-                const ch = c.kind === "pc" ? chars.get(c.characterId) : undefined;
-                const name = c.kind === "pc" ? (ch?.name ?? "?") : c.label;
-                const conds = c.kind === "pc" ? (ch?.conditions ?? []) : c.conditions;
-                const left = ch
-                  ? deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: state.campaign.tier }).maxWounds
-                  : 0;
-                const wounds = ch ? Math.max(0, left - ch.wounds) : 0;
-                const head = (
-                  <>
-                    {c.kind === "threat" && c.marker && (
-                      <span
-                        role="img"
-                        aria-label={`${c.marker} marker`}
-                        className="pf-mk"
-                        style={{ background: `var(--marker-${c.marker})` }}
-                      />
-                    )}
-                    <b className="pf-name">{name}</b>
-                    {isMe && <span className="pf-you">YOU</span>}
-                    {c.kind === "pc" && ch && (
-                      <span className="pf-bar">
-                        <Track value={wounds} max={left} />
-                        <span className="sr-only">
-                          Wounds left {wounds}/{left}
-                        </span>
-                      </span>
-                    )}
-                    {c.kind === "threat" &&
-                      (c.mobCount !== null ? (
-                        <span className="mono pf-mob">
-                          ×{c.mobCount} OF {c.mobStart}
-                        </span>
-                      ) : (
-                        <span className="pf-bar">
-                          <Track value={Math.max(0, c.maxWounds - c.wounds)} max={c.maxWounds} label="Wounds" />
-                        </span>
-                      ))}
-                    <span className={`mono pf-st ${now ? "now" : ""}`}>{word}</span>
-                  </>
-                );
-                // Only the header is a button, so the expanded stat block isn't read out as the button's name.
-                return (
-                  <li
-                    key={c.id}
-                    className={`pf-row ${now ? "now" : ""} ${isMe ? "me" : ""} ${c.acted && !now ? "done" : ""}`}
-                  >
-                    {c.kind === "threat" ? (
-                      <button className="pf-hdr" aria-expanded={open === c.id} onClick={() => toggleOpen(c.id)}>
-                        {head}
-                      </button>
-                    ) : (
-                      <div className="pf-hdr">{head}</div>
-                    )}
-                    {(conds.length > 0 || (c.kind === "threat" && threatStatus(c).length > 0)) && (
-                      <div className="pf-tags">
-                        {c.kind === "threat" && <StatusChips items={threatStatus(c)} />}
-                        {conds.map((k) => (
-                          <RuleLink key={k} name={k}>
-                            <span className="chip">{k.toUpperCase()}</span>
-                          </RuleLink>
-                        ))}
-                      </div>
-                    )}
-                    {open === c.id &&
-                      c.kind === "threat" &&
-                      (c.stats ? (
-                        <div className="pf-stats">
-                          <StatBlock t={c.stats} tier={state.campaign.tier} legend={legend} />
-                        </div>
-                      ) : (
-                        <span className="pf-restricted">Data restricted by the GM.</span>
-                      ))}
-                  </li>
-                );
-              })}
-            </ul>
+            <ul className={`pf-rows ${side}`}>{rows(side).map(renderRow)}</ul>
           </section>
         ))}
       </div>
@@ -195,11 +241,24 @@ type MyTurnProps = {
   after: string;
   onField: () => void;
   actions: RuleEntry[];
+  target: ThreatCombatant | null; // the threat opened in 2 · PICK A TARGET
+  targets: ReactNode; // the Threats' rows, built by Fight so a tap there opens the same stat block
 };
 
-// Your Turn: what it allows (one OPTIONS dialog of the combat-action entries, Core pp.177–190), your guns, and the two spend pools. One RequestSpend dialog per pool lists that pool's spends.
-function MyTurn({ me, state, send, after, onField, actions }: MyTurnProps) {
-  const spend = { state, characterId: me.id, send };
+// Your Turn: what it allows (one OPTIONS dialog of the combat-action entries, Core pp.177–190), then the attack in the
+// order it's made: 1 a weapon or a psychic power, 2 a target, 3 the dice steps for that pair; one SPEND button for both
+// pools.
+function MyTurn({ me, state, send, after, onField, actions, target, targets }: MyTurnProps) {
+  const [picked, setPicked] = useState(0); // an index over the weapons, then the powers
+  const weapons = me.stats.weapons;
+  const powers = me.stats.powers ?? [];
+  const at = Math.min(picked, weapons.length + powers.length - 1); // the lists can shrink under a held pick
+  const weapon = weapons[at];
+  const power = weapon ? undefined : powers[at - weapons.length];
+  const status = pcStatus(me, deriveStats({ stats: me.stats, overrides: me.overrides, tier: state.campaign.tier }));
+  const dying = status.includes("Dying"); // a basic Combat Action only, no options (p.193)
+  const wounded = dying || status.includes("Wounded"); // "Whilst Dying, you are Wounded" (p.193)
+  const pm = skillTotal(me.stats, "Psychic Mastery");
   return (
     <>
       <section className="pf-sec">
@@ -207,73 +266,106 @@ function MyTurn({ me, state, send, after, onField, actions }: MyTurnProps) {
           <h2>THIS TURN</h2>
           <i />
         </div>
-        {actions.length > 0 && <CombatOptions actions={actions} weapons={me.stats.weapons} />}
-        <span className="pf-cap">One of each per Turn, Core pp.177–190. Tap one to read it.</span>
+        {dying ? (
+          <span className="pf-cap">Dying: one of the three above, with no options (p.193).</span>
+        ) : (
+          <>
+            {actions.length > 0 && <CombatOptions actions={actions} weapons={weapons} />}
+            <span className="pf-cap">One of each per Turn, Core pp.177–190. Tap one to read it.</span>
+          </>
+        )}
+        {(me.stats.skills["Psychic Mastery"] ?? 0) > 0 && powers.length === 0 && (
+          <span className="pf-cap">
+            A power: a 1 on a Wrath Die is <Term k="perils">Perils of the Warp</Term>.
+          </span>
+        )}
       </section>
 
-      {me.stats.weapons.length > 0 && (
+      {(weapon || power) && (
         <section className="pf-sec">
           <div className="pf-h">
-            <h2>STRIKE</h2>
+            <h2>1 · STRIKE</h2>
             <i />
+            <span className="mono">
+              {powers.length ? (weapons.length ? "WEAPON OR POWER" : "PICK A POWER") : "PICK A WEAPON"}
+            </span>
           </div>
-          {me.stats.weapons.map((w) => {
+          {weapons.map((w, i) => {
             const skill = weaponSkill(w);
+            const on = w === weapon;
             return (
-              <div key={w.name} className="pf-weapon slate-card cut">
-                <span className="pool-badge" aria-label={`${skill} pool`}>
-                  {skillTotal(me.stats, skill)}
-                </span>
-                <div className="pf-weapon-text">
-                  <b>{w.name}</b>
-                  <span className="pf-wl">
-                    <WeaponLine weapon={w} strength={effectiveStrength(me.stats)} />
+              // The WeaponLine holds rule-link buttons, so the pick is its own button and not the whole card.
+              <div key={`${w.name}-${i}`} className={`pf-weapon slate-card cut ${on ? "on" : ""}`}>
+                <button type="button" className="pf-pick" aria-pressed={on} onClick={() => setPicked(i)}>
+                  <span className="pool-badge" aria-label={`${skill} pool`}>
+                    {skillTotal(me.stats, skill)}
                   </span>
-                </div>
+                  <b>{w.name}</b>
+                </button>
+                <span className="pf-wl">
+                  <WeaponLine weapon={w} strength={effectiveStrength(me.stats)} />
+                </span>
+              </div>
+            );
+          })}
+          {powers.map((p, i) => {
+            const on = p === power;
+            return (
+              <div key={`${p.name}-${i}`} className={`pf-weapon slate-card cut ${on ? "on" : ""}`}>
+                <button
+                  type="button"
+                  className="pf-pick"
+                  aria-pressed={on}
+                  onClick={() => setPicked(weapons.length + i)}
+                >
+                  <span className="pool-badge" aria-label="Psychic Mastery pool">
+                    {pm}
+                  </span>
+                  <b>{p.name}</b>
+                </button>
+                <span className="pf-wl">
+                  DN {p.dn} · {p.range} · {p.activation} · {p.duration} · {p.page}
+                </span>
               </div>
             );
           })}
         </section>
       )}
 
+      {/* Outside the weapon guard: an Agent with no weapon still sees the Threats on their Turn (a psyker, a fresh sheet). */}
       <section className="pf-sec">
         <div className="pf-h">
-          <h2>SPEND</h2>
+          <h2>{weapon || power ? "2 · PICK A TARGET" : "THREATS"}</h2>
           <i />
-          <span className="mono">THE GM ANSWERS</span>
+          <span className="mono">{target ? `› ${target.label.toUpperCase()}` : "TAP A THREAT"}</span>
         </div>
-        <div className="pf-spends">
-          <RequestSpend
-            pool="wrath"
-            {...spend}
-            className="pf-spend wrath cut"
-            label={
-              <>
-                <span className="pf-spend-w">WRATH</span>
-                <span className="pf-spend-s">REROLL · RESTORE SHOCK</span>
-                <span className="mono pf-spend-c">YOU HOLD {me.wrath}</span>
-              </>
-            }
-          />
-          <RequestSpend
-            pool="glory"
-            {...spend}
-            className="pf-spend glory cut"
-            label={
-              <>
-                <span className="pf-spend-w">GLORY</span>
-                <span className="pf-spend-s">DICE · DAMAGE · SEIZE</span>
-                <span className="mono pf-spend-c">PARTY HOLDS {state.campaign.glory}</span>
-              </>
-            }
-          />
-        </div>
+        {targets}
+      </section>
+
+      {(weapon || power) && (
+        <section className="pf-sec">
+          <div className="pf-h">
+            <h2>3 · THEN, WITH YOUR DICE</h2>
+            <i />
+          </div>
+          {weapon ? (
+            <StrikeSteps key={`${at}-${target?.id ?? ""}`} me={me} weapon={weapon} wounded={wounded} target={target} />
+          ) : (
+            power && (
+              <PowerSteps key={at} me={me} power={power} tier={state.campaign.tier} wounded={wounded} target={target} />
+            )
+          )}
+        </section>
+      )}
+
+      <section className="pf-sec">
+        <SpendSheet state={state} me={me} send={send} />
       </section>
 
       <div className="mono pf-after">
         <span>AFTER YOU: {after}</span>
         <button type="button" className="pf-link" onClick={onField}>
-          THE FIELD ›
+          AGENTS ›
         </button>
       </div>
     </>

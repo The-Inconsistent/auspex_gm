@@ -25,6 +25,18 @@ import { spendRequest } from "./spend.schema.ts";
 
 export type SpendAction = Extract<Action, { type: `spend.${string}` }>;
 
+// The asker's row in the fight, ambushed: AWARE means nothing otherwise (p.177).
+async function ambushedCombatant(tx: Tx, { campaignId, characterId }: { campaignId: string; characterId: string }) {
+  const encId = (await activeEncounterId(tx, campaignId)) ?? fail("No fight to be ambushed in");
+  const [c] = await tx
+    .select({ id: combatant.id, ambushed: combatant.ambushed })
+    .from(combatant)
+    .where(and(eq(combatant.encounterId, encId), eq(combatant.characterId, characterId)));
+  if (!c) fail("Not in the fight");
+  if (!c.ambushed) fail("Not ambushed");
+  return c.id;
+}
+
 // The active encounter's id, or null: a Seize needs a fight to Seize in.
 async function activeEncounterId(tx: Tx, campaignId: string) {
   const [enc] = await tx
@@ -53,6 +65,7 @@ export async function applySpendAction(
       const row = await ownCharacter(tx, { campaignId: cid, id: a.characterId });
       const amount = spendTakesAmount(a.kind) ? a.amount : 1; // only the Glory kinds and Determination have an amount to keep
       if (a.kind === "seize" && !(await activeEncounterId(tx, cid))) fail("No fight to Seize the Initiative in");
+      if (a.kind === "aware") await ambushedCombatant(tx, { campaignId: cid, characterId: a.characterId });
       const mine = await tx
         .select({ kind: spendRequest.kind })
         .from(spendRequest)
@@ -161,6 +174,13 @@ async function spendIt(tx: Tx, { ctx, request: r }: { ctx: Ctx; request: typeof 
         ctx,
         action: { type: "character.adjust", id: row.id, wounds: -k, shock: k, raw: true },
       });
+      return;
+    }
+
+    // The existing combatant.aware pays the Glory and clears the ambush (p.177), so TURN BACK refunds it as the GM's own.
+    case "aware": {
+      const id = await ambushedCombatant(tx, { campaignId: cid, characterId: r.characterId });
+      await applyEncounterAction(tx, { ctx, action: { type: "combatant.aware", id } });
       return;
     }
 

@@ -19,6 +19,7 @@ import {
 } from "@wg/shared";
 
 import { MutationRoll } from "@/components/gm/party/components/mutation-roll/mutation-roll";
+import { Help } from "@/components/ui/term/term";
 import type { Send } from "@/hooks/use-table/use-table";
 
 import type { Run } from "../../types";
@@ -42,12 +43,15 @@ type Table = keyof Lookups;
 const TITLE: Record<Table, string> = { criticalHits: "CRITICAL HIT", perils: "PERILS" };
 
 const KIND = { wounds: "Wounds", shock: "Shock", mortal: "Mortal Wounds", corruption: "Corruption" } as const;
+const ONE = { wounds: "Wound", shock: "Shock", mortal: "Mortal Wound", corruption: "Corruption" } as const;
 const printed = (a: LookupApply) =>
   a.kind === "condition"
     ? a.condition
     : a.kind === "mutation"
       ? `roll on the ${a.severity} Mutations table`
-      : `${"amount" in a ? a.amount : a.dice} ${KIND[a.kind]}`;
+      : "amount" in a
+        ? `${a.amount} ${a.amount === 1 ? ONE[a.kind] : KIND[a.kind]}`
+        : `${a.dice} ${KIND[a.kind]}`;
 const printedAll = (list: LookupApply[]) => list.map(printed).join(" · ");
 
 // CRIT / PERILS: the GM types the d66 rolled at the table; the app shows the printed row and applies only its
@@ -162,7 +166,32 @@ export function CritPerils({ lookups, target, run, send, mutations, character, g
 
   return (
     <div className="stack" style={{ gap: 6 }}>
-      <div className="rule">CRIT / PERILS</div>
+      <div className="rule">
+        <span>
+          CRIT / PERILS{" "}
+          {/* When each table is rolled and who rolls: the dice stay at the table, the GM types what they show (§11.125). */}
+          {table === "criticalHits" ? (
+            <Help title="Critical Hit" cite="Core Rulebook p.197">
+              A hit whose Wrath Die shows 6. The attacker rolls a d66; type it, then say whether the damage beat the
+              target&apos;s Resilience.
+            </Help>
+          ) : (
+            <Help title="Perils of the Warp" cite="Core Rulebook pp.259, 262">
+              Any Wrath Die on 1 in a Psychic Mastery Test, pass or fail. The psyker rolls a d66; type it and any extra
+              1s, +10 each.
+            </Help>
+          )}
+        </span>
+      </div>
+      <div className="dim">
+        {target ? (
+          <>
+            On <b>{target.name}</b>.
+          </>
+        ) : (
+          `Select ${table === "criticalHits" ? "who was hit" : "the psyker"} in the track first.`
+        )}
+      </div>
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
         <div role="group" aria-label="Lookup table" style={{ display: "flex", gap: 6 }}>
           {(Object.keys(TITLE) as Table[]).map((t) => (
@@ -180,6 +209,7 @@ export function CritPerils({ lookups, target, run, send, mutations, character, g
           className="input"
           style={{ width: 80 }}
           ref={d66Ref}
+          title="The d66 rolled: tens die, then units die"
           inputMode="numeric"
           aria-label="d66 result"
           aria-invalid={d66 !== "" && !valid}
@@ -190,7 +220,7 @@ export function CritPerils({ lookups, target, run, send, mutations, character, g
         />
         {resilience && (
           <button className="btn sm" aria-pressed={beat} onClick={() => setBeat(!beat)}>
-            BEAT RESILIENCE: {beat ? "YES" : "NO"}
+            DAMAGE OVER RESILIENCE: {beat ? "YES" : "NO"}
           </button>
         )}
         {table === "perils" && (
@@ -221,9 +251,18 @@ export function CritPerils({ lookups, target, run, send, mutations, character, g
               <span className="label">GLORIOUS</span> {crit.glorious}
             </div>
           )}
-          {hitOnly && <div className="dim">Didn&apos;t beat Resilience: 1 Wound, no other effects (p.197).</div>}
+          {resilience && (
+            <div className="dim">
+              {hitOnly
+                ? "The damage didn't beat Resilience: 1 Wound, no other effects (p.197)."
+                : "The damage beat Resilience: the row's effects land (p.197)."}
+            </div>
+          )}
           {g && !hitOnly && (
             <div className="stack" style={{ gap: 6 }}>
+              <div className="dim">
+                The party may spend Glory to make it worse, after the roll (p.197). Ask the table, then set it here.
+              </div>
               <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
                 <span className="label">GLORY SPENT</span>
                 <button
@@ -247,7 +286,7 @@ export function CritPerils({ lookups, target, run, send, mutations, character, g
               </div>
               {(g.first?.length || g.each.length) > 0 && (
                 <div className="dim">
-                  PER GLORY:{" "}
+                  EACH GLORY ADDS:{" "}
                   {[g.first?.length ? `first: ${printedAll(g.first)}` : "", printedAll(g.each)]
                     .filter(Boolean)
                     .join(" · ")}
@@ -255,7 +294,13 @@ export function CritPerils({ lookups, target, run, send, mutations, character, g
               )}
             </div>
           )}
-          {row.apply.length > 0 && !hitOnly && <div className="dim">APPLIES: {printedAll(row.apply)}</div>}
+          {row.apply.length > 0 && !hitOnly && (
+            <div className="dim">
+              APPLY GIVES {target ? target.name.toUpperCase() : "THEM"}: {printedAll(row.apply)}
+              {need.length > 0 &&
+                `. Roll the ${need.join(" and ")} at the table and type ${need.length > 1 ? "them" : "it"} below.`}
+            </div>
+          )}
           {target?.kind === "threat" && !hitOnly && row.apply.some((a) => a.kind === "corruption") && (
             <div className="dim">Threats have no Corruption; APPLY skips it.</div>
           )}

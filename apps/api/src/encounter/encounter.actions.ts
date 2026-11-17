@@ -34,14 +34,14 @@ import { beat } from "../codex/codex.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
-import { clearSpendRequests } from "../spend/spend.clear.ts";
+import { clearMootAware, clearSpendRequests } from "../spend/spend.clear.ts";
 import { loadState } from "../table/table.state.ts";
 import { loadThreats } from "../threat/threat.service.ts";
 import { combatant, encounter } from "./encounter.schema.ts";
 import { TurnStep } from "./encounter.turn-step.ts";
 
 const TURN_HISTORY = 30; // TURN BACK steps kept (rules-flow §11.170)
-const FIGHT_SPENDS: SpendKind[] = ["seize", "determination"]; // asks that mean nothing once their fight is over
+const FIGHT_SPENDS: SpendKind[] = ["seize", "determination", "aware"]; // asks that mean nothing once their fight is over
 
 export type EncounterAction = Extract<
   Action,
@@ -346,6 +346,8 @@ export async function applyEncounterAction(
       await pushStep(tx, { encounterId: before.id, label: () => `Round ${before.round + 1}` });
       await endCurrentTurn(tx, { campaignId: cid, step: false });
       await newRound(tx, { encounterId: before.id, round: before.round });
+      // An ambush costs only Round 1's Turn (p.177): an AWARE still asked is moot once Round 2 begins.
+      if (before.round === 1) await clearSpendRequests(tx, { campaignId: cid, kinds: ["aware"] });
       return { ok: true };
     }
 
@@ -368,6 +370,7 @@ export async function applyEncounterAction(
             eq(combatant.acted, false),
           ),
         );
+      await clearMootAware(tx, { campaignId: cid, encounterId: enc.id });
       return { ok: true };
     }
 
@@ -504,6 +507,7 @@ export async function applyEncounterAction(
         });
         const r = await tx.update(combatant).set({ ambushed }).where(where).returning({ id: combatant.id });
         if (!r.length) fail("Combatant not found");
+        await clearMootAware(tx, { campaignId: cid, encounterId: enc.id });
       }
       if (threatOnly.conditions) {
         const [row] = await tx
@@ -590,6 +594,7 @@ export async function applyEncounterAction(
       });
       await spend(tx, { campaignId: cid, side: sideOfKind(c.kind) });
       await tx.update(combatant).set({ ambushed: false }).where(eq(combatant.id, a.id));
+      await clearMootAware(tx, { campaignId: cid, encounterId: enc.id });
       return { ok: true };
     }
 
@@ -599,7 +604,9 @@ export async function applyEncounterAction(
         .delete(combatant)
         .where(and(eq(combatant.id, a.id), eq(combatant.encounterId, enc.id)))
         .returning({ id: combatant.id });
-      return r.length ? { ok: true } : fail("Combatant not found"); // current_id is cleared by the FK
+      if (!r.length) fail("Combatant not found");
+      await clearMootAware(tx, { campaignId: cid, encounterId: enc.id });
+      return { ok: true }; // current_id is cleared by the FK
     }
 
     // Start the beat's prepared encounter: every active Agent (reserve ones stay out) plus its threats.

@@ -9,6 +9,7 @@ import { RuleItem } from "@/components/ui/rule-item/rule-item";
 type Rules = {
   find: (name: string) => RuleEntry[];
   get: (id: string) => RuleEntry | undefined; // an entry that isn't a trait, by id
+  all: RuleEntry[]; // every entry, for a list by kind (the tracker's OPTIONS takes the combat actions)
   open: (entries: RuleEntry[]) => void;
 };
 
@@ -36,6 +37,7 @@ export function RulesProvider({ rules, children }: RulesProviderProps) {
     () => ({
       find: (name) => byKey.get(ruleKey(name)) ?? [],
       get: (id) => rules.find((r) => r.id === id),
+      all: rules,
       open: (entries) => {
         // Render the new entries before showModal() picks what to focus; otherwise it focuses the old rule, which
         // then unmounts and drops focus to <body>.

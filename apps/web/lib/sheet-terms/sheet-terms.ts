@@ -346,6 +346,18 @@ export const SHEET_TERMS = {
     cite: "Core p.127",
     meaning: "The Skill for close combat, rolled with your Initiative.",
   },
+  critical: {
+    name: "Critical Hit",
+    cite: "Core p.197",
+    meaning:
+      "A hit with a 6 on the Wrath Die: roll a d66 on the Critical Hit table; Glory makes it worse. Not past Resilience: 1 Wound only.",
+  },
+  perils: {
+    name: "Perils of the Warp",
+    cite: "Core p.262",
+    meaning:
+      "A 1 on a Wrath Die in a Psychic Mastery Test: roll a d66 on the Perils of the Warp table, +10 for each extra 1.",
+  },
 } as const satisfies Record<string, SheetTerm>;
 export type SheetTermKey = keyof typeof SHEET_TERMS;
 

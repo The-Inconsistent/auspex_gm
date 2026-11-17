@@ -962,7 +962,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      71–106 come only from extra 1s; it doesn't say what a higher total does). *Proposed; awaiting the GM.*
 156. **CRIT / PERILS applies a row's mechanical part, as ruled on GitHub issue #183** (Core pp.193, 197, 287, 323–324).
      A Critical Hit that doesn't beat the target's Resilience inflicts 1 Wound and no other effects (p.197): the
-     panel's BEAT RESILIENCE toggle (default yes) sends exactly that. Mortal Wounds are applied as Wounds (they ignore
+     panel's DAMAGE OVER RESILIENCE toggle (default yes) sends exactly that. Mortal Wounds are applied as Wounds (they ignore
      Resilience, p.193, and the app counts Wounds after it). The Glory stepper appears only on rows whose Glorious
      Critical is a single effect; a row that offers a choice shows its printed text alone and the GM applies it. Glory is
      spent from the pool last, after every other step has landed. Corruption goes to the psyker through
@@ -1061,7 +1061,9 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      five steps for the acting combatant and the selected target: the pool, the DN (the target's Defence, +1 if the
      attacker is Wounded, p.193), Damage + ED, and Resilience − AP. The GM types the damage total and the app applies
      Wounds (damage over Resilience), 1 Shock (damage equal, p.192) or nothing. The phone shows the same steps for the
-     weapon the player picks. Mobs stay on the Wounds pad (p.325). The helpers are `woundsFromDamage`, `hitDn` and
+     weapon the player picks, aimed at the threat the player picks in 2 · PICK A TARGET: with its stat block shown (§11.56) the
+     DN and Resilience are that threat's, and a damage total typed on the phone reads as Wounds, 1 Shock or nothing for
+     the player to say; the GM still applies it. Mobs stay on the Wounds pad (p.325). The helpers are `woundsFromDamage`, `hitDn` and
      `threatAttackPool` and `mobBonusDice` in `attack.ts`. The guide follows the Threat rules: a Troop attacker still
      rolls its Wrath Die (it may have Wrath abilities) but gets no Critical or Complication line (p.323); a Mob attacker
      adds +1 die per Troop in the Mob, at most half the Troops (p.324), an odd count rounding up as the book's split
@@ -1071,6 +1073,28 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      phone says there is no information on the threat and suggests asking the GM for a Scholar (Int) Test (Core p.126:
      recalling lore) to learn more. No DN or result is set by the app: the GM decides what a pass reveals.
      *User ruling, 2026-11-17.*
+175. **INCOMING on the phone** (no book rule; a table aid). Whenever a Threat acts, seen or unseen, every Agent still in
+     the fight sees what a hit on them comes down to, from their own sheet: their Defence (the Icons it needs, before
+     cover, p.182), their Resilience (damage over it after AP is Wounds, equal is 1 Shock, p.192), Determination ready
+     (Toughness dice, p.196; none while Exhausted, p.199), no Critical Hit from a Troop (p.323; only when its stat block is shown, §11.56), and their held action's
+     interrupt (pp.177–178, 187). The GM selects nothing: the tracker's selection stays on the tablet.
+     *User ruling, 2026-11-17.*
+176. **A psychic power and Dying on the phone** (table aids). A built sheet carries each psychic power's printed profile
+     (`stats.powers`: DN, range, activation, duration, Potency; Core pp.259–260); a sheet saved before has none until
+     its build is saved again, and the phone then keeps its one-line Perils note. On your Turn a power sits beside the
+     weapons in 1 · STRIKE; picked, step 3 is the Power Level (Bound +0, Unbound +1, Transcendent Rank or Tier + 1
+     Wrath Dice and that much Shock, p.260), the pool (Psychic Mastery (Wil), p.259), the DN (a "Target's Defence" reads
+     the picked threat's Defence; +1 while Wounded, p.193), Exalted Icons for Potency (p.259) and Perils on any Wrath Die
+     1 (pp.262–263). The scene's lock to Unbound or Transcendent is said, not tracked, and the Shock is not applied:
+     the GM's pad does that, as for any damage. While Dying, the phone shows DYING on every Turn (the three Actions,
+     Traumatic Injuries taken of the Tier + 1 allowed, how Dying ends; p.193) and hides OPTIONS on your Turn (no Aim or
+     Multi-Attack while Dying, p.193). *Built from the canvas design the user asked for, 2026-11-17.*
+177. **AWARE from the phone** (a table aid on p.177's Glory spend). While an Agent is ambushed (Round 0, or Round 1
+     before its Turn), the phone's FIGHT tab shows AMBUSHED with one ask: `spend.request` kind `aware`, 1 Glory,
+     refused unless that Agent's row is ambushed. The GM's ACCEPT runs the tracker's own `combatant.aware`, so the
+     Glory is paid there and TURN BACK refunds it. Asks still pending when Round 2 begins, or the fight ends, are
+     cleared: the ambush only cost Round 1. AWARE is not in the SPEND dialog's Glory list. *Built from the canvas
+     design, 2026-11-17.*
 
 ---
 
@@ -1087,6 +1111,8 @@ Implementation details: [game-logic.md](game-logic.md).
 | TURN BACK | done | `turn.back`: the server keeps the fight's last 30 steps and restores turn marks, Round, Wounds, Shock, Conditions, Mob counts, Traumatic Injuries and Annihilation, and refunds a Seize's or AWARE's Glory or Ruin; an accepted spend's Wrath is not refunded (§11.170) |
 | Hold your Action | done | `turn.hold` (ends the Turn, done and held), `turn.interrupt` (clears HELD, starts no Turn; the row stays done); lost at Round end; `turn.mark` sets a row back to NOT YET (§11.168, §11.171) |
 | Determination request | done | `spend.request` kind `determination` (the Icons rolled), ACCEPT turns that many of the Agent's Wounds into Shock; refused while Exhausted; the phone notes "Not against Mortal Wounds" and the GM judges before ACCEPT; pending asks cleared when a fight ends or another starts (§11.172) |
+| AWARE ask (phone) | done | `spend.request` kind `aware`, ACCEPT → `combatant.aware`; the phone's `ambushed` panel; cleared at Round 2 (§11.177) |
+| Psychic power, Dying (phone) | done | `stats.powers` from `resolveBuild`; `powerLevelDice` (`attack.ts`); the phone's `power-steps` and `dying` (§11.176) |
 | Attack guide | done | `packages/shared/src/attack.ts` (`hitDn`, `woundsFromDamage`, `threatAttackPool`: the DN, damage against Resilience − AP, Wounds, Shock or nothing); the tablet's side panel and the phone's STRIKE show the steps, dice stay physical (§11.173) |
 | Mob damage | done | Wounds remove members, capped at `mobStart`; one hit of Shock over max removes one member, less does nothing (§11.9) (`combatant.adjust`); `combatant.update` sizing sets `mobStart`; half-slain chip (`threatStatus`); `roundEndReminders` in the vox log when a Round ends (§11.13) |
 | Troop Shock | done | `threatStatus` (T over max Shock → Slain); `combatant.adjust` refuses Shock when `maxShock` is null |

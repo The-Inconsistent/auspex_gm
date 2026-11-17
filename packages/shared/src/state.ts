@@ -129,6 +129,19 @@ export const Mods = z
 
 const SheetWeapon = Weapon.extend({ addStrength: z.boolean().default(false) });
 
+// A psychic power's profile as printed (Core pp.259–260), for the phone's Turn: what it costs to manifest. The effect
+// stays in `abilities` (one line each).
+export const SheetPower = z.object({
+  name: z.string().max(100),
+  page: z.string().max(40),
+  dn: z.union([z.number().int().positive(), z.string().max(60)]), // "Target's Defence" kept as printed
+  activation: z.string().max(60),
+  duration: z.string().max(60),
+  range: z.string().max(60),
+  potency: z.array(z.string().max(500)).max(10).default([]), // Dominate's second line runs 414 characters (Apocrypha p.289)
+});
+export type SheetPower = z.infer<typeof SheetPower>;
+
 // What a mutation always changes on the sheet, as printed ("–1 Toughness", "reduces your Max Shock by 1"; Core
 // pp.288–295). Situational bonus dice and DN penalties stay in the mutation's text for the table.
 export const MutationMods = z.object({
@@ -201,6 +214,7 @@ export const CharacterStats = z.object({
   abilities: z.array(rule).max(30).default([]), // archetype, species, chapter traits
   talents: z.array(rule).max(30).default([]),
   weapons: z.array(SheetWeapon).max(20).default([]), // melee "S+X"
+  powers: z.array(SheetPower).max(30).optional(), // from the build; absent on a hand-made sheet or one saved before
   gear: z.array(z.string().max(200)).max(60).default([]),
   // The standing weapon effects the build gives (rules-flow.md §11.68), applied when the sheet is read
   // (`withWeaponEffects`), because their Rank amounts follow the XP earned. Absent on a hand-made sheet.

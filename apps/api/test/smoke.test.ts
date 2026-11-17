@@ -2015,6 +2015,19 @@ test("character builder: the creation catalogue for seats, and character.build d
     signedIn.stats.abilities.some((r) => r.text !== ""),
     "a signed-in visitor reads the abilities",
   );
+  // A psychic power's Potency lines are prose too (§11.176): a guest keeps the profile, not the text.
+  const power = {
+    name: "Assail",
+    page: "Core p.277",
+    dn: "Target's Defence",
+    activation: "Action",
+    duration: "Instant",
+    range: "20 m",
+    potency: ["[1] +1ED damage."],
+  };
+  assert.ok((await gm.send({ type: "character.update", id: made.id!, stats: { ...veyl.stats, powers: [power] } })).ok);
+  const psyker = ((await (await get(`/invites/${veylInvite.token}`)).json()) as { character: Character }).character;
+  assert.deepEqual(psyker.stats.powers, [{ ...power, potency: [] }]);
   assert.ok(veyl.builtAt && veyl.builtAt <= Date.now(), "the save is stamped, so older device drafts go stale");
   assert.equal(veyl.xpSpent, 0, "a character just made has spent no XP in play");
 
@@ -3875,6 +3888,34 @@ test("spend requests: a player asks, the GM's ACCEPT is the spend (rules-flow §
   await gm.until((s) => s.spendRequests.length === 2);
   // ...and its Determination asks: they were about that fight's hits.
   assert.ok((await gm.send({ type: "encounter.start" })).ok);
+  await gm.until((s) => s.spendRequests.length === 0);
+
+  // AWARE (p.177): only while ambushed; ACCEPT pays 1 Glory and clears the ambush; Round 2 clears a moot ask.
+  const aware = { type: "spend.request", characterId: a.id, kind: "aware" } as const;
+  assert.ok((await gm.send({ type: "combatant.addCharacter", characterId: a.id })).ok);
+  assert.ok((await gm.send({ type: "combatant.addCharacter", characterId: b.id })).ok);
+  assert.deepEqual(await pa.send(aware), { ok: false, error: "Not ambushed" });
+  assert.ok((await gm.send({ type: "encounter.ambush", side: "agents", ambushed: true })).ok);
+  const asked = await pa.send(aware);
+  assert.ok(asked.ok && asked.id);
+  assert.ok((await pb.send({ type: "spend.request", characterId: b.id, kind: "aware" })).ok);
+  const before = (await gm.until((s) => s.spendRequests.length === 2)).campaign.glory;
+  assert.ok((await gm.send({ type: "spend.resolve", id: asked.id, accept: true })).ok);
+  const paid = await gm.until((s) => s.spendRequests.length === 1);
+  assert.equal(paid.campaign.glory, before - 1);
+  assert.deepEqual(
+    paid.encounter?.combatants.filter((c) => c.ambushed).map((c) => c.kind === "pc" && c.characterId),
+    [b.id],
+  );
+  // The GM clearing B's ambush on the tablet leaves B's ask nothing to ask for; Round 2 clears a moot one too.
+  assert.ok((await gm.send({ type: "encounter.ambush", side: "agents", ambushed: false })).ok);
+  await gm.until((s) => s.spendRequests.length === 0);
+  assert.ok((await gm.send({ type: "encounter.ambush", side: "agents", ambushed: true })).ok);
+  assert.ok((await glory(1)).ok); // AWARE spent the last of it
+  assert.ok((await pb.send({ type: "spend.request", characterId: b.id, kind: "aware" })).ok);
+  await gm.until((s) => s.spendRequests.length === 1);
+  assert.ok((await gm.send({ type: "encounter.begin" })).ok);
+  assert.ok((await gm.send({ type: "encounter.newRound" })).ok);
   await gm.until((s) => s.spendRequests.length === 0);
 
   // The asker cancels; session.end clears whatever is left.

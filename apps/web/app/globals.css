@@ -1104,6 +1104,11 @@ dialog.picker {
 /* GM shell: header band over the body, with the chapter-tab rail down the right edge (tablet). */
 .gm {
   height: 100dvh;
+  /* An absolutely placed child of a scrolling panel (the .sr-only of a Term or Help) is placed against the page, not the
+     panel: deep in a long panel it made the page taller than the screen, so a scroll there moved the whole shell off it.
+     Positioned and clipped, the shell holds them; clip, not hidden, so nothing can scroll the shell itself. */
+  position: relative;
+  overflow: clip;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 112px;
   grid-template-rows: auto 1fr;

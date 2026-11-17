@@ -37,7 +37,10 @@ export function RequestSpend({ pool, state, characterId, send, label, className 
   const max = Math.min(MAX_SPEND_AMOUNT, have);
   const shown = Math.max(1, Math.min(amount, max)); // the pool may drop while the modal is open
   const mine = state.spendRequests.filter((r) => r.characterId === characterId);
-  const kinds = SPEND_KINDS.filter((k) => spendCost(k)[pool] > 0 && (k !== "seize" || !!state.encounter));
+  // AWARE is asked from the FIGHT tab's AMBUSHED panel, where the ambush is.
+  const kinds = SPEND_KINDS.filter(
+    (k) => spendCost(k)[pool] > 0 && k !== "aware" && (k !== "seize" || !!state.encounter),
+  );
   const word = pool.toUpperCase();
 
   const ask = async (kind: SpendKind) => {
