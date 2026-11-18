@@ -1131,7 +1131,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      UNDO and TURN BACK (§11.170) are separate: undoing a turn step puts the turn marks back but leaves the step on
      TURN BACK's stack, so the next TURN BACK takes back only the damage dealt since that step; a TURN BACK that was
      undone is not put back on the stack. The journal doesn't copy the stack, which was 99% of a fight's journal.
-     *Not yet ruled: added when the journal was rebased onto TURN BACK, 2026-11-18.*
+     *User ruling, 2026-11-18, when the journal was rebased onto TURN BACK.*
 
 ---
 
