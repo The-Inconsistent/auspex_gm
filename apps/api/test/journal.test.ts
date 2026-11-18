@@ -135,6 +135,42 @@ else
       expect(await wounds(f.b)).toBe(3);
     });
 
+    test("undoing a closed Test under a newer call is refused, not a server error", async () => {
+      const t = await newCampaign();
+      const made = (await t.run({ type: "character.create", name: "Brother Test" })) as { id: string };
+      const call: ActionInput = {
+        type: "test.call",
+        test: { kind: "skill", skill: "Awareness", dn: 3 },
+        who: [made.id],
+      };
+      expect(await t.run(call)).toMatchObject({ ok: true });
+      expect(await t.run({ type: "test.close" })).toMatchObject({ ok: true });
+      const closed = await t.last();
+      expect(await t.run(call)).toMatchObject({ ok: true }); // the campaign's one called Test is a new row now
+      expect(await t.run({ type: "journal.undo", entryId: closed.id })).toEqual({
+        ok: false,
+        error: "A later change touched that test call. Undo that first.",
+      });
+    });
+
+    test("a turn step's entry leaves TURN BACK's stack out, and undoing it keeps the step there (§11.183)", async () => {
+      const t = await newCampaign();
+      const f = await fight(t);
+      await t.run({ type: "encounter.begin" });
+      await t.run({ type: "turn.start", id: f.pc });
+      const step = await t.last();
+      const enc = async () => (await db.select().from(encounter).where(eq(encounter.campaignId, t.campaignId)))[0]!;
+      const stack = (await enc()).history.length;
+      expect(stack).toBeGreaterThanOrEqual(1);
+      const [change] = await db.select().from(journalChange).where(eq(journalChange.entryId, step.id));
+      expect(Object.keys(change!.after ?? {}).includes("history")).toBe(false);
+      expect(await t.run({ type: "journal.undo", entryId: step.id })).toMatchObject({ ok: true });
+      expect((await enc()).currentId).toBeNull();
+      expect((await enc()).history.length).toBe(stack);
+      // TURN BACK still works over the undone step: every step is a whole snapshot.
+      expect(await t.run({ type: "turn.back" })).toMatchObject({ ok: true });
+    });
+
     test("undo of a removed current combatant restores it and the encounter's pointer, despite the journal order", async () => {
       const t = await newCampaign();
       const f = await fight(t);

@@ -208,7 +208,8 @@ queue, transaction, kicks and broadcast as a socket action.
 
 Every socket action that changes a row becomes a `journal_entry` (the parsed `Action`, the user, the time), and each
 changed row a `journal_change` (`tbl`, `row_id`, `op`, and the before and after images; an UPDATE keeps only the changed
-keys). The GM undoes through the `journal.undo` action and reads the history list as a socket event; the one REST read
+keys, and never `encounter.history`: TURN BACK's stack of whole-fight snapshots is rewritten on every turn step, so an
+undone turn step stays on that stack, rules-flow §11.183). The GM undoes through the `journal.undo` action and reads the history list as a socket event; the one REST read
 left is the recap draft.
 
 - **`journal` event** (socket, GM room only): `JournalItem[]` (`packages/shared/src/journal.ts`), newest first, the last 50

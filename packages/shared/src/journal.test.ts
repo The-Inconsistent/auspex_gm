@@ -74,6 +74,19 @@ test("labels read like the tracker's log, with names where the lookup has them",
   assert.equal(label({ type: "encounter.newRound" }), "New Round");
 });
 
+test("the fight's turn flow, a scene begun and a whisper read in the table's words", () => {
+  assert.equal(label({ type: "encounter.begin" }), "Begin Round 1");
+  assert.equal(label({ type: "encounter.ambush", side: "threats", ambushed: true }), "Threats ambushed");
+  assert.equal(label({ type: "turn.hold" }), "Turn ended, action held");
+  assert.equal(label({ type: "turn.interrupt", id }), "Brother A interrupts");
+  assert.equal(label({ type: "turn.mark", id, acted: false }), "Brother A: not yet");
+  assert.equal(label({ type: "turn.back" }), "Turn back");
+  assert.equal(label({ type: "combatant.manifest", id, power: "Smite" }), "Brother A manifests Smite");
+  assert.equal(label({ type: "beat.begin", id }), "Begin Brother A");
+  assert.equal(label({ type: "whisper.send", to: [id], text: "the vault is trapped" }), "Whisper to Brother A");
+  assert.equal(label({ type: "beat.reorder", adventureId: id, ids: [id] }), "Scene reorder");
+});
+
 test("an unknown name falls back, and a type with no label of its own is spelled out", () => {
   const none = (a: unknown) => journalLabel(Action.parse(a), () => undefined);
   assert.equal(none({ type: "combatant.adjust", id, wounds: 1 }), "Someone: +1 Wounds");

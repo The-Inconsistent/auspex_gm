@@ -18,9 +18,12 @@ BEGIN
       VALUES (entry::uuid, TG_TABLE_NAME, OLD.id, 'D', to_jsonb(OLD), NULL);
   ELSE
     -- Only the keys that differ: a Wound tap must not copy a character's big jsonb.
+    -- Never `encounter.history`, TURN BACK's stack of up to 30 whole-fight snapshots (rules-flow §11.170): every turn
+    -- step rewrites it, and copying it old and new was 99% of a fight's journal (63 KB a step at 16 combatants). So an
+    -- undone turn step stays on that stack (§11.183); each step is a whole snapshot, so any stack is safe to restore.
     SELECT jsonb_object_agg(o.key, o.value), jsonb_object_agg(n.key, n.value) INTO b, a
       FROM jsonb_each(to_jsonb(OLD)) o JOIN jsonb_each(to_jsonb(NEW)) n USING (key)
-     WHERE o.value IS DISTINCT FROM n.value;
+     WHERE o.value IS DISTINCT FROM n.value AND NOT (TG_TABLE_NAME = 'encounter' AND o.key = 'history');
     IF b IS NOT NULL THEN
       INSERT INTO journal_change (entry_id, tbl, row_id, op, before, after)
         VALUES (entry::uuid, TG_TABLE_NAME, NEW.id, 'U', b, a);
@@ -77,8 +80,12 @@ BEGIN
           ) USING c.before, c.row_id;
         END IF;
         progressed := true;
-      EXCEPTION WHEN foreign_key_violation THEN
-        retry := retry || s;
+      EXCEPTION
+        WHEN foreign_key_violation THEN
+          retry := retry || s;
+        -- Something made since holds the row's unique place: the campaign's one called Test, a custom threat's slug.
+        WHEN unique_violation THEN
+          RAISE EXCEPTION 'journal_conflict:%:%', c.tbl, c.row_id;
       END;
     END LOOP;
     IF NOT progressed THEN

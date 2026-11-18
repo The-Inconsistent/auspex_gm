@@ -68,6 +68,24 @@ export function journalLabel(a: Action, name: NameOf): string {
       return "Encounter ended";
     case "encounter.newRound":
       return "New Round";
+    case "encounter.begin":
+      return "Begin Round 1";
+    case "encounter.ambush":
+      return `${upper1(a.side)} ${a.ambushed ? "ambushed" : "not ambushed"}`;
+    case "turn.hold":
+      return "Turn ended, action held";
+    case "turn.interrupt":
+      return `${who(a.id)} interrupts`;
+    case "turn.mark":
+      return `${who(a.id)}: ${a.acted ? "done" : "not yet"}`;
+    case "turn.back":
+      return "Turn back";
+    case "combatant.manifest":
+      return `${who(a.id)} manifests ${a.power}`;
+    case "beat.begin":
+      return `Begin ${name(a.id) ?? "a scene"}`;
+    case "whisper.send":
+      return `Whisper to ${a.to.map((id) => who(id, "an Agent")).join(", ")}`;
     case "beat.startEncounter":
       return `Start the encounter of ${name(a.id) ?? "a scene"}`;
     case "combatant.addThreat":
@@ -104,8 +122,10 @@ export function journalLabel(a: Action, name: NameOf): string {
       return name(a.entryId) ? `Undo \u201c${name(a.entryId)}\u201d` : "Undo";
     default:
       // The type is the label when nothing better is written: "character.fitUpgrade" -> "Character fit upgrade".
+      // The UI says SCENE where the code keeps `beat`.
       return upper1(
         a.type
+          .replace(/^beat\./, "scene.")
           .replace(/\./g, " ")
           .replace(/([a-z])([A-Z])/g, "$1 $2")
           .toLowerCase(),

@@ -1128,6 +1128,10 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      who was deleted, or who has a player seat or guest QR since, can't be brought back by undo, because the seat and
      the QR live outside the journal. Undoing an undo is a redo. Entries are kept for the campaign's life, with no
      pruning. *Approved by the GM, 2026-10-06 (the session end and the GM-only rule).*
+     UNDO and TURN BACK (§11.170) are separate: undoing a turn step puts the turn marks back but leaves the step on
+     TURN BACK's stack, so the next TURN BACK takes back only the damage dealt since that step; a TURN BACK that was
+     undone is not put back on the stack. The journal doesn't copy the stack, which was 99% of a fight's journal.
+     *Not yet ruled: added when the journal was rebased onto TURN BACK, 2026-11-18.*
 
 ---
 
