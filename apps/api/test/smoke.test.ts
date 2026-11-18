@@ -388,6 +388,21 @@ test("GM and player share a table", async (t) => {
   assert.ok((await gm.send({ type: "combatant.aware", id: amb.id })).ok);
   assert.ok((await gm.send({ type: "turn.start", id: amb.id })).ok);
 
+  // MANIFEST: one psychic power per Round, reset by the next Round (Core p.259, rules-flow §8, §11.181).
+  const manifest = { type: "combatant.manifest" as const, id: amb.id, power: "Smite" };
+  assert.ok((await gm.send(manifest)).ok);
+  assert.equal((await gm.send(manifest)).ok, false);
+  assert.equal((await gm.send({ ...manifest, power: "" })).ok, false);
+  assert.ok((await gm.send({ type: "turn.end" })).ok);
+  assert.ok((await gm.send({ type: "encounter.newRound" })).ok); // the GM ends the Round (§11.169)
+  await gm.until((s) => s.encounter?.combatants.some((c) => c.id === amb.id && !c.manifested) === true);
+  // TURN BACK over the new Round gives the mark back with the turn marks (§11.170).
+  assert.ok((await gm.send({ type: "turn.back" })).ok);
+  await gm.until((s) => s.encounter?.combatants.some((c) => c.id === amb.id && c.manifested) === true);
+  assert.ok((await gm.send({ type: "encounter.newRound" })).ok);
+  await gm.until((s) => s.encounter?.combatants.some((c) => c.id === amb.id && !c.manifested) === true);
+  assert.ok((await gm.send(manifest)).ok);
+
   // Session start resets pools (p.162); session end awards XP (p.321).
   assert.ok((await gm.send({ type: "session.start" })).ok);
   await gm.until((s) => s.campaign.glory === 0 && s.campaign.ruin === 2 && s.characters.every((c) => c.wrath === 2));

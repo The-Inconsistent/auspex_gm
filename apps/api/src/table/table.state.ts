@@ -204,6 +204,7 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
                   acted: r.acted,
                   ambushed: r.ambushed,
                   held: r.held,
+                  manifested: r.manifested,
                 }
               : {
                   id: r.id,
@@ -211,6 +212,7 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
                   acted: r.acted,
                   ambushed: r.ambushed,
                   held: r.held,
+                  manifested: r.manifested,
                   marker: r.marker,
                   threatId: r.threatId!,
                   threatClass: r.threatClass!,

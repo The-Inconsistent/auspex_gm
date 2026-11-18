@@ -387,6 +387,8 @@ export const Action = z.union([
     }),
     z.object({ type: z.literal("combatant.aware"), id }), // pay 1 Glory/Ruin to ignore an ambush (p.177)
     z.object({ type: z.literal("combatant.remove"), id }),
+    // One psychic power activated per Round (Core p.259, rules-flow §8, §11.181); the GM names it, the table rolls.
+    z.object({ type: z.literal("combatant.manifest"), id, power: z.string().trim().min(1).max(60) }),
 
     z.object({
       type: z.literal("codex.delete"),

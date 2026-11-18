@@ -22,6 +22,7 @@ test("negative AP lowers Resilience", () => {
 test("Wounded attacker adds 1 to the DN (p.193)", () => {
   assert.equal(hitDn({ defence: 2, attackerWounded: true }), 3);
   assert.equal(hitDn({ defence: 2, attackerWounded: false }), 2);
+  assert.equal(hitDn({ defence: 2, attackerWounded: true, sustain: 4 }), 7); // two sustained powers (p.265)
 });
 
 test("a Threat's pool is its Weapon or Ballistic Skill, else the default", () => {

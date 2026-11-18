@@ -231,6 +231,7 @@ one step, so one TURN BACK also gives back the Turn it ended.
   `encounter.ambush`. In Round 1 a READY row's dialog can still mark it ambushed, for a latecomer or a forgotten ambush.
 - Ambushed combatants fail `canAct` and `turn.start` in Round 1, and don't hold up the Round's end.
 - `combatant.aware` pays 1 Glory (Agent) or 1 Ruin (Threat) and clears the flag, so it acts normally in Round 1.
+- `combatant.manifest` marks the combatant's one psychic activation of the Round (`manifested`), refusing a second; `newRound()` clears it with `acted`.
 - `newRound()` clears every `ambushed` flag, so it never carries past Round 1.
 
 **Edge cases**

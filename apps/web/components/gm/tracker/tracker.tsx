@@ -20,6 +20,9 @@ import {
   roundEndReminders,
   sideOf,
   sideUpNext,
+  sustainHitReminder,
+  sustainedPowers,
+  sustainTurnReminder,
   threatStatus,
   turnMark,
   type ActionInput,
@@ -43,10 +46,11 @@ import { combatantPortrait } from "@/lib/portraits/portraits";
 
 import { AddCombatants } from "./components/add-combatants/add-combatants";
 import { AttackGuide } from "./components/attack-guide/attack-guide";
-import { CritPerils } from "./components/crit-perils/crit-perils";
+import { CritPerils, type PerilsRequest } from "./components/crit-perils/crit-perils";
 import { DeltaPad } from "./components/delta-pad/delta-pad";
 import { FightRow } from "./components/fight-row/fight-row";
 import { KeyBar } from "./components/key-bar/key-bar";
+import { PsychicPanel } from "./components/psychic-panel/psychic-panel";
 import { RoundNotes } from "./components/round-notes/round-notes";
 import { LOG_LIMIT, NEW_ROUND } from "./constants";
 import type { KeyAction, LogEntry, Run, TurnDo, Vitals } from "./types";
@@ -159,6 +163,7 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
   const [pad, setPad] = useState<{ id: string; field: CounterField } | null>(null);
   const [cmd, setCmd] = useState("");
   const [log, setLog] = useState<LogEntry[]>([]);
+  const [perilsRequest, setPerilsRequest] = useState<PerilsRequest>();
   const [error, setError] = useState<string | null>(null);
   const enc = state.encounter;
   const tier = state.campaign.tier;
@@ -200,6 +205,11 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
   const sel = enc.combatants.find((c) => c.id === selected) ?? null;
   const selChar = sel?.kind === "pc" ? chars.get(sel.characterId) : undefined;
   const selDerived = selChar ? derivedOf(selChar) : null;
+  // A PC with Psychic Mastery or a power on its sheet, a threat with the PSYKER keyword (Core p.257).
+  const selPsyker =
+    sel?.kind === "pc"
+      ? (selChar?.stats.skills["Psychic Mastery"] ?? 0) > 0 || !!selChar?.stats.powers?.length
+      : !!sel?.stats?.keywords.includes("PSYKER");
   const rows = (side: Side) => enc.combatants.filter((c) => sideOf(c) === side);
   // Portrait slots only when some combatant has one, so a campaign without portraits keeps its narrow rows.
   const portraitOf = (c: Combatant) =>
@@ -258,10 +268,21 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
     delta: number;
   }) => {
     const { word } = COUNTER_ACTIONS[counterKey({ field, delta })];
-    await run(
+    const r = await run(
       counterAction({ combatant, field, delta }),
       `${nameOf(combatant).toUpperCase()} ${delta > 0 ? "+" : "−"}${Math.abs(delta)} ${word}`,
     );
+    // Damage to a psyker sustaining powers: remind of the Willpower Test (the entered amount, not what stuck). Perils
+    // damage goes through the lookup's APPLY instead, so it never reminds (§11.182).
+    if (r.ok && delta > 0) {
+      const text = sustainHitReminder({
+        name: nameOf(combatant).toUpperCase(),
+        conditions: conditionsOf(combatant),
+        wounds: field === "wounds" ? delta : 0,
+        shock: field === "shock" ? delta : 0,
+      });
+      if (text) push({ text, warn: true });
+    }
     setPad(null);
   };
 
@@ -298,6 +319,8 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
     if (!r.ok) return r;
     if (prev) remind(prev, TURN_END_REMINDERS);
     remind(c, TURN_START_REMINDERS);
+    const sustain = sustainTurnReminder({ name: nameOf(c).toUpperCase(), conditions: conditionsOf(c) });
+    if (sustain) push({ text: sustain, warn: true });
     for (const k of conditionsOf(c).filter(isTimed))
       push({ text: `${name}: ${k} ends at the end of this Turn`, warn: true });
     return r;
@@ -399,6 +422,25 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
       conditionsAction(sel, on ? [...cur, k] : cur.filter((x) => x !== k)),
       `${nameOf(sel).toUpperCase()} ${on ? "+" : "−"}${k.toUpperCase()}`,
     );
+  };
+
+  // PsychicPanel SUSTAIN: writes the selected combatant's Conditions list back with a log line.
+  const handleSustainChange = ({ conditions, text }: { conditions: string[]; text: string }) => {
+    if (sel) void run(conditionsAction(sel, conditions), text);
+  };
+
+  // PsychicPanel MANIFEST: one activation per Round; any Wrath 1 opens PERILS with the extra 1s (Core p.262, §11.181).
+  const handleManifest = async ({ power, ones }: { power: string; ones: number }) => {
+    if (!sel) return false;
+    const r = await run(
+      { type: "combatant.manifest", id: sel.id, power },
+      `${nameOf(sel).toUpperCase()} MANIFESTS ${power.toUpperCase()}`,
+    );
+    if (r.ok && ones >= 1) {
+      push({ text: "PERILS OF THE WARP (Core p.263)", warn: true });
+      setPerilsRequest({ table: "perils", extraOnes: ones - 1, key: (perilsRequest?.key ?? 0) + 1 });
+    }
+    return r.ok;
   };
 
   // What the phones show of a threat, set from MORE or toggled HIDDEN ↔ BARS by its row's chip. Hidden until its mini goes on the table
@@ -683,6 +725,22 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
             ))}
           </div>
         )}
+        {/* A psyker, or anyone still sustaining: keyed by combatant, so a typed power, its Wrath 1s and the SUSTAIN offer
+            belong to one psyker. */}
+        {sel && (selPsyker || sustainedPowers(conditionsOf(sel)).length > 0) && (
+          <div className="stack" style={{ gap: 6 }}>
+            <div className="rule">PSYCHIC POWERS</div>
+            <PsychicPanel
+              key={sel.id}
+              name={nameOf(sel)}
+              manifested={sel.manifested}
+              conditions={conditionsOf(sel)}
+              known={selChar?.stats.powers ?? []}
+              onChange={handleSustainChange}
+              onManifest={handleManifest}
+            />
+          </div>
+        )}
         <CritPerils
           lookups={lookups}
           run={run}
@@ -690,6 +748,7 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
           mutations={mutations}
           character={selChar}
           glory={state.campaign.glory}
+          request={perilsRequest}
           target={
             sel &&
             (sel.kind === "pc"

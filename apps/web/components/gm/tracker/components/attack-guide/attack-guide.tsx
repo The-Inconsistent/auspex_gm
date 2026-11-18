@@ -7,6 +7,7 @@ import {
   hitDn,
   mobBonusDice,
   pcStatus,
+  sustainPenalty,
   threatAttackPool,
   threatStatus,
   woundsFromDamage,
@@ -41,6 +42,7 @@ function look(c: Combatant, state: LiveState) {
     return {
       name: ch.name,
       wounded: pcStatus(ch, d).includes("Wounded"),
+      sustain: sustainPenalty(ch.conditions),
       defence: d.defence,
       resilience: d.resilience,
       maxWounds: d.maxWounds,
@@ -53,6 +55,7 @@ function look(c: Combatant, state: LiveState) {
   return {
     name: c.label,
     wounded: threatStatus(c).includes("Wounded"),
+    sustain: sustainPenalty(c.conditions),
     defence: c.stats?.defence,
     resilience: c.stats?.resilience.value,
     maxWounds: c.maxWounds,
@@ -146,8 +149,11 @@ export function AttackGuide({ state, attacker, target, run }: AttackGuideProps) 
                 <p className="dim">No Defence on this stat block.</p>
               ) : (
                 <p>
-                  DN {hitDn({ defence: t.defence, attackerWounded: a.wounded })} · Defence {t.defence}
-                  {a.wounded && ", +1 Wounded"}. Add the cover, range or vision you call (pp.190–191).
+                  DN {hitDn({ defence: t.defence, attackerWounded: a.wounded, sustain: a.sustain })} · Defence{" "}
+                  {t.defence}
+                  {a.wounded && ", +1 Wounded"}
+                  {a.sustain > 0 && `, +${a.sustain} sustaining (p.265)`}. Add the cover, range or vision you call
+                  (pp.190–191).
                 </p>
               )}
               {visibility !== "stats" && <p className="dim">Players see BARS: say the DN aloud.</p>}

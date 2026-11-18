@@ -712,6 +712,10 @@ textarea.input {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.chip.wrap {
+  white-space: normal; /* a long line, such as SUSTAINING with long power names, wraps on a phone */
+  padding-block: 2px;
+}
 .chip.warn {
   border-color: var(--red);
   color: var(--red);

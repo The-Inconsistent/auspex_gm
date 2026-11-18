@@ -1,0 +1,1 @@
+ALTER TABLE "combatant" ADD COLUMN "manifested" boolean DEFAULT false NOT NULL;

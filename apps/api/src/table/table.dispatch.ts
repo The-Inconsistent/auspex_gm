@@ -204,6 +204,7 @@ function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promis
     case "combatant.adjust":
     case "combatant.aware":
     case "combatant.remove":
+    case "combatant.manifest":
     case "beat.startEncounter":
       return applyEncounterAction(tx, { ctx, action });
 

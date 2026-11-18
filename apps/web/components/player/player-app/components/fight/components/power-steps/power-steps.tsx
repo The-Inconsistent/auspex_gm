@@ -19,6 +19,8 @@ type PowerStepsProps = {
   power: SheetPower;
   tier: number;
   wounded: boolean;
+  sustain: number; // +2 DN per power already sustained (sustainPenalty, Core p.265)
+  manifested: boolean; // the GM marked this Round's power used (combatant.manifest, §11.181)
   target: ThreatCombatant | null; // the threat picked in 2 · PICK A TARGET; its stats are null while the GM shows bars
 };
 
@@ -27,7 +29,7 @@ const LEVEL_WORDS = { bound: "BOUND", unbound: "UNBOUND", transcendent: "TRANSCE
 // THEN, WITH YOUR DICE for a psychic power (Core pp.259–263): the Power Level picks the Wrath Dice, the phone counts the
 // pool and the DN, and says what a 1 on any Wrath Die means. The scene's lock on lower Power Levels after Unbound or
 // Transcendent is said, not tracked (rules-flow §11.176).
-export function PowerSteps({ me, power: p, tier, wounded, target }: PowerStepsProps) {
+export function PowerSteps({ me, power: p, tier, wounded, sustain, manifested, target }: PowerStepsProps) {
   const [level, setLevel] = useState<PowerLevel>("bound");
   const rank = rankOf(me.xp);
   const dice = powerLevelDice({ level, rank, tier });
@@ -37,12 +39,18 @@ export function PowerSteps({ me, power: p, tier, wounded, target }: PowerStepsPr
   const byDefence = typeof p.dn === "string" && /^target.s defence$/i.test(p.dn.trim());
   const defence = byDefence ? (target?.stats?.defence ?? null) : null;
   const dn = typeof p.dn === "number" ? p.dn : defence;
-  const shown = dn === null ? p.dn.toString().toUpperCase() : `${dn + (wounded ? 1 : 0)}+`;
+  const shown = dn === null ? p.dn.toString().toUpperCase() : `${dn + (wounded ? 1 : 0) + sustain}+`;
   return (
     <ol className="pf-steps" aria-label={`Manifest ${p.name}`}>
       <li>
         <b>PICK A POWER LEVEL</b>
-        <span>One power per Round (p.259).</span>
+        <span>
+          {manifested ? (
+            <b className="red">This Round&apos;s power is used: one per Round (p.259).</b>
+          ) : (
+            "One power per Round (p.259)."
+          )}
+        </span>
         <div className="pf-levels" role="group" aria-label="Power Level">
           {POWER_LEVELS.map((l) => {
             const d = powerLevelDice({ level: l, rank, tier });
@@ -79,9 +87,13 @@ export function PowerSteps({ me, power: p, tier, wounded, target }: PowerStepsPr
         </b>
         <span>
           {defence !== null && `${target?.label}'s Defence ${defence}. `}
-          {wounded && (dn === null ? "Add 1 to that DN: you're Wounded (p.193). " : "+1: you're Wounded (p.193). ")}A 6
-          on a Wrath Die is an Exalted Icon: no Critical Hit or Glory, but you may Shift it for Potency while the DN is
-          still met (p.259).
+          {wounded && (dn === null ? "Add 1 to that DN: you're Wounded (p.193). " : "+1: you're Wounded (p.193). ")}
+          {sustain > 0 &&
+            (dn === null
+              ? `Add ${sustain} to that DN: the powers you sustain (p.265). `
+              : `+${sustain}: the powers you sustain (p.265). `)}
+          A 6 on a Wrath Die is an Exalted Icon: no Critical Hit or Glory, but you may Shift it for Potency while the DN
+          is still met (p.259).
           {p.potency.length > 0 && ` Potency: ${p.potency.join(" · ")}`}
         </span>
       </li>

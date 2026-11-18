@@ -11,6 +11,7 @@ import {
   pcStatus,
   sideOf,
   skillTotal,
+  sustainPenalty,
   threatStatus,
   turnMark,
   type Character,
@@ -258,6 +259,10 @@ function MyTurn({ me, state, send, after, onField, actions, target, targets }: M
   const status = pcStatus(me, deriveStats({ stats: me.stats, overrides: me.overrides, tier: state.campaign.tier }));
   const dying = status.includes("Dying"); // a basic Combat Action only, no options (p.193)
   const wounded = dying || status.includes("Wounded"); // "Whilst Dying, you are Wounded" (p.193)
+  const sustain = sustainPenalty(me.conditions);
+  const manifested = !!state.encounter?.combatants.some(
+    (c) => c.kind === "pc" && c.characterId === me.id && c.manifested,
+  );
   const pm = skillTotal(me.stats, "Psychic Mastery");
   return (
     <>
@@ -349,10 +354,26 @@ function MyTurn({ me, state, send, after, onField, actions, target, targets }: M
             <i />
           </div>
           {weapon ? (
-            <StrikeSteps key={`${at}-${target?.id ?? ""}`} me={me} weapon={weapon} wounded={wounded} target={target} />
+            <StrikeSteps
+              key={`${at}-${target?.id ?? ""}`}
+              me={me}
+              weapon={weapon}
+              wounded={wounded}
+              sustain={sustain}
+              target={target}
+            />
           ) : (
             power && (
-              <PowerSteps key={at} me={me} power={power} tier={state.campaign.tier} wounded={wounded} target={target} />
+              <PowerSteps
+                key={at}
+                me={me}
+                power={power}
+                tier={state.campaign.tier}
+                wounded={wounded}
+                sustain={sustain}
+                manifested={manifested}
+                target={target}
+              />
             )
           )}
         </section>

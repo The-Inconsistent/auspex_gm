@@ -384,8 +384,9 @@ export const Character = z.object({
 export type Character = z.infer<typeof Character>;
 
 // acted: had its Turn this Round. held: had it and held its action to use later in the Round (pp.177, 187); a held
-// combatant counts as acted. ambushed: no Turn in Round 1 (p.177).
-const turnFields = { acted: z.boolean(), ambushed: z.boolean(), held: z.boolean() };
+// combatant counts as acted. ambushed: no Turn in Round 1 (p.177). manifested: activated its one psychic power this
+// Round (Core p.259, rules-flow §8, §11.181).
+const turnFields = { acted: z.boolean(), ambushed: z.boolean(), held: z.boolean(), manifested: z.boolean() };
 
 export const PcCombatant = z.object({
   id: z.string(),

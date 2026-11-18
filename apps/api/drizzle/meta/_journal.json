@@ -239,6 +239,13 @@
       "when": 1794844479645,
       "tag": "0033_lethal_valeria_richards",
       "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1794980686917,
+      "tag": "0034_burly_anthem",
+      "breakpoints": true
     }
   ]
 }

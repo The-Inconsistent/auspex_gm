@@ -9,6 +9,7 @@ const threat = ({ id, label }: { id: string; label: string }): ThreatCombatant =
   id,
   kind: "threat",
   acted: false,
+  manifested: false,
   ambushed: false,
   held: false,
   threatId: "x",
@@ -79,7 +80,7 @@ const s: LiveState = {
     seizedSide: null,
     back: null,
     combatants: [
-      { id: "pc1", kind: "pc", characterId: "ch1", acted: false, ambushed: false, held: false },
+      { id: "pc1", kind: "pc", characterId: "ch1", acted: false, ambushed: false, held: false, manifested: false },
       threat({ id: "t1", label: "Preacher Hollan" }),
       threat({ id: "t2", label: "Kommando ×6" }),
       threat({ id: "t3", label: "Kommando Nob" }),

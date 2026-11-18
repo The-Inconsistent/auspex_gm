@@ -196,11 +196,14 @@ Mutation tables after a failed Mutation Test (pp.287–288, GitHub issue #182), 
 
 ## 8. Psychic powers (pp.257–267)
 
-One activation per Round. Pool = Psychic Mastery (Wil). Bound +0 / Unbound +1 / Transcendent +max(Rank,Tier)+1
+One activation per Round (p.259). Pool = Psychic Mastery (Wil). Bound +0 / Unbound +1 / Transcendent +max(Rank,Tier)+1
 Wrath Dice (Transcendent: Shock = Wrath Dice count; power level locks upward for the scene). **Any Wrath Die 1 →
-Perils of the Warp** (d66, +10 per extra 1). Sustaining: +2 DN to all Tests per sustained power; external damage →
+Perils of the Warp** (d66, +10 per extra 1; p.262, table p.263). Sustaining (p.265): +2 DN to all Tests per sustained power; external damage →
 Willpower Test (DN = Wounds + Shock taken + penalty) or all sustained powers end. Deny the Witch: DN 2 + power DN +
-Potency Shifts; uses your Combat Action.
+Potency Shifts; uses your Combat Action. The app tracks a sustained power as a `Sustaining: <power>` entry on the
+psyker's Conditions and reminds the GM of the +DN and the Willpower Test in the vox log (§11.180); it never rolls.
+MANIFEST in the tracker (`combatant.manifest`) marks the one activation of the Round and refuses a second (§11.181);
+the GM enters the Wrath 1s, and any 1 opens the Perils lookup.
 
 ## 9. Corruption (pp.285–287)
 
@@ -1095,6 +1098,28 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      Glory is paid there and TURN BACK refunds it. Asks still pending when Round 2 begins, or the fight ends, are
      cleared: the ambush only cost Round 1. AWARE is not in the SPEND dialog's Glory list. *Built from the canvas
      design, 2026-11-17.*
+180. **Sustained powers ride the Conditions list** (Core p.265, §8). A sustained power
+     is a Condition entry `Sustaining: <power>` on the Agent or Threat, so it persists, syncs and shows as a chip with
+     no schema or action of its own. The tracker only reminds, in the vox log: the +2 DN per power at the psyker's
+     turn start, and after damage the Willpower Test (DN = Wounds + Shock taken + penalty, from the amount entered).
+     The Test is never rolled and powers never end on their own; the GM drops one, or END ALL. The tracker's PSYCHIC POWERS panel shows for a
+     psyker (Psychic Mastery or a power on the sheet; a Threat with PSYKER) or anyone still sustaining, and offers a PC's own
+     Sustained-duration powers (`stats.powers`, §11.176) as quick picks. The +2 DN per power is added to the DNs the app
+     shows (the attack guide's TO HIT, the phone's HIT and MANIFEST), and the phone's strip shows the +DN line for every
+     other Test. *Ruled on GitHub PR #167.*
+181. **MANIFEST counts activations, not successes** (Core p.259, §8; Perils Core p.262, its table p.263; sustaining is not an activation,
+     p.266). `combatant.manifest { id, power }` sets `manifested` on the combatant for the Round and refuses a second
+     one (and a combatant that is out); `newRound` clears it with `acted`. Whether the Test succeeded, the power's
+     effect and its Potency stay at the table, so a failed activation still uses the Round's one. The GM enters the
+     Wrath Dice that showed 1; from one up the tracker logs `PERILS OF THE WARP` and opens the Perils lookup with the
+     extra 1s (all but the first) filled in. A Sustained power is offered for SUSTAIN afterwards, never added
+     automatically. The phone's power steps say the Round's power is used. TURN BACK restores the mark with the
+     turn marks (§11.170). *Ruled on GitHub PR #167.*
+182. **"External damage" is any damage the psyker didn't do to themselves** (Core p.265, §8). Bleeding and On Fire are inflicted by someone else, so their ticks count and the Willpower reminder
+     fires on them like on a hit. The psyker's own costs don't: Shock from an Unbound or Transcendent activation and
+     damage from Perils of the Warp. In the app the reminder follows the amount pad's damage and Shock taps, which is
+     where the GM enters hits and Condition ticks; Perils damage goes through the Perils lookup's APPLY and raises no
+     reminder. The GM ignores the reminder for any other self-inflicted tap. *Ruled on GitHub PR #167.*
 
 ---
 
