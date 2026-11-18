@@ -451,6 +451,9 @@ export const Action = z.union([
       leave: BeatStatus.extract(["done", "planned"]).default("done"),
       reveal: z.boolean().default(true),
     }),
+
+    // GM only: reverts one journaled action (journal.sql); refused when a later change touched the same rows.
+    z.object({ type: z.literal("journal.undo"), entryId: id }),
   ]),
   ...codexSave,
 ]);
@@ -484,6 +487,8 @@ export const PLAYER_ACTIONS: ReadonlySet<Action["type"]> = new Set([
 // them — they compare before with after (who crossed a Rank boundary on session.end, Core p.146) — and they are
 // one-off, like the vox log at the table, not state to render later.
 // `slug`: the slug `threat.save` created or kept, so the editor knows which custom threat it is now editing (issue #43).
+// `entry`: the journal entry this action became (journal.service.ts), for the tracker's UNDO; absent when the action
+// changed nothing or ran outside the journal (the admin key's seed loads).
 export type ActionResult =
-  | { ok: true; id?: string; token?: string; slug?: string; notices?: string[]; revealed?: string[] }
+  | { ok: true; id?: string; token?: string; slug?: string; notices?: string[]; revealed?: string[]; entry?: string }
   | { ok: false; error: string };

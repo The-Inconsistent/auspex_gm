@@ -98,7 +98,9 @@ const handleConditionPick = (e: ChangeEvent<HTMLSelectElement>) => { … };
 Every game change is `send(action)` from `useTable()`. That is the server's single validated, serialised mutation path
 (see CLAUDE.md). **Don't use Server Actions or REST routes for game state.** REST is only for login (`/join`, `/me`),
 the GM bestiary, the character library (no table), and the admin page's housekeeping (`lib/admin`: an admin outside any
-table; the api runs it through the socket's own path, `TableGateway.run`).
+table; the api runs it through the socket's own path, `TableGateway.run`), and the session recap draft (`lib/journal-api`:
+a button press that reads the journal once to fill a form, not live state, so there is nothing to push or keep in sync).
+The GM's HISTORY list is not REST: the api pushes it over the socket (`journal` event, `useTable`).
 
 - Build actions with the `ActionInput` type from `@wg/shared`.
 - Counters send **deltas**, never absolute values.

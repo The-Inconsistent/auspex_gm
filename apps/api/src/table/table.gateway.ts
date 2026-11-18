@@ -30,6 +30,7 @@ import { isAdmin } from "../campaign/campaign.service.ts";
 import { db } from "../core/db.ts";
 import { ActionError } from "../core/errors.ts";
 import { clientIp, limiter } from "../core/rate-limit.ts";
+import { journaled, listJournal } from "../journal/journal.service.ts";
 import { applyAction, kicks, touches, type Kick } from "./table.dispatch.ts";
 import { loadCodex, loadState } from "./table.state.ts";
 
@@ -52,6 +53,8 @@ const allowAction = limiter({ max: 120, windowMs: 60_000 });
 const allowPage = limiter({ max: 30, windowMs: 60_000 });
 const PAGE_TIMEOUT_MS = 15_000;
 const KICK_GRACE_MS = 200;
+// How many entries the GM's HISTORY list holds (the `journal` event).
+const JOURNAL_PUSH = 50;
 
 // A GM socket that serves book pages from its own PDFs (book:serving). Presence only, so it dies with the socket.
 type Seat = Ctx & { books?: ThreatSource[] };
@@ -115,6 +118,7 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     const [state, codex] = await Promise.all([loadState(ctx.campaignId), loadCodex(ctx.campaignId)]);
     if (state) socket.emit("state", gm ? state : toPlayerView(state, ctx.characterId));
     socket.emit("codex", gm ? codex : toPlayerCodex(codex, ctx.characterId));
+    if (gm && state) socket.emit("journal", await listJournal(db, { campaignId: ctx.campaignId, limit: JOURNAL_PUSH }));
     this.announceBooks(ctx.campaignId, socket);
   }
 
@@ -167,16 +171,21 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     if (!parsed.success) return { ok: false, error: z.prettifyError(parsed.error) };
     const action = parsed.data;
 
-    return this.run({ ctx, action });
+    return this.run({ ctx, action, seed: admin });
   }
 
   // One action, as the socket handler and the admin REST route both apply it: queued per campaign, in a transaction,
   // then the kicks and the rebroadcast. Refusals come back as { ok: false }.
-  run({ ctx, action }: { ctx: Ctx; action: Action }): Promise<ActionResult> {
+  run({ ctx, action, seed = false }: { ctx: Ctx; action: Action; seed?: boolean }): Promise<ActionResult> {
     return this.serial(ctx.campaignId, async () => {
       let result: ActionResult;
+      let journalled = false;
       try {
-        result = await db.transaction((tx) => applyAction(tx, { ctx, action }));
+        const done = await db.transaction((tx) =>
+          journaled(tx, { ctx, action, skip: seed }, () => applyAction(tx, { ctx, action })),
+        );
+        result = done.entry && done.result.ok ? { ...done.result, entry: done.entry } : done.result;
+        journalled = !!done.entry;
       } catch (e) {
         if (e instanceof ActionError) return { ok: false, error: e.message };
         this.log.error(e);
@@ -196,6 +205,9 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
       } catch (e) {
         this.log.error(e);
       }
+      // The GM's HISTORY list. Queued behind the actions already waiting, not awaited, so the ack doesn't pay for it.
+      if (journalled)
+        this.serial(ctx.campaignId, () => this.pushJournal(ctx.campaignId)).catch((e) => this.log.error(e));
       return result;
     });
   }
@@ -274,6 +286,14 @@ export class TableGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
       this.server.to(r.gm).emit("codex", codex);
       toPlayers("codex", (id) => toPlayerCodex(codex, id));
     }
+  }
+
+  // The GM room's HISTORY list (newest first). Nobody else ever gets it: it names every change, hidden ones included.
+  // Skipped when no GM is connected; the next GM socket gets it on connect.
+  private async pushJournal(campaignId: string) {
+    const room = rooms(campaignId).gm;
+    if (!this.server.sockets.adapter.rooms.get(room)?.size) return;
+    this.server.to(room).emit("journal", await listJournal(db, { campaignId, limit: JOURNAL_PUSH }));
   }
 
   // Disconnects the sockets that just lost access: a removed member, the players of a revoked/deleted character, every

@@ -11,7 +11,6 @@ import {
   canSeize,
   deriveStats,
   effectiveStrength,
-  exhaustedShock,
   isExhausted,
   isTimed,
   type Lookups,
@@ -28,6 +27,7 @@ import {
   type ActionInput,
   type Character,
   type Combatant,
+  type JournalItem,
   type LiveState,
   type MutationTable,
   type Threat,
@@ -49,6 +49,7 @@ import { AttackGuide } from "./components/attack-guide/attack-guide";
 import { CritPerils, type PerilsRequest } from "./components/crit-perils/crit-perils";
 import { DeltaPad } from "./components/delta-pad/delta-pad";
 import { FightRow } from "./components/fight-row/fight-row";
+import { JournalHistory } from "./components/journal-history/journal-history";
 import { KeyBar } from "./components/key-bar/key-bar";
 import { PsychicPanel } from "./components/psychic-panel/psychic-panel";
 import { RoundNotes } from "./components/round-notes/round-notes";
@@ -57,84 +58,34 @@ import type { KeyAction, LogEntry, Run, TurnDo, Vitals } from "./types";
 
 type TrackerProps = {
   state: LiveState;
+  // HISTORY's entries, pushed by the api (the `journal` socket event).
+  journal: JournalItem[];
   send: Send;
   bestiary: Threat[];
   lookups?: Lookups | null;
   mutations?: MutationTable[];
 };
 
-// What a tap will do, read against the state at tap time with the same rules the api runs, because some taps don't do
-// what their delta says: Shock while Exhausted is Mortal Wounds (p.199), a Wound on a Dying PC is a Traumatic Injury
-// (p.193), one huge hit Annihilates (p.194), Shock on a Mob removes one member or nothing (p.325). Undo sends the exact
-// difference back as a raw adjust (no rules), and `note` tells the GM what happened.
-// ponytail: undo doesn't take back an automatic Prone, and a tap that raced another client's diffs the older state;
-// server-side history if that bites.
-function preview({ action: a, state }: { action: ActionInput; state: LiveState }): {
-  undo?: ActionInput;
-  note: string;
-} {
-  const back = (before: number, after: number) => before - after || undefined;
+// What a tap did beyond its delta, read against the state at tap time with the same rules the api runs, because some
+// taps don't do what their delta says: Shock while Exhausted is Mortal Wounds (p.199), a Wound on a Dying PC is a
+// Traumatic Injury (p.193), one huge hit Annihilates (p.194). The log line says so; UNDO is the server's (journal.undo).
+function noteOf({ action: a, state }: { action: ActionInput; state: LiveState }): string {
   const converted = (exhausted: boolean, shock = 0) => (exhausted && shock > 0 ? " → MORTAL WOUNDS (p.199)" : "");
-  const neg = (n?: number) => (n === undefined ? undefined : -n);
-  // An undo's own undo (redo): raw deltas go back as they came. ponytail: inexact if one was clamped at 0.
-  if (a.type === "character.adjust" && a.raw)
-    return {
-      undo: { ...a, wounds: neg(a.wounds), shock: neg(a.shock), wrath: neg(a.wrath), traumatic: neg(a.traumatic) },
-      note: "",
-    };
-  if (a.type === "combatant.adjust" && a.raw)
-    return { undo: { ...a, wounds: neg(a.wounds), shock: neg(a.shock), personalRuin: neg(a.personalRuin) }, note: "" };
-  if (a.type === "character.adjust") {
+  if (a.type === "character.adjust" && !a.raw) {
     const ch = state.characters.find((c) => c.id === a.id);
-    if (!ch) return { note: "" };
+    if (!ch) return "";
     const d = deriveStats({ stats: ch.stats, overrides: ch.overrides, tier: state.campaign.tier });
     const hit = pcHit({ c: ch, d, hit: a });
-    if (hit.annihilated && !ch.annihilated)
-      return { undo: { type: "character.update", id: a.id, annihilated: false }, note: " → ANNIHILATED (p.194)" };
-    return {
-      undo: {
-        type: "character.adjust",
-        id: a.id,
-        raw: true,
-        wounds: back(ch.wounds, hit.wounds),
-        shock: back(ch.shock, hit.shock),
-        traumatic: back(ch.traumatic, Math.max(0, hit.traumatic + (a.traumatic ?? 0))),
-        wrath: back(ch.wrath, Math.max(0, ch.wrath + (a.wrath ?? 0))),
-      },
-      note:
-        hit.traumatic > ch.traumatic
-          ? " → TRAUMATIC INJURY (p.193)"
-          : converted(isExhausted({ ...ch, maxShock: d.maxShock }), a.shock),
-    };
+    if (hit.annihilated && !ch.annihilated) return " → ANNIHILATED (p.194)";
+    return hit.traumatic > ch.traumatic
+      ? " → TRAUMATIC INJURY (p.193)"
+      : converted(isExhausted({ ...ch, maxShock: d.maxShock }), a.shock);
   }
-  if (a.type === "combatant.adjust") {
+  if (a.type === "combatant.adjust" && !a.raw) {
     const c = state.encounter?.combatants.find((x) => x.id === a.id);
-    if (c?.kind !== "threat") return { note: "" };
-    const personalRuin = back(c.personalRuin, Math.max(0, c.personalRuin + (a.personalRuin ?? 0)));
-    if (c.mobCount !== null) {
-      const loss = (a.wounds ?? 0) + (a.shock !== undefined && c.maxShock !== null && a.shock > c.maxShock ? 1 : 0);
-      const after = Math.min(c.mobStart ?? c.mobCount, Math.max(0, c.mobCount - loss));
-      return {
-        undo: { type: "combatant.adjust", id: a.id, raw: true, wounds: back(after, c.mobCount), personalRuin },
-        note: "",
-      };
-    }
-    const exhausted = isExhausted(c);
-    const hit = exhaustedShock({ exhausted, wounds: a.wounds, shock: a.shock });
-    return {
-      undo: {
-        type: "combatant.adjust",
-        id: a.id,
-        raw: true,
-        personalRuin,
-        wounds: back(c.wounds, Math.max(0, c.wounds + hit.wounds)),
-        shock: back(c.shock, Math.max(0, c.shock + hit.shock)),
-      },
-      note: converted(exhausted, a.shock),
-    };
+    return c?.kind === "threat" && c.mobCount === null ? converted(isExhausted(c), a.shock) : "";
   }
-  if (a.type === "pool.adjust") return { undo: { ...a, delta: -a.delta }, note: "" };
-  return { note: "" };
+  return "";
 }
 
 // PCs' counters live on their character; threats' on the combatant row.
@@ -157,7 +108,7 @@ const conditionsAction = (c: Combatant, conditions: string[]): ActionInput =>
     ? { type: "character.update", id: c.characterId, conditions }
     : { type: "combatant.update", id: c.id, conditions };
 
-export function Tracker({ state, send, bestiary, lookups = null, mutations = [] }: TrackerProps) {
+export function Tracker({ state, journal, send, bestiary, lookups = null, mutations = [] }: TrackerProps) {
   const [selected, setSelected] = useState<string | null>(null);
   // The delta pad: which row's number was tapped, and which track it is.
   const [pad, setPad] = useState<{ id: string; field: CounterField } | null>(null);
@@ -172,7 +123,7 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
   const push = (e: Omit<LogEntry, "id">) =>
     setLog((l) => [{ ...e, id: Date.now() + Math.random() }, ...l].slice(0, LOG_LIMIT));
 
-  // Sends an action; on success logs it with its undo, on refusal shows the server's reason.
+  // Sends an action; on success logs it with the journal entry it became (its UNDO), on refusal shows the server's reason.
   const run: Run = async (a, text) => {
     const r = await send(a);
     if (!r.ok) {
@@ -180,8 +131,7 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
       return r;
     }
     setError(null);
-    const { undo, note } = preview({ action: a, state });
-    push({ text: text + note, undo });
+    push({ text: text + noteOf({ action: a, state }), entry: r.entry });
     return r;
   };
 
@@ -486,11 +436,15 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
     );
   };
 
-  // UNDO: sends the inverse delta, then drops the entry from the log once it went through.
-  const handleUndo = async (entry: LogEntry) => {
-    if (!entry.undo) return;
-    const r = await run(entry.undo, `UNDO: ${entry.text}`);
-    if (r.ok) setLog((x) => x.filter((y) => y.id !== entry.id)); // a refused undo keeps its button
+  // UNDO / REDO: asks the server to revert the journal entry. When it goes through, the row turns into the undo and
+  // holds the undo's own entry (REDO there undoes the undo); a refusal ("Undo … first.") keeps the row and shows why.
+  const handleUndo = async (row: LogEntry) => {
+    if (!row.entry) return;
+    const r = await send({ type: "journal.undo", entryId: row.entry });
+    if (!r.ok) return setError(r.error);
+    setError(null);
+    const text = row.undone ? row.text.replace(/^UNDO: /, "") : `UNDO: ${row.text}`;
+    setLog((l) => l.map((x) => (x.id === row.id ? { ...x, text, entry: r.entry, undone: !row.undone } : x)));
   };
 
   // The key bar: one turn button whose label follows the Round (BEGIN ROUND I, END <NAME>'S TURN, BEGIN ROUND N+1);
@@ -779,13 +733,14 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
             <span style={{ flex: 1, fontSize: 15 }} className={l.warn ? "accent" : undefined}>
               {l.text}
             </span>
-            {l.undo && (
+            {l.entry && (
               <button className="btn sm" onClick={() => handleUndo(l)}>
-                UNDO
+                {l.undone ? "REDO" : "UNDO"}
               </button>
             )}
           </div>
         ))}
+        <JournalHistory items={journal} send={send} />
       </aside>
     </div>
   );

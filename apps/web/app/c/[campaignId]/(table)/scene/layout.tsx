@@ -10,7 +10,7 @@ import { gmPath } from "@/lib/gm-path/gm-path";
 // SCENE and its FIGHT layer (/scene/fight) share this layout, so the tracker stays mounted across the switch and keeps
 // its selection, vox log and UNDOs, as it did when the layer was local state.
 export default function SceneLayout({ children }: { children: ReactNode }) {
-  const { campaignId, state, codex, send, bestiary, presets, begun, setBegun } = useGm();
+  const { campaignId, state, codex, journal, send, bestiary, presets, begun, setBegun } = useGm();
   const router = useRouter();
   const fight = useSelectedLayoutSegment() === "fight";
   // The fight ended (here or on another tablet): the URL follows the scene coming back. External system: the
@@ -34,6 +34,7 @@ export default function SceneLayout({ children }: { children: ReactNode }) {
       <Scene
         state={state}
         codex={codex}
+        journal={journal}
         send={send}
         bestiary={bestiary}
         presets={presets}

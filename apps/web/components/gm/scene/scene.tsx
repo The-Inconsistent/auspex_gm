@@ -5,6 +5,7 @@ import {
   activeCharacterIds,
   type ActionInput,
   type Codex,
+  type JournalItem,
   type LiveState,
   type ScenePresets,
   type Threat,
@@ -28,6 +29,7 @@ import type { Report, SceneBeat } from "./types";
 type SceneProps = {
   state: LiveState;
   codex: Codex;
+  journal: JournalItem[];
   send: Send;
   bestiary: Threat[];
   presets: ScenePresets;
@@ -41,7 +43,19 @@ type SceneProps = {
 // SCENE: the GM's play home. The scene being played as the book prints it (the page, what is in it, where next), and
 // while a fight is live a switch to the tracker. One scene is played at a time (beat.begin); its ON ENTRY picks reach the
 // phones when it begins, and a one-line notice can take that back.
-export function Scene({ state, codex, send, bestiary, presets, onEdit, layer, onLayer, notice, onNotice }: SceneProps) {
+export function Scene({
+  state,
+  codex,
+  journal,
+  send,
+  bestiary,
+  presets,
+  onEdit,
+  layer,
+  onLayer,
+  notice,
+  onNotice,
+}: SceneProps) {
   const [previewId, setPreviewId] = useState<string | null>(null); // another scene, read-only
   const [msg, setMsg] = useState<string | null>(null);
   const current = currentScene(codex);
@@ -146,6 +160,7 @@ export function Scene({ state, codex, send, bestiary, presets, onEdit, layer, on
         <div className="scene-fight" hidden={showing !== "fight"}>
           <Tracker
             state={state}
+            journal={journal}
             send={send}
             bestiary={bestiary}
             lookups={presets.lookups}

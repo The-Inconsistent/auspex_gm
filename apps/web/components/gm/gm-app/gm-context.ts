@@ -6,6 +6,7 @@ import type {
   FactionPresets,
   FlavourTable,
   FrameworkCatalogue,
+  JournalItem,
   LiveState,
   NpcPreset,
   PlaceSummary,
@@ -25,6 +26,7 @@ export type Gm = {
   campaignId: string;
   state: LiveState;
   codex: Codex;
+  journal: JournalItem[]; // HISTORY's entries, pushed by the api (the `journal` socket event)
   send: Send;
   bestiary: Threat[]; // the books' stat blocks plus the campaign's customs (issue #43)
   wargear: Wargear[];

@@ -92,6 +92,12 @@ phones/tablets ──HTTPS──▶ Pangolin (prod TLS) ──▶ Next ──rew
 - **The server decides.** Counters take deltas (`+2 Wounds`), clamped at 0 and capped where the rules cap them,
   so simultaneous taps never overwrite each other. Postgres holds all live state; the server keeps no in-memory
   game state.
+- **Every action is journaled.** `journaled()` (`apps/api/src/journal/journal.service.ts`) wraps `applyAction` in the same
+  transaction: it opens a `journal_entry` and a row trigger (`zz_journal`, on every public table but the `UNJOURNALED`
+  list, installed at start) copies each changed row into `journal_change`. The ack carries the entry id. `journal.undo`
+  (GM only) reverts an entry's rows and refuses when a later change touched them, naming that entry; undoing an undo is a
+  redo. The api pushes the GM's history list over the socket (`journal` event, GM room only) and the GM reads a session's
+  recap draft over REST (`docs/backend.md` §3.3, rules-flow §11.183). `campaign.delete` is the one action not journaled.
 - **Two snapshots, full-state broadcast.**
   - `state` (`LiveState`): campaign pools, characters, active encounter.
   - `codex` (`Codex`): factions, adventures and beats, locations, NPCs, handouts, sessions.
@@ -167,6 +173,8 @@ apps/api/src/
                threat.service.ts (loadThreats: bestiary + this campaign's customs, checkThreats)
   whisper/     whisper.schema.ts (whisper: the GM's private lines to Agents and their replies, one session),
                whisper.actions.ts (whisper.send/reply/delete), whisper.clear.ts (session start/end)
+  journal/     journal.schema.ts (journal_entry, journal_change), journal.sql (capture trigger, journal_undo), journal.service.ts
+               (installJournal, journaled, names, labels, list, recap draft), journal.actions.ts (journal.undo), journal.controller.ts (GM REST: the recap draft; the history list is the `journal` socket event)
   table/       table.gateway.ts (socket), table.dispatch.ts (authorize, touches, kicks, applyAction), table.state.ts
 apps/api/drizzle/   generated migrations (applied automatically at startup)
 apps/api/test/      smoke.test.ts: end-to-end GM, player, guest and invite sessions against a running api
@@ -324,12 +332,9 @@ These are binding; follow them when writing code and use them when reviewing:
   socket.io's handshake gets a 308 or 404.
 - **Rate limits** (`apps/api/src/core/rate-limit.ts`, in-process): 60/min per IP on `/api/join`, `/api/guest` and
   `/api/invites`, 120/min **per caller** (their session, falling back to the IP) on `/api/library`, `/api/creation`,
-  `/api/rules`, `/api/frameworks`, `/api/campaigns/import` and `/api/campaigns/:id/import-adventures`, because the library builder autosaves and a whole table shares one IP,
+  `/api/rules`, `/api/frameworks`, `/api/campaigns/import` and `/api/campaigns/:id/import-adventures`, because the library builder autosaves and a whole
+  table shares one IP, and likewise on `/api/campaigns/:id/sessions` (the recap draft, which reads a session's journal),
   60 socket connects/min per IP, 120 actions/min per socket (the admin key is exempt, for `seed.ts`).
   The IP is `CF-Connecting-IP`, so Next's server-side fetches to the api must forward it.
 - **Style:** match the surrounding code. Comments say *why*, with page cites. Deliberate shortcuts are marked
   `// ponytail: <ceiling>, <upgrade path>`.
-
-## Not built yet
-
-- Server-side undo history (client undo is inverse deltas)

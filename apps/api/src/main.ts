@@ -9,8 +9,10 @@ import { AppModule } from "./app.module.ts";
 import { readCookie, resolveCtx } from "./auth/auth.service.ts";
 import { runMigrations } from "./core/db.ts";
 import { clientIp, limiter } from "./core/rate-limit.ts";
+import { installJournal } from "./journal/journal.service.ts";
 
 await runMigrations();
+await installJournal();
 const app = await NestFactory.create(AppModule);
 app.setGlobalPrefix("api");
 app.enableShutdownHooks();
@@ -51,6 +53,14 @@ app.use(
     res.status(429).json({ message: "Too many requests. Wait a minute." });
   },
 );
+
+// The GM's recap draft reads a session's journal for names, so it gets a window per caller too. (The history list is
+// pushed over the socket, not read here.)
+const allowJournal = limiter({ max: 120, windowMs: 60_000 });
+app.use("/api/campaigns/:id/sessions", (req: Request, res: Response, next: NextFunction) => {
+  if (allowJournal(libraryKey(req))) return next();
+  res.status(429).json({ message: "Too many requests. Wait a minute." });
+});
 
 // IMPORT GAME posts a whole campaign file, far bigger than the 100 kB default: its pictures ride in it as base64 (issue
 // #199), where the text alone runs to about 120 kB. Only that route, after its rate limit, and only for a verified

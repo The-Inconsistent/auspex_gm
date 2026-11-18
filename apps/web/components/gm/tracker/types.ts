@@ -2,10 +2,12 @@ import type { ActionInput, ActionResult } from "@wg/shared";
 
 import type { KEY_PANELS, TURN_DOS } from "./constants";
 
-// Sends an action and, on success, writes `text` to the vox log with an undo where one exists.
+// Sends an action and, on success, writes `text` to the vox log with its journal entry (the UNDO) where it has one.
 export type Run = (a: ActionInput, text: string) => Promise<ActionResult>;
 
-export type LogEntry = { id: number; text: string; undo?: ActionInput; warn?: boolean };
+// `entry`: the journal entry the action became; UNDO sends journal.undo for it. `undone`: the row now shows an undo,
+// whose own entry REDO reverts.
+export type LogEntry = { id: number; text: string; entry?: string; undone?: boolean; warn?: boolean };
 
 // One row's harm numbers, from the character (Agents) or the combatant (threats). `max` null = no Shock track ("–").
 export type Vitals = {

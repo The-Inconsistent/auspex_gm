@@ -10,6 +10,7 @@ import { applyCodexAction } from "../codex/codex.actions.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { applyEncounterAction } from "../encounter/encounter.actions.ts";
+import { applyJournalAction } from "../journal/journal.actions.ts";
 import { applySpendAction } from "../spend/spend.actions.ts";
 import { applyTestCallAction } from "../test-call/test-call.actions.ts";
 import { applyThreatAction } from "../threat/threat.actions.ts";
@@ -47,6 +48,7 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
     a.type === "character.delete" ||
     a.type === "character.giveItem" ||
     a.type === "character.takeItem" ||
+    a.type === "journal.undo" || // reverts rows in either snapshot
     a.type.startsWith("session.")
   )
     return { state: true, codex: true };
@@ -221,6 +223,9 @@ function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promis
     case "threat.save":
     case "threat.delete":
       return applyThreatAction(tx, { ctx, action });
+
+    case "journal.undo":
+      return applyJournalAction(tx, { ctx, action });
 
     case "invite.create":
     case "invite.revoke":

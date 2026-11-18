@@ -48,6 +48,7 @@ REST has no CORS enabled: browsers reach it same-origin through the Next rewrite
 | `whisper/` | The GM's private lines to Agents and their short replies, for one session (rules-flow §11.164) | `whisper.actions.ts`: `WhisperAction`, `applyWhisperAction`. `whisper.clear.ts`: `clearWhispers`. `whisper.schema.ts`: `whisper` |
 | `codex/` | Factions, adventures, beats, locations, NPCs, handouts, items | `codex.actions.ts`: `CodexAction`, `applyCodexAction`. `codex.schema.ts`: the seven tables |
 | `admin/` | The admin page's reads and housekeeping (§3.2) | `admin.controller.ts`: `AdminController`. `admin.service.ts`: `listUsers`, `listCampaigns`, `listEvents`, `adminAction`, `removeSeats`. `admin.schema.ts`: `adminEvent` |
+| `journal/` | The action journal: every change as an entry with row images, GM undo, the history list (a socket event) and recap draft (§3.3) | `journal.service.ts`: `installJournal`, `journaled`, `journalNames`, `entryLabels`, `listJournal`, `sessionRecapDraft`. `journal.actions.ts`: `applyJournalAction`. `journal.controller.ts`: `JournalController`. `journal.schema.ts`: `journalEntry`, `journalChange` |
 | `table/` | The socket | `table.gateway.ts`: `TableGateway` (`run`: one action with its kicks and broadcast, for the socket and the admin route). `table.dispatch.ts`: `applyAction`, `touches`, `kicks` (and private `authorize`). `table.state.ts`: `loadState`, `loadCodex` |
 
 Rules:
@@ -203,6 +204,43 @@ caller like the library. Shapes: `packages/shared/src/admin.ts`.
 The action route runs `TableGateway.run` with `{ role: "gm", characterId: null, userId: <admin>, admin: true }`: the same
 queue, transaction, kicks and broadcast as a socket action.
 
+### 3.3 The action journal (`journal/`)
+
+Every socket action that changes a row becomes a `journal_entry` (the parsed `Action`, the user, the time), and each
+changed row a `journal_change` (`tbl`, `row_id`, `op`, and the before and after images; an UPDATE keeps only the changed
+keys). The GM undoes through the `journal.undo` action and reads the history list as a socket event; the one REST read
+left is the recap draft.
+
+- **`journal` event** (socket, GM room only): `JournalItem[]` (`packages/shared/src/journal.ts`), newest first, the last 50
+  (`JOURNAL_PUSH` in `table.gateway.ts`). `label` is `journalLabel` with names from the rows the listed entries mention
+  (live rows, then the journal's row images). Sent to a GM socket on connect and, after the ack, to the GM room once per
+  action that left an entry (queued behind the campaign's waiting actions, and skipped when no GM is connected). Players
+  never receive it. There is no REST route for it.
+
+| Route | Returns |
+|---|---|
+| `GET /api/campaigns/:id/sessions/:sessionId/recap-draft` | `RecapDraft` (`{ lines }`) from that session's entries (made between its start and its end, or now), via `draftRecap`; `404` for a session of another game. GM only (`403` for a player, `401` signed out), scoped to the campaign, rate limited 120/min per caller |
+
+How it works:
+
+- `journaled(tx, { ctx, action, skip }, fn)` (`journal.service.ts`) wraps `applyAction` in the gateway's transaction. It
+  inserts the entry, sets the transaction-local `wg.journal_entry`, runs `fn`, and drops the entry if no row changed. It
+  returns `{ result, entry }`, and the gateway puts `entry` in the ack (`ActionResult.entry`) for the tracker's UNDO. The
+  admin-key socket (`seed.ts`) runs with `skip`, so a pack load leaves no entries. `campaign.delete` is never journaled:
+  `journal_entry` cascades from `campaign`, so the trigger would write change rows for an entry the delete just removed.
+- `installJournal()` runs at every start, after the migrations: it (re)creates `journal.sql`'s functions and puts the
+  `zz_journal` trigger on every base table of the `public` schema (read from `information_schema`, so a table missing
+  from Drizzle's schema object, like `test_call`, is covered) except `UNJOURNALED`. A journaled table without a uuid `id`
+  fails the start. `UNJOURNALED`: the access tables, `library_character`, `admin_event` (an audit log that must survive an
+  undo), `codex_image` (REST uploads, bytea too heavy to copy) and the two journal tables.
+- `journal_undo(entry)` (SQL) restores the entry's rows newest first, checking each against the current row. A conflict
+  raises `journal_conflict:<table>:<row id>`; `journal.actions.ts` finds the earliest standing entry after the target, preferring one that wrote the same column, that
+  changed that row and refuses with ``Undo “<its label>” first.`` (a generic message if none is found). At its end, an undo
+  whose own entry changed a row the target did not (a cascade into rows added since) is a conflict too. The restores run
+  in a savepoint so the lookup can still query after a conflict.
+- Refused by `blocker()` before any SQL: a session end, a deleted Agent, and a created Agent with a seat, invite or guest
+  QR since (rules-flow §11.183).
+
 ## 4. Socket lifecycle (`table/table.gateway.ts`)
 
 ### Handshake: `afterInit` middleware
@@ -235,13 +273,13 @@ the middleware and would take the process down. `smoke.test.ts` covers this.
 ### The `action` event (`onAction`)
 
 Clients call `emitWithAck("action", ActionInput)` and receive an `ActionResult`:
-`{ ok: true, id?, token?, notices? } | { ok: false, error }`. `notices` is one-off text for whoever sent the action,
+`{ ok: true, id?, token?, notices?, entry? } | { ok: false, error }`. `entry` is the journal entry the action became (§3.3). `notices` is one-off text for whoever sent the action,
 for something no snapshot can show afterwards: `session.end` reports who crossed a Rank (it needs the XP from before
 and after the award) and whether the group may now Ascend.
 
 1. **Parse** `Action.safeParse(body)`. A failure acks `{ ok: false, error: <prettified zod error> }` at once, outside the queue.
 2. **Queue** on `serial(ctx.campaignId, …)`.
-3. **Transaction:** `db.transaction(tx => applyAction(tx, { ctx, action }))`. `applyAction` calls `authorize` first, so a
+3. **Transaction:** `db.transaction(tx => journaled(tx, …, () => applyAction(tx, { ctx, action })))` (§3.3). `applyAction` calls `authorize` first, so a
    refusal also happens inside the (then rolled back) transaction.
 4. **Errors:**
    - An `ActionError` (thrown by `fail()`) rolls back and acks `{ ok: false, error: e.message }`. These messages are
@@ -267,6 +305,7 @@ Accepting an invite uses it, so two players claiming the last open agent can't b
 
 - `touches.state` → `loadState` → GM room gets it raw, players room gets `toPlayerView`.
 - `touches.codex` → `loadCodex` → GM room raw, players room `toPlayerCodex`.
+- An action that left a journal entry → `listJournal` → the GM room's `journal` event (§3.3); never the players room.
 
 Always the full snapshot, never a diff.
 

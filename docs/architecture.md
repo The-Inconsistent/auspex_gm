@@ -55,6 +55,9 @@ client send(action) ──▶ gateway ──▶ parse (zod) ──▶ db.transac
       ◀── "state" / "codex" snapshots to GM room + redacted to players room ◀─────────┘
 ```
 
+- **Journaled.** The transaction also records every changed row (`journaled`, `journal/journal.service.ts`), so the GM can
+  undo an action (`journal.undo`), see the history list (pushed to the GM room as the `journal` socket event, never to
+  players) and read a recap draft (`docs/backend.md` §3.3).
 - **Serialized per campaign.** An in-process promise queue runs one action at a time for each campaign. A check-then-act
   inside a handler is safe because of this. The queue assumes a **single api instance** (see the `ponytail:` note in
   `table.gateway.ts`).
@@ -176,7 +179,6 @@ These are marked `ponytail:` in the code, with an upgrade path.
 | --- | --- | --- |
 | In-process action queue | one api instance | Postgres advisory locks |
 | Full-snapshot broadcast | fine at a few KB | patches if the payload grows |
-| Client undo = the exact difference (shared rules, `raw` adjust), read against the state at tap time | doesn't take back an automatic Prone; a raced tap diffs older state | server-side history |
 | Prepared-encounter row cap (`MAX_ENCOUNTER_ROWS`) | 60 combatants per beat, a Mob counts as 1 | raise it, or batch the inserts |
 
 ## Deployment

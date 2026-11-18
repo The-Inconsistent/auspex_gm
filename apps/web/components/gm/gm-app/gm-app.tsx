@@ -75,7 +75,7 @@ export function GmApp({
   const router = useRouter();
   const pathname = usePathname();
   const tab = asGmTab(useSelectedLayoutSegment()); // none on /c/<id> itself, which redirects
-  const { state, codex, online, send, books, requestPage, serveBooks } = useTable(campaignId);
+  const { state, codex, journal, online, send, books, requestPage, serveBooks } = useTable(campaignId);
   const bookServer = useBookServer(serveBooks);
   const [poolError, setPoolError] = useState<string | null>(null);
   const [deleted, setDeleted] = useState(false); // DELETE GAME went through: the server drops the room next
@@ -103,6 +103,7 @@ export function GmApp({
             campaignId,
             state,
             codex,
+            journal,
             send,
             bestiary: allThreats,
             wargear,
@@ -128,6 +129,7 @@ export function GmApp({
       campaignId,
       state,
       codex,
+      journal,
       send,
       allThreats,
       wargear,

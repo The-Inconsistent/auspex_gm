@@ -54,6 +54,14 @@ const API = process.env.API_URL ?? `http://localhost:${process.env.PORT ?? 4000}
 // A test-only Clerk session token (packages/auth/src/api.ts) and the headers that carry one.
 const clerk = (userId: string, role: "creator" | "member" | "admin" = "member") =>
   testSessionToken({ secret: process.env.CLERK_TEST_SECRET ?? "", userId, role });
+// An ack without its journal `entry` (an applied change carries the id of the entry it became, for UNDO), so a test can
+// compare the rest whole. A success that did change something has to carry one.
+const sansEntry = (r: ActionResult): ActionResult => {
+  if (!r.ok || !("entry" in r)) return r;
+  assert.equal(typeof r.entry, "string", "the ack names its journal entry");
+  const { entry: _entry, ...rest } = r;
+  return rest;
+};
 const bearer = (token: string) => ({ authorization: `Bearer ${token}` });
 const get = (path: string, headers: Record<string, string> = {}) => fetch(`${API}/api${path}`, { headers });
 
@@ -1167,7 +1175,7 @@ test("Corruption: a failed Test spends the Wrath and adds the Ruin, seen by the 
   assert.equal((await pa.send({ type: "character.corrupt", id: a.id, delta: -1 })).ok, false, "GM only");
   assert.equal((await gm.send(corrupt({ source: 3, icons: 3 }))).ok, false, "a passed Test is refused");
   // DN 3 − 1 for the spent Wrath, 1 Icon: +1 Corruption, +1 Ruin, −1 Wrath (Core p.286).
-  assert.deepEqual(await gm.send(corrupt({ source: 3, icons: 1, spentWrath: true })), { ok: true });
+  assert.deepEqual(sansEntry(await gm.send(corrupt({ source: 3, icons: 1, spentWrath: true }))), { ok: true });
   const s = await gm.until((s) => s.characters.find((c) => c.id === a.id)?.stats.corruption === 1);
   assert.equal(s.campaign.ruin, 3);
   assert.equal(s.characters.find((c) => c.id === a.id)?.wrath, 1);
@@ -1176,12 +1184,12 @@ test("Corruption: a failed Test spends the Wrath and adds the Ruin, seen by the 
   assert.equal(seen.characters.find((c) => c.id === a.id)?.stats.corruption, 0, "another Agent's is blanked");
 
   // Into Tarnished: a Mutation Test at DN 3 + 1 (p.287). Ruin at its cap of 4 swallows the next +1 (p.320).
-  assert.deepEqual(await gm.send({ type: "character.corrupt", id: a.id, delta: 5 }), {
+  assert.deepEqual(sansEntry(await gm.send({ type: "character.corrupt", id: a.id, delta: 5 })), {
     ok: true,
     notices: ["MUTATION TEST · DN 4"],
   });
   assert.ok((await gm.send({ type: "pool.adjust", pool: "ruin", delta: 5 })).ok);
-  assert.deepEqual(await gm.send(corrupt({ source: 1, icons: 0 })), {
+  assert.deepEqual(sansEntry(await gm.send(corrupt({ source: 1, icons: 0 }))), {
     ok: true,
     notices: ["RUIN IS FULL · THE +1 IS LOST (p.320)"],
   });
@@ -1201,7 +1209,10 @@ test("Corruption: a failed Test spends the Wrath and adds the Ruin, seen by the 
   assert.equal(unseen?.name, "Unseen", "another Agent's are unnamed");
   assert.equal(unseen?.effect, "");
   assert.equal(unseen?.mods.attributes.S, 1, "but count on their bars");
-  assert.deepEqual(await mutate("the-warp-made-manifest"), { ok: true, notices: ["ROLL 2 MORE MUTATIONS (p.295)"] });
+  assert.deepEqual(sansEntry(await mutate("the-warp-made-manifest")), {
+    ok: true,
+    notices: ["ROLL 2 MORE MUTATIONS (p.295)"],
+  });
   const gmView = await gm.until((s) => s.characters.find((c) => c.id === a.id)?.stats.mutations.length === 5);
   assert.deepEqual(
     gmView.characters.find((c) => c.id === a.id)?.stats.mutations.map((m) => m.id),
@@ -1608,7 +1619,11 @@ test("rules edge cases: Dying, out of the fight, Seize, Mobs, codex references, 
   assert.ok((await gm.send({ type: "codex.save", kind: "beat", id: b1.id, data: entry })).ok);
   const [one, two] = [b1.id, b2.id]; // narrowed here; a closure would lose it
   const statusOf = (id: string) => gm.codex()?.adventures[0]?.beats.find((x) => x.id === id)?.status;
-  assert.deepEqual(await gm.send({ type: "beat.begin", id: b1.id }), { ok: true, id: b1.id, revealed: [writ.id] });
+  assert.deepEqual(sansEntry(await gm.send({ type: "beat.begin", id: b1.id })), {
+    ok: true,
+    id: b1.id,
+    revealed: [writ.id],
+  });
   await eventually(
     () => player.codex()?.handouts.some((h) => h.id === writ.id) === true,
     "ON ENTRY reaches the phones",
@@ -2558,7 +2573,7 @@ test("the Space Hulk Generator writes a hulk with its rooms, and rooms into a pl
 
   // ROOMS FOR A PLACE: more rooms inside the hulk later, and no new hulk.
   const more = await gm.send({ type: "codex.addHulk", parentId: wreck.id, hulk: null, rooms: [r3.id] });
-  assert.deepEqual(more, { ok: true, id: wreck.id });
+  assert.deepEqual(sansEntry(more), { ok: true, id: wreck.id });
   await eventually(() => rooms().length === 4, "the later room");
 
   const refused = async (a: object, error: string) =>
@@ -3251,13 +3266,13 @@ test("Ascension: the group's Tier goes up together (issue #15 steps 5-6, Core pp
 
   // Session end awards the XP and tells the GM what it crossed: Rank (Core p.146) and the group's eligibility (p.147).
   assert.ok((await gm.send({ type: "session.start" })).ok);
-  assert.deepEqual(await gm.send({ type: "session.end", xp: 45, recap: "" }), {
+  assert.deepEqual(sansEntry(await gm.send({ type: "session.end", xp: 45, recap: "" })), {
     ok: true,
     notices: ["Kell reached Rank 2 (Core p.146)", "Vyn reached Rank 2 (Core p.146)"],
   });
   await gm.until((s) => s.characters.every((c) => c.xp === 45));
   assert.ok((await gm.send({ type: "session.start" })).ok);
-  assert.deepEqual(await gm.send({ type: "session.end", xp: 55, recap: "" }), {
+  assert.deepEqual(sansEntry(await gm.send({ type: "session.end", xp: 55, recap: "" })), {
     ok: true,
     notices: [
       "Kell reached Rank 3 (Core p.146)",
@@ -3319,7 +3334,7 @@ test("Ascension: a waived package isn't asked for when the build is saved", asyn
     assert.ok((await gm.send({ type: "campaign.ascend", kind: "milestone", waivePackage })).ok);
     await gm.until((s) => s.campaign.tier === 5);
     assert.deepEqual(
-      await gm.send({ type: "character.build", id: made.id, build: advanced }),
+      sansEntry(await gm.send({ type: "character.build", id: made.id, build: advanced })),
       waivePackage
         ? { ok: true, id: made.id }
         : { ok: false, error: "Still to choose: Buy one Ascension Package (Tier 4 → 5)" },
@@ -3489,13 +3504,14 @@ test("scaling counts the whole roster while nobody holds a seat (Core p.326, §1
 
 // Issue #43: a stat block the GM writes or clones, kept with the campaign and usable wherever a bestiary threat goes.
 test("custom threats: saved, used, refused and never sent to a player", async (t) => {
-  const gm = await newCampaign("Customs", 3);
+  const ip = "10.19.12.1"; // its own address, under the per-IP connect limit
+  const gm = await newCampaign("Customs", 3, ip);
   t.after(() => gm.socket.close());
   const kael = await gm.send({ type: "character.create", name: "Kael" });
   assert.ok(kael.ok && kael.id);
   const issued = await gm.send({ type: "token.issue", characterId: kael.id });
   assert.ok(issued.ok && issued.token);
-  const player = connect({ auth: { token: issued.token } });
+  const player = connect({ auth: { token: issued.token }, headers: { "cf-connecting-ip": ip } });
   t.after(() => player.socket.close());
   await player.until((s) => s.characters.length === 1);
 
@@ -3612,7 +3628,7 @@ test("custom threats: saved, used, refused and never sent to a player", async (t
   });
 
   // Another campaign can't see or use it.
-  const other = await newCampaign("Elsewhere", 3);
+  const other = await newCampaign("Elsewhere", 3, ip);
   t.after(() => other.socket.close());
   await eventually(() => other.codex()?.customThreats.length === 0, "a second table sees none");
   assert.ok((await other.send({ type: "encounter.start" })).ok);
@@ -3675,7 +3691,8 @@ test("admin: acts as GM without a seat, housekeeping over REST, archive and dele
     [...users.map((u) => u.name)].sort((a, b) => a.localeCompare(b)),
   );
 
-  const gm = connect({ auth: { campaignId, clerkToken: gmClerk } });
+  // Its own address, under the per-IP connect limit.
+  const gm = connect({ auth: { campaignId, clerkToken: gmClerk }, headers: { "cf-connecting-ip": "10.19.13.1" } });
   t.after(() => gm.socket.close());
   await gm.until((s) => s.campaign.name === "Admin Table");
   const hero = await gm.send({ type: "character.create", name: "Hero" });
@@ -3697,7 +3714,7 @@ test("admin: acts as GM without a seat, housekeeping over REST, archive and dele
     (await lobbies(member)).running.some((g) => g.id === campaignId),
     "a running game is a card for anyone signed in",
   );
-  assert.deepEqual(await act(campaignId, { type: "session.abandon" }), { ok: true });
+  assert.deepEqual(sansEntry(await act(campaignId, { type: "session.abandon" })), { ok: true });
   assert.equal((await entry()).session, null);
   await eventually(() => gm.codex()?.sessions[0]?.endedAt != null, "the session closed");
   assert.equal(gm.codex()?.sessions[0]?.xp, 0);
@@ -3727,11 +3744,11 @@ test("admin: acts as GM without a seat, housekeeping over REST, archive and dele
     ok: false,
     error: "User not found",
   });
-  assert.deepEqual(await act(campaignId, { type: "member.seat", userId: "second-gm" }), { ok: true });
+  assert.deepEqual(sansEntry(await act(campaignId, { type: "member.seat", userId: "second-gm" })), { ok: true });
   const seated = await gm.until((s) => s.access.members.some((m) => m.userId === "second-gm"));
   assert.equal(seated.access.members.find((m) => m.userId === "second-gm")?.role, "gm");
   assert.ok(!seated.access.members.some((m) => m.userId === adminId), "PARTY doesn't list the admin");
-  assert.deepEqual(await act(campaignId, { type: "member.remove", userId: "second-gm" }), { ok: true });
+  assert.deepEqual(sansEntry(await act(campaignId, { type: "member.remove", userId: "second-gm" })), { ok: true });
   await gm.until((s) => !s.access.members.some((m) => m.userId === "second-gm"));
 
   // ARCHIVE: read-only, hidden from `mine` and `running`, listed apart; the way out still works.
@@ -3741,7 +3758,7 @@ test("admin: acts as GM without a seat, housekeeping over REST, archive and dele
   });
   const room = await gm.send({ type: "invite.create", mode: "room" });
   assert.ok(room.ok);
-  assert.deepEqual(await act(campaignId, { type: "campaign.archive" }), { ok: true });
+  assert.deepEqual(sansEntry(await act(campaignId, { type: "campaign.archive" })), { ok: true });
   const archived = await gm.until((s) => s.campaign.archived);
   assert.equal(archived.campaign.archived, true);
   // Nobody new joins a read-only game: archiving revokes its open invites. Taking access away still goes through.
@@ -3767,7 +3784,7 @@ test("admin: acts as GM without a seat, housekeeping over REST, archive and dele
   assert.equal(file.campaign.name, "Admin Table", "an admin exports without a seat");
   assert.ok(!("archived" in file.campaign), "and an import starts a live game");
 
-  assert.deepEqual(await act(campaignId, { type: "campaign.unarchive" }), { ok: true });
+  assert.deepEqual(sansEntry(await act(campaignId, { type: "campaign.unarchive" })), { ok: true });
   await gm.until((s) => !s.campaign.archived);
   assert.ok((await gm.send({ type: "pool.adjust", pool: "glory", delta: 1 })).ok, "writable again");
   assert.ok((await lobbies(creator)).mine.some((g) => g.id === campaignId));
@@ -3786,7 +3803,7 @@ test("admin: acts as GM without a seat, housekeeping over REST, archive and dele
 
   // An admin deletes a game that isn't archived; REMOVE FROM ALL GAMES takes a user out of every game.
   const other = await gmGame("Admin Table B");
-  assert.deepEqual(await act(other, { type: "member.seat", userId: "second-gm" }), { ok: true });
+  assert.deepEqual(sansEntry(await act(other, { type: "member.seat", userId: "second-gm" })), { ok: true });
   const seatsOf = async (id: string) =>
     ((await (await get("/admin/users", admin)).json()) as AdminUser[]).find((u) => u.id === id)?.seats;
   assert.equal((await seatsOf("second-gm"))?.length, 1);
@@ -4101,4 +4118,74 @@ test("IMPORT ADVENTURE: an adventure from a file into a running campaign, reusin
     [a!.title, a!.status, a!.beats[0]!.npcIds, a!.beats[0]!.gmNotes],
     ["The Dig", "planned", [tullLive, vexLive], `Ask @[npc:${vexLive}]`],
   );
+});
+
+test("journal.undo: the GM undoes by the ack's entry, a later change blocks an older undo, players are refused", async (t) => {
+  const gm = await newCampaign("Journal", 2, "10.21.1.1");
+  t.after(() => gm.socket.close());
+  // The history list the api pushes to the GM after every journaled action, newest first.
+  let list: Array<{ id: string; label: string; undoneBy: string | null; undoes: string | null }> = [];
+  gm.socket.on("journal", (l: typeof list) => (list = l));
+  const glory = async (delta: number) => {
+    const r = await gm.send({ type: "pool.adjust", pool: "glory", delta });
+    assert.ok(r.ok && r.entry, "an applied change names its journal entry");
+    return r.entry;
+  };
+  const gloryIs = async (n: number) => (await gm.until((s) => s.campaign.glory === n)).campaign.glory;
+
+  // Undo by the ack's entry puts the value back, and the entry reads as undone in the pushed history.
+  const first = await glory(2);
+  await gloryIs(2);
+  const undone = await gm.send({ type: "journal.undo", entryId: first });
+  assert.ok(undone.ok);
+  assert.equal(await gloryIs(0), 0);
+  await eventually(() => list[0]?.undoes === first, "the history shows the undo");
+  assert.deepEqual([list[0]?.label, list[1]?.label, list[1]?.undoneBy], ["Undo “Glory +2”", "Glory +2", list[0]?.id]);
+  assert.deepEqual(await gm.send({ type: "journal.undo", entryId: first }), { ok: false, error: "Already undone" });
+
+  // An older entry can't go while a later one touched the same value; the refusal names the one to undo first.
+  const older = await glory(1);
+  const newer = await glory(1);
+  await gloryIs(2);
+  assert.deepEqual(await gm.send({ type: "journal.undo", entryId: older }), {
+    ok: false,
+    error: "Undo “Glory +1” first.",
+  });
+  assert.equal(await gloryIs(2), 2, "a refused undo changes nothing");
+  assert.ok((await gm.send({ type: "journal.undo", entryId: newer })).ok);
+  assert.ok((await gm.send({ type: "journal.undo", entryId: older })).ok);
+  assert.equal(await gloryIs(0), 0);
+  assert.deepEqual(await gm.send({ type: "journal.undo", entryId: crypto.randomUUID() }), {
+    ok: false,
+    error: "Nothing to undo",
+  });
+
+  // A player never sees the journal (event or REST) and can't undo.
+  const a = await gm.send({ type: "character.create", name: "A" });
+  assert.ok(a.ok && a.id);
+  const issued = await gm.send({ type: "token.issue", characterId: a.id });
+  assert.ok(issued.ok && issued.token);
+  const player = connect({ auth: { token: issued.token }, headers: { "cf-connecting-ip": "10.21.1.1" } });
+  t.after(() => player.socket.close());
+  let leaked = 0;
+  player.socket.on("journal", () => leaked++);
+  await player.until((s) => s.characters.length === 1);
+  const entry = await glory(1);
+  await player.until((s) => s.campaign.glory === 1);
+  assert.deepEqual(await player.send({ type: "journal.undo", entryId: entry }), { ok: false, error: "GM only" });
+  assert.equal(await gloryIs(1), 1, "the player's undo changed nothing");
+  const cookie = { cookie: `wg_token=${issued.token}` };
+  const sessionId = crypto.randomUUID();
+  assert.equal((await get(`/campaigns/${gm.campaignId}/sessions/${sessionId}/recap-draft`, cookie)).status, 403);
+  assert.equal((await get(`/campaigns/${gm.campaignId}/sessions/${sessionId}/recap-draft`)).status, 401);
+  assert.equal(
+    (await get(`/campaigns/${gm.campaignId}/sessions/${sessionId}/recap-draft`, bearer(gm.gmClerk))).status,
+    404,
+  );
+  assert.equal(
+    (await get(`/campaigns/${gm.campaignId}/journal`, bearer(gm.gmClerk))).status,
+    404,
+    "no REST history list",
+  );
+  assert.equal(leaked, 0, "the journal event goes to the GM room only");
 });

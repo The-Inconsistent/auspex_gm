@@ -1120,6 +1120,14 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      damage from Perils of the Warp. In the app the reminder follows the amount pad's damage and Shock taps, which is
      where the GM enters hits and Condition ticks; Perils damage goes through the Perils lookup's APPLY and raises no
      reminder. The GM ignores the reminder for any other self-inflicted tap. *Ruled on GitHub PR #167.*
+183. **Undo is the GM's, and it refuses rather than guesses** (action journal, `docs/spikes/action-journal.md`). Only the
+     GM may undo an action (`journal.undo` is not a player action). A session end can't be undone: its XP award stands,
+     and a slip is fixed with a GM adjustment (the GM, 2026-10-06). Any other action is undone only if nothing later
+     changed the same values: the refusal names the later entry to undo first, and nothing is half-undone. Undoing a
+     create is refused too when a row added since hangs off it (an Agent added to a fight), naming that entry. An Agent
+     who was deleted, or who has a player seat or guest QR since, can't be brought back by undo, because the seat and
+     the QR live outside the journal. Undoing an undo is a redo. Entries are kept for the campaign's life, with no
+     pruning. *Approved by the GM, 2026-10-06 (the session end and the GM-only rule).*
 
 ---
 
