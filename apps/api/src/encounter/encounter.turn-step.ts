@@ -16,6 +16,7 @@ export const TurnStep = z.object({
       acted: z.boolean(),
       ambushed: z.boolean(),
       held: z.boolean(),
+      manifested: z.boolean().optional(), // absent from a step kept before the column: left as it is
       expiring: z.array(z.string()),
       wounds: z.number().int(),
       shock: z.number().int(),

@@ -26,6 +26,7 @@ export const combatant = pgTable("combatant", {
     .references(() => encounter.id, { onDelete: "cascade" }),
   order: integer().notNull(), // display order only; turn order is chosen at the table
   acted: boolean().notNull().default(false),
+  manifested: boolean().notNull().default(false), // activated a psychic power this Round (rules-flow §8, §11.181)
   ambushed: boolean().notNull().default(false),
   held: boolean().notNull().default(false), // had its Turn and held the action (p.177); implies acted
   kind: text().$type<CombatantKind>().notNull(),

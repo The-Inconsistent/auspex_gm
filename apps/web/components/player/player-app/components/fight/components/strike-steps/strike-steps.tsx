@@ -13,13 +13,14 @@ type StrikeStepsProps = {
   me: Character;
   weapon: Character["stats"]["weapons"][number];
   wounded: boolean;
+  sustain: number; // +2 DN per power the Agent sustains (sustainPenalty, Core p.265)
   target: ThreatCombatant | null; // the threat picked in 2 · PICK A TARGET; its stats are null while the GM shows bars (§11.56)
 };
 
 // THEN, WITH YOUR DICE: what to roll and say for the chosen weapon, the Attack's steps (Core pp.182–184). The dice stay on
 // the table; the phone only reads the numbers back, so the player doesn't work them out. With a target whose stat block
 // is shown, the DN and Resilience are its own, and the damage total typed here reads as Wounds (§11.173); the GM applies.
-export function StrikeSteps({ me, weapon: w, wounded, target }: StrikeStepsProps) {
+export function StrikeSteps({ me, weapon: w, wounded, sustain, target }: StrikeStepsProps) {
   const { find } = useRules();
   const [total, setTotal] = useState("");
   // Digits only, three at most: a damage total, never a sign or a decimal.
@@ -53,15 +54,16 @@ export function StrikeSteps({ me, weapon: w, wounded, target }: StrikeStepsProps
       <li>
         {t ? (
           <b>
-            HIT: {hitDn({ defence: t.defence, attackerWounded: wounded })}+ ICONS ON {name}
+            HIT: {hitDn({ defence: t.defence, attackerWounded: wounded, sustain })}+ ICONS ON {name}
           </b>
         ) : (
           <b>HIT: ICONS ≥ {target ? `${name}'S` : "THE TARGET'S"} DEFENCE</b>
         )}
         <span>
           {t && `Defence ${t.defence}. `}
-          {wounded && "+1: you're Wounded (p.193). "}A 6 you can spare with the DN still met Shifts for +1 ED (pp.165,
-          183).
+          {wounded && "+1: you're Wounded (p.193). "}
+          {sustain > 0 && `+${sustain}: the powers you sustain (p.265). `}A 6 you can spare with the DN still met Shifts
+          for +1 ED (pp.165, 183).
           {!target && " Pick a target above for its numbers."}
           {target && !t && " Its stat block isn't shown to you."}
         </span>

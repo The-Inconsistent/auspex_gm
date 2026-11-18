@@ -1,7 +1,7 @@
 "use client";
 import { ChevronRight } from "lucide-react";
 
-import { deriveStats, pcStatus, poolMax, type Character, type LiveState } from "@wg/shared";
+import { deriveStats, pcStatus, poolMax, sustainLine, type Character, type LiveState } from "@wg/shared";
 
 import { RuleIdLink, RuleLink } from "@/components/ui/rule-link/rule-link";
 import { RequestSpend } from "@/components/ui/request-spend/request-spend";
@@ -122,6 +122,8 @@ export function VitalsStrip({ me, state, send, folded, onOpenSheet }: VitalsStri
               <span className="chip">{k.toUpperCase()}</span>
             </RuleLink>
           ))}
+          {/* What the Sustaining chips cost every Test (Core p.265, rules-flow §11.180). */}
+          {sustainLine(me.conditions) && <span className="chip warn wrap">{sustainLine(me.conditions)}</span>}
         </div>
       )}
     </div>

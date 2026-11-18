@@ -601,6 +601,10 @@ on the row (AMBUSH and AWARE are on the row's mark and dialog, NEW ROUND stays i
 - A selected PC shows archetype and keywords; DEF, RES, Determination and Resolve; Wrath; Traumatic `n/max` with a
   +TRAUMATIC button (`character.adjust { traumatic: 1 }`); ANNIHILATED with a RESTORE button when set; and weapon
   lines.
+- A psyker, or anyone still sustaining a power, also has the **psychic panel** (`tracker/components/psychic-panel`, under PSYCHIC POWERS in the side column): MANIFEST (`combatant.manifest`, one per Round,
+  with a Wrath 1s input; any 1 opens CritPerils on PERILS with the extra 1s, §11.181) and SUSTAIN. A typed power name adds a
+  `Sustaining: <power>` Condition (§11.180). A PC whose sheet has `stats.powers` (§11.176) gets a row of quick picks (Sustained ones marked ⟳) that fill the input; after
+  MANIFEST of a Sustained one, SUSTAIN is highlighted, not applied. Threats and hand-made sheets use the input alone.
 - Below either one sits the **vox log**.
 **Vox log and undo.**
 - `run(action, text)` (the `Run` type in `tracker/types.ts`) wraps `send`. On success it pushes a `LogEntry` to the

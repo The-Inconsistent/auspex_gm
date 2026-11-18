@@ -25,9 +25,17 @@ export function woundsFromDamage({
 // up, as the book's split attacks do; the whole-Mob text gives no rounding (rules-flow §11.173).
 export const mobBonusDice = (mobCount: number) => Math.ceil(mobCount / 2);
 
-// The DN to hit: the target's Defence, +1 while the attacker is Wounded (p.193). Cover, range and vision stay the GM's.
-export const hitDn = ({ defence, attackerWounded }: { defence: number; attackerWounded: boolean }) =>
-  defence + (attackerWounded ? 1 : 0);
+// The DN to hit: the target's Defence, +1 while the attacker is Wounded (p.193), +2 per power it sustains (`sustain`,
+// sustainPenalty, Core p.265). Cover, range and vision stay the GM's.
+export const hitDn = ({
+  defence,
+  attackerWounded,
+  sustain = 0,
+}: {
+  defence: number;
+  attackerWounded: boolean;
+  sustain?: number;
+}) => defence + (attackerWounded ? 1 : 0) + sustain;
 
 // A Threat's attack pool: its Weapon Skill (melee) or Ballistic Skill (ranged) dice from the stat block, else its
 // default Skill dice (Core p.323); null when the block prints neither. Melee is the same test as an Agent's weapon.

@@ -173,7 +173,7 @@ async function startEncounter(tx: Tx, campaignId: string) {
 async function newRound(tx: Tx, { encounterId, round }: { encounterId: string; round: number }) {
   await tx
     .update(combatant)
-    .set({ acted: false, ambushed: false, held: false })
+    .set({ acted: false, ambushed: false, held: false, manifested: false })
     .where(eq(combatant.encounterId, encounterId));
   await tx
     .update(encounter)
@@ -211,6 +211,7 @@ async function pushStep(
       acted: r.acted,
       ambushed: r.ambushed,
       held: r.held,
+      manifested: r.manifested,
       expiring: r.expiring,
       wounds: r.wounds,
       shock: r.shock,
@@ -331,7 +332,10 @@ export async function applyEncounterAction(
       const enc = await activeEncounter(tx, cid);
       if (enc.round !== 0) fail("Round 1 has already begun");
       await pushStep(tx, { encounterId: enc.id, label: () => "Round 1 begins" });
-      await tx.update(combatant).set({ acted: false, held: false }).where(eq(combatant.encounterId, enc.id));
+      await tx
+        .update(combatant)
+        .set({ acted: false, held: false, manifested: false })
+        .where(eq(combatant.encounterId, enc.id));
       await tx
         .update(encounter)
         .set({ round: 1, currentId: null, lastSide: null, seizedSide: null })
@@ -595,6 +599,16 @@ export async function applyEncounterAction(
       await spend(tx, { campaignId: cid, side: sideOfKind(c.kind) });
       await tx.update(combatant).set({ ambushed: false }).where(eq(combatant.id, a.id));
       await clearMootAware(tx, { campaignId: cid, encounterId: enc.id });
+      return { ok: true };
+    }
+
+    case "combatant.manifest": {
+      // One activation per Round, whatever the roll (Core p.259, rules-flow §8, §11.181).
+      const { state, enc } = await liveTable(tx, cid);
+      const c = enc.combatants.find((x) => x.id === a.id) ?? fail("Combatant not found");
+      if (isOut(state, c)) fail("Out of the fight: no psychic powers");
+      if (c.manifested) fail("Already manifested a power this Round (Core p.259)");
+      await tx.update(combatant).set({ manifested: true }).where(eq(combatant.id, a.id));
       return { ok: true };
     }
 

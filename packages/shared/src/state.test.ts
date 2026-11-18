@@ -56,6 +56,7 @@ const threat = (id: string, o: Partial<ThreatCombatant> = {}): ThreatCombatant =
   id,
   kind: "threat",
   acted: false,
+  manifested: false,
   ambushed: false,
   held: false,
   threatId: "ork-boy",
@@ -75,7 +76,16 @@ const threat = (id: string, o: Partial<ThreatCombatant> = {}): ThreatCombatant =
   ...o,
 });
 const pc = (id: string, o: Partial<Combatant> = {}): Combatant =>
-  ({ id, kind: "pc", characterId: `ch-${id}`, acted: false, ambushed: false, held: false, ...o }) as Combatant;
+  ({
+    id,
+    kind: "pc",
+    characterId: `ch-${id}`,
+    acted: false,
+    ambushed: false,
+    held: false,
+    manifested: false,
+    ...o,
+  }) as Combatant;
 const enc = (combatants: Combatant[], o: Partial<Encounter> = {}): Encounter => ({
   id: "e",
   round: 1,
