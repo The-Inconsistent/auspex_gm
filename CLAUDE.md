@@ -227,7 +227,7 @@ apps/web/lib/                command (tracker command line), sheet-pools (a weap
                              print-cards (what a print holds, card sizes, the sheet layout), vox-lines (a vox handout's stamps),
                              codex-image (shrink a picture in the browser, upload it, its seat-gated URL), scene (currentScene),
                              scene-reveal (a reveal's codex.save, UNDO of a begin), story-scenes (READY / TO FIX, taglines),
-                             fight-delta (the delta pad's signed number), party-view (the dossier's pad actions), seen (NEW)
+                             fight-delta (the delta pad's signed number), chronicle (the tracker's log as one entry per Turn), party-view (the dossier's pad actions), seen (NEW)
 apps/web/public/fonts/       Cinzel, Crimson Pro and IBM Plex Mono static WOFF (SIL OFL) for the printed PDF
 packages/shared/src/         source.ts (SOURCES: book ids, precedence, cites), threat.ts, threat-scale.ts (Tier 5
                              profiles, Scaling Threats), state.ts, codex.ts, actions.ts, access.ts (lobby, invite REST shapes), library.ts (personal library REST shapes, LIBRARY_CAP), pack.ts, requisition.ts, wargear.ts, rules.ts, creation.ts,

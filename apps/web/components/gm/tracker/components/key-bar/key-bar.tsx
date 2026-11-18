@@ -16,6 +16,7 @@ type KeyBarProps = {
   more: {
     remove: KeyAction | null;
     newRound: KeyAction | null;
+    history: KeyAction; // the server's journal, as a dialog
     endFight: KeyAction;
   };
   // At the end of the button row (ADD TO FIGHT), so the bar is one line.
@@ -42,7 +43,7 @@ export function KeyBar({ primary, hold, conditions, more, children }: KeyBarProp
   };
 
   // MORE names what's inside it, so it's not a mystery meat button.
-  const moreList = [more.remove && "remove", more.newRound && "new round", "end fight"].filter(Boolean);
+  const moreList = ["history", more.remove && "remove", more.newRound && "new round", "end fight"].filter(Boolean);
 
   const run = (a: KeyAction) => () => {
     close();
@@ -80,6 +81,9 @@ export function KeyBar({ primary, hold, conditions, more, children }: KeyBarProp
         <div className="fight-panel" role="group" aria-label="More actions">
           <span className="label">MORE</span>
           <div className="fight-chips">
+            <button type="button" className="btn" onClick={run(more.history)}>
+              {more.history.label}
+            </button>
             {more.newRound && (
               <button type="button" className="btn" onClick={run(more.newRound)}>
                 {more.newRound.label}

@@ -156,7 +156,7 @@ export function Scene({
         </div>
       )}
       {state.encounter && (
-        // Mounted for the whole fight and only hidden on THE SCENE, so the vox log, UNDOs and selection survive a flip.
+        // Mounted for the whole fight and only hidden on THE SCENE, so the chronicle, UNDO HIT and selection survive a flip.
         <div className="scene-fight" hidden={showing !== "fight"}>
           <Tracker
             state={state}

@@ -201,7 +201,7 @@ Wrath Dice (Transcendent: Shock = Wrath Dice count; power level locks upward for
 Perils of the Warp** (d66, +10 per extra 1; p.262, table p.263). Sustaining (p.265): +2 DN to all Tests per sustained power; external damage →
 Willpower Test (DN = Wounds + Shock taken + penalty) or all sustained powers end. Deny the Witch: DN 2 + power DN +
 Potency Shifts; uses your Combat Action. The app tracks a sustained power as a `Sustaining: <power>` entry on the
-psyker's Conditions and reminds the GM of the +DN and the Willpower Test in the vox log (§11.180); it never rolls.
+psyker's Conditions and reminds the GM of the +DN and the Willpower Test in the chronicle (§11.180); it never rolls.
 MANIFEST in the tracker (`combatant.manifest`) marks the one activation of the Round and refuses a second (§11.181);
 the GM enters the Wrath 1s, and any 1 opens the Perils lookup.
 
@@ -1100,7 +1100,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      design, 2026-11-17.*
 180. **Sustained powers ride the Conditions list** (Core p.265, §8). A sustained power
      is a Condition entry `Sustaining: <power>` on the Agent or Threat, so it persists, syncs and shows as a chip with
-     no schema or action of its own. The tracker only reminds, in the vox log: the +2 DN per power at the psyker's
+     no schema or action of its own. The tracker only reminds, in the chronicle: the +2 DN per power at the psyker's
      turn start, and after damage the Willpower Test (DN = Wounds + Shock taken + penalty, from the amount entered).
      The Test is never rolled and powers never end on their own; the GM drops one, or END ALL. The tracker's PSYCHIC POWERS panel shows for a
      psyker (Psychic Mastery or a power on the sheet; a Threat with PSYKER) or anyone still sustaining, and offers a PC's own
@@ -1159,7 +1159,7 @@ Implementation details: [game-logic.md](game-logic.md).
 | Session start | done | `session.start` (Wrath 2, Glory 0, Ruin = characters), plus a one-line notice naming whoever still has XP to spend, three at a time and then "N more" (Core p.146, p.148; §11.69); `session.end` awards XP |
 | Respite | done | `character.respite` (refused while Dying or Dead) |
 | Personal Ruin | done | `combatant.personalRuin`, seeded from the stat block; tracker SPEND / +1 |
-| Turn reminders | done (client) | `TURN_START_REMINDERS` / `TURN_END_REMINDERS`, fired by the tracker into the GM's vox log only |
+| Turn reminders | done (client) | `TURN_START_REMINDERS` / `TURN_END_REMINDERS`, fired by the tracker into the GM's chronicle only |
 | Slain / Dead in turn order | done | `isOut` in `canAct` / `sideUpNext`; `turn.start` refuses them (even with `force`) and ROUND COMPLETE doesn't wait on them. An Adversary over max Wounds stays until the GM removes it (§11.10) |
 | Annihilation | done | `pcHit`: one hit over 2 × Max Wounds sets `character.annihilated` → Dead (p.194, §11.7); GM RESTORE / undo clears it. Agents only: an Adversary over max Wounds is already the GM's call (§11.10) |
 | Exhausted → Mortal Wounds | done | `exhaustedShock` in `pcHit` and `combatant.adjust` (p.199, §11.12); single Threats too, Mobs keep no Shock track |

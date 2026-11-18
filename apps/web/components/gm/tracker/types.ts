@@ -2,12 +2,12 @@ import type { ActionInput, ActionResult } from "@wg/shared";
 
 import type { KEY_PANELS, TURN_DOS } from "./constants";
 
-// Sends an action and, on success, writes `text` to the vox log with its journal entry (the UNDO) where it has one.
+// Sends an action and, on success, writes `text` to the chronicle with the journal entry it became, where it has one.
 export type Run = (a: ActionInput, text: string) => Promise<ActionResult>;
 
-// `entry`: the journal entry the action became; UNDO sends journal.undo for it. `undone`: the row now shows an undo,
-// whose own entry REDO reverts.
-export type LogEntry = { id: number; text: string; entry?: string; undone?: boolean; warn?: boolean };
+// One chronicle line. `who`: the entry it joins, the Turn being played or the Round between Turns. `entry`: the journal
+// entry the action became. `hit`: a Wounds or Shock tap, what UNDO HIT takes back (journal.undo of its entry).
+export type LogEntry = { id: number; text: string; who: string; entry?: string; hit?: boolean; warn?: boolean };
 
 // One row's harm numbers, from the character (Agents) or the combatant (threats). `max` null = no Shock track ("–").
 export type Vitals = {
