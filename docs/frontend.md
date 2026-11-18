@@ -1211,6 +1211,20 @@ bundle doesn't carry them.
 - **Adding a kind** (#205, #206): a `Card` variant and its branch in `printCards` for something that prints as a card;
   for a page-shaped print, a `Doc` kind with its `KINDS` entry, a resolver beside `printHandouts` and a sheet under
   `components/print`. Either way, a `PrintJob` field for its ids.
+- **The character sheet** (`components/print/character-sheet`) is the one print outside `PrintProvider`: EXPORT
+  SHEET (`ui/sheet-export`) opens its own small dialog (STYLE: PRINT-FRIENDLY or FULL ART; PAPER: A4 or Letter, both
+  remembered per browser) on the player's DOSSIER, in GM PARTY's SHEET and on the builder's REVIEW (the library
+  too). It redraws Cubicle 7's free two-page sheet (the Core pp.40–41 one) in react-pdf, with its artwork from
+  `public/sheet/` (the heading flourish, both logos, the parchment and the iron frame, cut from the official PDFs; the frame comes
+  once per paper, a strip cut from its middle, so A4 isn't squeezed); page 2 runs on when the Talents or Mutations
+  do. `lib/sheet-input` turns a seated `Character` (`fromCharacter`) or a resolved
+  build (`fromBuild`) into what it prints; every number comes from `deriveStats`, `skillRows` and `weaponPool`, worked out as the screen's sheet does
+  (Resilience's BASE is T + 1 before bonuses; a mutation's weapons join Weapons; upgrade notes print in Traits). The
+  button builds its `SheetInput` when the dialog opens, not on every render of the live sheet behind it. The
+  fixed values print, the counters the table tracks (Wrath, Wounds, Shock, Corruption, Faith, Notes) stay blank for
+  pencil. It prints only what that seat's screen already shows, so the gate is the screen's, like the cards; the
+  JOIN page's READ has no button, since a guest's Talents are textless. `constants.ts` keeps the style names out of
+  the react-pdf files, so the button doesn't bundle the renderer.
 
 ---
 

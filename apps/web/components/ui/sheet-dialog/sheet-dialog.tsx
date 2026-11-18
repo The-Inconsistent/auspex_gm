@@ -3,8 +3,10 @@ import { useRef, useState } from "react";
 
 import type { Character, LiveState } from "@wg/shared";
 
+import { fromCharacter } from "@/lib/sheet-input/sheet-input";
 import { BookSheet } from "@/components/ui/book-sheet/book-sheet";
 import { Refusal } from "@/components/ui/refusal/refusal";
+import { SheetExport } from "@/components/ui/sheet-export/sheet-export";
 import type { Send } from "@/hooks/use-table/use-table";
 
 type SheetDialogProps = { me: Character; tier: number; table: { state: LiveState; send: Send } };
@@ -45,6 +47,7 @@ export function SheetDialog({ me, tier, table }: SheetDialogProps) {
         </div>
         <Refusal error={error} onDismiss={() => setError(null)} />
         <div className="dlg-foot">
+          {open && <SheetExport toSheet={() => fromCharacter(me, tier)} />}
           <button className="btn sm" onClick={() => ref.current?.close()}>
             CLOSE
           </button>

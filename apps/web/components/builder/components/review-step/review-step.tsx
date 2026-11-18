@@ -13,6 +13,8 @@ import {
   type Skill,
 } from "@wg/shared";
 
+import { fromBuild } from "@/lib/sheet-input/sheet-input";
+import { SheetExport } from "@/components/ui/sheet-export/sheet-export";
 import { weaponLine } from "@/lib/weapon-line/weapon-line";
 
 import { useBuilder } from "../../builder-context";
@@ -180,6 +182,18 @@ export function ReviewStep({ onSave, onSaveDetails, sheet }: ReviewStepProps) {
           SAVE CHARACTER
         </button>
         {onSaveDetails && <SaveDetails onSaveDetails={onSaveDetails} />}
+        <SheetExport
+          toSheet={() =>
+            fromBuild({
+              name: draft.name.trim() || "Unnamed",
+              build: draft,
+              stats: s,
+              overrides: overrides ?? {},
+              advancement: r.advancement,
+              tier,
+            })
+          }
+        />
         {role !== "gm" && sendDraft && (
           <button className="btn" onClick={handleSendDraft}>
             {sentDraft ? "SEND AGAIN TO GM" : "SEND TO GM"}

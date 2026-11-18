@@ -54,8 +54,6 @@ const savedPaper = (kind: Doc["kind"]): Paper => {
   }
 };
 
-let fontsReady = false; // react-pdf keeps registered fonts per page load
-
 // PRINT on any GM screen (issues #203, #204): the tab names what it wants by id, and this resolves it against what the GM app
 // already holds and builds a PDF in this browser. Nothing is uploaded or stored, so a print follows the screen's gates:
 // only the GM app mounts this provider. A PDF, not window.print(): its cards sit at fixed millimetres, so the sheet
@@ -122,9 +120,8 @@ export function PrintProvider({ source: { state, codex, threats, wargear }, chil
     const mine = generation.current;
     setBuilt("building");
     try {
-      const { registerFonts } = await import("@/components/print/fonts");
-      if (!fontsReady) registerFonts(location.origin);
-      fontsReady = true;
+      const { registerFontsOnce } = await import("@/components/print/fonts");
+      registerFontsOnce(location.origin);
       const blob = await (doc.kind === "cards" ? cardBlob(doc.cards) : handoutBlob(doc.pages));
       if (mine !== generation.current) return; // the job, the paper or the dialog changed while it built
       url.current = URL.createObjectURL(blob);
