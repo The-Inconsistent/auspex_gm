@@ -133,6 +133,12 @@ const THREAT_STATES = [
   { id: "threatWounded", label: "Wounded", when: `!(${OVER_WOUNDS}) && !${OVER_SHOCK} && res.wounds > 0` },
 ].map((s) => ({ ...s, entities: ["threat"] }));
 
+// A Wounded Agent (any Wounds, so a Dying one too) has +1 DN on every Test (p.193). The app adds it to a called Test,
+// which this repo left to the GM (callDn adds only the Corruption modifier); the GM ticks `ignoreWounded` on the call
+// for a character it does not apply to, until an entry can carry such an effect itself.
+const WOUNDED = "(has(res.wounds) && res.wounds > 0 && !ctx.ignoreWounded ? 1 : 0)";
+const IGNORE_WOUNDED = { ignoreWounded: "bool" } as const;
+
 const POOL = {
   die: 6,
   // 4 or 5 is an Icon, 6 an Exalted Icon worth two (p.159); a surplus Exalted Icon may be Shifted (p.165).
@@ -320,8 +326,8 @@ export function buildRuleset() {
         ...POOL,
         entities: ["agent"],
         pool: "derived[ctx.skill]",
-        target: "ctx.dn",
-        inputs: { skill: "text", dn: "int", bonus: "int" },
+        target: `ctx.dn + ${WOUNDED}`,
+        inputs: { skill: "text", dn: "int", bonus: "int", ...IGNORE_WOUNDED },
         inputOptions: { skill: skills.map(idOf) },
         cite: "Core p.158",
       },
@@ -330,8 +336,8 @@ export function buildRuleset() {
         ...POOL,
         entities: ["agent"],
         pool: 'ctx.attribute == "s" ? derived.strengthTotal : attr[ctx.attribute]',
-        target: "ctx.dn",
-        inputs: { attribute: "text", dn: "int", bonus: "int" },
+        target: `ctx.dn + ${WOUNDED}`,
+        inputs: { attribute: "text", dn: "int", bonus: "int", ...IGNORE_WOUNDED },
         inputOptions: { attribute: ATTRIBUTES.map(idOf) },
         cite: "Core p.158",
       },
@@ -340,8 +346,8 @@ export function buildRuleset() {
         ...POOL,
         entities: ["agent"],
         pool: "derived[ctx.trait]",
-        target: "ctx.dn",
-        inputs: { trait: "text", dn: "int", bonus: "int" },
+        target: `ctx.dn + ${WOUNDED}`,
+        inputs: { trait: "text", dn: "int", bonus: "int", ...IGNORE_WOUNDED },
         inputOptions: { trait: ["influence", "resolve"] },
         cite: "Core pp.169-170",
       },
@@ -351,8 +357,8 @@ export function buildRuleset() {
         entities: ["agent"],
         pool: "derived.conviction",
         // The source's DN plus the modifier of the Agent's Corruption level (p.286).
-        target: "ctx.dn + derived.corruptionMod",
-        inputs: { dn: "int", bonus: "int" },
+        target: `ctx.dn + derived.corruptionMod + ${WOUNDED}`,
+        inputs: { dn: "int", bonus: "int", ...IGNORE_WOUNDED },
         cite: "Core p.285",
       },
     },
@@ -381,6 +387,11 @@ export function buildRuleset() {
         id: "timedConditions",
         text: "Hindered, Staggered and Vulnerable end at the end of the affected character's own next Turn.",
         cite: "Core pp.199-200",
+      },
+      {
+        id: "woundedDn",
+        text: "The app adds the +1 DN of a Wounded Agent to a called Test. The GM ticks ignoreWounded on the call for a character it does not apply to.",
+        cite: "Core p.193",
       },
       {
         id: "contaminatedAt11",

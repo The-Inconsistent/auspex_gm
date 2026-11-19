@@ -110,6 +110,25 @@ test("a Corruption Test's DN adds the level's modifier", { skip }, () => {
   }
 });
 
+// The one place the ruleset departs from this repo on purpose: callDn leaves the Wounded +1 DN (p.193) to the GM, the
+// ruleset adds it to every called Test, and the call's ignoreWounded tick takes it off.
+test("a Wounded Agent's called Test has +1 DN unless the call ignores it", { skip }, () => {
+  const compiled = compile();
+  const { stats, build } = PREGENS[0]!;
+  const fields = fieldsOf(stats, build.tier);
+  const target = (test: string, wounds: number, ignoreWounded: boolean) => {
+    const resources = { wounds, corruption: 0 };
+    const derived = engine!.deriveValues({ compiled, entity: "agent", values: { fields, resources } });
+    const scope = engine!.actorScope({ fields, derived, resources, ctx: { dn: 3, ignoreWounded } });
+    return engine!.evaluateInt({ expr: compiled.tests[test]!.target, scope });
+  };
+  for (const id of Object.keys(compiled.tests)) {
+    assert.equal(target(id, 0, false), 3, `${id}: not Wounded`);
+    assert.equal(target(id, 1, false), 4, `${id}: Wounded`);
+    assert.equal(target(id, 1, true), 3, `${id}: Wounded, ignored`);
+  }
+});
+
 test("Glory and Ruin are capped as poolMax caps them", { skip }, () => {
   const compiled = compile();
   for (let players = 1; players <= 8; players++) {
