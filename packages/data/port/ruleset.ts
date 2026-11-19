@@ -240,13 +240,15 @@ export function buildRuleset() {
       },
     ],
     resources: [
-      // Wounds and Shock count up from 0 and may pass their maximum (Dying, Exhausted), so neither is capped.
+      // Wounds and Shock count up from 0 and may pass their maximum (Dying, Exhausted): they start at their minimum
+      // and neither is capped.
       {
         id: "wounds",
         label: "Wounds",
         scope: "entity",
         max: "derived.maxWounds",
         capped: false,
+        start: "min",
         // A Respite clears both and sets Wrath to 2 (pp.196-197): the engine's long rest.
         resetOn: [{ event: "longRest", to: "min" }],
         ...party,
@@ -258,6 +260,7 @@ export function buildRuleset() {
         scope: "entity",
         max: "derived.maxShock",
         capped: false,
+        start: "min",
         resetOn: [{ event: "longRest", to: "min" }],
         ...party,
         cite: "Core p.196",
