@@ -469,10 +469,14 @@ export function buildRuleset() {
     // reference; the port's turns test compares the two over generated fights.
     initiative: {
       strategy: "sides",
+      // An Agent is on the Agents' side and a Threat on the Threats' (sideOfKind, state.ts).
       sides: [
-        { id: "agents", label: "Agents" },
-        { id: "threats", label: "Threats" },
+        { id: "agents", label: "Agents", entities: ["agent"] },
+        { id: "threats", label: "Threats", entities: ["threat"] },
       ],
+      // Dead Agents and Slain Threats take no Turns and do not hold up the Round (isOut, state.ts; pp.193, 324). An
+      // Adversary past Max Wounds stays in the order until the GM removes it (rules-flow §11.10).
+      unableStates: ["dead", "slain"],
       firstSide: "fixed",
       // The GM taps BEGIN ROUND N: a Round never ends by itself (rules-flow §11.169).
       roundEnd: "manual",
