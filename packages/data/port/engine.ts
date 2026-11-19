@@ -7,6 +7,7 @@ export type Problem = { path: string; message: string };
 type Expr = { source: string };
 type Scope = Record<string, unknown>;
 export interface Compiled {
+  ruleset: { health: { states: { id: string; label?: string }[] } };
   resources: Record<string, unknown>;
   tests: Record<string, { pool: Expr | null; target: Expr }>;
 }
@@ -26,6 +27,7 @@ export interface Engine {
   }): Scope;
   resourceBounds(a: { compiled: Compiled; resource: string; scope: Scope }): { min: number; max: number | null };
   evaluateInt(a: { expr: Expr; scope: Scope }): number;
+  healthStatesOf(a: { compiled: Compiled; entity: string; scope: Scope }): string[];
 }
 
 const root = resolve(process.env.INCONSISTABLE ?? new URL("../../../../InconsisTable", import.meta.url).pathname);

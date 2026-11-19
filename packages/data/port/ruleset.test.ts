@@ -11,11 +11,13 @@ import {
   poolMax,
   skillTotal,
   testPool,
+  threatStatus,
+  type ThreatCombatant,
   CharacterStats,
   type Skill,
 } from "@wg/shared";
 import { loadEngine } from "./engine.ts";
-import { buildRuleset, idOf } from "./ruleset.ts";
+import { buildRuleset, idOf, THREAT_CLASSES } from "./ruleset.ts";
 
 // The parity target of the port: the ruleset InconsisTable runs must give, for every pregen, the numbers this repo's
 // own rule functions give. Skipped when InconsisTable is not checked out beside this repo.
@@ -114,5 +116,37 @@ test("Glory and Ruin are capped as poolMax caps them", { skip }, () => {
     const scope = engine!.actorScope({ fields: {}, party: { characters: players } });
     assert.equal(engine!.resourceBounds({ compiled, resource: "glory", scope }).max, poolMax("glory", players));
     assert.equal(engine!.resourceBounds({ compiled, resource: "ruin", scope }).max, poolMax("ruin", players));
+  }
+});
+
+test("a single Threat's state is the one threatStatus gives", { skip }, () => {
+  const compiled = compile();
+  const labels = new Map(compiled.ruleset.health.states.map((s) => [s.id, s.label]));
+  const [maxWounds, max] = [4, 3];
+  for (const threatClass of Object.keys(THREAT_CLASSES) as (keyof typeof THREAT_CLASSES)[]) {
+    for (const maxShock of [max, null]) {
+      for (const wounds of [0, 1, maxWounds, maxWounds + 1]) {
+        for (const shock of [0, max, max + 1]) {
+          const fields = {
+            threatClass: THREAT_CLASSES[threatClass],
+            "stat.wounds": maxWounds,
+            ...(maxShock === null ? {} : { "stat.shock": maxShock }),
+          };
+          const resources = { wounds, shock };
+          const derived = engine!.deriveValues({ compiled, entity: "threat", values: { fields, resources } });
+          const scope = engine!.actorScope({ fields, derived, resources });
+          const got = engine!.healthStatesOf({ compiled, entity: "threat", scope }).map((id) => labels.get(id));
+          const want = threatStatus({
+            threatClass,
+            mobCount: null,
+            wounds,
+            shock,
+            maxWounds,
+            maxShock,
+          } as ThreatCombatant);
+          assert.deepEqual(got, want, `${threatClass} wounds ${wounds}/${maxWounds} shock ${shock}/${maxShock}`);
+        }
+      }
+    }
   }
 });

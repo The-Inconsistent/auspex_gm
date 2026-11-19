@@ -3,9 +3,7 @@
 // private content: write it with `bun packages/data/port/write.ts <file>` and import it through InconsisTable's
 // /library; never commit it to the InconsisTable repo (its ADR 0001).
 //
-// What the manifest cannot say yet is listed in InconsisTable's docs/p3-plan.md; here it is simply left out. Threats
-// are one such thing: a Test and a health state are checked against every actor type, so the Agent-only ones below
-// cannot be declared beside a second actor type.
+// What the manifest cannot say yet is listed in InconsisTable's docs/p3-plan.md; here it is simply left out.
 import {
   AMMO_TYPES,
   ATTRIBUTE_NAMES,
@@ -113,6 +111,28 @@ const conditionCite = (name: string) => {
   return `Core p.${r.page}`;
 };
 
+// The Threat classes (threat.ts ThreatClass), by their code on a stat block.
+export const THREAT_CLASSES = { T: "troop", E: "elite", A: "adversary", M: "monstrous" } as const;
+
+// A single Threat's state, as threatStatus (state.ts) gives it: past Max Wounds an Adversary is the GM's call and any
+// other class is Slain; past Max Shock a Troop is Slain and any other class Exhausted (p.324, rules-flow §11.10).
+const OVER_WOUNDS = "res.wounds > derived.maxWounds";
+const OVER_SHOCK = "(has(stat.shock) && res.shock > stat.shock)";
+const THREAT_STATES = [
+  {
+    id: "slain",
+    label: "Slain",
+    when: `(${OVER_WOUNDS} && threatClass != "adversary") || (!(${OVER_WOUNDS}) && ${OVER_SHOCK} && threatClass == "troop")`,
+  },
+  { id: "dyingOrDead", label: "Dying or dead (GM)", when: `${OVER_WOUNDS} && threatClass == "adversary"` },
+  {
+    id: "threatExhausted",
+    label: "Exhausted",
+    when: `!(${OVER_WOUNDS}) && ${OVER_SHOCK} && threatClass != "troop"`,
+  },
+  { id: "threatWounded", label: "Wounded", when: `!(${OVER_WOUNDS}) && !${OVER_SHOCK} && res.wounds > 0` },
+].map((s) => ({ ...s, entities: ["threat"] }));
+
 const POOL = {
   die: 6,
   // 4 or 5 is an Icon, 6 an Exalted Icon worth two (p.159); a surplus Exalted Icon may be Shifted (p.165).
@@ -192,6 +212,26 @@ export function buildRuleset() {
           },
         ],
       },
+      {
+        // A Threat as its stat block prints it: the Traits are numbers, not formulas (p.323). A Mob is not ported yet.
+        id: "threat",
+        label: "Threat",
+        base: "actor",
+        fields: {
+          name: { type: "text", label: "Name", visibility: "public" },
+          threatClass: { type: "enum", label: "Class", values: Object.values(THREAT_CLASSES), cite: "Core p.323" },
+          "stat.defence": { type: "int", label: "Defence", min: 1 },
+          "stat.resilience": { type: "int", label: "Resilience", min: 1 },
+          "stat.wounds": { type: "int", label: "Max Wounds", min: 1 },
+          // Left unset for a Threat printed with "–": it never takes Shock (p.324).
+          "stat.shock": { type: "int", label: "Max Shock", min: 1 },
+          "stat.speed": { type: "int", label: "Speed", min: 0 },
+        },
+        derived: [
+          { id: "maxWounds", label: "Max Wounds", expr: "stat.wounds", cite: "Core p.323" },
+          { id: "maxShock", label: "Max Shock", expr: opt("stat.shock"), cite: "Core p.324" },
+        ],
+      },
     ],
     resources: [
       // Wounds and Shock count up from 0 and may pass their maximum (Dying, Exhausted), so neither is capped.
@@ -246,6 +286,7 @@ export function buildRuleset() {
         resetOn: [{ event: "sessionStart", to: "party.characters" }],
         cite: "Core p.320",
       },
+      { id: "personalRuin", label: "Personal Ruin", scope: "entity", entities: ["threat"], cite: "Core p.323, p.325" },
       { id: "wealth", label: "Wealth", scope: "entity", entities: ["agent"], ...party, cite: "Core p.38" },
       {
         id: "corruption",
@@ -277,6 +318,7 @@ export function buildRuleset() {
       skill: {
         kind: "poolSuccesses",
         ...POOL,
+        entities: ["agent"],
         pool: "derived[ctx.skill]",
         target: "ctx.dn",
         inputs: { skill: "text", dn: "int", bonus: "int" },
@@ -286,6 +328,7 @@ export function buildRuleset() {
       attribute: {
         kind: "poolSuccesses",
         ...POOL,
+        entities: ["agent"],
         pool: 'ctx.attribute == "s" ? derived.strengthTotal : attr[ctx.attribute]',
         target: "ctx.dn",
         inputs: { attribute: "text", dn: "int", bonus: "int" },
@@ -295,6 +338,7 @@ export function buildRuleset() {
       trait: {
         kind: "poolSuccesses",
         ...POOL,
+        entities: ["agent"],
         pool: "derived[ctx.trait]",
         target: "ctx.dn",
         inputs: { trait: "text", dn: "int", bonus: "int" },
@@ -304,6 +348,7 @@ export function buildRuleset() {
       corruption: {
         kind: "poolSuccesses",
         ...POOL,
+        entities: ["agent"],
         pool: "derived.conviction",
         // The source's DN plus the modifier of the Agent's Corruption level (p.286).
         target: "ctx.dn + derived.corruptionMod",
@@ -313,12 +358,13 @@ export function buildRuleset() {
     },
     health: {
       states: [
-        { id: "dead", label: "Dead", when: `${opt("traumatic")} > derived.maxTraumatic` },
-        { id: "dying", label: "Dying", when: "res.wounds > derived.maxWounds" },
-        { id: "wounded", label: "Wounded", when: "res.wounds > 0" },
-        { id: "exhausted", label: "Exhausted", when: "res.shock > derived.maxShock" },
+        { id: "dead", label: "Dead", when: `${opt("traumatic")} > derived.maxTraumatic`, entities: ["agent"] },
+        { id: "dying", label: "Dying", when: "res.wounds > derived.maxWounds", entities: ["agent"] },
+        { id: "wounded", label: "Wounded", when: "res.wounds > 0", entities: ["agent"] },
+        { id: "exhausted", label: "Exhausted", when: "res.shock > derived.maxShock", entities: ["agent"] },
+        ...THREAT_STATES,
       ],
-      cite: "Core pp.193-196",
+      cite: "Core pp.193-196, p.324",
     },
     decisions: [
       {
