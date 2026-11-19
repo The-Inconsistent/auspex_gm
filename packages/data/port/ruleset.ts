@@ -464,6 +464,34 @@ export function buildRuleset() {
         cite: "Core p.285",
       },
     },
+    // Alternating Turns (pp.176-177): after an Agent a Threat acts and the other way round, the side whose pick it is
+    // chooses who goes, and the players pick first each Round. sideUpNext, canSeize and canAct (state.ts) are the
+    // reference; the port's turns test compares the two over generated fights.
+    initiative: {
+      strategy: "sides",
+      sides: [
+        { id: "agents", label: "Agents" },
+        { id: "threats", label: "Threats" },
+      ],
+      firstSide: "fixed",
+      // The GM taps BEGIN ROUND N: a Round never ends by itself (rules-flow §11.169).
+      roundEnd: "manual",
+      // Round 0: Determine Ambushes and Set the Scene, before Round 1 (p.176 Steps 1 and 2, rules-flow §11.167).
+      setup: { cite: "Core p.176" },
+      // Seize the Initiative: 1 Glory for an Agent, 1 Ruin for a Threat (p.177, p.320).
+      outOfTurn: {
+        cost: { agents: { pool: "glory", amount: 1 }, threats: { pool: "ruin", amount: 1 } },
+        cite: "Core p.177, p.320",
+      },
+      hold: { cite: "Core p.177, p.187" },
+      // Ambushed: no Turn in Round 1; 1 Glory or 1 Ruin makes a character act normally (p.177).
+      barred: {
+        throughRound: 1,
+        liftCost: { agents: { pool: "glory", amount: 1 }, threats: { pool: "ruin", amount: 1 } },
+        cite: "Core p.177",
+      },
+      cite: "Core pp.176-177",
+    },
     health: {
       states: [
         { id: "dead", label: "Dead", when: `${opt("traumatic")} > derived.maxTraumatic`, entities: ["agent"] },
@@ -494,6 +522,21 @@ export function buildRuleset() {
         id: "woundedDn",
         text: "The app adds the +1 DN of a Wounded Agent to a called Test. The GM ticks ignoreWounded on the call for a character it does not apply to.",
         cite: "Core p.193",
+      },
+      {
+        id: "seizeOnce",
+        text: "After a Seize the other side must act next: a side cannot Seize again until then, and the GM's Seize at the start of a Round follows the same limit.",
+        cite: "Core p.177, p.320",
+      },
+      {
+        id: "orderIsASuggestion",
+        text: "The app says which side picks next but lets the GM start any ready combatant for free, to fix a slip at the table.",
+        cite: "Core p.177",
+      },
+      {
+        id: "roundEndsOnTheGm",
+        text: "A Round ends when the GM begins the next one, so a late arrival or an extra Turn can still go first.",
+        cite: "Core p.176",
       },
       {
         id: "contaminatedAt11",
