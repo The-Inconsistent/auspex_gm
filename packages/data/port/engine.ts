@@ -18,13 +18,15 @@ export interface Engine {
   deriveValues(a: {
     compiled: Compiled;
     entity: string;
-    values: { fields: Scope; resources?: Scope };
+    values: { fields: Scope; resources?: Scope; campaign?: Scope };
   }): Record<string, number>;
+  campaignValues(a: { compiled: Compiled; stored: Record<string, unknown> }): Scope;
   actorScope(a: {
     fields: Scope;
     derived?: Scope;
     resources?: Scope;
     party?: { characters: number };
+    campaign?: Scope;
     ctx?: Scope;
   }): Scope;
   resourceBounds(a: { compiled: Compiled; resource: string; scope: Scope }): { min: number; max: number | null };
