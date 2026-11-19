@@ -12,6 +12,8 @@ import {
   corruptionLevel,
   CHAOS_SPAWN_AT,
   SKILLS,
+  Threat,
+  ThreatSize,
   TIMED_CONDITIONS,
   type Attribute,
   type Skill,
@@ -111,6 +113,13 @@ const conditionCite = (name: string) => {
   return `Core p.${r.page}`;
 };
 
+// The printed page of a stat block term (rules/stat-block.json), cited like the Conditions are.
+const statCite = (name: string) => {
+  const r = rules.get(`stat/${name}`);
+  if (!r) throw new Error(`no rules entry for the stat block term ${name}`);
+  return `Core p.${r.page}`;
+};
+
 // The Threat classes (threat.ts ThreatClass), by their code on a stat block.
 export const THREAT_CLASSES = { T: "troop", E: "elite", A: "adversary", M: "monstrous" } as const;
 
@@ -118,17 +127,23 @@ export const THREAT_CLASSES = { T: "troop", E: "elite", A: "adversary", M: "mons
 // other class is Slain; past Max Shock a Troop is Slain and any other class Exhausted (p.324, rules-flow §11.10).
 const OVER_WOUNDS = "res.wounds > derived.maxWounds";
 const OVER_SHOCK = "(has(stat.shock) && res.shock > stat.shock)";
+// A Threat whose class is not set yet (the pack leaves it to the GM) shows none of the three that read it.
+const CLASSED = "has(threatClass)";
 const THREAT_STATES = [
   {
     id: "slain",
     label: "Slain",
-    when: `(${OVER_WOUNDS} && threatClass != "adversary") || (!(${OVER_WOUNDS}) && ${OVER_SHOCK} && threatClass == "troop")`,
+    when: `${CLASSED} && ((${OVER_WOUNDS} && threatClass != "adversary") || (!(${OVER_WOUNDS}) && ${OVER_SHOCK} && threatClass == "troop"))`,
   },
-  { id: "dyingOrDead", label: "Dying or dead (GM)", when: `${OVER_WOUNDS} && threatClass == "adversary"` },
+  {
+    id: "dyingOrDead",
+    label: "Dying or dead (GM)",
+    when: `${CLASSED} && ${OVER_WOUNDS} && threatClass == "adversary"`,
+  },
   {
     id: "threatExhausted",
     label: "Exhausted",
-    when: `!(${OVER_WOUNDS}) && ${OVER_SHOCK} && threatClass != "troop"`,
+    when: `${CLASSED} && !(${OVER_WOUNDS}) && ${OVER_SHOCK} && threatClass != "troop"`,
   },
   { id: "threatWounded", label: "Wounded", when: `!(${OVER_WOUNDS}) && !${OVER_SHOCK} && res.wounds > 0` },
 ].map((s) => ({ ...s, entities: ["threat"] }));
@@ -220,23 +235,101 @@ export function buildRuleset() {
       },
       {
         // A Threat as its stat block prints it: the Traits are numbers, not formulas (p.323). A Mob is not ported yet.
+        // The fields below `threatClass` are what the Threat pack fills (packages/data/port/pack.ts); an unset one is
+        // a printed "–" (or a column the block does not print).
         id: "threat",
         label: "Threat",
         base: "actor",
         fields: {
           name: { type: "text", label: "Name", visibility: "public" },
+          // The class in play: the GM sets it on a Threat placed on the table, until the platform can pick the column
+          // by campaign Tier (the pack fills only the printed columns below).
           threatClass: { type: "enum", label: "Class", values: Object.values(THREAT_CLASSES), cite: "Core p.323" },
-          "stat.defence": { type: "int", label: "Defence", min: 1 },
-          "stat.resilience": { type: "int", label: "Resilience", min: 1 },
-          "stat.wounds": { type: "int", label: "Max Wounds", min: 1 },
+          faction: { type: "enum", label: "Faction", values: Threat.shape.faction.options.map(idOf) },
+          size: { type: "enum", label: "Size", values: ThreatSize.options.map(idOf), cite: statCite("Size") },
+          // The class printed for each Tier, as the book prints it (p.323).
+          ...Object.fromEntries(
+            [1, 2, 3, 4, 5].map((n) => [
+              `class.t${n}`,
+              {
+                type: "enum",
+                label: `Class at Tier ${n}`,
+                values: Object.values(THREAT_CLASSES),
+                cite: statCite("Tier and Threat"),
+              },
+            ]),
+          ),
+          keywords: { type: "list", label: "Keywords", cite: statCite("Keywords") },
+          ...Object.fromEntries(
+            ATTRIBUTES.map((a) => [
+              attrPath(a),
+              { type: "int", label: ATTRIBUTE_NAMES[a], min: 0, cite: statCite(ATTRIBUTE_NAMES[a]) },
+            ]),
+          ),
+          // A printed 0 is real (a Defence of 0 on one block), so no minimum of 1 here.
+          "stat.defence": { type: "int", label: "Defence", min: 0, cite: statCite("Defence") },
+          "stat.resilience": { type: "int", label: "Resilience", min: 1, cite: statCite("Resilience") },
+          "stat.wounds": { type: "int", label: "Max Wounds", min: 1, cite: statCite("Wounds") },
           // Left unset for a Threat printed with "–": it never takes Shock (p.324).
-          "stat.shock": { type: "int", label: "Max Shock", min: 1 },
-          "stat.speed": { type: "int", label: "Speed", min: 0 },
+          "stat.shock": { type: "int", label: "Max Shock", min: 1, cite: statCite("Shock") },
+          "stat.speed": { type: "int", label: "Speed", min: 0, cite: statCite("Speed") },
+          "stat.conviction": { type: "int", label: "Conviction", min: 0, cite: statCite("Conviction") },
+          "stat.resolve": { type: "int", label: "Resolve", min: 0, cite: statCite("Resolve") },
+          "stat.personalRuin": { type: "int", label: "Personal Ruin", min: 1, cite: statCite("Personal Ruin") },
+          "stat.passiveAwareness": { type: "int", label: "Passive Awareness", min: 0, cite: "Core p.37" },
+          // The block's short note on its armour (a few words), not rules text.
+          "stat.armourNote": { type: "text", label: "Armour note", maxLength: 120, cite: statCite("Resilience") },
+          // The Skill ratings as dice; `skill.default` is the block's "all other Skills" rating.
+          "skill.default": { type: "int", label: "Other Skills", min: 0, cite: statCite("Skills") },
+          ...Object.fromEntries(
+            skills.map((s) => [`skill.${idOf(s)}`, { type: "int", label: s, min: 0, cite: statCite("Skills") }]),
+          ),
+          // "Spend N Ruin or Glory to roll Nd6" (p.323), when the block prints exactly that.
+          "determination.cost": { type: "int", label: "Determination: cost", min: 1, cite: statCite("Determination") },
+          "determination.pool": { type: "int", label: "Determination: dice", min: 1, cite: statCite("Determination") },
+          "determination.currency": {
+            type: "enum",
+            label: "Determination: paid in",
+            values: ["ruin", "glory"],
+            cite: statCite("Determination"),
+          },
+          // Names only: the book's text for each stays in the book.
+          abilities: { type: "list", label: "Abilities", cite: statCite("Action") },
+          bonuses: { type: "list", label: "Bonuses", cite: statCite("Bonuses") },
+          options: { type: "list", label: "Options", cite: "Core p.323" },
+          // The keys of this Threat's weapon entries: from its abilities, and from its options.
+          weapons: { type: "list", label: "Weapons", cite: "Core p.323" },
+          variantWeapons: { type: "list", label: "Option weapons", cite: "Core p.323" },
         },
         derived: [
           { id: "maxWounds", label: "Max Wounds", expr: "stat.wounds", cite: "Core p.323" },
           { id: "maxShock", label: "Max Shock", expr: opt("stat.shock"), cite: "Core p.324" },
         ],
+      },
+      {
+        // One printed weapon line of a Threat (its own entry, so the cite is exact). The profile is numbers only.
+        id: "weapon",
+        label: "Weapon",
+        base: "item",
+        fields: {
+          damage: { type: "int", label: "Damage", min: 0, cite: statCite("Damage and Extra Damage Dice") },
+          ed: { type: "int", label: "Extra Damage Dice", min: 0, cite: statCite("Damage and Extra Damage Dice") },
+          // A few blocks print the dice, such as 1d3.
+          edDice: {
+            type: "text",
+            label: "Extra Damage Dice (dice)",
+            maxLength: 20,
+            cite: statCite("Damage and Extra Damage Dice"),
+          },
+          ap: { type: "int", label: "AP", max: 0, cite: statCite("Armour Penetration") },
+          "range.s": { type: "int", label: "Range: short", min: 1, cite: statCite("Range") },
+          "range.m": { type: "int", label: "Range: medium", min: 1, cite: statCite("Range") },
+          "range.l": { type: "int", label: "Range: long", min: 1, cite: statCite("Range") },
+          salvo: { type: "int", label: "Salvo", min: 0, cite: statCite("Salvo") },
+          count: { type: "int", label: "Count", min: 1 },
+          traits: { type: "list", label: "Traits", cite: "Core p.208" },
+          fromOption: { type: "text", label: "From the option", maxLength: 120 },
+        },
       },
     ],
     resources: [

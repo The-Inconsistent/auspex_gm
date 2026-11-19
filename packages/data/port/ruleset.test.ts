@@ -169,3 +169,21 @@ test("a single Threat's state is the one threatStatus gives", { skip }, () => {
     }
   }
 });
+
+test("a Threat whose class is not set shows no class-dependent state", { skip }, () => {
+  const compiled = compile();
+  const labels = new Map(compiled.ruleset.health.states.map((s) => [s.id, s.label]));
+  for (const [wounds, shock, want] of [
+    [0, 0, []],
+    [1, 0, ["Wounded"]],
+    [5, 4, []],
+    [0, 4, []],
+  ] as const) {
+    const fields = { "stat.wounds": 4, "stat.shock": 3 };
+    const resources = { wounds, shock };
+    const derived = engine!.deriveValues({ compiled, entity: "threat", values: { fields, resources } });
+    const scope = engine!.actorScope({ fields, derived, resources });
+    const got = engine!.healthStatesOf({ compiled, entity: "threat", scope }).map((id) => labels.get(id));
+    assert.deepEqual(got, want, `wounds ${wounds}, shock ${shock}`);
+  }
+});

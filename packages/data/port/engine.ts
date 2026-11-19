@@ -11,7 +11,9 @@ export interface Compiled {
   resources: Record<string, unknown>;
   tests: Record<string, { pool: Expr | null; target: Expr }>;
 }
+export type PackResult = { ok: true; warnings: Problem[] } | { ok: false; problems: Problem[]; warnings: Problem[] };
 export interface Engine {
+  validatePack(a: { input: unknown; ruleset: Compiled["ruleset"] }): PackResult;
   compileRuleset(input: unknown): { ok: true; compiled: Compiled } | { ok: false; problems: Problem[] };
   deriveValues(a: {
     compiled: Compiled;
