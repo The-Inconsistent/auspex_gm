@@ -56,10 +56,15 @@ const TRAITS: { id: string; label: string; expr: string; cite: string }[] = [
   {
     id: "maxWounds",
     label: "Max Wounds",
-    expr: `max(1, attr.t + 2 * tier + ${mod("maxWounds")})`,
+    expr: `max(1, attr.t + 2 * campaign.tier + ${mod("maxWounds")})`,
     cite: "Core pp.36-37",
   },
-  { id: "maxShock", label: "Max Shock", expr: `max(1, attr.wil + tier + ${mod("maxShock")})`, cite: "Core pp.36-37" },
+  {
+    id: "maxShock",
+    label: "Max Shock",
+    expr: `max(1, attr.wil + campaign.tier + ${mod("maxShock")})`,
+    cite: "Core pp.36-37",
+  },
   { id: "defence", label: "Defence", expr: `max(1, attr.i - 1 + ${mod("defence")})`, cite: "Core pp.36-37" },
   {
     id: "resilience",
@@ -87,7 +92,7 @@ const TRAITS: { id: string; label: string; expr: string; cite: string }[] = [
   {
     id: "maxTraumatic",
     label: "Max Traumatic Injuries",
-    expr: `tier + 1 + ${mod("maxTraumatic")}`,
+    expr: `campaign.tier + 1 + ${mod("maxTraumatic")}`,
     cite: "Core pp.193-194",
   },
   { id: "rank", label: "Rank", expr: `min(3, 1 + ${opt("xp")} / 40)`, cite: "Core pp.146-147" },
@@ -127,23 +132,25 @@ export const THREAT_CLASSES = { T: "troop", E: "elite", A: "adversary", M: "mons
 // other class is Slain; past Max Shock a Troop is Slain and any other class Exhausted (p.324, rules-flow §11.10).
 const OVER_WOUNDS = "res.wounds > derived.maxWounds";
 const OVER_SHOCK = "(has(stat.shock) && res.shock > stat.shock)";
-// A Threat whose class is not set yet (the pack leaves it to the GM) shows none of the three that read it.
-const CLASSED = "has(threatClass)";
+// The Threat's class follows the campaign's Tier live (its column for that Tier, p.323), where this repo fixes it when
+// the Threat joins the fight (addThreat in apps/api/src/encounter/encounter.actions.ts). The pack writes all five
+// columns for every Threat, so the column always exists.
+const CLASS = "at(class, campaign.tier)";
 const THREAT_STATES = [
   {
     id: "slain",
     label: "Slain",
-    when: `${CLASSED} && ((${OVER_WOUNDS} && threatClass != "adversary") || (!(${OVER_WOUNDS}) && ${OVER_SHOCK} && threatClass == "troop"))`,
+    when: `(${OVER_WOUNDS} && ${CLASS} != "adversary") || (!(${OVER_WOUNDS}) && ${OVER_SHOCK} && ${CLASS} == "troop")`,
   },
   {
     id: "dyingOrDead",
     label: "Dying or dead (GM)",
-    when: `${CLASSED} && ${OVER_WOUNDS} && threatClass == "adversary"`,
+    when: `${OVER_WOUNDS} && ${CLASS} == "adversary"`,
   },
   {
     id: "threatExhausted",
     label: "Exhausted",
-    when: `${CLASSED} && !(${OVER_WOUNDS}) && ${OVER_SHOCK} && threatClass != "troop"`,
+    when: `!(${OVER_WOUNDS}) && ${OVER_SHOCK} && ${CLASS} != "troop"`,
   },
   { id: "threatWounded", label: "Wounded", when: `!(${OVER_WOUNDS}) && !${OVER_SHOCK} && res.wounds > 0` },
 ].map((s) => ({ ...s, entities: ["threat"] }));
@@ -179,8 +186,6 @@ export function buildRuleset() {
     species: { type: "text", label: "Species", ...party },
     archetype: { type: "text", label: "Archetype", ...party },
     keywords: { type: "list", label: "Keywords", ...party },
-    // ponytail: Tier belongs to the campaign; the manifest has no campaign field yet, so each sheet repeats it.
-    tier: { type: "int", label: "Tier", min: 1, max: 5, ...party, cite: "Core p.20" },
     xp: { type: "int", label: "XP earned", min: 0, visibility: "owner", cite: "Core pp.146-147" },
     ...attributes,
     ...Object.fromEntries(skills.map((s) => [`skill.${idOf(s)}`, { type: "int", label: s, min: 0, max: 8, ...party }])),
@@ -198,6 +203,9 @@ export function buildRuleset() {
     id: "wrath-and-glory",
     version: "0.1.0",
     core: "^0.1.0",
+    // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
+    // none to give (a campaign's Tier is chosen when it is created).
+    campaignFields: { tier: { type: "int", label: "Tier", min: 1, max: 5, default: 1, cite: "Core p.20" } },
     // Core rulebook: PDF page = printed + 1 (CLAUDE.md).
     sources: [{ id: "core", title: "Wrath & Glory Core Rulebook", license: "private", pageOffset: 1 }],
     entities: [
@@ -235,19 +243,17 @@ export function buildRuleset() {
       },
       {
         // A Threat as its stat block prints it: the Traits are numbers, not formulas (p.323). A Mob is not ported yet.
-        // The fields below `threatClass` are what the Threat pack fills (packages/data/port/pack.ts); an unset one is
+        // The fields below `name` are what the Threat pack fills (packages/data/port/pack.ts); an unset one is
         // a printed "–" (or a column the block does not print).
         id: "threat",
         label: "Threat",
         base: "actor",
         fields: {
           name: { type: "text", label: "Name", visibility: "public" },
-          // The class in play: the GM sets it on a Threat placed on the table, until the platform can pick the column
-          // by campaign Tier (the pack fills only the printed columns below).
-          threatClass: { type: "enum", label: "Class", values: Object.values(THREAT_CLASSES), cite: "Core p.323" },
           faction: { type: "enum", label: "Faction", values: Threat.shape.faction.options.map(idOf) },
           size: { type: "enum", label: "Size", values: ThreatSize.options.map(idOf), cite: statCite("Size") },
-          // The class printed for each Tier, as the book prints it (p.323).
+          // The class printed for each Tier, as the book prints it (p.323); the class in play is the column of the
+          // campaign's Tier.
           ...Object.fromEntries(
             [1, 2, 3, 4, 5].map((n) => [
               `class.t${n}`,
@@ -493,6 +499,11 @@ export function buildRuleset() {
         id: "contaminatedAt11",
         text: "11 Corruption is Contaminated: the book prints 11 in two rows.",
         cite: "Core p.285",
+      },
+      {
+        id: "threatClassAtTier",
+        text: "A Threat below its first printed Tier takes that Tier's class, and past its last printed column keeps the last.",
+        cite: "Core p.323",
       },
     ],
     layout: {
