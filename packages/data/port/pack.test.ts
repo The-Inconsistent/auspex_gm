@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
+import { threatClassAt } from "@wg/shared";
 import { threats } from "../index.ts";
 import { loadEngine } from "./engine.ts";
 import { buildPack, type Entry } from "./pack.ts";
@@ -98,12 +99,10 @@ for (const [id, cite] of [
     assert.equal(e.body["stat.shock"], file.shock ?? undefined);
     assert.equal(e.body.size, idOf(file.size));
     for (const [a, v] of Object.entries(file.attributes)) assert.equal(e.body[`attr.${idOf(a)}`], v ?? undefined, a);
-    file.threat.forEach((c, i) =>
-      assert.equal(
-        e.body[`class.t${i + 1}`],
-        c === null ? undefined : THREAT_CLASSES[c as keyof typeof THREAT_CLASSES],
-      ),
-    );
+    // A printed column is carried as printed; an unprinted one is the one threatClassAt reads for that Tier.
+    file.threat.forEach((c, i) => {
+      if (c !== null) assert.equal(e.body[`class.t${i + 1}`], THREAT_CLASSES[c as keyof typeof THREAT_CLASSES]);
+    });
     const weapons = file.abilities.flatMap((a) => a.weapons ?? []);
     const keys = e.body.weapons as string[];
     assert.equal(keys.length, weapons.length);
@@ -119,3 +118,17 @@ for (const [id, cite] of [
     });
   });
 }
+
+test("every Threat carries its class at all five Tiers, as threatClassAt reads the printed row", { skip }, () => {
+  const { pack } = buildPack();
+  const byKey = new Map(pack.entries.filter((e) => e.type === "threat").map((e) => [e.key, e]));
+  for (const t of threats.values()) {
+    for (let tier = 1; tier <= 5; tier++) {
+      assert.equal(
+        byKey.get(t.id)?.body[`class.t${tier}`],
+        THREAT_CLASSES[threatClassAt(t, tier)],
+        `${t.id} Tier ${tier}`,
+      );
+    }
+  }
+});

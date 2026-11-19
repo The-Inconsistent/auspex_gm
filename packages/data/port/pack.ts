@@ -6,7 +6,7 @@
 // What it leaves out on purpose (docs of the port, the product owner's decisions of 2026-11-20): the text of every
 // Ability, Bonus, Option and Determination, the transcription `note`, and all Mob content. Anything the fields cannot
 // hold comes back in `leftOut`, with its Threat id and why.
-import { SKILLS, threatCite, type Skill, type Weapon } from "@wg/shared";
+import { SKILLS, threatCite, threatClassAt, type Skill, type Weapon } from "@wg/shared";
 import { threats } from "../index.ts";
 import { idOf, THREAT_CLASSES } from "./ruleset.ts";
 
@@ -73,12 +73,9 @@ export function buildPack(): { pack: Pack; leftOut: LeftOut[]; normalised: Recor
       else body[field] = value;
     };
 
-    t.threat.forEach((c, i) =>
-      c === null
-        ? skip("null value: class.t (a Tier column not printed)", t.id)
-        : (body[`class.t${i + 1}`] = THREAT_CLASSES[c]),
-    );
-    if (t.threat.length < 5) skip("no fifth Tier column printed", t.id);
+    // The class at every Tier, as this repo reads the printed row (threatClassAt): below its first printed Tier a
+    // threat takes that Tier's class, and past its last column it keeps the last. So no column is ever missing.
+    for (let tier = 1; tier <= 5; tier++) body[`class.t${tier}`] = THREAT_CLASSES[threatClassAt(t, tier)];
     for (const [a, v] of Object.entries(t.attributes)) put(`attr.${idOf(a)}`, v, `attr.${idOf(a)}`);
     body["stat.defence"] = t.defence;
     body["stat.resilience"] = t.resilience.value;
