@@ -74,6 +74,30 @@ test("every pregen's Traits and Skill totals match deriveStats and skillTotal", 
   }
 });
 
+test("a pregen copied in by hand through the creation steps gets the same field rows", { skip }, () => {
+  const compiled = compile();
+  const steps = buildRuleset().creation;
+  for (const { name, stats } of PREGENS) {
+    // Everything the sheet holds, with nothing for a rating or a bonus it does not list.
+    const sheet: Record<string, unknown> = {
+      ...Object.fromEntries(steps.flatMap((s) => s.fields).map((f) => [f, 0])),
+      ...fieldsOf(stats),
+      species: stats.species,
+      archetype: stats.archetype,
+      keywords: stats.keywords,
+    };
+    const answers = Object.fromEntries(
+      steps.map((s) => [s.id, Object.fromEntries(s.fields.map((f) => [f, sheet[f]]))]),
+    );
+    const made = engine!.runCreation({ ruleset: compiled.ruleset, actor: "agent", answers, lookup: () => undefined });
+    if (!made.ok) assert.fail(`${name}: ${made.problems.map((p) => `${p.path}: ${p.message}`).join("; ")}`);
+    assert.deepEqual(made.fields, sheet, name);
+  }
+  // Only the Attributes are asked of everyone.
+  const bare = engine!.runCreation({ ruleset: compiled.ruleset, actor: "agent", answers: {}, lookup: () => undefined });
+  assert.deepEqual(bare.ok ? [] : bare.problems.map((p) => p.path), ["attributes"]);
+});
+
 test("a called Test rolls the pool testPool gives", { skip }, () => {
   const compiled = compile();
   const { stats, build } = PREGENS[0]!;

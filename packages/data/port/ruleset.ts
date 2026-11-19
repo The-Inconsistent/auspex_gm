@@ -553,6 +553,36 @@ export function buildRuleset() {
         cite: "Core p.323",
       },
     ],
+    // Until the creation catalogue and the XP ledger are ported, a character is copied in from a finished sheet:
+    // free input, nothing priced, each value checked only against its field's own range. Only the Attributes are
+    // asked of everyone; a skipped step leaves its values at nothing (no Skill ratings, no armour, no bonuses).
+    creation: [
+      { id: "who", label: "Who", fields: ["species", "archetype", "keywords"], optional: true, cite: "Core p.21" },
+      { id: "attributes", label: "Attributes", fields: [...ATTRIBUTES.map(attrPath), "baseSpeed"], cite: "Core p.24" },
+      {
+        id: "skills",
+        label: "Skill ratings",
+        fields: skills.map((s) => `skill.${idOf(s)}`),
+        optional: true,
+        cite: "Core p.25",
+      },
+      {
+        id: "armour",
+        label: "Armour",
+        fields: ["armour.ar", "armour.powered"],
+        optional: true,
+        cite: "Core pp.36-37, p.232",
+      },
+      {
+        id: "bonuses",
+        label: "Trait bonuses",
+        fields: Object.keys(MODS).map((k) => `mod.${k}`),
+        optional: true,
+        cite: "Core p.30",
+      },
+      // Rank reads the XP earned in play (pp.146-147): nothing for a new character.
+      { id: "experience", label: "XP earned in play", fields: ["xp"], optional: true, cite: "Core pp.146-147" },
+    ].map((step) => ({ ...step, actor: "agent", kind: "fields" })),
     layout: {
       agent: {
         sections: [
