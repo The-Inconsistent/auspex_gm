@@ -32,6 +32,16 @@ export interface Engine {
   resourceBounds(a: { compiled: Compiled; resource: string; scope: Scope }): { min: number; max: number | null };
   evaluateInt(a: { expr: Expr; scope: Scope }): number;
   healthStatesOf(a: { compiled: Compiled; entity: string; scope: Scope }): string[];
+  runOp(a: {
+    primitive: string;
+    op: string;
+    params: unknown;
+    state: unknown;
+    input: unknown;
+  }):
+    | { ok: true; deltas: { target: Record<string, unknown>; kind: string; value: unknown }[] }
+    | { ok: false; refusal: { code: string; detail?: string } };
+  sideUp(a: { params: unknown; state: unknown }): string | null;
 }
 
 const root = resolve(process.env.INCONSISTABLE ?? new URL("../../../../InconsisTable", import.meta.url).pathname);
