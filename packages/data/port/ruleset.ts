@@ -10,6 +10,7 @@ import {
   Attitude,
   ATTITUDE_DN,
   ATTRIBUTE_NAMES,
+  AdventureStatus,
   BeatType,
   ATTRIBUTES,
   CONDITIONS,
@@ -27,6 +28,7 @@ import {
   type Attribute,
   type Skill,
 } from "@wg/shared";
+import { ADVENTURE_STATUS } from "../../../apps/web/components/gm/prep/constants.ts";
 import { rulesList } from "../index.ts";
 import { buildParams } from "./build-params.ts";
 
@@ -313,7 +315,8 @@ function catalogueEntities(params: ReturnType<typeof buildParams>) {
 // What this repo's codex holds beside an entry's name and texts (CodexInput, packages/shared/src/codex.ts), so a
 // campaign moved over keeps it (InconsisTable's house decision #71). A field's visibility is what toPlayerCodex sends: a
 // value it sends once the entry is revealed is `party`, the entry's own visibility hiding it until then; one it blanks
-// is `gm`. Enum words are the editor's (codex-editor.tsx, beat-editor.tsx: the value in capitals).
+// is `gm`. Enum words are the editor's (codex-editor.tsx, beat-editor.tsx: the value in capitals). A link to another
+// entry (`entry`, house decision #76) is one of this repo's foreign keys between codex rows.
 const capOf = (s: { unwrap(): { maxLength: number | null } }) => s.unwrap().maxLength!;
 const capitals = (values: readonly string[]) => Object.fromEntries(values.map((v) => [v, v.toUpperCase()]));
 /** How a faction's Keywords join into its one text field (the codex has no list): as its card shows them. */
@@ -335,6 +338,8 @@ export const CODEX = {
               .filter((a) => ATTITUDE_DN[a] !== 0)
               .map((a) => [a, `${ATTITUDE_DN[a] < 0 ? "−" : "+"}${Math.abs(ATTITUDE_DN[a])} DN`]),
           ),
+          // The chip draws a harder DN as a warning and has no positive colour (attitude-chip.tsx).
+          tones: Object.fromEntries(Attitude.options.filter((a) => ATTITUDE_DN[a] > 0).map((a) => [a, "bad"])),
           visibility: "party",
           cite: "Core p.168",
         },
@@ -343,6 +348,8 @@ export const CODEX = {
         // the Quick NPC table, p.326, and a specialty Skill) is no field: the codex has no inline stat block, so the
         // converter writes it into the GM notes (house decision #71: "a ref plus the GM's own text").
         stats: { type: "ref", label: "Stat block", entity: "threat", visibility: "gm" },
+        // `factionId`: players never receive it (toPlayerCodex).
+        faction: { type: "entry", label: "Faction", kind: "faction", visibility: "gm" },
       },
     },
     // Players receive no faction. The card's ally hint (mixingHint, Core p.317) is computed from stance and Keywords,
@@ -379,9 +386,16 @@ export const CODEX = {
         outcome: { type: "text", label: "Outcome", maxLength: capOf(CodexInput.beat.shape.outcome), visibility: "gm" },
       },
     },
-    // The premise stays the entry's own text; the brief is what a shown mission's phones read.
+    // The premise stays the entry's own text; the brief and the status are what a shown mission's phones read.
     adventure: {
       fields: {
+        status: {
+          type: "enum",
+          label: "Status",
+          values: [...AdventureStatus.options],
+          labels: { ...ADVENTURE_STATUS },
+          visibility: "party",
+        },
         brief: {
           type: "text",
           label: "Brief",
@@ -401,7 +415,14 @@ export const CODEX = {
         },
       },
     },
-    // No item field: a player reads only a given item's name and description, the entry's own title and text.
+    // A player reads only a given item's name and description, the entry's own title and text: where it lay and who
+    // carried it (`locationId`, `npcId`, worded as holder-field.tsx asks) stay the GM's.
+    item: {
+      fields: {
+        location: { type: "entry", label: "Where it lies", kind: "location", visibility: "gm" },
+        holder: { type: "entry", label: "Who carries it", kind: "npc", visibility: "gm" },
+      },
+    },
   },
 } as const;
 
@@ -446,7 +467,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
 
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.3",
+    version: "0.1.4",
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
     // none to give (a campaign's Tier is chosen when it is created).
@@ -890,7 +911,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.3",
+    version: "0.2.4",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
