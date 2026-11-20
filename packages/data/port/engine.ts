@@ -42,6 +42,12 @@ export interface Engine {
     | { ok: true; deltas: { target: Record<string, unknown>; kind: string; value: unknown }[] }
     | { ok: false; refusal: { code: string; detail?: string } };
   sideUp(a: { params: unknown; state: unknown }): string | null;
+  runCreation(a: {
+    ruleset: Compiled["ruleset"];
+    actor: string;
+    answers: Record<string, unknown>;
+    lookup: (a: { type: string; key: string }) => undefined;
+  }): { ok: true; fields: Record<string, unknown> } | { ok: false; problems: Problem[] };
 }
 
 const root = resolve(process.env.INCONSISTABLE ?? new URL("../../../../InconsisTable", import.meta.url).pathname);
