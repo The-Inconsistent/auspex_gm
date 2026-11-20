@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { Attitude, BeatType, CodexInput, FactionStance, toPlayerCodex, type Codex } from "@wg/shared";
+import { AdventureStatus, Attitude, BeatType, CodexInput, FactionStance, toPlayerCodex, type Codex } from "@wg/shared";
 import { checksCodex, loadEngine } from "./engine.ts";
 import { buildPack } from "./pack.ts";
 import { buildRuleset, CODEX } from "./ruleset.ts";
@@ -17,7 +17,15 @@ const skip =
     ? "InconsisTable is not checked out beside this repo"
     : !checksCodex(engine, rulesets[0][1]) && "this InconsisTable checkout does not check the codex block yet";
 
-type Def = { type: string; label: string; visibility: string; maxLength?: number; entity?: string; cite?: string };
+type Def = {
+  type: string;
+  label: string;
+  visibility: string;
+  maxLength?: number;
+  entity?: string;
+  kind?: string;
+  cite?: string;
+};
 type Kinds = Record<string, { fields: Record<string, Def & Record<string, unknown>> }>;
 
 test("both rulesets compile with the codex block, which the platform keeps as written", { skip }, () => {
@@ -29,7 +37,7 @@ test("both rulesets compile with the codex block, which the platform keeps as wr
 });
 
 test("every field has its type, visibility and wording", () => {
-  const brief = (d: Def) => [d.type, d.visibility, d.label, d.maxLength ?? d.entity ?? null, d.cite ?? null];
+  const brief = (d: Def) => [d.type, d.visibility, d.label, d.maxLength ?? d.entity ?? d.kind ?? null, d.cite ?? null];
   const got = Object.fromEntries(
     Object.entries(CODEX.kinds as unknown as Kinds).flatMap(([kind, k]) =>
       Object.entries(k.fields).map(([id, d]) => [`${kind}.${id}`, brief(d)]),
@@ -39,13 +47,17 @@ test("every field has its type, visibility and wording", () => {
     "npc.attitude": ["enum", "party", "Attitude", null, "Core p.168"],
     "npc.role": ["text", "party", "Role", 200, null],
     "npc.stats": ["ref", "gm", "Stat block", "threat", null],
+    "npc.faction": ["entry", "gm", "Faction", "faction", null],
     "faction.stance": ["enum", "gm", "Stance", null, null],
     "faction.keywords": ["text", "gm", "Keywords", 20 * 60 + 19 * 3, "Core pp.375-378"],
     "scene.type": ["enum", "gm", "Type", null, null],
     "scene.goal": ["text", "gm", "Goal", 500, null],
     "scene.outcome": ["text", "gm", "Outcome", 5000, null],
+    "adventure.status": ["enum", "party", "Status", null, null],
     "adventure.brief": ["text", "party", "Brief", 300, null],
     "location.hazards": ["text", "gm", "Hazards", 5000, null],
+    "item.location": ["entry", "gm", "Where it lies", "location", null],
+    "item.holder": ["entry", "gm", "Who carries it", "npc", null],
   });
   const { attitude } = CODEX.kinds.npc.fields;
   assert.deepEqual(attitude.labels, {
@@ -57,6 +69,15 @@ test("every field has its type, visibility and wording", () => {
   });
   // As the chip words them (attitude-chip.tsx), with no note for Neutral, which draws no chip.
   assert.deepEqual(attitude.notes, { hostile: "+4 DN", uncooperative: "+2 DN", friendly: "−2 DN", helpful: "−4 DN" });
+  // The chip's warning colour is a harder DN; it has no positive colour (attitude-chip.tsx).
+  assert.deepEqual(attitude.tones, { hostile: "bad", uncooperative: "bad" });
+  // As STORY's status select words them (prep/constants.ts): `running` reads ACTIVE.
+  assert.deepEqual(CODEX.kinds.adventure.fields.status.labels, {
+    planned: "PLANNED",
+    running: "ACTIVE",
+    done: "DONE",
+    failed: "FAILED",
+  });
   assert.deepEqual(CODEX.kinds.faction.fields.stance.labels, {
     ally: "ALLY",
     neutral: "NEUTRAL",
@@ -67,23 +88,24 @@ test("every field has its type, visibility and wording", () => {
 });
 
 test("every enum's values are this repo's own constants, each with its label", () => {
-  const { npc, faction, scene } = CODEX.kinds;
+  const { npc, faction, scene, adventure } = CODEX.kinds;
   assert.deepEqual(npc.fields.attitude.values, Attitude.options);
   assert.deepEqual(faction.fields.stance.values, FactionStance.options);
   assert.deepEqual(scene.fields.type.values, BeatType.options);
-  for (const def of [npc.fields.attitude, faction.fields.stance, scene.fields.type])
+  assert.deepEqual(adventure.fields.status.values, AdventureStatus.options);
+  for (const def of [npc.fields.attitude, faction.fields.stance, scene.fields.type, adventure.fields.status])
     assert.deepEqual(Object.keys(def.labels), def.values);
 });
 
 test("a field is party exactly when toPlayerCodex sends its value to a revealed entry", () => {
   const id = () => crypto.randomUUID();
-  const adventureId = id();
+  const [adventureId, factionId, locationId, npcId, characterId] = [id(), id(), id(), id(), id()];
   const codex: Codex = {
-    factions: [{ id: id(), ...CodexInput.faction.parse({ name: "F", keywords: ["IMPERIUM"], stance: "ally" }) }],
+    factions: [{ id: factionId, ...CodexInput.faction.parse({ name: "F", keywords: ["IMPERIUM"], stance: "ally" }) }],
     adventures: [
       {
         id: adventureId,
-        ...CodexInput.adventure.parse({ title: "A", brief: "b", shown: true }),
+        ...CodexInput.adventure.parse({ title: "A", brief: "b", status: "running", shown: true }),
         beats: [
           {
             id: id(),
@@ -93,26 +115,32 @@ test("a field is party exactly when toPlayerCodex sends its value to a revealed 
         ],
       },
     ],
-    locations: [{ id: id(), ...CodexInput.location.parse({ name: "L", hazards: "h", revealed: true }) }],
+    locations: [{ id: locationId, ...CodexInput.location.parse({ name: "L", hazards: "h", revealed: true }) }],
     npcs: [
       {
-        id: id(),
+        id: npcId,
         ...CodexInput.npc.parse({
           name: "N",
           role: "r",
           attitude: "hostile",
           statSource: { kind: "bestiary", threatId: "t" },
+          factionId,
           revealed: true,
         }),
       },
     ],
     handouts: [],
-    items: [],
+    // Given to the player's own Agent, so the item itself is sent; one lies at the place, one is carried.
+    items: [
+      { id: id(), ...CodexInput.item.parse({ name: "I", locationId }), givenTo: characterId },
+      { id: id(), ...CodexInput.item.parse({ name: "J", npcId }), givenTo: characterId },
+    ],
     sessions: [],
     customThreats: [],
   };
   const read: Record<string, (c: Codex) => unknown> = {
     "npc.attitude": (c) => c.npcs[0]?.attitude,
+    "npc.faction": (c) => c.npcs[0]?.factionId ?? undefined,
     "npc.role": (c) => c.npcs[0]?.role,
     "npc.stats": (c) => {
       const s = c.npcs[0]?.statSource;
@@ -124,9 +152,13 @@ test("a field is party exactly when toPlayerCodex sends its value to a revealed 
     "scene.goal": (c) => c.adventures[0]?.beats[0]?.goal,
     "scene.outcome": (c) => c.adventures[0]?.beats[0]?.outcome,
     "adventure.brief": (c) => c.adventures[0]?.brief,
+    "adventure.status": (c) => c.adventures[0]?.status,
     "location.hazards": (c) => c.locations[0]?.hazards,
+    "item.location": (c) => c.items[0]?.locationId ?? undefined,
+    "item.holder": (c) => c.items[1]?.npcId ?? undefined,
   };
-  const player = toPlayerCodex(codex, id());
+  const player = toPlayerCodex(codex, characterId);
+  assert.equal(player.items.length, 2);
   const declared = Object.entries(CODEX.kinds as unknown as Kinds).flatMap(([kind, k]) =>
     Object.entries(k.fields).map(([f, d]) => [`${kind}.${f}`, d.visibility] as const),
   );
