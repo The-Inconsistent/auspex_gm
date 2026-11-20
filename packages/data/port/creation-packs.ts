@@ -65,9 +65,18 @@ const entry = (type: CatalogueEntry["type"], key: string, r: Json): CatalogueEnt
   };
 };
 
-const pack = (id: string, entries: CatalogueEntry[]): Pack<CatalogueEntry> => ({
-  id,
-  version: "0.1.0",
+/** Both packs' slugs and version, which a room document expects (room.ts). */
+export const CATALOGUE_PACKS = {
+  creation: { slug: "wrath-and-glory-creation", version: "0.1.0" },
+  wargear: { slug: "wrath-and-glory-wargear", version: "0.1.0" },
+} as const;
+
+const pack = (
+  { slug, version }: { slug: string; version: string },
+  entries: CatalogueEntry[],
+): Pack<CatalogueEntry> => ({
+  id: slug,
+  version,
   ruleset: { id: "wrath-and-glory", range: "^0.2.0" },
   license: "private",
   entries,
@@ -85,8 +94,8 @@ export function buildCreationPacks(schemas: Record<string, Schema>): {
   );
   const wargear = [...port.wargear.values()].map((r) => entry("wargear", r.id as string, r));
   return {
-    creation: pack("wrath-and-glory-creation", creation),
-    wargear: pack("wrath-and-glory-wargear", wargear),
+    creation: pack(CATALOGUE_PACKS.creation, creation),
+    wargear: pack(CATALOGUE_PACKS.wargear, wargear),
     port,
   };
 }
