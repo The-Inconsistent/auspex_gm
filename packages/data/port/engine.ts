@@ -2,6 +2,7 @@
 // repo's code, so it is loaded by path at run time and typed here only as far as the port uses it.
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
+import type { ResolvedBuild } from "@wg/shared";
 
 export type Problem = { path: string; message: string };
 type Expr = { source: string };
@@ -11,6 +12,16 @@ export interface Compiled {
   resources: Record<string, unknown>;
   tests: Record<string, { pool: Expr | null; target: Expr }>;
 }
+export interface Schema {
+  parse(x: unknown): unknown;
+  safeParse(
+    x: unknown,
+  ):
+    | { success: true; data: unknown }
+    | { success: false; error: { issues: { path: PropertyKey[]; message: string }[] } };
+}
+/** The port's ledger builder answers in this repo's shapes, but its sheet carries no book text. */
+export type PortResolvedBuild = Omit<ResolvedBuild, "sheet"> & { sheet: Record<string, unknown> };
 export type PackResult = { ok: true; warnings: Problem[] } | { ok: false; problems: Problem[]; warnings: Problem[] };
 export interface Engine {
   validatePack(a: { input: unknown; ruleset: Compiled["ruleset"] }): PackResult;
@@ -48,6 +59,15 @@ export interface Engine {
     answers: Record<string, unknown>;
     lookup: (a: { type: string; key: string }) => undefined;
   }): { ok: true; fields: Record<string, unknown> } | { ok: false; problems: Problem[] };
+  // The ledger builder (InconsisTable's ADR 0011): absent from a checkout made before it.
+  BuildParams?: Schema;
+  buildSchemas?(params: unknown): Record<string, Schema>;
+  resolveBuild?(a: {
+    params: unknown;
+    catalogue: { creation: unknown; wargear: ReadonlyMap<string, unknown>; homebrew: boolean };
+    build: unknown;
+    play?: { tier: number; xpEarned: number; packageWaived?: boolean };
+  }): PortResolvedBuild;
 }
 
 const root = resolve(process.env.INCONSISTABLE ?? new URL("../../../../InconsisTable", import.meta.url).pathname);
