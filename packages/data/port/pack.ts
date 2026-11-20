@@ -182,7 +182,8 @@ export function buildPack(): { pack: Pack; leftOut: LeftOut[]; normalised: Recor
   const pack: Pack = {
     id: "wrath-and-glory-threats",
     version: "0.1.0",
-    ruleset: { id: "wrath-and-glory", range: "^0.1.0" },
+    // Both rulesets this repo generates: 0.1.0 (copied in by hand) and 0.2.0 (the ledger builder).
+    ruleset: { id: "wrath-and-glory", range: "^0.1.0 || ^0.2.0" },
     license: "private",
     entries,
   };
