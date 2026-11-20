@@ -95,6 +95,19 @@ export const platformFile = (path: string) => resolve(root, path);
 export const loadEngine = async (): Promise<Engine | null> =>
   existsSync(entry) ? ((await import(entry)) as Engine) : null;
 
+/** InconsisTable's core schema, as far as the room converter uses it (its house decision #74). */
+export interface CoreSchema {
+  // Absent from a checkout made before the room document.
+  RoomDocument?: Schema;
+  ROOM_LIMITS?: Record<string, number>;
+  MAX_PREP_LINES?: number;
+  MAX_TEST_OUTCOMES?: number;
+}
+const coreEntry = resolve(root, "packages/core-schema/src/index.ts");
+/** Null when InconsisTable is not checked out here, as `loadEngine`. */
+export const loadCoreSchema = async (): Promise<CoreSchema | null> =>
+  existsSync(coreEntry) ? ((await import(coreEntry)) as CoreSchema) : null;
+
 // A checkout made before the ledger builder's `build` block and pack `record`s strips both unread (its schemas are not
 // strict), so whether they are checked is asked by sending a broken one: refused only where it is validated.
 
