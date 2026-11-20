@@ -364,5 +364,21 @@ test(
       const states = engine!.healthStatesOf({ compiled: compiled.compiled, entity: "agent", scope });
       assert.equal(states.includes("lost"), corruption >= CHAOS_SPAWN_AT, `${corruption} Corruption`);
     }
+    // Dead is an Annihilated Agent or one past its Traumatic Injuries, as pcStatus has it.
+    const deadWith = (extra: Record<string, unknown>) => {
+      const resources = { corruption: 0, wounds: 0, shock: 0 };
+      const all = { ...fields, ...extra };
+      const derived = engine!.deriveValues({
+        compiled: compiled.compiled,
+        entity: "agent",
+        values: { fields: all, resources, campaign },
+      });
+      const scope = engine!.actorScope({ fields: all, derived, resources, campaign });
+      return engine!.healthStatesOf({ compiled: compiled.compiled, entity: "agent", scope }).includes("dead");
+    };
+    assert.equal(deadWith({}), false);
+    assert.equal(deadWith({ annihilated: false }), false);
+    assert.equal(deadWith({ annihilated: true }), true);
+    assert.equal(deadWith({ traumatic: 99 }), true);
   },
 );

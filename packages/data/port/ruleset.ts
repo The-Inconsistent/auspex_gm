@@ -689,10 +689,14 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     version: "0.2.0",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset keeps
     // its 0.1.x health states as they were; the ledger's `build.gone` names this one beside Dead.
+    // Dead is also an Annihilated Agent, one hit over twice Max Wounds (Core p.194, `pcStatus`): the 0.1.x state read
+    // only the Traumatic Injuries, so the sheet's tick did nothing.
     health: {
       ...ruleset.health,
       states: [
-        ...ruleset.health.states,
+        ...ruleset.health.states.map((s) =>
+          s.id === "dead" ? { ...s, when: `(has(annihilated) && annihilated) || ${s.when}` } : s,
+        ),
         { id: "lost", label: "Lost", when: `${opt("res.corruption")} >= ${CHAOS_SPAWN_AT}`, entities: ["agent"] },
       ],
     },
