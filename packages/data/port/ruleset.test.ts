@@ -104,6 +104,43 @@ test("a pregen copied in by hand through the creation steps gets the same field 
   assert.deepEqual(bare.ok ? [] : bare.problems.map((p) => p.path), ["attributes"]);
 });
 
+test("both rulesets carry the background texts, which a pregen's sheet holds beside its numbers", { skip }, () => {
+  const ids = ["detail.appearance", "detail.past", "detail.personality"];
+  for (const ruleset of [buildRuleset(), buildRuleset({ builder: "ledger" })]) {
+    const result = engine!.compileRuleset(ruleset);
+    if (!result.ok) assert.fail(result.problems.map((p) => `${p.path}: ${p.message}`).join("\n"));
+    const { entities, layout } = result.compiled.ruleset as unknown as {
+      entities: { id: string; fields: Record<string, { type: string; visibility: string; editableBy: string }> }[];
+      layout: { agent: { sections: { id: string; show: string[] }[] } };
+    };
+    const fields = entities.find((e) => e.id === "agent")!.fields;
+    for (const id of ids) {
+      assert.equal(fields[id]?.type, "text", id);
+      assert.equal(fields[id]?.visibility, "party", id);
+      assert.equal(fields[id]?.editableBy, "owner", id);
+    }
+    assert.deepEqual(layout.agent.sections.at(-1), { id: "who", label: "Who you are", show: ids });
+    // An invented background, one of them at the 4000 characters a CharacterDetail part may hold.
+    const texts = {
+      "detail.appearance": "x".repeat(4000),
+      "detail.past": "Born on a hive world.",
+      "detail.personality": "",
+    };
+    for (const { name, stats } of PREGENS) {
+      const sheet = {
+        ...fieldsOf(stats),
+        species: stats.species,
+        archetype: stats.archetype,
+        keywords: stats.keywords,
+        ...texts,
+      };
+      for (const [id, value] of Object.entries(sheet))
+        assert.equal(engine!.checkFieldValue({ def: fields[id], value }), null, `${ruleset.version} ${name}: ${id}`);
+    }
+    assert.notEqual(engine!.checkFieldValue({ def: fields["detail.past"], value: "x".repeat(4001) }), null);
+  }
+});
+
 test("a called Test rolls the pool testPool gives", { skip }, () => {
   const compiled = compile();
   const { stats, build } = PREGENS[0]!;

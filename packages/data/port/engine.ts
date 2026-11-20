@@ -25,6 +25,8 @@ export type PortResolvedBuild = Omit<ResolvedBuild, "sheet"> & { sheet: Record<s
 export type PackResult = { ok: true; warnings: Problem[] } | { ok: false; problems: Problem[]; warnings: Problem[] };
 export interface Engine {
   validatePack(a: { input: unknown; ruleset: Compiled["ruleset"] }): PackResult;
+  /** Why a value does not fit a field's definition, or null when it does. */
+  checkFieldValue(a: { def: unknown; value: unknown }): string | null;
   compileRuleset(input: unknown): { ok: true; compiled: Compiled } | { ok: false; problems: Problem[] };
   deriveValues(a: {
     compiled: Compiled;

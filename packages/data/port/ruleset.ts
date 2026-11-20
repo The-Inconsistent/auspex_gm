@@ -54,6 +54,14 @@ const MODS = {
 } as const;
 const mod = (k: keyof typeof MODS) => opt(`mod.${k}`);
 
+// The three parts of CharacterDetail as the sheet labels them (apps/web/components/ui/character-detail), and their cap.
+const DETAIL = [
+  ["appearance", "Appearance"],
+  ["past", "Your past"],
+  ["personality", "Your personality"],
+] as const;
+const DETAIL_MAX = 4000;
+
 // Traits, pp.36-37 and the sheet (deriveStats, state.ts). All have a minimum of 1 (p.36), except the last two rows.
 const TRAITS: { id: string; label: string; expr: string; cite: string }[] = [
   {
@@ -323,11 +331,20 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     ),
     traumatic: { type: "int", label: "Traumatic Injuries", min: 0, ...party, cite: "Core pp.193-194" },
     annihilated: { type: "bool", label: "Annihilated", ...party, cite: "Core p.194" },
+    // Who the Agent is, in the player's own words (CharacterDetail, state.ts; Core pp.32-36), on the sheet's WHO YOU
+    // ARE. Text only, in no formula. The portrait (`detail.portrait`) is not ported: it names an image bundled with this
+    // repo's web app, which InconsisTable does not have.
+    ...Object.fromEntries(
+      DETAIL.map(([id, label]) => [
+        `detail.${id}`,
+        { type: "text", label, maxLength: DETAIL_MAX, ...party, editableBy: "owner" },
+      ]),
+    ),
   };
 
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.1",
+    version: "0.1.2",
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
     // none to give (a campaign's Tier is chosen when it is created).
@@ -760,6 +777,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
             show: ["res.wounds", "res.shock", "res.wrath", "res.wealth", "res.corruption"],
           },
           { id: "skills", label: "Skills", show: skills.map((s) => `derived.${idOf(s)}`) },
+          { id: "who", label: "Who you are", show: DETAIL.map(([id]) => `detail.${id}`) },
         ],
       },
     },
@@ -769,7 +787,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.1",
+    version: "0.2.2",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
