@@ -19,6 +19,7 @@ import {
   type Skill,
 } from "@wg/shared";
 import { rulesList } from "../index.ts";
+import { buildParams } from "./build-params.ts";
 
 /** "Ballistic Skill" → "ballisticSkill": the camelCase ids the manifest asks for. */
 export const idOf = (name: string) =>
@@ -174,7 +175,84 @@ const POOL = {
   modifier: "ctx.bonus",
 } as const;
 
-export function buildRuleset() {
+// The entity type each catalogue kind of the ledger builder is held in, by the keys of the builder's `Creation` type
+// and `wargear` (InconsisTable's ADR 0011). A pack entry of one of these types carries the builder's record.
+export const CATALOGUE_KINDS = {
+  keywords: "keyword",
+  factions: "faction",
+  "sub-factions": "subFaction",
+  species: "species",
+  backgrounds: "background",
+  "option-groups": "optionGroup",
+  archetypes: "archetype",
+  talents: "talent",
+  packages: "package",
+  disciplines: "discipline",
+  powers: "power",
+  languages: "language",
+  wargear: "wargear",
+} as const;
+export type CatalogueKind = keyof typeof CATALOGUE_KINDS;
+
+// The catalogue's entity types. None is built or fought, so none is an actor; wargear is an `item`, every other kind an
+// `ability` (the platform's other non-actor bases, `condition` among them, fit none better). The fields repeat a few of
+// the record's numbers to browse and filter by; the record itself is the entry's `record`.
+function catalogueEntities(params: ReturnType<typeof buildParams>) {
+  const party = { visibility: "party" } as const;
+  const xp = { xp: { type: "int", label: "XP", min: 0, ...party } };
+  const fields: Partial<Record<(typeof CATALOGUE_KINDS)[CatalogueKind], Record<string, unknown>>> = {
+    archetype: {
+      tier: {
+        type: "int",
+        label: "Tier",
+        min: params.tiers.min,
+        max: params.tiers.max,
+        ...party,
+        cite: params.cites.archetypeTier,
+      },
+      ...xp,
+    },
+    species: { ...xp, speed: { type: "int", label: "Speed", min: 0, ...party, cite: "Core p.29" } },
+    talent: xp,
+    package: xp,
+    power: xp,
+    wargear: {
+      kind: { type: "enum", label: "Kind", values: params.vocabulary.wargearKinds, ...party },
+      value: { type: "int", label: "Value", min: 0, max: 30, ...party },
+      rarity: { type: "enum", label: "Rarity", values: params.rarity.order.map(idOf), ...party },
+    },
+  };
+  const labels: Record<CatalogueKind, string> = {
+    keywords: "Keyword",
+    factions: "Faction",
+    "sub-factions": "Sub-faction",
+    species: "Species",
+    backgrounds: "Background table",
+    "option-groups": "Option group",
+    archetypes: "Archetype",
+    talents: "Talent",
+    packages: "Package",
+    disciplines: "Psychic discipline",
+    powers: "Psychic power",
+    languages: "Language",
+    wargear: "Wargear",
+  };
+  return (Object.entries(CATALOGUE_KINDS) as [CatalogueKind, (typeof CATALOGUE_KINDS)[CatalogueKind]][]).map(
+    ([kind, id]) => ({
+      id,
+      label: labels[kind],
+      base: kind === "wargear" ? "item" : "ability",
+      fields: fields[id] ?? {},
+    }),
+  );
+}
+
+/**
+ * The ruleset. By default (0.1.x) a character is copied in by hand through the `creation` steps. With
+ * `builder: "ledger"` (0.2.x) the Agent is bought with XP by InconsisTable's ledger builder instead: the `build` block
+ * and the catalogue's entity types, and no `creation` steps (the platform refuses both on one actor type).
+ */
+export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const skills = Object.keys(SKILLS) as Skill[];
   const party = { visibility: "party" } as const;
 
@@ -199,7 +277,7 @@ export function buildRuleset() {
     annihilated: { type: "bool", label: "Annihilated", ...party, cite: "Core p.194" },
   };
 
-  return {
+  const ruleset = {
     id: "wrath-and-glory",
     version: "0.1.0",
     core: "^0.1.0",
@@ -600,6 +678,38 @@ export function buildRuleset() {
           { id: "skills", label: "Skills", show: skills.map((s) => `derived.${idOf(s)}`) },
         ],
       },
+    },
+  };
+  if (builder !== "ledger") return ruleset;
+
+  const params = buildParams();
+  return {
+    ...ruleset,
+    version: "0.2.0",
+    entities: [...ruleset.entities, ...catalogueEntities(params)],
+    creation: [],
+    build: {
+      strategy: "ledger",
+      actor: "agent",
+      params,
+      kinds: CATALOGUE_KINDS,
+      // Where the resolved sheet lands: the Agent's own fields and resources, the ones the by-hand steps fill.
+      sheet: {
+        attributes: Object.fromEntries(params.vocabulary.attributes.map((a) => [a.id, attrPath(a.id as Attribute)])),
+        skills: Object.fromEntries(params.vocabulary.skills.map((s) => [s.name, `skill.${idOf(s.name)}`])),
+        mods: Object.fromEntries(params.vocabulary.mods.map((m) => [m.key, `mod.${m.key}`])),
+        armourRating: "armour.ar",
+        powered: "armour.powered",
+        speed: "baseSpeed",
+        species: "species",
+        archetype: "archetype",
+        keywords: "keywords",
+        wealth: "wealth",
+        corruption: "corruption",
+      },
+      tier: "tier",
+      xp: "xp",
+      cite: params.startingXp.cite,
     },
   };
 }
