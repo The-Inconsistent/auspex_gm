@@ -20,12 +20,12 @@ export interface Entry {
   visibility: "gm";
   body: Record<string, FieldValue>;
 }
-export interface Pack {
+export interface Pack<E = Entry> {
   id: string;
   version: string;
   ruleset: { id: string; range: string };
   license: "private";
-  entries: Entry[];
+  entries: E[];
 }
 /** Something the pack does not carry: the Threat it belongs to and why (grouped by `reason` in the report). */
 export interface LeftOut {
@@ -182,7 +182,8 @@ export function buildPack(): { pack: Pack; leftOut: LeftOut[]; normalised: Recor
   const pack: Pack = {
     id: "wrath-and-glory-threats",
     version: "0.1.0",
-    ruleset: { id: "wrath-and-glory", range: "^0.1.0" },
+    // Both rulesets this repo generates: 0.1.0 (copied in by hand) and 0.2.0 (the ledger builder).
+    ruleset: { id: "wrath-and-glory", range: "^0.1.0 || ^0.2.0" },
     license: "private",
     entries,
   };
