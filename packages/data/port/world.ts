@@ -1,10 +1,29 @@
 // The Wrath & Glory World for InconsisTable (its ADR 0010, decision 2): this app's look, the "Imperial Manuscript" of
 // apps/web/app/globals.css, as values for the platform's Theme tokens and picks from the platform's lists. The colours
 // are read from that stylesheet when the World is built, never retyped: the day set (`:root`) is the World's light set,
-// the night set (`:root[data-theme="vigil"]` over `:root`) its dark set. A World carries no words, no font file and no
-// image, so nothing here names the game.
+// the night set (`:root[data-theme="vigil"]` over `:root`) its dark set. A World carries no font file and no image. Its
+// only words are the handout layouts' names (its house decision #72), which are this app's own handout styles' names.
 import { readFileSync } from "node:fs";
+import { HandoutStyle } from "@wg/shared";
+import { DEFAULT_HEADER, HANDOUT_STYLE_LABEL } from "../../../apps/web/components/ui/handout-doc/constants.ts";
 import { buildRuleset } from "./ruleset.ts";
+
+/**
+ * The platform's handout layout for each of this app's handout styles (InconsisTable's house decision #72), which were
+ * ported by structure. For the campaign converter, with `HANDOUT_DEFAULT_HEADER`.
+ */
+export const HANDOUT_LAYOUT = {
+  plain: "plain",
+  slate: "tablet",
+  form: "form",
+  vox: "transcript",
+  decree: "proclamation",
+} as const satisfies Record<HandoutStyle, string>;
+/**
+ * The header a style prints when the GM left it empty. The platform prints none, so the converter writes this into an
+ * empty header (house decision #72).
+ */
+export const HANDOUT_DEFAULT_HEADER: Readonly<Record<HandoutStyle, string>> = DEFAULT_HEADER;
 
 const STYLESHEET = new URL("../../../apps/web/app/globals.css", import.meta.url);
 
@@ -142,7 +161,7 @@ export function buildWorld(look = readLook()) {
     Object.fromEntries(Object.entries(MAPPING).map(([token, line]) => [token, colourOf(line[side], set)]));
   return {
     id: "wrath-and-glory",
-    version: "0.1.0",
+    version: "0.1.1",
     core: buildRuleset().core,
     name: "Imperial Manuscript",
     theme: {
@@ -150,6 +169,11 @@ export function buildWorld(look = readLook()) {
       typefaces: { ...TYPEFACES },
       texture: TEXTURE,
       shapes: { ...SHAPES },
+    },
+    // Every layout, in the order the handout editor's STYLE select lists the styles, under its names.
+    handouts: {
+      layouts: HandoutStyle.options.map((s) => HANDOUT_LAYOUT[s]),
+      names: Object.fromEntries(HandoutStyle.options.map((s) => [HANDOUT_LAYOUT[s], HANDOUT_STYLE_LABEL[s]])),
     },
   };
 }

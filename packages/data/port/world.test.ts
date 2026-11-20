@@ -1,8 +1,18 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { test } from "node:test";
+import { HandoutStyle } from "@wg/shared";
+import { HANDOUT_STYLE_LABEL } from "../../../apps/web/components/ui/handout-doc/constants.ts";
 import { loadEngine, platformFile } from "./engine.ts";
-import { buildWorld, colourOf, MAPPING, readLook, type Source } from "./world.ts";
+import {
+  buildWorld,
+  colourOf,
+  HANDOUT_DEFAULT_HEADER,
+  HANDOUT_LAYOUT,
+  MAPPING,
+  readLook,
+  type Source,
+} from "./world.ts";
 
 // The World: skipped, like the ruleset's tests, when InconsisTable is not checked out beside this repo, and each check
 // that needs the World contract skipped when that checkout predates it.
@@ -159,4 +169,41 @@ test("the World passes InconsisTable's World validator", { skip: noValidator }, 
   const refused = engine!.validateWorld!(dim);
   assert.equal(refused.ok, false);
   assert.ok(!refused.ok && refused.problems.some((p) => p.path === "theme.schemes.light"));
+});
+
+test("the World is 0.1.1", () => assert.equal(world.version, "0.1.1"));
+
+// ---------- handouts (InconsisTable's house decision #72) ----------
+
+const noLayouts =
+  noContract || (engine!.HANDOUT_LAYOUTS ? false : "this InconsisTable checkout has no handout layouts");
+
+test("every handout style of this app has one layout and one default header, a sixth style fails here", () => {
+  assert.deepEqual(Object.keys(HANDOUT_LAYOUT), HandoutStyle.options);
+  assert.deepEqual(Object.keys(HANDOUT_DEFAULT_HEADER), HandoutStyle.options);
+  assert.deepEqual(HANDOUT_LAYOUT, {
+    plain: "plain",
+    slate: "tablet",
+    form: "form",
+    vox: "transcript",
+    decree: "proclamation",
+  });
+  // A plain handout prints no header.
+  assert.equal(HANDOUT_DEFAULT_HEADER.plain, "");
+});
+
+test("the World offers every layout in the editor's order, under the editor's names", () => {
+  assert.deepEqual(
+    world.handouts.layouts,
+    HandoutStyle.options.map((s) => HANDOUT_LAYOUT[s]),
+  );
+  for (const s of HandoutStyle.options)
+    assert.equal(world.handouts.names[HANDOUT_LAYOUT[s]], HANDOUT_STYLE_LABEL[s], s);
+});
+
+test("the layouts are the platform's list, and the contract keeps the part as written", { skip: noLayouts }, () => {
+  assert.deepEqual([...world.handouts.layouts].sort(), [...engine!.HANDOUT_LAYOUTS!].sort());
+  const parsed = engine!.World!.safeParse(world);
+  assert.ok(parsed.success);
+  assert.deepEqual((parsed.data as { handouts?: unknown }).handouts, world.handouts);
 });
