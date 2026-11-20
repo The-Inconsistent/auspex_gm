@@ -151,7 +151,12 @@ test(
 const noValidator =
   noContract || (engine!.validateWorld ? false : "this InconsisTable checkout has no World validator yet");
 test("the World passes InconsisTable's World validator", { skip: noValidator }, () => {
-  const result = engine!.validateWorld!({ input: world });
+  const result = engine!.validateWorld!(world);
   if (!result.ok) assert.fail(result.problems.map((p) => `${p.path}: ${p.message}`).join("\n"));
-  assert.deepEqual(result.warnings, []);
+  // The validator judges contrast too: a pair under its floor is refused, at the set it is in.
+  const dim = structuredClone(world) as { theme: { schemes: { light: Record<string, string> } } };
+  dim.theme.schemes.light.ink = dim.theme.schemes.light.paper!;
+  const refused = engine!.validateWorld!(dim);
+  assert.equal(refused.ok, false);
+  assert.ok(!refused.ok && refused.problems.some((p) => p.path === "theme.schemes.light"));
 });

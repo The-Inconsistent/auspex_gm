@@ -75,9 +75,7 @@ export interface Engine {
   WORLD_TEXTURES?: readonly string[];
   WORLD_SHAPES?: Record<string, readonly string[]>;
   WORLD_CONTRAST_PAIRS?: readonly { fg: string; bg: string; min: number }[];
-  // shortcut: the World validator is not written yet, so its name and shape are guessed after validatePack's; check
-  // them when it lands.
-  validateWorld?(a: { input: unknown }): PackResult;
+  validateWorld?(input: unknown): { ok: true; world: unknown } | { ok: false; problems: Problem[] };
 }
 
 const root = resolve(process.env.INCONSISTABLE ?? new URL("../../../../InconsisTable", import.meta.url).pathname);

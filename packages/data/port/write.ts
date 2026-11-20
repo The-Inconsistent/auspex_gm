@@ -118,8 +118,7 @@ if (flags.world) {
     if (!parsed.success)
       refuse(parsed.error.issues.map((i) => ({ path: i.path.map(String).join("."), message: i.message })));
     if (engine.validateWorld) {
-      const result = engine.validateWorld({ input: world });
-      for (const w of result.warnings) console.warn(`warning ${w.path}: ${w.message}`);
+      const result = engine.validateWorld(world);
       if (!result.ok) refuse(result.problems);
     } else console.warn("this InconsisTable checkout has no World validator yet: checked against the contract only");
   } else console.warn("this InconsisTable checkout has no World contract: the World was not validated");
