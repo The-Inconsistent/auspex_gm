@@ -82,6 +82,8 @@ export interface Engine {
   WORLD_TEXTURES?: readonly string[];
   WORLD_SHAPES?: Record<string, readonly string[]>;
   WORLD_CONTRAST_PAIRS?: readonly { fg: string; bg: string; min: number }[];
+  // The handout layouts (InconsisTable's house decision #72): absent from a checkout made before them.
+  HANDOUT_LAYOUTS?: readonly string[];
   validateWorld?(input: unknown): { ok: true; world: unknown } | { ok: false; problems: Problem[] };
 }
 
@@ -117,6 +119,14 @@ export function checksPlay(engine: Engine, ruleset: Record<string, unknown>) {
     broken.every((b) => !engine.compileRuleset({ ...ruleset, build: { ...(ruleset.build as object), ...b } }).ok)
   );
 }
+
+/** True when `compileRuleset` checks the ruleset's `codex` block (InconsisTable's house decision #71). */
+export const checksCodex = (engine: Engine, ruleset: Record<string, unknown>) =>
+  engine.compileRuleset(ruleset).ok &&
+  !engine.compileRuleset({
+    ...ruleset,
+    codex: { kinds: { npc: { fields: { x: { type: "ref", label: "X", entity: "nobody" } } } } },
+  }).ok;
 
 /** True when `validatePack` checks an entry's `record` (`pack` holds one valid entry, which gets a broken record). */
 export function checksRecord(engine: Engine, ruleset: Compiled["ruleset"], pack: { entries: object[] }) {

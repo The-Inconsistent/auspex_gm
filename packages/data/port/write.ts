@@ -7,7 +7,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
 import { buildParams } from "./build-params.ts";
 import { buildCreationPacks } from "./creation-packs.ts";
-import { checksBuild, checksPlay, checksRecord, loadEngine, type Problem } from "./engine.ts";
+import { checksBuild, checksCodex, checksPlay, checksRecord, loadEngine, type Problem } from "./engine.ts";
 import { CampaignExport } from "@wg/shared";
 import { buildCustomThreatPack, buildPack, type LeftOut, type Pack } from "./pack.ts";
 import { buildRuleset } from "./ruleset.ts";
@@ -51,6 +51,8 @@ let compiled: ReturnType<NonNullable<typeof engine>["compileRuleset"]> | null = 
 if (engine !== null) {
   compiled = engine.compileRuleset(ruleset);
   if (!compiled.ok) refuse(compiled.problems);
+  else if (!checksCodex(engine, ruleset))
+    console.warn("this InconsisTable checkout does not check the codex block yet");
 }
 if (out) {
   writeFileSync(out, `${JSON.stringify(ruleset, null, 2)}\n`);

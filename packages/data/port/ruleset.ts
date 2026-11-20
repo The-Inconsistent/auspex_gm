@@ -7,11 +7,18 @@
 import {
   AMMO_TYPES,
   ASCENSION_XP,
+  Attitude,
+  ATTITUDE_DN,
   ATTRIBUTE_NAMES,
+  BeatType,
   ATTRIBUTES,
   CONDITIONS,
   corruptionLevel,
   CHAOS_SPAWN_AT,
+  CodexInput,
+  FactionStance,
+  MAX_FACTION_KEYWORDS,
+  MAX_KEYWORD_LENGTH,
   MOB_MIN,
   SKILLS,
   Threat,
@@ -303,6 +310,101 @@ function catalogueEntities(params: ReturnType<typeof buildParams>) {
   );
 }
 
+// What this repo's codex holds beside an entry's name and texts (CodexInput, packages/shared/src/codex.ts), so a
+// campaign moved over keeps it (InconsisTable's house decision #71). A field's visibility is what toPlayerCodex sends: a
+// value it sends once the entry is revealed is `party`, the entry's own visibility hiding it until then; one it blanks
+// is `gm`. Enum words are the editor's (codex-editor.tsx, beat-editor.tsx: the value in capitals).
+const capOf = (s: { unwrap(): { maxLength: number | null } }) => s.unwrap().maxLength!;
+const capitals = (values: readonly string[]) => Object.fromEntries(values.map((v) => [v, v.toUpperCase()]));
+/** How a faction's Keywords join into its one text field (the codex has no list): as its card shows them. */
+export const KEYWORD_JOIN = " · ";
+export const CODEX = {
+  kinds: {
+    npc: {
+      fields: {
+        // Players see it (rules-flow §11.89). Neutral changes nothing and draws no chip (attitude-chip.tsx): the
+        // converter leaves the field unset for it, and the GM may still pick it.
+        attitude: {
+          type: "enum",
+          label: "Attitude",
+          values: [...Attitude.options],
+          labels: capitals(Attitude.options),
+          // The modifier on a social Test's DN, worded as attitudeLabel words it (attitude-chip.tsx), none for 0.
+          notes: Object.fromEntries(
+            Attitude.options
+              .filter((a) => ATTITUDE_DN[a] !== 0)
+              .map((a) => [a, `${ATTITUDE_DN[a] < 0 ? "−" : "+"}${Math.abs(ATTITUDE_DN[a])} DN`]),
+          ),
+          visibility: "party",
+          cite: "Core p.168",
+        },
+        role: { type: "text", label: "Role", maxLength: capOf(CodexInput.npc.shape.role), visibility: "party" },
+        // The bestiary Threat it uses (StatSource `bestiary`), a pack entry's key. The `quick` source (a Tier row of
+        // the Quick NPC table, p.326, and a specialty Skill) is no field: the codex has no inline stat block, so the
+        // converter writes it into the GM notes (house decision #71: "a ref plus the GM's own text").
+        stats: { type: "ref", label: "Stat block", entity: "threat", visibility: "gm" },
+      },
+    },
+    // Players receive no faction. The card's ally hint (mixingHint, Core p.317) is computed from stance and Keywords,
+    // which no field can say: it is not ported.
+    faction: {
+      fields: {
+        stance: {
+          type: "enum",
+          label: "Stance",
+          values: [...FactionStance.options],
+          labels: capitals(FactionStance.options),
+          visibility: "gm",
+        },
+        keywords: {
+          type: "text",
+          label: "Keywords",
+          maxLength: MAX_FACTION_KEYWORDS * MAX_KEYWORD_LENGTH + (MAX_FACTION_KEYWORDS - 1) * KEYWORD_JOIN.length,
+          visibility: "gm",
+          cite: "Core pp.375-378",
+        },
+      },
+    },
+    // Players receive no scene.
+    scene: {
+      fields: {
+        type: {
+          type: "enum",
+          label: "Type",
+          values: [...BeatType.options],
+          labels: capitals(BeatType.options),
+          visibility: "gm",
+        },
+        goal: { type: "text", label: "Goal", maxLength: capOf(CodexInput.beat.shape.goal), visibility: "gm" },
+        outcome: { type: "text", label: "Outcome", maxLength: capOf(CodexInput.beat.shape.outcome), visibility: "gm" },
+      },
+    },
+    // The premise stays the entry's own text; the brief is what a shown mission's phones read.
+    adventure: {
+      fields: {
+        brief: {
+          type: "text",
+          label: "Brief",
+          maxLength: capOf(CodexInput.adventure.shape.brief),
+          visibility: "party",
+        },
+      },
+    },
+    // The GM's free-text hazards; the structured list (`hazardList`, book rows by id) is not ported.
+    location: {
+      fields: {
+        hazards: {
+          type: "text",
+          label: "Hazards",
+          maxLength: capOf(CodexInput.location.shape.hazards),
+          visibility: "gm",
+        },
+      },
+    },
+    // No item field: a player reads only a given item's name and description, the entry's own title and text.
+  },
+} as const;
+
 /**
  * The ruleset. By default (0.1.x) a character is copied in by hand through the `creation` steps. With
  * `builder: "ledger"` (0.2.x) the Agent is bought with XP by InconsisTable's ledger builder instead: the `build` block
@@ -344,7 +446,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
 
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.2",
+    version: "0.1.3",
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
     // none to give (a campaign's Tier is chosen when it is created).
@@ -781,13 +883,14 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         ],
       },
     },
+    codex: CODEX,
   };
   if (builder !== "ledger") return ruleset;
 
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.2",
+    version: "0.2.3",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
