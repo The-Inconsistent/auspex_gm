@@ -68,10 +68,20 @@ export interface Engine {
     build: unknown;
     play?: { tier: number; xpEarned: number; packageWaived?: boolean };
   }): PortResolvedBuild;
+  // The World (InconsisTable's ADR 0010, decision 2): absent from a checkout made before its contract.
+  World?: Schema;
+  WORLD_COLOUR_TOKENS?: readonly string[];
+  WORLD_TYPEFACES?: readonly string[];
+  WORLD_TEXTURES?: readonly string[];
+  WORLD_SHAPES?: Record<string, readonly string[]>;
+  WORLD_CONTRAST_PAIRS?: readonly { fg: string; bg: string; min: number }[];
+  validateWorld?(input: unknown): { ok: true; world: unknown } | { ok: false; problems: Problem[] };
 }
 
 const root = resolve(process.env.INCONSISTABLE ?? new URL("../../../../InconsisTable", import.meta.url).pathname);
 const entry = resolve(root, "packages/rules-engine/src/index.ts");
+/** A file of the InconsisTable checkout, such as its base Theme's stylesheet. */
+export const platformFile = (path: string) => resolve(root, path);
 /** Null when InconsisTable is not checked out here (CI of this repo): the port's checks are skipped. */
 export const loadEngine = async (): Promise<Engine | null> =>
   existsSync(entry) ? ((await import(entry)) as Engine) : null;
