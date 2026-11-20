@@ -2,12 +2,17 @@ import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 import {
+  Action,
+  ASCENSION_XP,
+  ascensionGroup,
   ATTRIBUTES,
+  CHAOS_SPAWN_AT,
   Character,
   SKILLS,
   attributeTotals,
   corruptionTestDn,
   deriveStats,
+  pcStatus,
   poolMax,
   skillTotal,
   testPool,
@@ -16,6 +21,7 @@ import {
   CharacterStats,
   type Skill,
 } from "@wg/shared";
+import { XP_AWARDS } from "../../../apps/web/components/gm/party/constants.ts";
 import { loadEngine } from "./engine.ts";
 import { buildRuleset, idOf, THREAT_CLASSES } from "./ruleset.ts";
 
@@ -249,3 +255,114 @@ test("with nothing stored for the campaign the Tier in play is 1", { skip }, () 
   const derived = engine!.deriveValues({ compiled, entity: "agent", values: { fields, resources: {}, campaign } });
   assert.equal(derived.maxWounds, deriveStats({ stats, overrides: {}, tier: 1 }).maxWounds);
 });
+
+// The ledger ruleset's play keys (`build.ascension`, `gone`, `award`): what happens after a character is made.
+const ledger = buildRuleset({ builder: "ledger" }) as Extract<ReturnType<typeof buildRuleset>, { build: unknown }>;
+const agentStates = ledger.health.states.filter((s) => !("entities" in s) || s.entities?.includes("agent"));
+
+test("the ledger ruleset carries the play keys from this repo's constants, and the default one has none", () => {
+  const { ascension, gone, award } = ledger.build;
+  assert.equal(ascension.xp, ASCENSION_XP);
+  assert.equal(ascension.cite, "Core pp.147-148");
+  assert.deepEqual(award.suggested, [...XP_AWARDS]);
+  assert.equal(award.cite, "Core p.321");
+  // The server's limit on the XP of a session's end: the largest it accepts.
+  const accepts = (xp: number) => Action.safeParse({ type: "session.end", xp }).success;
+  assert.ok(accepts(award.max) && !accepts(award.max + 1) && accepts(0));
+  assert.ok(award.suggested.length <= 6 && gone.length <= 10);
+  assert.ok(award.suggested.every((n, i) => n >= 0 && n <= award.max && (i === 0 || n > award.suggested[i - 1]!)));
+  const plain = buildRuleset();
+  assert.ok(!("build" in plain));
+  assert.ok(!JSON.stringify(plain).match(/"(ascension|gone|award)"|"lost"/));
+});
+
+test("every id in `gone` is a health state of the Agent", () => {
+  const ids = new Set(agentStates.map((s) => s.id));
+  assert.deepEqual(ledger.build.gone, ["dead", "lost"]);
+  for (const id of ledger.build.gone) assert.ok(ids.has(id), id);
+  const lost = agentStates.find((s) => s.id === "lost")!;
+  assert.match(lost.when, new RegExp(`res\\.corruption\\) \\? res\\.corruption : 0\\) >= ${CHAOS_SPAWN_AT}$`));
+});
+
+// Seeded, so a failure repeats.
+const seeded = (seed: number) => () => {
+  seed = (seed + 0x6d2b79f5) | 0;
+  let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 2 ** 32;
+};
+
+test("who the ruleset's keys count and call short is who ascensionGroup does (300 groups)", () => {
+  const next = seeded(318);
+  const upTo = (n: number) => Math.floor(next() * (n + 1));
+  const idOfLabel = new Map(agentStates.map((s) => [s.label, s.id]));
+  const { gone, ascension } = ledger.build;
+  let all = 0;
+  let kept = 0;
+  let behind = 0;
+  for (let g = 0; g < 300; g++) {
+    const { stats } = PREGENS[upTo(PREGENS.length - 1)]!;
+    const tier = 1 + upTo(4);
+    const characters = Array.from({ length: 1 + upTo(5) }, (_, i) => {
+      const xpAtAscension = upTo(300);
+      return {
+        id: `c${i}`,
+        stats: { ...stats, corruption: upTo(32) },
+        overrides: {},
+        wounds: upTo(25),
+        shock: upTo(25),
+        traumatic: upTo(8),
+        // The ruleset has no state for a hit past twice Max Wounds, so it is left out of both sides.
+        annihilated: false,
+        xp: xpAtAscension + upTo(160),
+        xpAtAscension,
+      } as Character;
+    });
+    const want = ascensionGroup(characters, tier);
+    // A character's states are the ruleset's ids for what pcStatus names.
+    const counted = characters.filter(
+      (c) =>
+        !pcStatus(c, deriveStats({ stats: c.stats, overrides: c.overrides, tier }))
+          .map((label) => idOfLabel.get(label))
+          .some((id) => id !== undefined && gone.includes(id)),
+    );
+    const short = counted.filter((c) => c.xp - c.xpAtAscension < ascension.xp);
+    all += characters.length;
+    kept += counted.length;
+    behind += short.length;
+    assert.deepEqual(
+      counted.map((c) => c.id),
+      want.group.map((c) => c.id),
+      `group ${g}`,
+    );
+    assert.deepEqual(
+      short.map((c) => c.id),
+      want.short.map((c) => c.id),
+      `group ${g}: short`,
+    );
+  }
+  // The cases cover every outcome, so a key that dropped one would show.
+  assert.ok(kept < all && behind > 0 && behind < kept);
+});
+
+// What the validator cannot say: the Agent is Lost where pcStatus says so. The ledger ruleset compiles only on a
+// checkout with the ledger builder.
+test(
+  "the Agent's Lost state holds at the Corruption level pcStatus calls Lost",
+  { skip: skip || (!engine?.BuildParams && "this InconsisTable checkout has no ledger builder") },
+  () => {
+    const compiled = engine!.compileRuleset(ledger);
+    if (!compiled.ok) assert.fail(compiled.problems.map((p) => `${p.path}: ${p.message}`).join("\n"));
+    const { stats, build } = PREGENS[0]!;
+    const fields = fieldsOf(stats);
+    const campaign = campaignAt(compiled.compiled, build.tier);
+    for (let corruption = 0; corruption <= 30; corruption++) {
+      const resources = { corruption, wounds: 0, shock: 0 };
+      const values = { fields, resources, campaign };
+      const derived = engine!.deriveValues({ compiled: compiled.compiled, entity: "agent", values });
+      const scope = engine!.actorScope({ fields, derived, resources, campaign });
+      const states = engine!.healthStatesOf({ compiled: compiled.compiled, entity: "agent", scope });
+      assert.equal(states.includes("lost"), corruption >= CHAOS_SPAWN_AT, `${corruption} Corruption`);
+    }
+  },
+);

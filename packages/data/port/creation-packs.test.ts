@@ -5,7 +5,7 @@ import { creationCatalogue, wargearList } from "../index.ts";
 import { TEXT_KEYS, TYPES, remapApproval } from "./build-catalogue.ts";
 import { buildParams } from "./build-params.ts";
 import { buildCreationPacks, entryKey, type CatalogueEntry } from "./creation-packs.ts";
-import { checksBuild, checksRecord, loadEngine, type Compiled } from "./engine.ts";
+import { checksBuild, checksPlay, checksRecord, loadEngine, type Compiled } from "./engine.ts";
 import type { Pack } from "./pack.ts";
 import { CATALOGUE_KINDS, buildRuleset } from "./ruleset.ts";
 
@@ -345,4 +345,17 @@ test("InconsisTable's validator accepts the build block and every record", { ski
     const result = engine!.validatePack({ input: pack, ruleset });
     if (!result.ok) assert.fail(result.problems.map((p) => `${p.path}: ${p.message}`).join("\n"));
   }
+});
+
+// The play keys are optional, so a validator that does not know them accepts the ledger ruleset like any other (the
+// test above); only one that reads them refuses a broken one.
+const playChecked =
+  checked ||
+  (!checksPlay(engine!, ledger) ? "this InconsisTable checkout does not check the build block's play keys yet" : false);
+test("InconsisTable's validator checks the ascension, gone and award keys", { skip: playChecked }, () => {
+  const refused = (build: object) => !engine!.compileRuleset({ ...ledger, build: { ...ledger.build, ...build } }).ok;
+  assert.ok(!refused({}));
+  assert.ok(refused({ ascension: { ...ledger.build.ascension, xp: 0 } }), "ascension.xp is at least 1");
+  assert.ok(refused({ gone: [...ledger.build.gone, "nobody"] }), "gone names health states");
+  assert.ok(refused({ award: { ...ledger.build.award, suggested: [...ledger.build.award.suggested].reverse() } }));
 });
