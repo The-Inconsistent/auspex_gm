@@ -49,31 +49,31 @@ export const MAPPING: Record<string, Line> = {
   "brass-ink": { light: "bone", dark: "bone" },
   // no counterpart: the round number on the fight bar and the lit clock wedge, "now" on a dark band
   candle: { light: "red-on-iron", dark: "red-on-iron" },
-  // The platform's crimson: accent and link inside a card, the low health bar. On the dark set a card is the handout
-  // paper (below), so its crimson is that paper's red.
-  wax: { light: "red", dark: "paper-red" },
-  // text on wax inside a card, and the TV's ink: bone, as on every crimson fill here
-  cream: { light: "bone", dark: "bone" },
+  // The platform's crimson: accent and link inside a card, the low health bar. A night card is a dark panel (below),
+  // where the night red reads at 4.17:1: the crimson this look keeps for dark iron is used there instead.
+  wax: { light: "red", dark: "red-on-iron" },
+  // text on wax inside a card: bone on the day crimson, as on every crimson fill here. The night card's crimson is the
+  // pale one (above), where bone reads at 2.50:1, so its text is iron, as the night accent's is on the table.
+  cream: { light: "bone", dark: "iron" },
   // no counterpart ("ok" inside a card): this app has no success colour, so secondary ink (see ok)
-  leaf: { light: "ink-2", dark: "paper-ink-3" },
+  leaf: { light: "ink-2", dark: "ink-2" },
   // no counterpart: the top of the health bar's fill, beside ok
   moss: { light: "ink-2", dark: "ink-2" },
-  // The parchment family is a card lying on the table (.card, .combatant, .bottom-sheet: always light, dark ink) and
-  // the light app page. By day a card is a panel (vellum-2) on the page (vellum). By night every panel here is dark, so
-  // the light card is the nearest thing this look has: its handout paper, kept light at night on purpose ("a sheet of
-  // paper on a dark phone, the way a card on the table would").
-  parchment: { light: "vellum", dark: "paper" },
-  "parchment-hi": { light: "vellum-2", dark: "paper" },
+  // The parchment family is a card lying on the table (.card, .combatant, .bottom-sheet) and the light app page. A
+  // card here is a panel: vellum-2 on the vellum page, by day and by night alike. Under a World the platform draws a
+  // card in the active set's own colours, so the night card is this look's dark panel with its pale ink.
+  parchment: { light: "vellum", dark: "vellum-2" },
+  "parchment-hi": { light: "vellum-2", dark: "vellum-2" },
   // the inputs inside a card: this app's input field over a panel
-  "parchment-2": { light: { token: "field", over: "vellum-2" }, dark: "paper-2" },
-  "parchment-ink": { light: "ink", dark: "paper-ink" },
+  "parchment-2": { light: { token: "field", over: "vellum-2" }, dark: { token: "field", over: "vellum-2" } },
+  "parchment-ink": { light: "ink", dark: "ink" },
   // the card's dim text (ink-2 is the platform's .dim): ink-3 here
-  "parchment-ink-2": { light: "ink-3", dark: "paper-ink-3" },
-  "parchment-line": { light: "line", dark: "paper-line" },
+  "parchment-ink-2": { light: "ink-3", dark: "ink-3" },
+  "parchment-line": { light: "line", dark: "line" },
   // the focus ring inside a card: crimson, as every focus ring here
-  "ink-blue": { light: "red", dark: "paper-red" },
+  "ink-blue": { light: "red", dark: "red" },
   // no counterpart: the halo round a focus ring inside a card; the card itself, so the ring stands alone as here
-  "halo-light": { light: "vellum-2", dark: "paper" },
+  "halo-light": { light: "vellum-2", dark: "vellum-2" },
   // no counterpart: the halo round a focus ring on a band (the workspace footer); the band itself
   "halo-dark": { light: "iron", dark: "iron" },
 

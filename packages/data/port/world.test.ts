@@ -50,11 +50,11 @@ test("every value in the mapping traces to a token this repo's stylesheet declar
         assert.ok(set.has(token), `${platform} (${side}): globals.css declares no --${token} in that set`);
 });
 
-test("only the day input field is flattened, composited over the panel it sits on", () => {
+test("only the input field is flattened, composited over the panel it sits on, in each set", () => {
   const flattened = Object.entries(MAPPING).flatMap(([t, line]) =>
     SIDES.flatMap(([side]) => (typeof line[side] === "string" ? [] : [`${t} ${side}`])),
   );
-  assert.deepEqual(flattened, ["parchment-2 light"]);
+  assert.deepEqual(flattened, ["parchment-2 light", "parchment-2 dark"]);
   const set = new Map([
     ["field", "rgba(250, 249, 246, 0.55)"],
     ["vellum-2", "#d6d4cf"],
