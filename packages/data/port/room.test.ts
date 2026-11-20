@@ -582,7 +582,7 @@ test("a scene's prepared lines: roster, Tests, pools, exits and reveals", () => 
     label: "Spot the bells",
     note: "Shift 5: Five",
     testId: "skill",
-    inputs: { skill: "awareness", dn: 3, bonus: 0 },
+    inputs: { skill: "awareness", dn: 3, bonus: 0, ignoreWounded: false },
     takers: "party",
     outcomes: [
       { label: "On success", text: "They see it." },
@@ -597,17 +597,17 @@ test("a scene's prepared lines: roster, Tests, pools, exits and reveals", () => 
     id: "test-2",
     note: LONG_PURPOSE,
     testId: "trait",
-    inputs: { trait: "resolve", dn: 2, bonus: 0 },
+    inputs: { trait: "resolve", dn: 2, bonus: 0, ignoreWounded: false },
     takers: "pick",
     outcomes: [],
   });
   assert.deepEqual(
     [corruption!.testId, corruption!.inputs, corruption!.takers],
-    ["corruption", { dn: 3, bonus: 0 }, "party"],
+    ["corruption", { dn: 3, bonus: 0, ignoreWounded: false }, "party"],
   );
   assert.deepEqual(
     descent.prep!.tests.map((t) => [t.testId, t.inputs, t.takers]),
-    [["attribute", { attribute: "int", dn: 4, bonus: 0 }, "pick"]],
+    [["attribute", { attribute: "int", dn: 4, bonus: 0, ignoreWounded: false }, "pick"]],
   );
   assert.deepEqual(prep.pools, [
     { id: "pool-0", pool: "glory", amount: 2, text: "A bold stand" },
@@ -622,8 +622,8 @@ test("a scene's prepared lines: roster, Tests, pools, exits and reveals", () => 
   ]);
 });
 
-// A called Test is refused without an input its Test asks for (a number or a word; a switch may be left out). The DN is
-// the one a scene may leave open: the table asks for it when the line is sent.
+// A called Test is refused without every input its Test declares, a switch included. The DN is the one a scene may
+// leave open: the table asks for it when the line is sent.
 test("every prepared Test line carries what its Test asks for, but a DN the scene left open", () => {
   const tests = buildRuleset().tests as Record<string, { inputs: Record<string, string> }>;
   const lines = document.codex.flatMap((e) => e.prep?.tests ?? []) as {
@@ -633,7 +633,7 @@ test("every prepared Test line carries what its Test asks for, but a DN the scen
   }[];
   assert.ok(lines.length >= 4);
   for (const line of lines) {
-    const asked = Object.entries(tests[line.testId]!.inputs).filter(([id, type]) => type !== "bool" && id !== "dn");
+    const asked = Object.entries(tests[line.testId]!.inputs).filter(([id]) => id !== "dn");
     for (const [id] of asked) assert.ok(id in line.inputs, `${line.id} (${line.testId}) lacks "${id}"`);
   }
 });
