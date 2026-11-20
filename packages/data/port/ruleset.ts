@@ -6,6 +6,7 @@
 // What the manifest cannot say yet is listed in InconsisTable's docs/p3-plan.md; here it is simply left out.
 import {
   AMMO_TYPES,
+  ASCENSION_XP,
   ATTRIBUTE_NAMES,
   ATTRIBUTES,
   CONDITIONS,
@@ -686,6 +687,15 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   return {
     ...ruleset,
     version: "0.2.0",
+    // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset keeps
+    // its 0.1.x health states as they were; the ledger's `build.gone` names this one beside Dead.
+    health: {
+      ...ruleset.health,
+      states: [
+        ...ruleset.health.states,
+        { id: "lost", label: "Lost", when: `${opt("res.corruption")} >= ${CHAOS_SPAWN_AT}`, entities: ["agent"] },
+      ],
+    },
     entities: [...ruleset.entities, ...catalogueEntities(params)],
     creation: [],
     build: {
@@ -710,6 +720,14 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
       tier: "tier",
       xp: "xp",
       cite: params.startingXp.cite,
+      // After the character is made. The group Ascends once every character it still counts has earned this much XP
+      // in the Tier (Core pp.147-148, rules-flow §11.66, `ASCENSION_XP`); a Milestone Ascension awards the same.
+      ascension: { xp: ASCENSION_XP, cite: "Core pp.147-148" },
+      // Out of the game for good, so out of the count (`isGone`): Dead, or Lost to Chaos (p.286).
+      gone: ["dead", "lost"],
+      // A session's end may award up to 100 XP (the `session.end` action), and the GM's band offers 8, 10 and 12
+      // (Core p.321, apps/web/components/gm/party/constants.ts `XP_AWARDS`).
+      award: { max: 100, suggested: [8, 10, 12], cite: "Core p.321" },
     },
   };
 }

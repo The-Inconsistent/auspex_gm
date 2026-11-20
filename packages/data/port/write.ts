@@ -7,7 +7,7 @@ import { writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
 import { buildParams } from "./build-params.ts";
 import { buildCreationPacks } from "./creation-packs.ts";
-import { checksBuild, checksRecord, loadEngine, type Problem } from "./engine.ts";
+import { checksBuild, checksPlay, checksRecord, loadEngine, type Problem } from "./engine.ts";
 import { buildPack } from "./pack.ts";
 import { buildRuleset } from "./ruleset.ts";
 
@@ -70,6 +70,8 @@ if (ledgerOut || catalogueOut.creation || catalogueOut.wargear) {
     if (!c.ok) refuse(c.problems);
     else ledgerRuleset = c.compiled.ruleset;
     if (!checksBuild(engine, ledger)) console.warn("this InconsisTable checkout does not check the build block yet");
+    else if (!checksPlay(engine, ledger))
+      console.warn("this InconsisTable checkout does not check the build block's ascension, gone and award keys yet");
   }
   if (ledgerOut) {
     writeFileSync(ledgerOut, `${JSON.stringify(ledger, null, 2)}\n`);
