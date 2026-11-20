@@ -2,21 +2,35 @@
 // `bun packages/data/port/write.ts <ruleset file> [<pack file>]`; and, for its ledger builder, the ledger ruleset and
 // the creation and wargear packs: `... [--ledger <file>] [--creation <file>] [--wargear <file>]` (with or without the
 // ruleset file); and the World, this app's look: `... [--world <file>]`. Import the files through InconsisTable's
-// /library. All are private content: keep them out of both repos.
+// /library; and a campaign export of this app as a room document (`--room <export file> <room file>`, room.ts), which
+// InconsisTable's IMPORT A ROOM takes. All are private content: keep them out of both repos.
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
 import { buildParams } from "./build-params.ts";
 import { buildCreationPacks } from "./creation-packs.ts";
-import { checksBuild, checksCodex, checksPlay, checksRecord, loadEngine, type Problem } from "./engine.ts";
+import {
+  checksBuild,
+  checksCodex,
+  checksPlay,
+  checksRecord,
+  loadCoreSchema,
+  loadEngine,
+  type Problem,
+} from "./engine.ts";
 import { CampaignExport } from "@wg/shared";
 import { buildCustomThreatPack, buildPack, type LeftOut, type Pack } from "./pack.ts";
+import { buildRoomDocument, Refusal } from "./room.ts";
 import { buildRuleset } from "./ruleset.ts";
 import { buildWorld } from "./world.ts";
 
-// `--custom-threats` takes two values, which parseArgs cannot say: taken out first.
+// `--custom-threats` and `--room` take two values, which parseArgs cannot say: taken out first.
 const args = process.argv.slice(2);
-const customAt = args.indexOf("--custom-threats");
-const custom = customAt === -1 ? undefined : args.splice(customAt, 3).slice(1);
+const pair = (flag: string) => {
+  const at = args.indexOf(flag);
+  return at === -1 ? undefined : args.splice(at, 3).slice(1);
+};
+const custom = pair("--custom-threats");
+const room = pair("--room");
 const { values: flags, positionals } = parseArgs({
   args,
   allowPositionals: true,
@@ -31,11 +45,12 @@ const [out, packOut] = positionals;
 const ledgerOut = flags.ledger;
 const catalogueOut = { creation: flags.creation, wargear: flags.wargear };
 if (
-  (!out && !ledgerOut && !catalogueOut.creation && !catalogueOut.wargear && !flags.world && !custom) ||
-  (custom && custom.length !== 2)
+  (!out && !ledgerOut && !catalogueOut.creation && !catalogueOut.wargear && !flags.world && !custom && !room) ||
+  (custom && custom.length !== 2) ||
+  (room && room.length !== 2)
 ) {
   console.error(
-    "usage: bun packages/data/port/write.ts [<ruleset file> [<pack file>]] [--ledger <file>] [--creation <file>] [--wargear <file>] [--world <file>] [--custom-threats <export file> <pack file>]",
+    "usage: bun packages/data/port/write.ts [<ruleset file> [<pack file>]] [--ledger <file>] [--creation <file>] [--wargear <file>] [--world <file>] [--custom-threats <export file> <pack file>] [--room <export file> <room file>]",
   );
   process.exit(2);
 }
@@ -146,4 +161,41 @@ if (flags.world) {
   } else console.warn("this InconsisTable checkout has no World contract: the World was not validated");
   writeFileSync(flags.world, `${JSON.stringify(world, null, 2)}\n`);
   console.log(`${world.id} ${world.version} (World) → ${flags.world}`);
+}
+
+if (room) {
+  const [exportFile, file] = room as [string, string];
+  const exported = CampaignExport.safeParse(JSON.parse(readFileSync(exportFile, "utf8")));
+  if (!exported.success)
+    refuse(exported.error.issues.map((i) => ({ path: i.path.map(String).join("."), message: i.message })));
+  const core = await loadCoreSchema();
+  if (!engine?.BuildParams || !engine.buildSchemas || !core?.RoomDocument) {
+    console.error("the room document is checked with InconsisTable's: check out a version that has it");
+    process.exit(1);
+  }
+  // A build's GM approvals move with the creation pack's wording (room.ts).
+  const { reworded } = buildCreationPacks(engine.buildSchemas(engine.BuildParams.parse(buildParams()))).port;
+  let made;
+  try {
+    made = buildRoomDocument(exported.data!, { reworded });
+  } catch (e) {
+    if (!(e instanceof Refusal)) throw e;
+    refuse([{ path: e.path, message: e.message }]);
+  }
+  const { document, report } = made!;
+  const parsed = core.RoomDocument.safeParse(document);
+  if (!parsed.success)
+    refuse(parsed.error.issues.map((i) => ({ path: i.path.map(String).join("."), message: i.message })));
+  writeFileSync(file, `${JSON.stringify(document)}\n`);
+  const count = (xs: string[]) =>
+    JSON.stringify(xs.reduce<Record<string, number>>((n, x) => ({ ...n, [x]: (n[x] ?? 0) + 1 }), {}));
+  console.log(`${document.room.name} → ${file}`);
+  console.log(`actors: ${document.actors.length}, entries: ${count(document.codex.map((e) => e.kind))}`);
+  const lines = document.codex.flatMap((e) => Object.entries(e.prep ?? {}).flatMap(([k, l]) => l.map(() => k)));
+  console.log(
+    `prepared lines: ${count(lines)}, sessions: ${document.sessions.length}, pictures: ${document.images.length}`,
+  );
+  const groups = new Map<string, number>();
+  for (const n of report) groups.set(`${n.to}, ${n.reason}`, (groups.get(`${n.to}, ${n.reason}`) ?? 0) + 1);
+  for (const [reason, n] of [...groups].sort()) console.log(`${reason}: ${n}`);
 }
