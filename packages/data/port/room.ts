@@ -632,7 +632,9 @@ export function buildRoomDocument(
         ...(short && purpose && { label: purpose }),
         ...(words && { note: fit(`${p}.purpose`, words, CAPS.lineNote) }),
         testId: target.testId,
-        inputs: { ...target.inputs, ...(t.dn !== null && { dn: t.dn }) },
+        // The ruleset's Tests take the bonus dice the GM grants at the table; a prepared Test grants none. Without
+        // it the platform refuses the call ("Fill in bonus"). A Test with no DN is asked for one when it is sent.
+        inputs: { ...target.inputs, ...(t.dn !== null && { dn: t.dn }), bonus: 0 },
         takers: t.who === "each" ? "party" : "pick",
         outcomes: outcomes.slice(0, CAPS.outcomes).map(({ label, text }) => ({ label, text })),
       });
