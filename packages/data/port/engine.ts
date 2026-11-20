@@ -42,6 +42,11 @@ export interface Engine {
   }): Scope;
   resourceBounds(a: { compiled: Compiled; resource: string; scope: Scope }): { min: number; max: number | null };
   evaluateInt(a: { expr: Expr; scope: Scope }): number;
+  parseExpr(source: string): unknown;
+  evaluate(a: { node: unknown; scope: Scope }): unknown;
+  startValue(a: { compiled: Compiled; resource: string; scope: Scope }): number | null;
+  /** The primitives by id, so a test can ask whether one exists yet (`health.harm`). */
+  PRIMITIVES: Record<string, { ops: Record<string, unknown> }>;
   healthStatesOf(a: { compiled: Compiled; entity: string; scope: Scope }): string[];
   runOp(a: {
     primitive: string;
