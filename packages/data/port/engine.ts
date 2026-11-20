@@ -84,6 +84,23 @@ export const checksBuild = (engine: Engine, ruleset: Record<string, unknown>) =>
   !engine.compileRuleset({ ...ruleset, build: { strategy: "none" } }).ok &&
   engine.compileRuleset({ ...ruleset, build: undefined }).ok;
 
+/**
+ * True when `compileRuleset` checks the build block's play keys (`ascension`, `gone`, `award`): each one is optional,
+ * so an older validator ignores them and accepts the ledger ruleset, and only a validator that reads them refuses a
+ * broken one. `ruleset` is the ledger ruleset, which has them.
+ */
+export function checksPlay(engine: Engine, ruleset: Record<string, unknown>) {
+  const broken = [
+    { ascension: { xp: 0, cite: "Core p.1" } },
+    { gone: ["nobody"] },
+    { award: { max: 0, suggested: [], cite: "Core p.1" } },
+  ];
+  return (
+    engine.compileRuleset(ruleset).ok &&
+    broken.every((b) => !engine.compileRuleset({ ...ruleset, build: { ...(ruleset.build as object), ...b } }).ok)
+  );
+}
+
 /** True when `validatePack` checks an entry's `record` (`pack` holds one valid entry, which gets a broken record). */
 export function checksRecord(engine: Engine, ruleset: Compiled["ruleset"], pack: { entries: object[] }) {
   const entry = pack.entries[0];
