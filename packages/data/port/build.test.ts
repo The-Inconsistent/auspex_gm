@@ -14,13 +14,17 @@ import {
   type Skill,
 } from "@wg/shared";
 import { creationCatalogue, wargear } from "../index.ts";
-import { PHRASE, buildCatalogue } from "./build-catalogue.ts";
+import { PHRASE, PHRASE_KIND, buildCatalogue, remapApproval, type PortCatalogue } from "./build-catalogue.ts";
 import { buildParams } from "./build-params.ts";
+import { buildCreationPacks, catalogueOf } from "./creation-packs.ts";
 import { loadEngine } from "./engine.ts";
 
 // The acceptance test of InconsisTable's ledger builder (its ADR 0011, decision 4): on this repo's real catalogue, the
 // port resolves every build to what this repo's own `resolveBuild` gives, up to what the port changed on purpose
-// (`normalise`). Skipped when InconsisTable is not checked out beside this repo, or its checkout has no ledger builder.
+// (`normalise`). Each test runs on two catalogues: `parity`, the conversion in memory, and `pack`, the records read back
+// from the creation and wargear packs (creation-packs.ts), which carry no printed wording, with every GM approval moved
+// to the packs' ids through `remapApproval`. Skipped when InconsisTable is not checked out beside this repo, or its
+// checkout has no ledger builder.
 const engine = await loadEngine();
 const skip =
   engine === null
@@ -34,8 +38,13 @@ const setup = skip
   ? null
   : (() => {
       const params = engine!.BuildParams!.parse(buildParams());
-      return { params, port: buildCatalogue(engine!.buildSchemas!(params)) };
+      const schemas = engine!.buildSchemas!(params);
+      const packs = buildCreationPacks(schemas);
+      // As an import reads them: the packs as JSON, then their records by entity type.
+      const read = catalogueOf(JSON.parse(JSON.stringify([packs.creation, packs.wargear])) as never);
+      return { params, parity: buildCatalogue(schemas), pack: { ...packs.port, ...read } };
     })();
+type Mode = "parity" | "pack";
 
 type Play = { tier: number; xpEarned: number; packageWaived?: boolean };
 type Run = { build: CharacterBuildInput; homebrew: boolean; play?: Play };
@@ -52,34 +61,48 @@ const auspex = ({ build, homebrew, play }: Run) =>
 
 // ── what the port changed on purpose ──
 
-// A path of a record's requirement, `<origin>/requires/<segment>` cut at 200: the segment found in `reworded` by
-// `from`, rewritten to `to`. Any other path is returned as it is.
-const REQUIRES = "/requires/";
-function rewordPath(path: string, from: "auspex" | "port", to: "auspex" | "port") {
-  const at = path.indexOf(REQUIRES);
-  if (at < 0) return path;
-  const origin = path.slice(0, at);
-  const segment = path.slice(at + REQUIRES.length);
-  // A segment cut at 200 is the start of one.
-  const hit = setup!.port.reworded.find(
-    (r) => r[from] === segment || (path.length === 200 && r[from].startsWith(segment)),
-  );
-  return hit ? `${origin}${REQUIRES}${hit[to]}`.slice(0, 200) : path;
-}
+const catalogue = (mode: Mode): PortCatalogue => setup![mode];
 
 // The build the port is given: the same, with each GM approval of a reworded requirement at the port's own path.
-const forPort = (build: CharacterBuildInput): CharacterBuildInput => {
+const forPort = (build: CharacterBuildInput, mode: Mode): CharacterBuildInput => {
   const approved = build.gm?.approved;
   if (!approved?.length) return build;
-  return { ...build, gm: { ...build.gm, approved: approved.map((p) => rewordPath(p, "auspex", "port")) } };
+  const { reworded } = catalogue(mode);
+  return { ...build, gm: { ...build.gm, approved: approved.map((p) => remapApproval(p, reworded, "auspex", "port")) } };
 };
-const port = ({ build, homebrew, play }: Run) =>
+const port = ({ build, homebrew, play }: Run, mode: Mode) =>
   engine!.resolveBuild!({
     params: setup!.params,
-    catalogue: { creation: setup!.port.creation, wargear: setup!.port.wargear, homebrew },
-    build: forPort(build),
+    catalogue: { creation: catalogue(mode).creation, wargear: catalogue(mode).wargear, homebrew },
+    build: forPort(build, mode),
     play,
   });
+
+// The pack's phrases are numbered within their record, so one can't be put back by its number: a string of this repo
+// is equal to the port's when it is the port's with each phrase standing for one of the originals of its kind (the
+// same phrase for the same one). Built lazily: the originals of each kind, and a matcher per port string.
+const originalsOf = new Map<string, Set<string>>();
+function samePhrased(auspex: string, port: string): boolean {
+  const parts = port.split(PHRASE); // text, words, number, text, words, number, …, text
+  if (parts.length === 1) return false;
+  if (!originalsOf.size)
+    for (const p of setup!.pack.phrases)
+      originalsOf.set(p.kind, (originalsOf.get(p.kind) ?? new Set()).add(p.original));
+  const escape = (t: string) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  let source = `^${escape(parts[0]!)}`;
+  for (let i = 1; i < parts.length; i += 3) source += `([\\s\\S]+?)${escape(parts[i + 2]!)}`;
+  const m = new RegExp(`${source}$`).exec(auspex);
+  if (!m) return false;
+  const seen = new Map<string, string>();
+  for (let i = 1, g = 1; i < parts.length; i += 3, g++) {
+    const phrase = `${parts[i]} ‹${parts[i + 1]}›`;
+    const original = m[g]!;
+    if (!originalsOf.get(PHRASE_KIND[parts[i]!]!)?.has(original)) return false;
+    if ((seen.get(phrase) ?? original) !== original) return false;
+    seen.set(phrase, original);
+  }
+  return true;
+}
 
 const deepStrings = (x: unknown, f: (s: string) => string): unknown =>
   typeof x === "string"
@@ -93,23 +116,25 @@ const deepStrings = (x: unknown, f: (s: string) => string): unknown =>
 type Json = Record<string, unknown>;
 // Every difference the port made on purpose, and nothing else. Both sides go through it; JSON drops `undefined` keys.
 // `fired` collects the rules that changed something, for the counts.
-function normalise(o: Outcome, side: "auspex" | "port", fired: Set<string>): unknown {
+function normalise(o: Outcome, side: "auspex" | "port", fired: Set<string>, mode: Mode): unknown {
   // A throw on both sides is the same outcome: the message is zod's, worded by each side's own schema.
   if (!o.ok) return { threw: true };
   let r = JSON.parse(JSON.stringify(o.r)) as Json;
   if (side === "port") {
     // 1. The importer's words: the port holds a neutral phrase where this repo holds the record's own (a `gm`
-    //    requirement's label, a `story` grant, a `when`, a price's `plus`, a filter's `condition` or `upgrade`). Each is
-    //    put back, so everything around it compares exactly.
-    const { originals } = setup!.port;
-    r = deepStrings(r, (s) =>
-      s.replace(PHRASE, (_, n: string) => (fired.add("phrase"), originals[Number(n)]!)),
-    ) as Json;
-    // 2. A requirement serialised into an approval path with the port's `{ kind: "gm", id }` inside an `all` or
-    //    `either` (resolve.ts, deferred requirements): its segment is put back to this repo's.
+    //    requirement's label, a `story` grant, a `when`, a price's `plus`, a filter's `condition` or `upgrade`). In
+    //    parity mode each is put back by its number, so everything around it compares exactly; in pack mode
+    //    `samePhrased` compares the strings that hold one.
+    const { phrases, reworded } = catalogue(mode);
+    if (mode === "parity")
+      r = deepStrings(r, (s) =>
+        s.replace(PHRASE, (_, _words: string, n: string) => (fired.add("phrase"), phrases[Number(n)]!.original)),
+      ) as Json;
+    // 2. A requirement serialised into an approval path with the port's `{ kind: "gm", id }` (in parity mode only
+    //    inside an `all` or `either`; resolve.ts, deferred requirements): its segment is put back to this repo's.
     for (const p of r.problems as { path?: string }[]) {
       if (!p.path) continue;
-      const path = rewordPath(p.path, "port", "auspex");
+      const path = remapApproval(p.path, reworded, "port", "auspex");
       if (path !== p.path) fired.add("compound gm path");
       p.path = path;
     }
@@ -140,15 +165,17 @@ function normalise(o: Outcome, side: "auspex" | "port", fired: Set<string>): unk
   return r;
 }
 
-// The first place two values differ, as `path: auspex ≠ port`; null when they are equal.
-function firstDiff(a: unknown, b: unknown, at = ""): string | null {
+// The first place two values differ, as `path: auspex ≠ port`; null when they are equal. `same` may accept two
+// strings that differ.
+function firstDiff(a: unknown, b: unknown, same: (a: string, b: string) => boolean, at = ""): string | null {
   if (Object.is(a, b)) return null;
+  if (typeof a === "string" && typeof b === "string" && same(a, b)) return null;
   const show = (x: unknown) => JSON.stringify(x)?.slice(0, 300);
   if (typeof a !== "object" || typeof b !== "object" || !a || !b || Array.isArray(a) !== Array.isArray(b))
     return `${at || "(root)"}: ${show(a)} ≠ ${show(b)}`;
   const keys = [...new Set([...Object.keys(a), ...Object.keys(b)])];
   for (const k of keys) {
-    const d = firstDiff((a as Json)[k], (b as Json)[k], Array.isArray(a) ? `${at}[${k}]` : `${at}.${k}`);
+    const d = firstDiff((a as Json)[k], (b as Json)[k], same, Array.isArray(a) ? `${at}[${k}]` : `${at}.${k}`);
     if (d) return d;
   }
   if (!Array.isArray(a) && Object.keys(a).join() !== Object.keys(b).join())
@@ -157,12 +184,16 @@ function firstDiff(a: unknown, b: unknown, at = ""): string | null {
 }
 
 // Both sides on one build: the normalised outcomes and the first difference.
-function compare(run: Run) {
+function compare(run: Run, mode: Mode) {
   const a = attempt(() => auspex(run));
-  const p = attempt(() => port(run));
+  const p = attempt(() => port(run, mode));
   const fired = new Set<string>();
-  if (run.build.gm?.approved?.some((x) => rewordPath(x, "auspex", "port") !== x)) fired.add("compound gm approval");
-  const diff = firstDiff(normalise(a, "auspex", fired), normalise(p, "port", fired));
+  const { reworded } = catalogue(mode);
+  if (run.build.gm?.approved?.some((x) => remapApproval(x, reworded, "auspex", "port") !== x))
+    fired.add(mode === "parity" ? "compound gm approval" : "gm approval");
+  const same =
+    mode === "pack" ? (x: string, y: string) => samePhrased(x, y) && (fired.add("phrase"), true) : () => false;
+  const diff = firstDiff(normalise(a, "auspex", fired, mode), normalise(p, "port", fired, mode), same);
   return { a, p, diff, rules: [...fired] };
 }
 
@@ -275,53 +306,70 @@ const PREGENS = readdirSync(dir)
       },
   );
 
-test("the port rebuilds every pregen as this repo does: ready, the same ledger and the same sheet", { skip }, () => {
-  assert.equal(PREGENS.length, 11);
-  const fails: { name: string; diff: string }[] = [];
-  const runs = [];
-  for (const g of PREGENS) {
-    const run = { build: g.build, homebrew: g.homebrew };
-    const { a, p, diff, rules } = compare(run);
-    assert.ok(p.ok, `${g.name}: the port throws: ${p.ok ? "" : p.threw}`);
-    const r = p.r as ResolvedBuild;
-    assert.deepEqual(r.pending, [], `${g.name}: nothing left to choose`);
-    assert.deepEqual(
-      r.problems.map((x) => x.what),
-      [],
-      `${g.name}: no problems`,
-    );
-    assert.equal(
-      r.spent,
-      g.ledger.reduce((n, x) => n + x, 0),
-      `${g.name}: spent`,
-    );
-    if (diff) fails.push({ name: g.name, diff });
-    runs.push({ run, a, rules });
-  }
-  report(fails, PREGENS.length);
-  tally(runs, ["archetype", "packages", "fills.id", "fills.writeIn", "background", "talents", "gm.approved"]);
-});
+// The tests' names in each mode.
+const FROM: Record<Mode, string> = { parity: "", pack: " (from the packs' records)" };
+const MODES: Mode[] = ["parity", "pack"];
+
+for (const mode of MODES)
+  test(
+    `the port rebuilds every pregen as this repo does: ready, the same ledger and the same sheet${FROM[mode]}`,
+    { skip },
+    () => {
+      assert.equal(PREGENS.length, 11);
+      const fails: { name: string; diff: string }[] = [];
+      const runs = [];
+      for (const g of PREGENS) {
+        const run = { build: g.build, homebrew: g.homebrew };
+        const { a, p, diff, rules } = compare(run, mode);
+        assert.ok(p.ok, `${g.name}: the port throws: ${p.ok ? "" : p.threw}`);
+        const r = p.r as ResolvedBuild;
+        assert.deepEqual(r.pending, [], `${g.name}: nothing left to choose`);
+        assert.deepEqual(
+          r.problems.map((x) => x.what),
+          [],
+          `${g.name}: no problems`,
+        );
+        assert.equal(
+          r.spent,
+          g.ledger.reduce((n, x) => n + x, 0),
+          `${g.name}: spent`,
+        );
+        if (diff) fails.push({ name: g.name, diff });
+        runs.push({ run, a, rules });
+      }
+      report(fails, PREGENS.length);
+      tally(runs, ["archetype", "packages", "fills.id", "fills.writeIn", "background", "talents", "gm.approved"]);
+    },
+  );
 
 // ── every archetype ──
 
-test("every archetype resolves the same at its own Tier and at each higher Tier", { skip, timeout: 120_000 }, () => {
-  const fails: { name: string; diff: string }[] = [];
-  const runs = [];
-  for (const arch of creation.archetypes)
-    for (let tier = arch.tier; tier <= 5; tier++)
-      for (const homebrew of [false, true]) {
-        const run = { build: { tier, archetypeId: arch.id }, homebrew };
-        const { a, diff, rules } = compare(run);
-        if (diff) fails.push({ name: `${arch.id} at Tier ${tier}${homebrew ? ", homebrew" : ""}`, diff });
-        runs.push({ run, a, rules });
-      }
-  report(fails, runs.length);
-  tally(runs, ["archetype", "homebrew"]);
-});
+for (const mode of MODES)
+  test(
+    `every archetype resolves the same at its own Tier and at each higher Tier${FROM[mode]}`,
+    { skip, timeout: 120_000 },
+    () => {
+      const fails: { name: string; diff: string }[] = [];
+      const runs = [];
+      for (const arch of creation.archetypes)
+        for (let tier = arch.tier; tier <= 5; tier++)
+          for (const homebrew of [false, true]) {
+            const run = { build: { tier, archetypeId: arch.id }, homebrew };
+            const { a, diff, rules } = compare(run, mode);
+            if (diff) fails.push({ name: `${arch.id} at Tier ${tier}${homebrew ? ", homebrew" : ""}`, diff });
+            runs.push({ run, a, rules });
+          }
+      report(fails, runs.length);
+      tally(runs, ["archetype", "homebrew"]);
+    },
+  );
 
 // ── generated builds ──
 
-const BUILDS = Number(process.env.PORT_BUILDS ?? 5000);
+const BUILDS: Record<Mode, number> = {
+  parity: Number(process.env.PORT_BUILDS ?? 5000),
+  pack: Number(process.env.PORT_PACK_BUILDS ?? 1000),
+};
 
 // mulberry32: a small seeded generator, so a failure's seed rebuilds the same build.
 const random = (seed: number) => () => {
@@ -661,17 +709,22 @@ const ALL_PARTS = partsOf({
   homebrew: true,
 });
 
-test(`${BUILDS} generated builds resolve the same on both sides`, { skip, timeout: 600_000 }, () => {
-  const fails: { name: string; diff: string }[] = [];
-  const runs = [];
-  const started = performance.now();
-  for (let seed = 1; seed <= BUILDS; seed++) {
-    const run = generate(seed);
-    const { a, diff, rules } = compare(run);
-    if (diff) fails.push({ name: `seed ${seed}`, diff });
-    runs.push({ run, a, rules });
-  }
-  console.log(`${BUILDS} builds in ${Math.round(performance.now() - started)} ms`);
-  tally(runs, ALL_PARTS);
-  report(fails, BUILDS);
-});
+for (const mode of MODES)
+  test(
+    `${BUILDS[mode]} generated builds resolve the same on both sides${FROM[mode]}`,
+    { skip, timeout: 600_000 },
+    () => {
+      const fails: { name: string; diff: string }[] = [];
+      const runs = [];
+      const started = performance.now();
+      for (let seed = 1; seed <= BUILDS[mode]; seed++) {
+        const run = generate(seed);
+        const { a, diff, rules } = compare(run, mode);
+        if (diff) fails.push({ name: `seed ${seed}`, diff });
+        runs.push({ run, a, rules });
+      }
+      console.log(`${BUILDS[mode]} builds in ${Math.round(performance.now() - started)} ms`);
+      tally(runs, ALL_PARTS);
+      report(fails, BUILDS[mode]);
+    },
+  );
