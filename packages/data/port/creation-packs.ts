@@ -23,9 +23,10 @@ export interface CatalogueEntry {
 }
 
 // shortcut: record ids are shared between creation kinds (a Keyword, a Faction and a Background table of one name,
-// among others), and a pack's keys are unique across its types, so a creation entry's key is `<type>.<id>` and only
-// its `record.id` is the id; upgrade when the platform keys entries by type, or takes this form for `record`.
-export const entryKey = (type: string, id: string) => `${type}.${id}`;
+// among others), and a pack's keys are unique across its types, so a creation entry's key is `<kind>.<id>` (the kind
+// as the builder's `Creation` names it: a key takes no capitals) and only its `record.id` is the id; upgrade when the
+// platform keys entries by type, or takes this form for `record`.
+export const entryKey = (kind: keyof typeof TYPES, id: string) => `${kind}.${id}`;
 
 // The record's flat numbers (ruleset.ts, `catalogueEntities`); a price is repeated only when it is a plain number.
 function bodyOf(type: CatalogueEntry["type"], r: Json): Record<string, FieldValue> {
@@ -80,7 +81,7 @@ export function buildCreationPacks(schemas: Record<string, Schema>): {
 } {
   const port = buildCatalogue(schemas, { wording: "pack" });
   const creation = (Object.keys(TYPES) as (keyof typeof TYPES)[]).flatMap((kind) =>
-    port.creation[kind].map((r) => entry(CATALOGUE_KINDS[kind], entryKey(CATALOGUE_KINDS[kind], r.id as string), r)),
+    port.creation[kind].map((r) => entry(CATALOGUE_KINDS[kind], entryKey(kind, r.id as string), r)),
   );
   const wargear = [...port.wargear.values()].map((r) => entry("wargear", r.id as string, r));
   return {

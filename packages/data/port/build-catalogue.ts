@@ -5,7 +5,7 @@
 //   as this repo does, phrases numbered across the catalogue and a `gm` requirement's id its path segment.
 // - `pack` (the creation and wargear packs, creation-packs.ts): no printed wording at all. A `gm` requirement's id is
 //   a short hash of that path segment, phrases are numbered within their record, and a weapon mod's `bonusDice.when`
-//   and `gm.what` become phrases too.
+//   and `gm.what` and a power's DN written as a sentence become phrases too.
 //
 // What changes, and why:
 // - The fields that hold printed text are dropped (`TEXT_KEYS`), with the three collections the builder never reads.
@@ -16,7 +16,8 @@
 //   `remapApproval` moves an approval path from one side to the other (a campaign's builds need it when imported).
 // - The short strings the port treats as the importer's own words (a `gm` label, a `story` grant, `bonusDice.when`,
 //   `XpCost` `plus` and `byChoice[].when`, `WargearFilter` `condition` and `upgrade`, and in pack mode a weapon mod's
-//   `bonusDice.when` and `gm.what`) become a neutral numbered phrase; `phrases` says what each one stands for.
+//   `bonusDice.when` and `gm.what`, and a power's DN written as a sentence) become a neutral numbered phrase; `phrases`
+//   says what each one stands for.
 import { createHash } from "node:crypto";
 import { creationCatalogue, wargearList } from "../index.ts";
 import type { Schema } from "./engine.ts";
@@ -54,7 +55,11 @@ const PHRASES = {
   condition: "A condition the GM judges",
   upgrade: "An upgrade the GM checks",
   what: "A change the GM makes",
+  dn: "A DN the GM sets",
 } as const;
+// A power's DN is a short mechanic ("Opposed …"); one longer than this is a sentence of the book's, neutralised in pack
+// mode.
+const MAX_DN = 40;
 export type PhraseKind = keyof typeof PHRASES;
 // Group 1 is the phrase's words, group 2 its number.
 export const PHRASE = new RegExp(`(${Object.values(PHRASES).join("|")}) ‹(\\d+)›`, "g");
@@ -142,6 +147,7 @@ export function buildCatalogue(
       else if (pack && k === "when" && typeof v === "string" && x.kind === "bonusDice")
         out[k] = phrase("when", v, where);
       else if (pack && k === "what" && typeof v === "string" && x.kind === "gm") out[k] = phrase("what", v, where);
+      else if (pack && k === "dn" && typeof v === "string" && v.length > MAX_DN) out[k] = phrase("dn", v, where);
       else if (k === "plus" && typeof v === "string") out[k] = phrase("plus", v, where);
       else if ((k === "condition" || k === "upgrade") && typeof v === "string") out[k] = phrase(k, v, where);
       else out[k] = convert(v, where);
