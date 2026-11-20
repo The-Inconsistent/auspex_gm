@@ -20,12 +20,12 @@ export interface Entry {
   visibility: "gm";
   body: Record<string, FieldValue>;
 }
-export interface Pack {
+export interface Pack<E = Entry> {
   id: string;
   version: string;
   ruleset: { id: string; range: string };
   license: "private";
-  entries: Entry[];
+  entries: E[];
 }
 /** Something the pack does not carry: the Threat it belongs to and why (grouped by `reason` in the report). */
 export interface LeftOut {

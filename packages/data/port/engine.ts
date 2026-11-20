@@ -75,3 +75,18 @@ const entry = resolve(root, "packages/rules-engine/src/index.ts");
 /** Null when InconsisTable is not checked out here (CI of this repo): the port's checks are skipped. */
 export const loadEngine = async (): Promise<Engine | null> =>
   existsSync(entry) ? ((await import(entry)) as Engine) : null;
+
+// A checkout made before the ledger builder's `build` block and pack `record`s strips both unread (its schemas are not
+// strict), so whether they are checked is asked by sending a broken one: refused only where it is validated.
+
+/** True when `compileRuleset` checks a ruleset's `build` block. */
+export const checksBuild = (engine: Engine, ruleset: Record<string, unknown>) =>
+  !engine.compileRuleset({ ...ruleset, build: { strategy: "none" } }).ok &&
+  engine.compileRuleset({ ...ruleset, build: undefined }).ok;
+
+/** True when `validatePack` checks an entry's `record` (`pack` holds one valid entry, which gets a broken record). */
+export function checksRecord(engine: Engine, ruleset: Compiled["ruleset"], pack: { entries: object[] }) {
+  const entry = pack.entries[0];
+  const one = (e: unknown) => engine.validatePack({ input: { ...pack, entries: [e] }, ruleset }).ok;
+  return entry !== undefined && one(entry) && !one({ ...entry, record: 1 });
+}
