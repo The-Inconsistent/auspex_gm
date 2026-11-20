@@ -179,14 +179,14 @@ function muster(ruleset: Ruleset, a: Actor, members: number): Actor {
 
 // ── the real op, once the platform has it ──
 
-// shortcut: the state and params the op reads are guessed from `initiative.sides` (ActorState, the manifest block, and
-// a ready scope); when health.harm lands, fit this to its RuleState and the deltas it writes.
+// The state the platform's api loads for the op (its ActorState: the entity type, a ready scope, a resource's shown
+// max as `limit`, a condition's id), and the deltas it writes back (a resource added to, a field set, a condition laid).
 function viaOp(ruleset: Ruleset, compiled: Compiled, a: Actor, op: "hit" | "muster", input: object): Outcome {
   const { derived, scope } = scopeOf(compiled, a);
   const resources = Object.fromEntries(
     Object.entries(a.resources).map(([id, value]) => {
       const b = engine!.resourceBounds({ compiled, resource: id, scope });
-      return [id, { value, min: b.min, max: b.max }];
+      return [id, { value, min: b.min, max: b.max, limit: b.max }];
     }),
   );
   const conditions = a.conditions.map((c, i) => ({
@@ -216,16 +216,25 @@ function viaOp(ruleset: Ruleset, compiled: Compiled, a: Actor, op: "hit" | "must
     added: [] as string[],
   };
   for (const d of r.deltas) {
-    const t = d.target as { resource?: string; field?: string; condition?: string };
+    const t = d.target as { resource?: string; field?: string; applyCondition?: string };
     if (t.resource !== undefined) {
       out.resources[t.resource] =
         d.kind === "add" ? out.resources[t.resource]! + (d.value as number) : (d.value as number);
     } else if (t.field !== undefined) {
       out.fields[t.field] = d.kind === "add" ? (out.fields[t.field] as number) + (d.value as number) : d.value;
-    } else if (t.condition !== undefined && d.value !== null) out.added.push(t.condition);
+    } else if (t.applyCondition !== undefined) out.added.push(t.applyCondition);
   }
   return out;
 }
+
+/** The op takes a hit of -100 to 100 on each track, one of them not zero; the reference takes any numbers. */
+const sendable = (hit: Hit) =>
+  [hit.wounds ?? 0, hit.shock ?? 0].every((n) => Math.abs(n) <= 100) &&
+  ((hit.wounds ?? 0) !== 0 || (hit.shock ?? 0) !== 0);
+
+/** The op lays no condition the actor already holds; the reference names it either way, as pcHit sets its flag. */
+const unheld = (a: Actor, o: Outcome): Outcome =>
+  o.refused ? o : { ...o, added: o.added.filter((c) => !a.conditions.includes(c)) };
 
 // ── the cases ──
 
@@ -517,21 +526,28 @@ for (const [name, ruleset, skipThis] of RULESETS) {
 
   test(`${name}: the real health.harm op agrees with the reference`, { skip: skipThis || skipOp }, () => {
     const compiled = compile(ruleset);
+    let sent = 0;
     for (let seed = 1; seed <= CASES; seed++) {
       const agent = agentCase(seed, name.startsWith("ledger"));
       const a = agentActor(compiled, agent.c, agent.tier);
-      assert.deepEqual(
-        viaOp(ruleset, compiled, a, "hit", agent.hit),
-        harm(ruleset, compiled, a, agent.hit),
-        `Agent ${seed}`,
-      );
+      if (sendable(agent.hit)) {
+        sent++;
+        assert.deepEqual(
+          viaOp(ruleset, compiled, a, "hit", agent.hit),
+          unheld(a, harm(ruleset, compiled, a, agent.hit)),
+          `Agent ${seed}`,
+        );
+      }
       const threat = threatCase(seed);
       const t = threatActor(compiled, threat.c, threat.tier, threat.other);
-      assert.deepEqual(
-        viaOp(ruleset, compiled, t, "hit", threat.hit),
-        harm(ruleset, compiled, t, threat.hit),
-        `Threat ${seed}`,
-      );
+      if (sendable(threat.hit)) {
+        sent++;
+        assert.deepEqual(
+          viaOp(ruleset, compiled, t, "hit", threat.hit),
+          harm(ruleset, compiled, t, threat.hit),
+          `Threat ${seed}`,
+        );
+      }
       if (threat.c.mobCount === null) continue;
       const size = rng(seed + 1_000_000).int(0, 500);
       const m = muster(ruleset, t, size);
@@ -546,5 +562,6 @@ for (const [name, ruleset, skipThis] of RULESETS) {
         `Mob ${seed} muster`,
       );
     }
+    assert.ok(sent >= CASES, `only ${sent} hits were within what the op takes`);
   });
 }
