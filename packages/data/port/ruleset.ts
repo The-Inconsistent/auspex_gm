@@ -12,6 +12,7 @@ import {
   CONDITIONS,
   corruptionLevel,
   CHAOS_SPAWN_AT,
+  MOB_MIN,
   SKILLS,
   Threat,
   ThreatSize,
@@ -138,24 +139,70 @@ const OVER_SHOCK = "(has(stat.shock) && res.shock > stat.shock)";
 // the Threat joins the fight (addThreat in apps/api/src/encounter/encounter.actions.ts). The pack writes all five
 // columns for every Threat, so the column always exists.
 const CLASS = "at(class, campaign.tier)";
+// A Mob is a Threat that carries the members resource: the platform creates it only once the start field is set,
+// which spawning a pack entry with a member count does (addThreat, encounter.actions.ts:137-138). threatStatus reads a
+// Mob by its members alone (p.325): Slain at none, the Resolve reminder while half or more are slain (rules-flow
+// §11.13), and none of a single Threat's states.
+const MOB = "has(res.members)";
+const SINGLE = `!${MOB}`;
 const THREAT_STATES = [
   {
     id: "slain",
     label: "Slain",
-    when: `(${OVER_WOUNDS} && ${CLASS} != "adversary") || (!(${OVER_WOUNDS}) && ${OVER_SHOCK} && ${CLASS} == "troop")`,
+    when: `(${MOB} && res.members == 0) || (${SINGLE} && ((${OVER_WOUNDS} && ${CLASS} != "adversary") || (!(${OVER_WOUNDS}) && ${OVER_SHOCK} && ${CLASS} == "troop")))`,
+  },
+  {
+    id: "halfSlain",
+    label: "Resolve DN 3 at Round end",
+    when: `${MOB} && res.members > 0 && res.members * 2 <= mob.start`,
   },
   {
     id: "dyingOrDead",
     label: "Dying or dead (GM)",
-    when: `${OVER_WOUNDS} && ${CLASS} == "adversary"`,
+    when: `${SINGLE} && ${OVER_WOUNDS} && ${CLASS} == "adversary"`,
   },
   {
     id: "threatExhausted",
     label: "Exhausted",
-    when: `!(${OVER_WOUNDS}) && ${OVER_SHOCK} && ${CLASS} != "troop"`,
+    when: `${SINGLE} && !(${OVER_WOUNDS}) && ${OVER_SHOCK} && ${CLASS} != "troop"`,
   },
-  { id: "threatWounded", label: "Wounded", when: `!(${OVER_WOUNDS}) && !${OVER_SHOCK} && res.wounds > 0` },
+  { id: "threatWounded", label: "Wounded", when: `${SINGLE} && !(${OVER_WOUNDS}) && !${OVER_SHOCK} && res.wounds > 0` },
 ].map((s) => ({ ...s, entities: ["threat"] }));
+
+// An Agent's states as pcStatus gives them (pp.193-196): Dead is an Annihilated Agent (p.194) or one past its Traumatic
+// Injuries, and a Dead Agent is neither Dying nor Wounded.
+const DEAD = `(has(annihilated) && annihilated) || ${opt("traumatic")} > derived.maxTraumatic`;
+const DYING = `!(${DEAD}) && res.wounds > derived.maxWounds`;
+
+// What one hit does (the platform's `health.harm`): pcHit for an Agent, combatant.adjust for a Threat (state.ts,
+// apps/api/src/encounter/encounter.actions.ts:550-577). Every expression reads the actor before the hit.
+const HARM = {
+  cite: "Core pp.193-199, pp.324-325",
+  wounds: "wounds",
+  shock: "shock",
+  // Every member has 1 Wound: Wounds remove members, healing restores them up to the starting size, and one hit of
+  // Shock over the members' Max Shock removes one (p.325, rules-flow §11.9).
+  mob: { members: "members", start: "mob.start" },
+  profiles: [
+    {
+      entities: ["agent"],
+      // Exhausted: past Max Shock, or the Condition from another source (isExhausted, p.199, rules-flow §11.12).
+      spent: { when: "res.shock > derived.maxShock", conditions: ["exhausted"] },
+      // Dying (pcStatus): a Wound is one Traumatic Injury per hit (rules-flow §11.11), any healing ends it, and
+      // becoming Dying adds Prone (p.193).
+      felled: { when: DYING, injuries: "traumatic", condition: "prone", healTo: "derived.maxWounds" },
+      // One hit over twice Max Wounds, counted after Resilience (p.194, rules-flow §11.7).
+      destroyed: { over: "2 * derived.maxWounds", field: "annihilated" },
+    },
+    {
+      entities: ["threat"],
+      // A Threat printed with "–" never suffers Shock (p.324).
+      shockless: "!has(stat.shock)",
+      spent: { when: OVER_SHOCK, conditions: ["exhausted"] },
+      // No Dying, Traumatic Injury or Annihilation: an Adversary past Max Wounds is the GM's call (rules-flow §11.10).
+    },
+  ],
+};
 
 // A Wounded Agent (any Wounds, so a Dying one too) has +1 DN on every Test (p.193). The app adds it to a called Test,
 // which this repo left to the GM (callDn adds only the Corruption modifier); the GM ticks `ignoreWounded` on the call
@@ -280,7 +327,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
 
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.0",
+    version: "0.1.1",
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
     // none to give (a campaign's Tier is chosen when it is created).
@@ -321,7 +368,8 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         ],
       },
       {
-        // A Threat as its stat block prints it: the Traits are numbers, not formulas (p.323). A Mob is not ported yet.
+        // A Threat as its stat block prints it: the Traits are numbers, not formulas (p.323). A Mob is one Threat with a
+        // member count (`mob.start`, `members`).
         // The fields below `name` are what the Threat pack fills (packages/data/port/pack.ts); an unset one is
         // a printed "–" (or a column the block does not print).
         id: "threat",
@@ -385,10 +433,27 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
           // The keys of this Threat's weapon entries: from its abilities, and from its options.
           weapons: { type: "list", label: "Weapons", cite: "Core p.323" },
           variantWeapons: { type: "list", label: "Option weapons", cite: "Core p.323" },
+          // A Mob's starting size (combatant.mobStart): two Troops or more (p.324, MOB_MIN); at most the 500 a Mob is
+          // added with (combatant.addThreat, an app limit of this repo, not a rule). Unset for a single Threat.
+          "mob.start": {
+            type: "int",
+            label: "Mob: starting size",
+            min: MOB_MIN,
+            max: 500,
+            ...party,
+            cite: "Core p.324",
+          },
         },
         derived: [
           { id: "maxWounds", label: "Max Wounds", expr: "stat.wounds", cite: "Core p.323" },
           { id: "maxShock", label: "Max Shock", expr: opt("stat.shock"), cite: "Core p.324" },
+          // +1 bonus die per Troop, at most half of them, rounded up (mobBonusDice, attack.ts; rules-flow §11.173).
+          {
+            id: "mobBonusDice",
+            label: "Mob bonus dice",
+            expr: `${MOB} ? (res.members + 1) / 2 : 0`,
+            cite: "Core p.324",
+          },
         ],
       },
       {
@@ -472,6 +537,18 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         max: "max(1, 2 * party.characters)",
         resetOn: [{ event: "sessionStart", to: "party.characters" }],
         cite: "Core p.320",
+      },
+      {
+        // A Mob's members standing (combatant.mobCount): full when it is made, never past its starting size (p.325).
+        // Its bounds read `mob.start`, so a single Threat, which has none, never carries it.
+        id: "members",
+        label: "Mob members",
+        scope: "entity",
+        entities: ["threat"],
+        max: "mob.start",
+        start: "max",
+        ...party,
+        cite: "Core pp.324-325",
       },
       { id: "personalRuin", label: "Personal Ruin", scope: "entity", entities: ["threat"], cite: "Core p.323, p.325" },
       { id: "wealth", label: "Wealth", scope: "entity", entities: ["agent"], ...party, cite: "Core p.38" },
@@ -577,13 +654,19 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     },
     health: {
       states: [
-        { id: "dead", label: "Dead", when: `${opt("traumatic")} > derived.maxTraumatic`, entities: ["agent"] },
-        { id: "dying", label: "Dying", when: "res.wounds > derived.maxWounds", entities: ["agent"] },
-        { id: "wounded", label: "Wounded", when: "res.wounds > 0", entities: ["agent"] },
+        { id: "dead", label: "Dead", when: DEAD, entities: ["agent"] },
+        { id: "dying", label: "Dying", when: DYING, entities: ["agent"] },
+        {
+          id: "wounded",
+          label: "Wounded",
+          when: `!(${DEAD}) && res.wounds > 0 && res.wounds <= derived.maxWounds`,
+          entities: ["agent"],
+        },
         { id: "exhausted", label: "Exhausted", when: "res.shock > derived.maxShock", entities: ["agent"] },
         ...THREAT_STATES,
       ],
-      cite: "Core pp.193-196, p.324",
+      harm: HARM,
+      cite: "Core pp.193-196, pp.324-325",
     },
     decisions: [
       {
@@ -686,20 +769,18 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.0",
-    // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset keeps
-    // its 0.1.x health states as they were; the ledger's `build.gone` names this one beside Dead.
-    // Dead is also an Annihilated Agent, one hit over twice Max Wounds (Core p.194, `pcStatus`): the 0.1.x state read
-    // only the Traumatic Injuries, so the sheet's tick did nothing.
+    version: "0.2.1",
+    // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
+    // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
       ...ruleset.health,
       states: [
-        ...ruleset.health.states.map((s) =>
-          s.id === "dead" ? { ...s, when: `(has(annihilated) && annihilated) || ${s.when}` } : s,
-        ),
+        ...ruleset.health.states,
         { id: "lost", label: "Lost", when: `${opt("res.corruption")} >= ${CHAOS_SPAWN_AT}`, entities: ["agent"] },
       ],
     },
+    // A Lost Agent is out of the turn order as a Dead one is (isOut reads isGone, state.ts).
+    initiative: { ...ruleset.initiative, unableStates: ["dead", "lost", "slain"] },
     entities: [...ruleset.entities, ...catalogueEntities(params)],
     creation: [],
     build: {

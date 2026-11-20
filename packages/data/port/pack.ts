@@ -181,9 +181,10 @@ export function buildPack(): { pack: Pack; leftOut: LeftOut[]; normalised: Recor
 
   const pack: Pack = {
     id: "wrath-and-glory-threats",
-    version: "0.1.0",
-    // Both rulesets this repo generates: 0.1.0 (copied in by hand) and 0.2.0 (the ledger builder).
-    ruleset: { id: "wrath-and-glory", range: "^0.1.0 || ^0.2.0" },
+    version: "0.1.1",
+    // Both rulesets this repo generates: 0.1.x (copied in by hand) and 0.2.x (the ledger builder), from the versions
+    // whose Threat can be spawned as a Mob (0.1.1, 0.2.1).
+    ruleset: { id: "wrath-and-glory", range: "^0.1.1 || ^0.2.1" },
     license: "private",
     entries,
   };
