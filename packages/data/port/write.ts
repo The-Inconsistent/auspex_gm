@@ -3,16 +3,22 @@
 // the creation and wargear packs: `... [--ledger <file>] [--creation <file>] [--wargear <file>]` (with or without the
 // ruleset file); and the World, this app's look: `... [--world <file>]`. Import the files through InconsisTable's
 // /library. All are private content: keep them out of both repos.
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
 import { buildParams } from "./build-params.ts";
 import { buildCreationPacks } from "./creation-packs.ts";
 import { checksBuild, checksPlay, checksRecord, loadEngine, type Problem } from "./engine.ts";
-import { buildPack } from "./pack.ts";
+import { CampaignExport } from "@wg/shared";
+import { buildCustomThreatPack, buildPack, type LeftOut, type Pack } from "./pack.ts";
 import { buildRuleset } from "./ruleset.ts";
 import { buildWorld } from "./world.ts";
 
+// `--custom-threats` takes two values, which parseArgs cannot say: taken out first.
+const args = process.argv.slice(2);
+const customAt = args.indexOf("--custom-threats");
+const custom = customAt === -1 ? undefined : args.splice(customAt, 3).slice(1);
 const { values: flags, positionals } = parseArgs({
+  args,
   allowPositionals: true,
   options: {
     ledger: { type: "string" },
@@ -24,9 +30,12 @@ const { values: flags, positionals } = parseArgs({
 const [out, packOut] = positionals;
 const ledgerOut = flags.ledger;
 const catalogueOut = { creation: flags.creation, wargear: flags.wargear };
-if (!out && !ledgerOut && !catalogueOut.creation && !catalogueOut.wargear && !flags.world) {
+if (
+  (!out && !ledgerOut && !catalogueOut.creation && !catalogueOut.wargear && !flags.world && !custom) ||
+  (custom && custom.length !== 2)
+) {
   console.error(
-    "usage: bun packages/data/port/write.ts [<ruleset file> [<pack file>]] [--ledger <file>] [--creation <file>] [--wargear <file>] [--world <file>]",
+    "usage: bun packages/data/port/write.ts [<ruleset file> [<pack file>]] [--ledger <file>] [--creation <file>] [--wargear <file>] [--world <file>] [--custom-threats <export file> <pack file>]",
   );
   process.exit(2);
 }
@@ -48,24 +57,35 @@ if (out) {
   console.log(`${ruleset.id} ${ruleset.version} → ${out}`);
 }
 
-if (packOut) {
-  const { pack, leftOut, normalised } = buildPack();
+// A Threat pack, validated against the by-hand ruleset, written, and counted.
+function writeThreatPack(
+  file: string,
+  { pack, leftOut, normalised }: { pack: Pack; leftOut: LeftOut[]; normalised: Record<string, number> },
+) {
   if (engine !== null && compiled?.ok) {
     const result = engine.validatePack({ input: pack, ruleset: compiled.compiled.ruleset });
     for (const w of result.warnings) console.warn(`warning ${w.path}: ${w.message}`);
-    if (!result.ok) {
-      for (const p of result.problems) console.error(`${p.path}: ${p.message}`);
-      process.exit(1);
-    }
+    if (!result.ok) refuse(result.problems);
   } else console.warn("the pack was not validated");
-  writeFileSync(packOut, `${JSON.stringify(pack)}\n`);
+  writeFileSync(file, `${JSON.stringify(pack)}\n`);
   const types = pack.entries.reduce<Record<string, number>>((n, e) => ({ ...n, [e.type]: (n[e.type] ?? 0) + 1 }), {});
-  console.log(`${pack.id} ${pack.version} → ${packOut}: ${JSON.stringify(types)}`);
+  console.log(`${pack.id} ${pack.version} → ${file}: ${JSON.stringify(types)}`);
   for (const [from, uses] of Object.entries(normalised)) console.log(`normalised Skill name ${from}: ${uses}`);
   const groups = new Map<string, string[]>();
   for (const { reason, id } of leftOut) groups.set(reason, [...(groups.get(reason) ?? []), id]);
   for (const [reason, ids] of [...groups].sort())
     console.log(`left out, ${reason}: ${ids.length} (e.g. ${[...new Set(ids)].slice(0, 5).join(", ")})`);
+}
+if (packOut) writeThreatPack(packOut, buildPack());
+if (custom) {
+  const [exportFile, file] = custom as [string, string];
+  const exported = CampaignExport.safeParse(JSON.parse(readFileSync(exportFile, "utf8")));
+  if (!exported.success)
+    refuse(exported.error.issues.map((i) => ({ path: i.path.map(String).join("."), message: i.message })));
+  else {
+    if (exported.data.codex.customThreats.length === 0) console.warn(`${exportFile} has no custom Threats`);
+    writeThreatPack(file, buildCustomThreatPack(exported.data));
+  }
 }
 
 if (ledgerOut || catalogueOut.creation || catalogueOut.wargear) {
