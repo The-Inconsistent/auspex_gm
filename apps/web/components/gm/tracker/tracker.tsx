@@ -182,6 +182,9 @@ export function Tracker({ state, send, bestiary, lookups = null, mutations = [] 
     setError(null);
     const { undo, note } = preview({ action: a, state });
     push({ text: text + note, undo });
+    // Lines only the server knows, e.g. Enduring Life's 1d6 Corruption per Traumatic Wound (p.294).
+    const who = a.type === "character.adjust" ? `${chars.get(a.id)?.name.toUpperCase() ?? "?"}: ` : "";
+    for (const n of r.notices ?? []) push({ text: who + n, warn: true });
     return r;
   };
 

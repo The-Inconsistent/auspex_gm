@@ -7,6 +7,8 @@ import {
   corruptionGain,
   corruptionLevel,
   corruptionTestDn,
+  hasMutation,
+  BLIGHTED_SOUL,
   type ActionResult,
   type Character,
   type CorruptionDn,
@@ -37,7 +39,8 @@ export function CorruptionTest({ source: fixed, characters, send, onReport }: Co
   const points = agent?.stats.corruption ?? 0;
   const { modifier } = corruptionLevel(points);
   const spentWrath = spent && (agent?.wrath ?? 0) > 0; // the Agent pays it, so none to spend is no spend
-  const testDn = corruptionTestDn({ source, points, wrathCritical, spentWrath });
+  const blighted = !!agent && hasMutation(agent.stats, BLIGHTED_SOUL); // +1 DN to their own Test (p.289, §11.184)
+  const testDn = corruptionTestDn({ source, points, wrathCritical, spentWrath, blighted });
   const gain = corruptionGain({ dn: testDn, icons: icons ?? 0, complication });
   const toggle = (on: boolean, set: (v: boolean) => void, label: string, disabled = false) => (
     <button className={`btn sm ${on ? "primary" : ""}`} aria-pressed={on} disabled={disabled} onClick={() => set(!on)}>
@@ -103,6 +106,7 @@ export function CorruptionTest({ source: fixed, characters, send, onReport }: Co
       <span className="dim" hidden={fixed === undefined && testDn === source}>
         DN {source}
         {modifier > 0 && ` +${modifier}`}
+        {blighted && " +1 BLIGHTED SOUL"}
         {wrathCritical && " −2"}
         {spentWrath && " −1"}
         {testDn !== source && ` = ${testDn}`}
