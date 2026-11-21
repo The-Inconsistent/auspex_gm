@@ -27,6 +27,7 @@ export * from "./build.ts";
 export * from "./library.ts";
 export * from "./book.ts";
 export * from "./export.ts";
+export * from "./journal.ts";
 export * from "./calendar.ts";
 export * from "./admin.ts";
 export * from "./mention.ts";

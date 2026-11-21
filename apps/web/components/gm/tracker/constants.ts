@@ -6,7 +6,7 @@ import type { Direction } from "@/lib/fight-delta/fight-delta";
 // Quick-pick amounts on the delta pad.
 export const AMOUNTS = [1, 2, 3, 4, 5, 6, 8, 10] as const;
 
-// Vox log keeps the most recent entries only.
+// The chronicle keeps the most recent lines only.
 export const LOG_LIMIT = 40;
 
 // A threat row's visibility chip: the word on the row, and what a player sees (the chip's aria-label).

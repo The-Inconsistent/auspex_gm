@@ -246,6 +246,13 @@
       "when": 1794980686917,
       "tag": "0034_burly_anthem",
       "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1794993024606,
+      "tag": "0035_action_journal",
+      "breakpoints": true
     }
   ]
 }

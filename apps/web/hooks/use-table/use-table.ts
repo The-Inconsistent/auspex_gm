@@ -9,6 +9,7 @@ import type {
   BookPage,
   BookReply,
   Codex,
+  JournalItem,
   LiveState,
   ThreatSource,
 } from "@wg/shared";
@@ -30,6 +31,8 @@ export function useTable(campaignId: string) {
   const socket = useRef<Socket | null>(null);
   const [state, setState] = useState<LiveState | null>(null);
   const [codex, setCodex] = useState<Codex | null>(null);
+  // GM only: the HISTORY list, pushed after every journaled action (the api never sends it to a player).
+  const [journal, setJournal] = useState<JournalItem[]>([]);
   const [online, setOnline] = useState(false);
   // Books a GM tablet is serving right now (book:available); a cite in one of them opens its page.
   const [books, setBooks] = useState<ThreatSource[]>([]);
@@ -58,6 +61,7 @@ export function useTable(campaignId: string) {
     });
     s.on("state", setState);
     s.on("codex", setCodex);
+    s.on("journal", setJournal);
     s.on("book:available", (a: BookAvailable) => setBooks(a.sources));
     s.on("book:request", async (p: BookPage, ack: (r: BookReply) => void) => {
       const render = serving.current?.render;
@@ -140,7 +144,7 @@ export function useTable(campaignId: string) {
     socket.current?.emit("book:serving", { sources: next?.sources ?? [] });
   }, []);
 
-  return { state, codex, online, send, books, requestPage, serveBooks };
+  return { state, codex, journal, online, send, books, requestPage, serveBooks };
 }
 
 async function emit(s: Socket | null, a: ActionInput): Promise<ActionResult> {

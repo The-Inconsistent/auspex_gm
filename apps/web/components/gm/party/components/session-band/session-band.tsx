@@ -8,6 +8,7 @@ import { FieldError } from "@/components/ui/field-error/field-error";
 import { MentionField } from "@/components/ui/mention-field/mention-field";
 import { useFieldErrors } from "@/hooks/use-field-errors/use-field-errors";
 import type { Send } from "@/hooks/use-table/use-table";
+import { fetchRecapDraft, mergeDraft } from "@/lib/journal-api/journal-api";
 import { nextSessionLine } from "@/lib/next-session/next-session";
 
 import { DEFAULT_XP, XP_AWARDS, type PartyMsg } from "../../constants";
@@ -31,6 +32,8 @@ export function SessionBand({ campaign, sessions, players, send, msg, onResult }
   const [planning, setPlanning] = useState(false); // the next-session form's dialog
   const [xp, setXp] = useState<number>(DEFAULT_XP);
   const [recap, setRecap] = useState("");
+  const [drafting, setDrafting] = useState(false);
+  const [draftNote, setDraftNote] = useState<string | null>(null); // why DRAFT FROM JOURNAL added nothing
   const [title, setTitle] = useState(""); // the next session's name, sent with START SESSION (issue #175)
   const sessionFields = useFieldErrors("start-title"); // START SESSION's title
 
@@ -44,6 +47,21 @@ export function SessionBand({ campaign, sessions, players, send, msg, onResult }
     const r = await send({ type: "session.start", title: named });
     onResult(r, "SESSION STARTED · POOLS RESET");
     if (r.ok) setTitle("");
+  };
+
+  // DRAFT FROM JOURNAL: the api's lines for this session, added under what the GM already typed (never over it).
+  const draftRecap = async () => {
+    if (!open) return;
+    setDrafting(true);
+    setDraftNote(null);
+    try {
+      const { lines } = await fetchRecapDraft({ campaignId: campaign.id, sessionId: open.id });
+      if (lines.length === 0) setDraftNote("The journal has nothing to draft from yet.");
+      else setRecap((r) => mergeDraft({ recap: r, lines }));
+    } catch (e) {
+      setDraftNote(`! ${e instanceof Error ? e.message : "The draft failed."}`);
+    }
+    setDrafting(false);
   };
 
   // END SESSION: awards XP to everyone and saves the recap.
@@ -152,7 +170,15 @@ export function SessionBand({ campaign, sessions, players, send, msg, onResult }
               placeholder="Previously in Wrath & Glory…"
             />
           </div>
+          {draftNote && (
+            <div role="status" className={draftNote.startsWith("!") ? "red" : "dim"}>
+              {draftNote}
+            </div>
+          )}
           <div className="keys" style={{ alignItems: "center", paddingTop: 0 }}>
+            <button className="btn" onClick={draftRecap} disabled={drafting}>
+              DRAFT FROM JOURNAL
+            </button>
             <button className="btn primary" onClick={endSession}>
               END SESSION
             </button>

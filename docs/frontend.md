@@ -522,7 +522,7 @@ class tag, DEF, RES, the portrait) go, and under 600px STATUS and PLAYERS SEE dr
 row (rules-flow §11.168, §11.171), by what the mark says:
 - `READY` on the side that is up: START (`turn.start`) and MARK DONE (`turn.mark` acted, a fix). Off the suggested side it
   reads "The <Side> pick next. Start <name>'s Turn anyway?" with SEIZE · 1 GLORY / 1 RUIN (`turn.seize`, when allowed),
-  JUST GO (`turn.start` with `force`, free, noted in the vox log) and MARK DONE.
+  JUST GO (`turn.start` with `force`, free, noted in the chronicle) and MARK DONE.
 - `▶ ACTING`: END TURN and HOLD ACTION (`turn.end`, `turn.hold`).
 - `✓ DONE`: NOT YET (`turn.mark`), another Turn this Round or a fix for a slip.
 - `HELD`: INTERRUPT (`turn.interrupt`), which only clears the mark; it starts no Turn.
@@ -551,8 +551,9 @@ it by the selected row, so a new selection starts with both panels folded. TURN 
 | `ADD TO FIGHT` | Always, last in the row (`AddCombatants`, passed as KeyBar's children) | Opens the add dialog (below) |
 
 MORE holds, in this order:
+- `HISTORY`, always: opens the journal's dialog (below, **Chronicle, UNDO HIT and HISTORY**).
 - `NEW ROUND`, mid-Round only (not in Round 0, not at ROUND COMPLETE, where `BEGIN ROUND N` is the turn button): ends the
-  Round early (`encounter.newRound`), and since no panel showed them, its round-end reminders go to the vox log.
+  Round early (`encounter.newRound`), and since no panel showed them, its round-end reminders go to the chronicle.
 - `REMOVE`, when a row is selected: `combatant.remove`, then clears the selection.
 - `END FIGHT` (`encounter.end`), always.
 
@@ -575,13 +576,13 @@ under it on that track (a second tap on the same number closes it). It holds:
   numbers 1–99, else "A whole number, 1 to 99."); Enter applies it;
 - CLOSE (Escape too), and a foot line `APPLIES TO: <NAME> · WOUNDS 13/18 LEFT`.
 
-A delta goes through `counterAction` and `run`, so the vox log, its notes and UNDO apply, and the pad closes. Log text is
+A delta goes through `counterAction` and `run`, so the chronicle, its notes and UNDO HIT apply, and the pad closes. Log text is
 `<NAME> +3 WOUNDS`, worded by `COUNTER_ACTIONS` (`lib/command/constants.ts`, shared with the command line), which maps each
 key to a `field` and a `sign` (`counterKey`):
 - PCs send `character.adjust` on the character.
 - Threats send `combatant.adjust` on the row.
 
-**Kept as it was:** the side panel, the vox log and undo, the Condition reminders, `AddCombatants` and the command line
+**Kept as it was:** the side panel, the Condition reminders, `AddCombatants` and the command line
 (§3.2). Only the old key bar moved: DMG / HEAL / SHOCK / RECOVER and the amount pad are the delta pad, ±COND is
 + CONDITION, and the PLAYERS select, AMBUSH / AWARE, REMOVE, NEW ROUND and END ENC are in MORE (END ENC is END FIGHT) or
 on the row (AMBUSH and AWARE are on the row's mark and dialog, NEW ROUND stays in MORE mid-Round).
@@ -605,22 +606,31 @@ on the row (AMBUSH and AWARE are on the row's mark and dialog, NEW ROUND stays i
   with a Wrath 1s input; any 1 opens CritPerils on PERILS with the extra 1s, §11.181) and SUSTAIN. A typed power name adds a
   `Sustaining: <power>` Condition (§11.180). A PC whose sheet has `stats.powers` (§11.176) gets a row of quick picks (Sustained ones marked ⟳) that fill the input; after
   MANIFEST of a Sustained one, SUSTAIN is highlighted, not applied. Threats and hand-made sheets use the input alone.
-- Below either one sits the **vox log**.
-**Vox log and undo.**
+- Below either one sits the **chronicle**.
+**Chronicle, UNDO HIT and HISTORY.**
 - `run(action, text)` (the `Run` type in `tracker/types.ts`) wraps `send`. On success it pushes a `LogEntry` to the
-  top of the log, capped at `LOG_LIMIT` (40). On refusal it sets the tracker's error line.
-- Each entry carries `undo` and a `note` from `preview({ action, state })`, read against the state at tap time. For
-  `character.adjust` and `combatant.adjust` it runs the same rules as the api (`pcHit`, `exhaustedShock`, the Mob
-  member count) and the undo is the exact difference, sent back as `raw: true` (GM only; the api skips the rules).
-  `pool.adjust` negates its delta.
-  - The note tells the GM when a tap didn't do what it said: `→ MORTAL WOUNDS (p.199)`, `→ TRAUMATIC INJURY (p.193)`,
-    `→ ANNIHILATED (p.194)`. An Annihilation's undo is `character.update { annihilated: false }`; the side panel also has
-    a RESTORE button for it.
-- Turns, Conditions, reveals and adds get no UNDO button.
-- UNDO sends the inverse and logs `UNDO: …`. It drops the original entry only if the undo went through; a refused undo
-  keeps its button.
-- The undo doesn't take back an automatic Prone, and a tap that raced another client's diffs the older state (a
-  `ponytail:` note in `tracker.tsx`). The log is client-only: it's per tab and lost on reload.
+  top of the log, capped at `LOG_LIMIT` (40), holding the `entry` the ack carries: the id of the api's journal entry for
+  that action (`docs/backend.md` §3.3). On refusal it sets the tracker's error line.
+- `noteOf({ action, state })` adds the note that tells the GM when a tap didn't do what it said: `→ MORTAL WOUNDS (p.199)`,
+  `→ TRAUMATIC INJURY (p.193)`, `→ ANNIHILATED (p.194)`. It reads the state at tap time with the same rules the api runs
+  (`pcHit`, `isExhausted`). The side panel also has a RESTORE button for an Annihilation.
+- **The chronicle** (`CHRONICLE · ROUND N`, `.chronicle*` in `css/fight.css`) draws the log as one entry per Turn,
+  newest first: who acted over what happened, in the order it happened (`chronicleTurns`, `lib/chronicle`). Each line
+  carries `who`, the entry it joins: the acting combatant, or `ROUND N` / `BEFORE ROUND 1` between Turns (`whoNow`); a
+  START or SEIZE and a BEGIN ROUND open their own entry (`whoFor`), and a reminder joins its combatant's. The top entry
+  is boxed in crimson, `NOW · <NAME>` while that combatant acts. The rows have no buttons. The log is client-only: per
+  tab, lost on reload.
+- **UNDO HIT** (one button, at the end of the command line) sends `journal.undo { entryId }` for the last Wounds or
+  Shock line still standing (`hit` on the `LogEntry`). The server reverts exactly the rows that entry changed and
+  refuses when a later change touched them (`Undo “<label>” first.`), which shows on the error line. A line whose
+  entry the journal says is undone reads `UNDONE · …`, struck through, and UNDO HIT moves on to the hit before it.
+  Turn steps are taken back with TURN BACK (rules-flow §11.170, §11.183).
+- **HISTORY** (`tracker/components/journal-history`) is in the key bar's MORE: a dialog (PARTY's `PartyDialog`) of the
+  server's list, so it survives a reload: every journaled action of the campaign, newest first, with UNDO on a
+  standing entry and REDO on an undo (undoing an undo), for anything UNDO HIT and TURN BACK don't reach (Conditions,
+  adds, reveals). It fetches nothing. The api pushes the list over the socket as the `journal` event (`JournalItem[]`,
+  newest 50) to the GM room only, on connect and after every action that changed a row; `useTable` keeps it beside
+  `state` and `codex`, the GM shell hands it on (`useGm().journal`), and SCENE passes it to `Tracker` as `journal`.
 
 **Condition reminders.** After a successful START TURN or SEIZE, `remind()` checks the combatant's Conditions against
 `TURN_START_REMINDERS`. After END TURN, it checks the combatant that was acting against `TURN_END_REMINDERS`. Each
@@ -1447,9 +1457,9 @@ The player app works the same way, through `PLAYER_TABS` in `components/player/p
 
 1. **Alias:** add `alias: "canonical"` entries to `VERBS` in `lib/command/command.ts`.
 2. **Counter verb** (a signed delta on a field the adjust actions already take): add it to `COUNTER_ACTIONS` in
-   `lib/command/constants.ts`. The command line picks it up and the vox log words it (`counterKey`, `lib/fight-delta`). The
+   `lib/command/constants.ts`. The command line picks it up and the chronicle words it (`counterKey`, `lib/fight-delta`). The
    delta pad has only WOUNDS and SHOCK (`PAD_FIELDS`, `tracker/constants.ts`), so a new field needs a segment there too.
-   If the field is new, add its difference to `preview()` in `tracker.tsx` too, or UNDO won't reverse it.
+   UNDO HIT needs nothing here: it reverts the journal entry the server recorded for a Wounds or Shock line.
 3. **Any other verb:** add a `case` to the `switch` at the end of `parseCommand` that returns `{ actions: [...] }` or
    `{ error }`. Use `t.characterId` for character actions and `t.combatantId` for combatant actions.
 4. **Turn verb:** route it through `runCommand` in `tracker.tsx`, so it fires the Condition reminders the buttons do.

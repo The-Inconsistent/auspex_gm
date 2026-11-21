@@ -369,7 +369,7 @@ isn't armed, so it lasts to the end of the next one. The tracker logs "… ends 
 | `TURN_START_REMINDERS` | On Fire, Poisoned, Frenzied | tracker `startTurn`, after a successful `turn.start` or `turn.seize` |
 | `TURN_END_REMINDERS` | Bleeding | tracker `endTurn`, after a successful `turn.end` |
 
-They're amber lines in the GM tablet's VOX LOG only: client-side, not stored or broadcast, and they fire only for
+They're crimson lines in the GM tablet's chronicle only: client-side, not stored or broadcast, and they fire only for
 turns started or ended from that tablet (buttons or the command line). Timed Conditions expire server-side (above).
 
 ## 8. Hidden information
