@@ -151,6 +151,9 @@ export function Tracker({ state, journal, send, bestiary, lookups = null, mutati
     setError(null);
     const hit = (a.type === "character.adjust" || a.type === "combatant.adjust") && !!(a.wounds || a.shock);
     push({ text: text + noteOf({ action: a, state }), who: whoFor(a), entry: r.entry, hit });
+    // Lines only the server knows, e.g. Enduring Life's 1d6 Corruption per Traumatic Wound (p.294).
+    const agent = a.type === "character.adjust" ? `${chars.get(a.id)?.name.toUpperCase() ?? "?"}: ` : "";
+    for (const n of r.notices ?? []) push({ text: agent + n, who: whoFor(a), warn: true });
     return r;
   };
 

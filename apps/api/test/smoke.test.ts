@@ -1220,6 +1220,20 @@ test("Corruption: a failed Test spends the Wrath and adds the Ruin, seen by the 
   );
   assert.ok((await gm.send({ type: "character.unmutate", id: a.id, mutationId: "brute" })).ok);
   await gm.until((s) => s.characters.find((c) => c.id === a.id)?.stats.mutations.length === 4);
+
+  // Blighted Soul: +1 DN to the Agent's own Corruption Test (p.289, §11.184). Tarnished makes DN 3 → 4, so 4 Icons pass
+  // it; with the mutation DN 5, and 4 Icons fail it for +1 (the level is unchanged, so no Mutation Test follows).
+  assert.equal((await gm.send(corrupt({ source: 3, icons: 4 }))).ok, false, "DN 4 without it");
+  assert.ok((await mutate("blighted-soul")).ok);
+  assert.ok((await gm.send(corrupt({ source: 3, icons: 4 }))).ok, "DN 5 with it");
+  await gm.until((s) => s.characters.find((c) => c.id === a.id)?.stats.corruption === 9);
+
+  // Enduring Life: a Traumatic Wound is 1d6 Corruption to roll (p.294), and the Agent cannot die.
+  assert.ok((await mutate("enduring-life")).ok);
+  assert.deepEqual(sansEntry(await gm.send({ type: "character.adjust", id: a.id, traumatic: 1 })), {
+    ok: true,
+    notices: ["ENDURING LIFE · ROLL 1d6 CORRUPTION (p.294)"],
+  });
 });
 
 test("a called Test: named phones report their own, others don't see it, a session clears it (issue #191)", async (t) => {

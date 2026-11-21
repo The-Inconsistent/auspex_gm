@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CHAOS_SPAWN_AT, corruptionLevel } from "./corruption.ts";
+import { CHAOS_SPAWN_AT, ENDURING_LIFE, corruptionLevel, hasMutation } from "./corruption.ts";
 import { MAX_ICONS } from "./dn.ts";
 import { RequisitionSlot } from "./requisition.ts";
 import { SpendRequest } from "./spend.ts";
@@ -593,12 +593,15 @@ export function turnMark(s: LiveState, c: Combatant): TurnMark {
   return c.acted ? "done" : "ready";
 }
 
+const immortal = (c: Character) => hasMutation(c.stats, ENDURING_LIFE);
+
 // Automatic states from damage (pp.193-196, p.324).
 export function pcStatus(c: Character, d: DerivedStats): string[] {
   const out: string[] = [];
   // Chaos Spawn: the character is lost and the GM takes it over (Core p.286). It needn't be Dead to be gone.
   if (corruptionLevel(c.stats.corruption).chaosSpawn) out.push("Lost");
-  if (c.annihilated || c.traumatic > d.maxTraumatic) out.push("Dead");
+  // Enduring Life: "You cannot die" (p.294, §11.185), so neither limit kills; Dying and Wounded read as they do.
+  if (!immortal(c) && (c.annihilated || c.traumatic > d.maxTraumatic)) out.push("Dead");
   else if (c.wounds > d.maxWounds) out.push("Dying");
   else if (c.wounds > 0) out.push("Wounded");
   if (c.shock > d.maxShock) out.push("Exhausted");
@@ -654,8 +657,9 @@ export function exhaustedShock({
 export function pcHit({ c, d, hit }: { c: Character; d: DerivedStats; hit: { wounds?: number; shock?: number } }) {
   const status = pcStatus(c, d);
   const { wounds: w, shock: s } = exhaustedShock({ exhausted: isExhausted({ ...c, maxShock: d.maxShock }), ...hit });
-  // Annihilation (p.194): more than double Max Wounds from one attack, counted after Resilience (§11.7). Dead is dead.
-  if (w > 2 * d.maxWounds)
+  // Annihilation (p.194): more than double Max Wounds from one attack, counted after Resilience (§11.7). Dead is dead,
+  // unless the Agent cannot die (Enduring Life, p.294): then it is an ordinary hit, Dying at worst (§11.185).
+  if (w > 2 * d.maxWounds && !immortal(c))
     return { wounds: c.wounds, shock: c.shock, traumatic: c.traumatic, prone: false, annihilated: true };
   const out = {
     wounds: c.wounds,
@@ -694,7 +698,8 @@ const isHidden = (c: Combatant) => c.kind === "threat" && c.visibility === "hidd
 // Another Agent's mutation as a phone gets it: what it does to the numbers, so its bars match the GM's, but not which
 // mutation it is.
 const unseen = (m: SheetMutation, i: number): SheetMutation => ({
-  id: `unseen-${i}`,
+  // Enduring Life keeps its id: the phone works out Dead from it (pcStatus), and would show an immortal Agent as Dead.
+  id: m.id === ENDURING_LIFE ? m.id : `unseen-${i}`,
   name: "Unseen",
   page: 1,
   effect: "",

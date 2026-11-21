@@ -2,9 +2,11 @@
 import { useState } from "react";
 
 import {
+  BLIGHTED_SOUL,
   corruptionGain,
   corruptionTestDn,
   dnLabel,
+  hasMutation,
   isCorruptionDn,
   testTitle,
   type ActionResult,
@@ -82,7 +84,12 @@ export function Tally({ call, characters, send, onResult }: TallyProps) {
         const gain =
           r && r.icons !== undefined && isCorruptionDn(call.test.dn)
             ? corruptionGain({
-                dn: corruptionTestDn({ source: call.test.dn, points: c.stats.corruption, ...r }),
+                dn: corruptionTestDn({
+                  source: call.test.dn,
+                  points: c.stats.corruption,
+                  blighted: hasMutation(c.stats, BLIGHTED_SOUL),
+                  ...r,
+                }),
                 icons: r.icons,
                 complication: !!r.complication,
               })

@@ -115,7 +115,7 @@ Full Defence…) take the whole Turn. Movement: Speed; Run 2×; Sprint 3× (Full
 |---|---|---|---|
 | Wounded | Wounds > 0 | +1 DN on all Tests | p.193 |
 | **Dying** | Wounds **>** Max Wounds | Memorable Injury, fall Prone, can't stand; one action per Turn (Crawl, basic Combat Action, Fall Back); every further Wound → a **Traumatic Injury** instead | p.193–194 |
-| Dead | Traumatic Injuries > **Tier + 1**, or one attack > 2 × Max Wounds (Annihilation) | — | p.193–194 |
+| Dead | Traumatic Injuries > **Tier + 1**, or one attack > 2 × Max Wounds (Annihilation); never with Enduring Life (§11.185) | — | p.193–194 |
 | Leaves Dying | recovers any Wounds | — | p.194 |
 | **Exhausted** | Shock **>** Max Shock | Walk/Crawl, basic Combat Action or Fall Back only; no Determination; further Shock → Mortal Wounds. Ends when Shock is reduced | p.196, p.199 |
 
@@ -216,7 +216,8 @@ Wrath 1, never below 1 (§11.134).
 Mutations (pp.287–295): a failed Mutation Test rolls d6 for severity (1–2 Subtle, 3–4 Minor, 5–6 Severe), then d66 on
 that table + 10 per mutation held (§11.136); Subtle and Minor 61+ send the roll on. A held mutation is rerolled. Removing
 the mutated part removes its effect, not the Corruption. The GM adds one in PARTY › MUTATIONS (`character.mutate`); its
-always-on numbers reach the sheet (`withMutations`), the rest is its printed Effect.
+always-on numbers reach the sheet (`withMutations`), the rest is its printed Effect, except two the app runs:
+Blighted Soul's +1 DN on the Agent's own Corruption Tests (§11.184) and Enduring Life (§11.185).
 
 At 26+ the Agent is **Lost** (a status beside Dying and Dead, `pcStatus`): out of the fight and of the Ascension; the
 GM runs the Chaos Spawn at the table (pp.286, 352). Corruption from creation (a Chaos Background's bonus, p.86, or a
@@ -234,7 +235,7 @@ vs Tier + 1; personal Ruin; Respite reset.
 (Bleeding, On Fire, Poisoned, Frenzied); per-class rule chips (Troop: no crits/Determination costs Ruin);
 rules reference (RULES tab, GM and players: `packages/data/rules/*.json`, transcribed with page cites).
 
-**Corruption (§9):** `CharacterStats.corruption` (`character.corrupt`, GM only; PARTY and a scene's prepared Corruption Test), level and Test modifier on the sheet (the GM and that Agent's player only), a failed Test's gain and +1 Ruin in one action (§11.134), Mutation Test DNs as notices (§11.135). The Wrath spend and Wrath Critical lower the DN (p.286); the Mutation tables (pp.287–295) are `mutation.ts` and `packages/data/mutations`; creation grants of a fixed amount start the count. Not coded: a rolled Corruption grant ("1d3"), a Corruption loss, and a mutation's bonus dice and DN penalties, which stay the table's.
+**Corruption (§9):** `CharacterStats.corruption` (`character.corrupt`, GM only; PARTY and a scene's prepared Corruption Test), level and Test modifier on the sheet (the GM and that Agent's player only), a failed Test's gain and +1 Ruin in one action (§11.134), Mutation Test DNs as notices (§11.135). The Wrath spend and Wrath Critical lower the DN (p.286); the Mutation tables (pp.287–295) are `mutation.ts` and `packages/data/mutations`; creation grants of a fixed amount start the count. Not coded: a rolled Corruption grant ("1d3"), a Corruption loss, and a mutation's bonus dice and DN penalties other than Blighted Soul's (§11.184), which stay the table's. Enduring Life (p.294) is run: the Agent is never Dead (§11.185), and a Traumatic Wound notices the 1d6 Corruption to roll.
 
 **Leaves to the table:** all dice, DNs, whether a Test happens, cover/range/vision, crit and Complication
 narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, optional rules.
@@ -1132,6 +1133,20 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      TURN BACK's stack, so the next TURN BACK takes back only the damage dealt since that step; a TURN BACK that was
      undone is not put back on the stack. The journal doesn't copy the stack, which was 99% of a fight's journal.
      *User ruling, 2026-11-18, when the journal was rebased onto TURN BACK.*
+184. **Blighted Soul's +1 DN applies only to the Agent's own Corruption Tests** (Core p.289: "Corruption and Malignancy
+     Tests you and anyone within 10 m of you make suffer a +1 DN penalty"). The app has no map, so it adds the 1 to the
+     DN of a Corruption Test the holder makes (`corruptionTestDn`, `blighted`), on the api, PARTY, PREP and the phone, and
+     it counts in the gain like the level modifier (§11.134). Others within 10 m, and Malignancy Tests (which the app
+     doesn't run), are the GM's call. *Approved by the GM, 2026-11-21.*
+185. **Enduring Life: the Agent is never Dead, and Annihilation is an ordinary hit** (Core p.294: "You cannot die.
+     Whenever you take a Traumatic Wound you gain 1d6 Corruption points"). `pcStatus` never says Dead, whether from
+     Traumatic Injuries past the limit or `annihilated`; Dying and Wounded read as usual, and Traumatic Injuries keep
+     counting. The book doesn't say what Annihilation (p.194) does to such an Agent, so `pcHit` treats a hit over
+     2 × Max Wounds as any other hit (Wounds rise, Dying) and sets no `annihilated` flag, which a later loss of the
+     mutation (p.287) would otherwise turn into a death. Each Traumatic Wound that `character.adjust` adds to the Agent
+     (not a raw one) returns a notice "ENDURING LIFE · ROLL 1d6 CORRUPTION (p.294)"; the dice stay physical and the GM
+     adds the total with ±CORRUPTION. Another Agent's phone is told the id of this one mutation, so it doesn't show an
+     immortal Agent as Dead. *Approved by the GM, 2026-11-21.*
 
 ---
 

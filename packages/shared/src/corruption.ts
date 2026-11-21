@@ -22,21 +22,32 @@ export function corruptionLevel(points: number): CorruptionLevel {
   return { level: Math.max(0, level), name: l.name, modifier: l.modifier, chaosSpawn: l.name === "Chaos Spawn" };
 }
 
+// Mutations whose printed effect changes a rule the app runs (Core pp.289, 294), found by the id of their book row.
+export const BLIGHTED_SOUL = "blighted-soul";
+export const ENDURING_LIFE = "enduring-life";
+
+// Whether the Agent holds the mutation `id` (a sheet's `mutations` snapshot the book row, so the id is the row's).
+export const hasMutation = (s: { mutations: readonly { id: string }[] }, id: string) =>
+  s.mutations.some((m) => m.id === id);
+
 // The Corruption Test's DN: the source's DN plus the level modifier of the Agent's current Corruption (Core p.286). A
 // Wrath Critical takes 2 off, with no floor printed, so a DN it drops to 0 is a pass; a spent Wrath takes 1 off but
-// "can't reduce the DN below 1" (p.286).
+// "can't reduce the DN below 1" (p.286). Blighted Soul adds 1: "Corruption and Malignancy Tests you ... make suffer a
+// +1 DN penalty" (p.289, §11.184); it is part of the Test's DN, so it counts in the gain (§11.134).
 export function corruptionTestDn({
   source,
   points,
   wrathCritical = false,
   spentWrath = false,
+  blighted = false,
 }: {
   source: number;
   points: number;
   wrathCritical?: boolean;
   spentWrath?: boolean;
+  blighted?: boolean;
 }) {
-  const dn = source + corruptionLevel(points).modifier - (wrathCritical ? 2 : 0);
+  const dn = source + corruptionLevel(points).modifier + (blighted ? 1 : 0) - (wrathCritical ? 2 : 0);
   return spentWrath && dn > 1 ? dn - 1 : dn;
 }
 
