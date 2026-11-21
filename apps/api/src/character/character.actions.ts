@@ -490,7 +490,7 @@ export async function applyCharacterAction(
       let gain = a.delta ?? 0; // the schema guarantees a delta or a test
       const notices: string[] = [];
       if (a.test) {
-        const blighted = hasMutation(stats, BLIGHTED_SOUL); // +1 DN to the Agent's own Test (p.289, §11.183)
+        const blighted = hasMutation(stats, BLIGHTED_SOUL); // +1 DN to the Agent's own Test (p.289, §11.184)
         const dn = corruptionTestDn({ ...a.test, points: before, blighted });
         if (a.test.icons >= dn)
           fail(`${row.name} rolled ${a.test.icons} Icons against DN ${dn}: that Test passed (Core p.286)`);

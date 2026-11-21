@@ -600,7 +600,7 @@ export function pcStatus(c: Character, d: DerivedStats): string[] {
   const out: string[] = [];
   // Chaos Spawn: the character is lost and the GM takes it over (Core p.286). It needn't be Dead to be gone.
   if (corruptionLevel(c.stats.corruption).chaosSpawn) out.push("Lost");
-  // Enduring Life: "You cannot die" (p.294, §11.184), so neither limit kills; Dying and Wounded read as they do.
+  // Enduring Life: "You cannot die" (p.294, §11.185), so neither limit kills; Dying and Wounded read as they do.
   if (!immortal(c) && (c.annihilated || c.traumatic > d.maxTraumatic)) out.push("Dead");
   else if (c.wounds > d.maxWounds) out.push("Dying");
   else if (c.wounds > 0) out.push("Wounded");
@@ -658,7 +658,7 @@ export function pcHit({ c, d, hit }: { c: Character; d: DerivedStats; hit: { wou
   const status = pcStatus(c, d);
   const { wounds: w, shock: s } = exhaustedShock({ exhausted: isExhausted({ ...c, maxShock: d.maxShock }), ...hit });
   // Annihilation (p.194): more than double Max Wounds from one attack, counted after Resilience (§11.7). Dead is dead,
-  // unless the Agent cannot die (Enduring Life, p.294): then it is an ordinary hit, Dying at worst (§11.184).
+  // unless the Agent cannot die (Enduring Life, p.294): then it is an ordinary hit, Dying at worst (§11.185).
   if (w > 2 * d.maxWounds && !immortal(c))
     return { wounds: c.wounds, shock: c.shock, traumatic: c.traumatic, prone: false, annihilated: true };
   const out = {

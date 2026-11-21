@@ -562,7 +562,7 @@ test("pcStatus: Dying above max Wounds, Dead above Tier + 1 Traumatic Injuries",
   assert.deepEqual(pcStatus(c({ shock: 5 }), d), ["Exhausted"]);
 });
 
-test("Enduring Life: never Dead, not by Traumatic Injuries nor by Annihilation (p.294, §11.184)", () => {
+test("Enduring Life: never Dead, not by Traumatic Injuries nor by Annihilation (p.294, §11.185)", () => {
   const stats = CharacterStats.parse({
     attributes: { S: 4, T: 4, A: 4, I: 4, Wil: 3, Int: 3, Fel: 2 },
     mutations: [

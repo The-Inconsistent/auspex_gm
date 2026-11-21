@@ -1210,7 +1210,7 @@ test("Corruption: a failed Test spends the Wrath and adds the Ruin, seen by the 
   assert.ok((await gm.send({ type: "character.unmutate", id: a.id, mutationId: "brute" })).ok);
   await gm.until((s) => s.characters.find((c) => c.id === a.id)?.stats.mutations.length === 4);
 
-  // Blighted Soul: +1 DN to the Agent's own Corruption Test (p.289, §11.183). Tarnished makes DN 3 → 4, so 4 Icons pass
+  // Blighted Soul: +1 DN to the Agent's own Corruption Test (p.289, §11.184). Tarnished makes DN 3 → 4, so 4 Icons pass
   // it; with the mutation DN 5, and 4 Icons fail it for +1 (the level is unchanged, so no Mutation Test follows).
   assert.equal((await gm.send(corrupt({ source: 3, icons: 4 }))).ok, false, "DN 4 without it");
   assert.ok((await mutate("blighted-soul")).ok);

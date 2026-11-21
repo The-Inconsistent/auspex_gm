@@ -33,7 +33,7 @@ export const hasMutation = (s: { mutations: readonly { id: string }[] }, id: str
 // The Corruption Test's DN: the source's DN plus the level modifier of the Agent's current Corruption (Core p.286). A
 // Wrath Critical takes 2 off, with no floor printed, so a DN it drops to 0 is a pass; a spent Wrath takes 1 off but
 // "can't reduce the DN below 1" (p.286). Blighted Soul adds 1: "Corruption and Malignancy Tests you ... make suffer a
-// +1 DN penalty" (p.289, §11.183); it is part of the Test's DN, so it counts in the gain (§11.134).
+// +1 DN penalty" (p.289, §11.184); it is part of the Test's DN, so it counts in the gain (§11.134).
 export function corruptionTestDn({
   source,
   points,

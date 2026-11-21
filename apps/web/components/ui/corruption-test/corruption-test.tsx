@@ -39,7 +39,7 @@ export function CorruptionTest({ source: fixed, characters, send, onReport }: Co
   const points = agent?.stats.corruption ?? 0;
   const { modifier } = corruptionLevel(points);
   const spentWrath = spent && (agent?.wrath ?? 0) > 0; // the Agent pays it, so none to spend is no spend
-  const blighted = !!agent && hasMutation(agent.stats, BLIGHTED_SOUL); // +1 DN to their own Test (p.289, §11.183)
+  const blighted = !!agent && hasMutation(agent.stats, BLIGHTED_SOUL); // +1 DN to their own Test (p.289, §11.184)
   const testDn = corruptionTestDn({ source, points, wrathCritical, spentWrath, blighted });
   const gain = corruptionGain({ dn: testDn, icons: icons ?? 0, complication });
   const toggle = (on: boolean, set: (v: boolean) => void, label: string, disabled = false) => (

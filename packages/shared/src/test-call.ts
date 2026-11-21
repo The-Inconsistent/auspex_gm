@@ -52,7 +52,7 @@ export function testPool({ character: c, test: t, tier }: { character: Character
 }
 
 // The DN this Agent rolls against: a Corruption Test adds their Corruption Level's modifier (p.286), and 1 more for
-// Blighted Soul (p.289, §11.183).
+// Blighted Soul (p.289, §11.184).
 export const callDn = (t: CalledTest, c: Character) =>
   t.kind === "corruption" && t.dn !== null
     ? corruptionTestDn({ source: t.dn, points: c.stats.corruption, blighted: hasMutation(c.stats, BLIGHTED_SOUL) })

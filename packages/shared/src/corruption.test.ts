@@ -77,7 +77,7 @@ test("character.corrupt takes a delta or a failed Test at a printed source DN, n
   assert.equal(ok({ test: { source: 3, icons: 0, wrathCritical: true, spentWrath: true } }), true);
 });
 
-test("Blighted Soul adds 1 to the Agent's own Corruption Test DN, and so to the gain (p.289, §11.183)", () => {
+test("Blighted Soul adds 1 to the Agent's own Corruption Test DN, and so to the gain (p.289, §11.184)", () => {
   assert.equal(corruptionTestDn({ source: 3, points: 0, blighted: true }), 4);
   assert.equal(corruptionTestDn({ source: 3, points: 6, blighted: true }), 5, "with the level modifier");
   assert.equal(corruptionTestDn({ source: 3, points: 6, blighted: false }), 4);
