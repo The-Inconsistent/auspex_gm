@@ -72,6 +72,10 @@ test("every field has its type, visibility and wording", () => {
     "location.origin": ["text", "gm", "Hulk: origin", 80, "Redacted Records pp.6-11"],
     "location.occupants": ["text", "gm", "Hulk: occupants", 80, "Redacted Records pp.6-11"],
     "location.objective": ["text", "gm", "Hulk: objective", 80, "Redacted Records pp.6-11"],
+    "lore.kindOfGame": ["tags", "party", "Kind of game", null, "Core p.316"],
+    "lore.framework": ["text", "party", "Framework", 5000, "Core pp.18-20"],
+    "lore.frameworkBonus": ["text", "party", "Framework bonus", 1000, "Core p.20"],
+    "lore.patron": ["text", "party", "Patron", 200, "Core pp.310-313"],
     "item.location": ["entry", "gm", "Where it lies", "location", null],
     "item.holder": ["entry", "gm", "Who carries it", "npc", null],
     "item.found": ["text", "gm", "How many", 80, "Core p.247"],
@@ -202,6 +206,10 @@ test("a field is party exactly when toPlayerCodex sends its value to a revealed 
     /^item\.(found|fault|relic)|^location\.(origin|occupants|objective)$/.test(f),
   );
   for (const [f, visibility] of generated) assert.equal(visibility, "gm", f);
+  // The premise is the campaign's, not a codex entry of this repo: every seat reads it (the owner's decision 2).
+  const premise = declared.filter(([f]) => f.startsWith("lore."));
+  for (const [f, visibility] of premise) assert.equal(visibility, "party", f);
+  generated.push(...premise);
   assert.deepEqual(
     declared
       .filter((d) => !generated.includes(d))
