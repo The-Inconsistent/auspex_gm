@@ -311,6 +311,7 @@ const exported = CampaignExport.parse({
                 label: "Choir Guards",
                 visibility: "stats",
                 scale: true,
+                profiles: ["heretical-strength", "enemy-within"],
               },
               { threatId: "custom-scrap-thrall", count: 6, asMob: true },
             ],
@@ -625,11 +626,13 @@ test("a scene's prepared lines: roster, Tests, pools, exits and reveals", () => 
     {
       id: "roster-0",
       label: "Choir Guards",
-      note: "Marker: red; Scaling Threats",
       pack: threatPack.id,
       key: BOOK_THREAT,
       count: 3,
       visibility: "full",
+      marker: "red",
+      // The Threat Profiles and Scaling as the ruleset's spawn options (house decision #92).
+      options: ["hereticalStrength", "enemyWithin", "scaled"],
     },
     {
       id: "roster-1",
@@ -736,8 +739,6 @@ test("the report counts exactly what the file has that the document holds no str
     "gm notes: a Test's outcome past the platform's six": 1,
     "gm notes: a place's hazard": 2,
     "gm notes: a relic's Power": 1,
-    "gm notes: a roster line's marker": 1,
-    "gm notes: a roster line's scale": 1,
     "gm notes: a scene's pick of its place's hazards": 1,
     "gm notes: an NPC's secrets": 1,
     "gm notes: an exit to no scene": 1,
@@ -797,6 +798,10 @@ test("nothing of the file is lost without being in the document or the report", 
     [/\.annihilated$/, () => document.actors.some((a) => a.fields?.annihilated === true)],
     [/^campaign\.homebrew$/, () => true], // the platform's builder always allows homebrew
     [/\.spotted$/, () => scene.gmNotes!.includes("(spotted)")],
+    [
+      /\.encounter\.\d+\.scale$/,
+      () => scene.prep!.roster.some((l) => (l.options as string[] | undefined)?.includes("scaled")),
+    ],
   ];
   // What the document's shape says: the file's own format, which kind of stat source, Neutral as no attitude, and a
   // session's id (a room's sessions are in order and have none).

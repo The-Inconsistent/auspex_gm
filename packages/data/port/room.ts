@@ -651,21 +651,18 @@ export function buildRoomDocument(
       if (!slug || !held) note(`${p}.threatId`, "a Threat no pack holds: a broken line", "as written");
       const mob = x.asMob && x.count > 1;
       if (!mob && x.count > CAPS.spawn) throw new Refusal(`${p}.count`, `${x.count} creatures, over ${CAPS.spawn}`);
-      const extra = [
-        x.marker && { at: "marker", text: `Marker: ${x.marker}` },
-        x.profiles.length && { at: "profiles", text: `Threat Profiles: ${x.profiles.join(", ")}` },
-        x.scale && { at: "scale", text: "Scaling Threats" },
-      ].filter((e) => !!e);
-      for (const e of extra) note(`${p}.${e.at}`, `a roster line's ${e.at}`, "gm notes");
+      // The marker and what the Threat takes when it joins: the ruleset's spawn options (house decision #92).
+      const options = [...x.profiles.map(idOf), ...(x.scale ? ["scaled"] : [])];
       prep.roster.push({
         id: `roster-${j}`,
         ...(x.label && { label: label(`${p}.label`, x.label) }),
-        ...(extra.length > 0 && { note: extra.map((e) => e.text).join("; ") }),
         pack: slug ?? threatPack.id,
         key: x.threatId,
         count: mob ? 1 : x.count,
         ...(mob && { mob: x.count }),
         visibility: VIEW[x.visibility ?? "bars"],
+        ...(x.marker && { marker: x.marker }),
+        ...(options.length > 0 && { options }),
       });
     });
 
