@@ -1103,6 +1103,7 @@ function strikesOf({ ledger }: { ledger: boolean }) {
     means: [
       { from: "list", field: "weapons", entry: "weapon" },
       { from: "list", field: "variantWeapons", entry: "weapon" },
+      { from: "list", field: "mobWeapons", entry: "weapon" },
     ],
     values: {
       damage: { key: "damage", type: "int" },
@@ -1404,7 +1405,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const prep = prepTables();
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.15",
+    version: "0.1.16",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
@@ -1546,6 +1547,10 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
           // The keys of this Threat's weapon entries: from its abilities, and from its options.
           weapons: { type: "list", label: "Weapons", cite: "Core p.323" },
           variantWeapons: { type: "list", label: "Option weapons", cite: "Core p.323" },
+          // A Mob's own abilities and options by name, and the keys of their weapons (p.324, #325).
+          mobAbilities: { type: "list", label: "Mob abilities", cite: "Core p.324" },
+          mobOptions: { type: "list", label: "Mob options", cite: "Core p.324" },
+          mobWeapons: { type: "list", label: "Mob weapons", cite: "Core p.324" },
           sustaining,
           // A Mob's starting size (combatant.mobStart): two Troops or more (p.324, MOB_MIN); at most the 500 a Mob is
           // added with (combatant.addThreat, an app limit of this repo, not a rule). Unset for a single Threat.
@@ -2234,7 +2239,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.15",
+    version: "0.2.16",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {

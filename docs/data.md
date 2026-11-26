@@ -1233,7 +1233,7 @@ are the ruleset's, not a pack's (the owner's decision 1 of 2026-11-26).
 
 | Pack (flag) | What it carries | Fed by | Built in |
 |---|---|---|---|
-| `wrath-and-glory-threats` (2nd positional) | A `threat` per stat block (class per Tier, Attributes, Traits, Skills, Determination's numbers, ability names, Keywords, its weapons' keys) and a `weapon` per printed line; Mob abilities, options and their weapons, and every text, left out and counted | `threats/*.json` | `pack.ts` |
+| `wrath-and-glory-threats` (2nd positional) | A `threat` per stat block (class per Tier, Attributes, Traits, Skills, Determination's numbers, ability names, Keywords, its weapons' keys) and a `weapon` per printed line, a Mob's abilities and options by name and their weapons too; every text left out and counted | `threats/*.json` | `pack.ts` |
 | `<campaign>-custom-threats` (`--custom-threats`) | The GM's own stat blocks from a campaign export, `original` | the export's `customThreats` | `pack.ts` |
 | `wrath-and-glory-creation` (`--creation`) | Every official creation record the ledger builder reads, as its builder record without wording; a homebrew book's rules merged onto an official record stay on it (§9, "Keep homebrew extras") | `creation/<type>/*.json` | `creation-packs.ts`, `build-catalogue.ts` |
 | `wrath-and-glory-wargear` (`--wargear`) | Every official wargear entry: its item kind, Value, Rarity, Keywords, an upgrade's slot and host effects, a weapon's strike values; and the homebrew wargear an official record names as starting gear (rules-flow §11.47) | `wargear/*.json` | `creation-packs.ts` |

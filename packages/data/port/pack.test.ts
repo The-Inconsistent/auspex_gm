@@ -23,19 +23,34 @@ test("the pack passes InconsisTable's validatePack against the compiled ruleset"
   assert.deepEqual(result.warnings, []);
 });
 
-test("one threat entry per file, and one weapon entry per weapon of every non-mob ability and option", () => {
+test("one threat entry per file, and one weapon entry per weapon of every ability and option, a Mob's too", () => {
   const files = readdirSync(new URL("../threats/", import.meta.url)).filter((f) => f.endsWith(".json"));
   assert.equal(threatEntries.length, files.length);
   assert.deepEqual(threatEntries.map((e) => e.key).sort(), files.map((f) => f.replace(/\.json$/, "")).sort());
   let want = 0;
   for (const t of threats.values()) {
     want += t.abilities.reduce((n, a) => n + a.weapons.length, 0);
-    for (const o of t.options.filter((o) => o.kind === "variant"))
-      want += o.weapons.length + o.abilities.reduce((n, a) => n + a.weapons.length, 0);
+    want += t.mobAbilities.reduce((n, a) => n + a.weapons.length, 0);
+    for (const o of t.options) want += o.weapons.length + o.abilities.reduce((n, a) => n + a.weapons.length, 0);
   }
   assert.ok(want > 0);
   assert.equal(weaponEntries.length, want);
   assert.equal(byKey.size, pack.entries.length, "keys are unique");
+});
+
+test("a Mob's abilities and options come by name, as a single Threat's (#325)", () => {
+  let mobs = 0;
+  for (const t of threats.values()) {
+    const body = byKey.get(t.id)!.body;
+    assert.deepEqual(
+      body.mobOptions,
+      t.options.filter((o) => o.kind === "mob").map((o) => o.name),
+      t.id,
+    );
+    assert.equal((body.mobAbilities as string[]).length, t.mobAbilities.length, t.id);
+    if (t.mobAbilities.length + (body.mobOptions as string[]).length > 0) mobs++;
+  }
+  assert.ok(mobs > 0);
 });
 
 test("no entry body carries book prose", () => {
@@ -43,7 +58,7 @@ test("no entry body carries book prose", () => {
     for (const [field, value] of Object.entries(e.body)) {
       assert.ok(!["text", "note", "description"].includes(field), `${e.key}: ${field}`);
       // The armour note is a few words of the block's own; the two weapon lists hold entry keys (up to 80 characters).
-      if (["stat.armourNote", "weapons", "variantWeapons"].includes(field)) continue;
+      if (["stat.armourNote", "weapons", "variantWeapons", "mobWeapons"].includes(field)) continue;
       for (const v of typeof value === "string" ? [value] : Array.isArray(value) ? value : [])
         assert.ok(v.length <= 60, `${e.key}.${field}: ${v.length} characters`);
     }
@@ -53,7 +68,7 @@ test("no entry body carries book prose", () => {
 test("every key a threat lists is a weapon entry, and every weapon entry is listed once", () => {
   const listed: string[] = [];
   for (const e of threatEntries) {
-    for (const field of ["weapons", "variantWeapons"]) {
+    for (const field of ["weapons", "variantWeapons", "mobWeapons"]) {
       for (const key of e.body[field] as string[]) {
         assert.equal(byKey.get(key)?.type, "weapon", `${e.key}.${field}: ${key}`);
         assert.ok(key.startsWith(`${e.key}.`), `${key} belongs to ${e.key}`);

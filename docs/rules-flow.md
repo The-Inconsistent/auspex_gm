@@ -1326,6 +1326,13 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      record (the platform's ledger builder hides them with homebrew off, as `officialOnly` does), and a homebrew wargear
      an official record names as starting gear (§11.47), eight entries. A build saved before the split names the same
      keys, served by the homebrew pack once it is attached. *Issue #325's recommendation, 2026-11-27.*
+199. **A Mob's own abilities and options come as a single Threat's do** (issue #325 question 5; InconsisTable's
+     house decision #66; p.324). The owner's decision 6 of 2026-11-20 left Mob content out to wait for a platform Mob
+     block. The platform's Mob is a count of members (`health.harm`'s `mob`), which the ruleset already declares; it
+     needs no more to carry what a Mob's block prints beside: the Threat pack (0.1.3) lists a Mob's abilities and its
+     Mob options by name (`mobAbilities`, `mobOptions`) and their weapons as weapon entries (`mobWeapons`), which the
+     Threat attack's strike offers beside the others. Their text stays in the book, as every ability's; which option a
+     Mob takes is the GM's. The ruleset is 0.1.16 and 0.2.16. *Issue #325's recommendation, 2026-11-27.*
 
 ---
 
