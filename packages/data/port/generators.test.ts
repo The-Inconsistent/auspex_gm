@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { hazards, placeList, relics, scenePresets, spaceHulk } from "../index.ts";
+import { factionPresetList, hazards, npcPresetList, placeList, relics, scenePresets, spaceHulk } from "../index.ts";
 import { buildCodexPack, SUMMARY_MAX } from "./codex-packs.ts";
+import { buildPack } from "./pack.ts";
 import { loadEngine } from "./engine.ts";
 import { prepTables, ROW_MAX } from "./generators.ts";
 import { buildRuleset, idOf } from "./ruleset.ts";
@@ -87,7 +88,7 @@ test("a loot row's count in dice is rolled in its generator, only for the rows t
     assert.equal(generators.find((x) => x.id === idOf(`loot ${t.id}`))!.steps[0]!.kind, "choice", t.id);
 });
 
-test("the codex pack holds every hazard, place and event, cited, in this repo's words", () => {
+test("the codex pack holds every hazard, place, event and preset, cited, in this repo's words", () => {
   const { entries } = buildCodexPack();
   const count = (type: string) => entries.filter((e) => e.type === type).length;
   assert.equal(count("hazard"), hazards.size);
@@ -96,6 +97,16 @@ test("the codex pack holds every hazard, place and event, cited, in this repo's 
     count("sceneEvent"),
     scenePresets().tables.reduce((n, t) => n + t.rows.length, 0),
   );
+  assert.equal(count("npcPreset"), npcPresetList().length);
+  assert.equal(count("factionPreset"), factionPresetList().length);
+  assert.equal(count("quickNpc"), 4, "one row per Tier, 1 to 4 (p.326)");
+  // An NPC preset's stat block is a Threat the Threat pack holds, and its Quick row one of this pack's.
+  const threats = new Set(buildPack().pack.entries.map((e) => e.key));
+  const keys = new Set(entries.map((e) => e.key));
+  for (const e of entries.filter((x) => x.type === "npcPreset")) {
+    if (e.body.stats) assert.ok(threats.has(e.body.stats as string), e.key);
+    if (e.body.quick) assert.ok(keys.has(e.body.quick as string), e.key);
+  }
   assert.equal(new Set(entries.map((e) => e.key)).size, entries.length, "keys are unique");
   for (const e of entries) {
     assert.ok(e.cite.length > 0 && e.cite.length <= 40, e.key);

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { AdventureStatus, Attitude, BeatType, CodexInput, FactionStance, toPlayerCodex, type Codex } from "@wg/shared";
 import { checksCodex, loadEngine } from "./engine.ts";
+import { buildCodexPack } from "./codex-packs.ts";
 import { buildPack } from "./pack.ts";
 import { buildRuleset, CODEX } from "./ruleset.ts";
 
@@ -59,6 +60,9 @@ test("every field has its type, visibility and wording", () => {
     "npc.attitude": ["enum", "party", "Attitude", null, "Core p.168"],
     "npc.role": ["text", "party", "Role", 200, null],
     "npc.stats": ["ref", "gm", "Stat block", "threat", null],
+    "npc.quick": ["ref", "gm", "Quick NPC stats", "quickNpc", "Core p.326"],
+    "npc.specialty": ["enum", "gm", "Specialty Skill", null, "Core p.326"],
+    "npc.specialtyDice": ["int", "gm", "Specialty dice", null, "Core p.326"],
     "npc.faction": ["entry", "gm", "Faction", "faction", null],
     "faction.stance": ["enum", "gm", "Stance", null, null],
     "faction.keywords": ["tags", "gm", "Keywords", null, "Core pp.375-378"],
@@ -205,6 +209,8 @@ test("a field is party exactly when toPlayerCodex sends its value to a revealed 
   const generated = declared.filter(([f]) =>
     /^item\.(found|fault|relic)|^location\.(origin|occupants|objective)$/.test(f),
   );
+  // The Quick source (p.326), which the fixture's NPC does not use, stays the GM's as `stats` does.
+  generated.push(...declared.filter(([f]) => /^npc\.(quick|specialty)/.test(f)));
   for (const [f, visibility] of generated) assert.equal(visibility, "gm", f);
   // The premise is the campaign's, not a codex entry of this repo: every seat reads it (the owner's decision 2).
   const premise = declared.filter(([f]) => f.startsWith("lore."));
@@ -228,8 +234,8 @@ test("a field is party exactly when toPlayerCodex sends its value to a revealed 
   }
 });
 
-test("every ref names an entity type the Threat pack has entries of", () => {
-  const types = new Set(buildPack().pack.entries.map((e) => e.type));
+test("every ref names an entity type the Threat or codex pack has entries of", () => {
+  const types = new Set<string>([...buildPack().pack.entries, ...buildCodexPack().entries].map((e) => e.type));
   const refs = Object.values(CODEX.kinds as unknown as Kinds).flatMap((k) =>
     Object.values(k.fields).filter((d) => d.type === "ref"),
   );

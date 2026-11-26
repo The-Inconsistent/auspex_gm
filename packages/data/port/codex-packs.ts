@@ -9,10 +9,11 @@ import {
   sourceCite,
   threatCite,
   type Attribute,
+  QUICK_NPC,
   type PresetTest,
   type Skill,
 } from "@wg/shared";
-import { creationCatalogue, placeList, rulesList, scenePresets } from "../index.ts";
+import { creationCatalogue, factionPresetList, npcPresetList, placeList, rulesList, scenePresets } from "../index.ts";
 import type { Pack } from "./pack.ts";
 import { idOf, SUMMARY_MAX } from "./ruleset.ts";
 
@@ -21,7 +22,7 @@ export { SUMMARY_MAX };
 type Body = Record<string, string | number | string[]>;
 export interface CodexEntry {
   key: string;
-  type: "hazard" | "place" | "sceneEvent" | "framework" | "patron";
+  type: "hazard" | "place" | "sceneEvent" | "framework" | "patron" | "npcPreset" | "factionPreset" | "quickNpc";
   name: string;
   tags: string[];
   cite: string;
@@ -30,10 +31,13 @@ export interface CodexEntry {
 }
 
 /** The pack's slug and version, which a room document expects (room.ts). */
-// 0.1.1: the Frameworks and Patrons the premise is made from (the owner's decision 2).
-export const CODEX_PACK = { slug: "wrath-and-glory-codex", version: "0.1.1" } as const;
-// The rulesets whose codex reads these entries (0.1.14, 0.2.14).
-const RULESET = { id: "wrath-and-glory", range: "^0.1.14 || ^0.2.14" };
+// 0.1.1: the Frameworks and Patrons the premise is made from (the owner's decision 2). 0.1.2: the NPC and faction
+// presets and the Quick NPC rows (#325).
+export const CODEX_PACK = { slug: "wrath-and-glory-codex", version: "0.1.2" } as const;
+// The rulesets whose codex reads these entries (0.1.15, 0.2.15).
+const RULESET = { id: "wrath-and-glory", range: "^0.1.15 || ^0.2.15" };
+/** A Quick NPC row's key, which an NPC's `quick` field names (p.326). */
+export const quickKey = (tier: number) => `quick.t${tier}`;
 
 /** A Test of this repo as the ruleset's Test and its inputs, as a scene's prepared Test line holds it. */
 export function testOf(t: {
@@ -160,11 +164,55 @@ export function buildCodexPack(): Pack<CodexEntry> {
       body: f.tier !== undefined ? { tier: f.tier } : {},
     })),
   ];
+  // A printed NPC by name, role and stat block (#325): its printed notes and secrets stay in the book (§11.80); the
+  // first of its cites, as an entry holds one.
+  const npcEntries = npcPresetList().map((n): CodexEntry => {
+    const src = n.statSource;
+    return {
+      key: n.id,
+      type: "npcPreset",
+      name: n.name,
+      tags: [...new Set(n.cites.map((c) => c.source))],
+      cite: threatCite(n.cites[0]!),
+      visibility: "gm",
+      body: {
+        ...(n.role && { role: n.role }),
+        ...(src.kind === "bestiary" && { stats: src.threatId }),
+        ...(src.kind === "quick" && { quick: quickKey(src.tier) }),
+      },
+    };
+  });
+  const factionEntries = factionPresetList().map((f): CodexEntry => ({
+    key: f.id,
+    type: "factionPreset",
+    name: f.name,
+    tags: [f.source],
+    cite: threatCite(f),
+    visibility: "gm",
+    body: f.keywords.length > 0 ? { keywords: f.keywords } : {},
+  }));
+  const quickEntries = Object.entries(QUICK_NPC).map(([tier, row]): CodexEntry => ({
+    key: quickKey(Number(tier)),
+    type: "quickNpc",
+    name: `Quick NPC, Tier ${tier}`,
+    tags: ["core"],
+    cite: "Core p.326",
+    visibility: "gm",
+    body: { tier: Number(tier), ...row },
+  }));
   return {
     id: CODEX_PACK.slug,
     version: CODEX_PACK.version,
     ruleset: RULESET,
     license: "private",
-    entries: [...hazardEntries, ...placeEntries, ...eventEntries, ...frameworkEntries],
+    entries: [
+      ...hazardEntries,
+      ...placeEntries,
+      ...eventEntries,
+      ...frameworkEntries,
+      ...npcEntries,
+      ...factionEntries,
+      ...quickEntries,
+    ],
   };
 }
