@@ -1271,6 +1271,25 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      Traits, ED printed as dice and a DN printed in words stay the GM's, in the ruleset's `decisions`. The wargear pack
      (0.1.2) carries a weapon's Damage, ED, AP, Salvo, melee, Strength and Traits as text, and the Threat pack (0.1.2) a
      weapon's melee and Traits as text, which the strikes read. *Issue #324's recommendation, 2026-11-26.*
+195. **The port's codex rows, codex pack and generators** (InconsisTable's house decisions #89, #97, #98; §11.80,
+     §11.92–§11.102, §11.113, §11.119). A faction's Keywords are words, as many as this repo holds, written in or, in
+     the ledger ruleset, picked from the Keyword entries (pp.375–378); the ally hint (p.317) stays out, as before. A
+     place's hazard list is a rows field: each row a book hazard, filled from the new codex pack's entry with its first
+     Test and a summary in this repo's words, or one written by hand with its first Test and up to 200 characters of
+     what it does; a scene picks the rows that apply with Spotted (§11.94). A place of the books comes with the places
+     inside it (§11.96), and a scene can be made from a book event with its type and first Test, the GM adding the rest
+     (§11.75); nothing carries printed text (§11.80). The loot and bounty tables (Core pp.247–251, Redacted Records
+     pp.17–22, Darktide pp.15–27), the Space Hulk (Redacted Records pp.6–11) and the Holy Relic (Redacted Records 2
+     pp.12–19) are the ruleset's tables, each row its printed name, range and cite (the owner's decision 1); the ledger
+     ruleset with them measures 145,656 bytes of the 512 KiB cap. One generator per loot table rolls the row, then a
+     count where the row prints dice (the owner's decision 3, §11.113), and a fault for Redacted Records' finds; a list
+     to pick from (Bloody Gates, Redacted Records 2) is a choice. The item is made by the row's name, its catalogue
+     entry, ammunition and Wealth left to the GM. The Space Hulk names the hulk, rolls its Origin, Occupants and
+     Objective into its fields and a room per round; an Objective the book prints no row for is rolled again. The Holy
+     Relic rolls the Form on to its kind's Powers, the owner, the anointment, the oddity and, for a Power that names
+     one, the enemy, into the item the GM names. NPC and faction presets and the NPC name and look rolls are not ported
+     yet. The converter writes a faction's Keywords as words, a place's hazards as rows and a scene's hazards as a pick
+     with Spotted. *The owner's decisions 1 and 3, and issue #324's recommendation, 2026-11-26.*
 
 ---
 

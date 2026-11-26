@@ -14,6 +14,7 @@ import { remapApproval } from "./build-catalogue.ts";
 import { buildParams } from "./build-params.ts";
 import { buildCreationPacks, CATALOGUE_PACKS } from "./creation-packs.ts";
 import { loadCoreSchema, loadEngine } from "./engine.ts";
+import { buildCodexPack, testOf } from "./codex-packs.ts";
 import { buildCustomThreatPack, buildPack } from "./pack.ts";
 import { buildRoomDocument, CAPS, Refusal } from "./room.ts";
 import { buildRuleset } from "./ruleset.ts";
@@ -444,6 +445,7 @@ test("the room: name, next session, Tier, pools, and the versions it expects", (
       CATALOGUE_PACKS.wargear,
       { slug: threatPack.id, version: threatPack.version },
       { slug: "wrath-and-glory-mutations", version: "0.1.0" },
+      { slug: "wrath-and-glory-codex", version: "0.1.0" },
       { slug: buildCustomThreatPack(exported).pack.id, version: "0.1.1" },
     ],
     world: { slug: world.id, version: world.version },
@@ -513,7 +515,7 @@ test("factions, NPCs, places, handouts and items", () => {
     title: "The Brass Choir",
     body: `Sings for @[Deacon Rell](${ID.rell}).`,
     gmNotes: `Owes @[Rust Hive](${ID.hive}).`,
-    fields: { stance: "rival", keywords: "CHOIR · BRASS" },
+    fields: { stance: "rival", keywords: ["CHOIR", "BRASS"] },
   });
   const rell = entry(ID.rell);
   assert.deepEqual(rell.fields, { attitude: "hostile", role: "Cantor", stats: BOOK_THREAT, faction: ID.choir });
@@ -526,12 +528,35 @@ test("factions, NPCs, places, handouts and items", () => {
   assert.deepEqual(entry(ID.herald).fields, { attitude: "friendly", stats: "custom-scrap-thrall" });
 
   const hive = entry(ID.hive);
-  assert.deepEqual(hive.fields, { hazards: "Falling scrap" });
+  // The place's hazards as rows (house decision #89): a book one from its hazard entry, a hand-made one by its words.
+  const book = buildCodexPack().entries.find((e) => e.key === BOOK_HAZARD)!;
+  const first = hazards.get(BOOK_HAZARD)!.tests[0];
+  const bookTest =
+    first && testOf({ kind: first.kind, skill: first.skills[0], attribute: first.attribute, dn: first.dn });
+  assert.deepEqual(hive.fields, {
+    hazards: "Falling scrap",
+    hazardRows: [
+      {
+        id: ID.fall,
+        from: { entity: "hazard", key: BOOK_HAZARD, cite: book.cite },
+        values: {
+          name: `${hazards.get(BOOK_HAZARD)!.name} (Moderate)`,
+          ...(bookTest && { test: bookTest }),
+          ...(book.body.summary && { effect: book.body.summary }),
+        },
+      },
+      {
+        id: ID.wire,
+        values: {
+          name: "Live wire",
+          test: { testId: "attribute", inputs: { attribute: "a", dn: 3 } },
+          effect: "It bites.",
+        },
+      },
+    ],
+  });
   assert.equal(hive.visibility, "party");
-  assert.equal(
-    hive.gmNotes,
-    `Hazard: ${hazards.get(BOOK_HAZARD)!.name} (Moderate)\n\nHazard: Live wire. It bites.. attribute Test, Agility, DN 3, ONE. Step over it`,
-  );
+  assert.equal(hive.gmNotes, undefined);
   const vault = entry(ID.vault);
   assert.equal(vault.parentId, ID.hive);
   assert.equal(vault.gmNotes, `See @[The Descent](${ID.descent}).`);
@@ -612,14 +637,7 @@ test("the adventure and its scenes, in order, with their fields, links and statu
   assert.deepEqual(descent.fields, { type: "investigation", goal: "Find the key", outcome: "Found it" });
   assert.equal(scene.body, `Bells ring. @[Rusted Key](${ID.key}) glints.`);
   assert.deepEqual(scene.links, [ID.hive, ID.rell, ID.notice, ID.key]);
-  assert.equal(
-    scene.gmNotes,
-    [
-      "Keep it short.",
-      "Hazard here: Live wire. It bites.. attribute Test, Agility, DN 3, ONE. Step over it (spotted)",
-      "Exit: Run for it",
-    ].join("\n\n"),
-  );
+  assert.equal(scene.gmNotes, ["Keep it short.", "Exit: Run for it"].join("\n\n"));
 });
 
 test("a scene's prepared lines: roster, Tests, pools, exits and reveals", () => {
@@ -644,6 +662,10 @@ test("a scene's prepared lines: roster, Tests, pools, exits and reveals", () => 
       mob: 6,
       visibility: "bar",
     },
+  ]);
+  // The place's hazards that apply here, a pick of its rows with Spotted on (house decision #89).
+  assert.deepEqual(prep.picks, [
+    { id: "pick-0", entryId: ID.hive, field: "hazardRows", rows: [{ rowId: ID.wire, on: true }] },
   ]);
   const [skill, opposed, resolve, corruption] = prep.tests;
   assert.deepEqual(skill, {
@@ -739,9 +761,7 @@ test("the report counts exactly what the file has that the document holds no str
     "as written: a mention of an entry not in the file": 1,
     "gm notes: a Quick NPC stat block": 1,
     "gm notes: a Test's outcome past the platform's six": 1,
-    "gm notes: a place's hazard": 2,
     "gm notes: a relic's Power": 1,
-    "gm notes: a scene's pick of its place's hazards": 1,
     "gm notes: an NPC's secrets": 1,
     "gm notes: an exit to no scene": 1,
     "gm notes: an exit's words over 80 characters, as its note": 1,
@@ -752,6 +772,7 @@ test("the report counts exactly what the file has that the document holds no str
     "left out: a Mutation's printed row: its key is kept": 2,
     "left out: a hand-made line longer than an item's name": stats.gear.filter((g) => g.length > CAPS.itemName).length,
     "left out: a hand-made weapon's profile: its name is carried": stats.weapons.length,
+    "left out: a hazard Test's purpose": 1,
     "left out: a hazard its place no longer lists": 1,
     "left out: a link to an entry not in the file": 2,
     "left out: a picture the file could not read": 1,
@@ -798,7 +819,10 @@ test("nothing of the file is lost without being in the document or the report", 
     [/\.done$/, () => document.codex.some((e) => e.kind === "quest" && e.status === "done")],
     [/\.annihilated$/, () => document.actors.some((a) => a.fields?.annihilated === true)],
     [/^campaign\.homebrew$/, () => true], // the platform's builder always allows homebrew
-    [/\.spotted$/, () => scene.gmNotes!.includes("(spotted)")],
+    [
+      /\.spotted$/,
+      () => (scene.prep!.picks as unknown as { rows: { on: boolean }[] }[]).some((l) => l.rows.some((r) => r.on)),
+    ],
     [
       /\.encounter\.\d+\.scale$/,
       () => scene.prep!.roster.some((l) => (l.options as string[] | undefined)?.includes("scaled")),
@@ -806,7 +830,7 @@ test("nothing of the file is lost without being in the document or the report", 
   ];
   // What the document's shape says: the file's own format, which kind of stat source, Neutral as no attitude, and a
   // session's id (a room's sessions are in order and have none).
-  const SHAPE = [/^(format|version)$/, /\.statSource\.kind$/, /^codex\.sessions\.\d+\.id$/];
+  const SHAPE = [/^(format|version)$/, /\.statSource\.kind$/, /\.hazardList\.\d+\.kind$/, /^codex\.sessions\.\d+\.id$/];
   const carried = (path: string, value: string | number | true) => {
     if (SHAPE.some((re) => re.test(path)) || (path.endsWith(".attitude") && value === "neutral")) return true;
     // A built character's sheet is the build's: the build carries it, all but what changes in play.
