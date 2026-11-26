@@ -227,6 +227,25 @@ const HARM = {
 const WOUNDED = "(has(res.wounds) && res.wounds > 0 && !ctx.ignoreWounded ? 1 : 0)";
 const IGNORE_WOUNDED = { ignoreWounded: "bool" } as const;
 
+// What the call form and a called Test's card call each Test and input (InconsisTable's house decision #77), in the
+// words of this repo's call form (TEST_KIND_LABELS, test-call.ts). The options are the printed Skill and Attribute names.
+const INPUT_WORDS = { dn: "DN", bonus: "Bonus dice", ignoreWounded: "Not Wounded (no +1 DN)" } as const;
+const SKILL_WORDS = () => Object.fromEntries((Object.keys(SKILLS) as Skill[]).map((s) => [idOf(s), s]));
+const ATTRIBUTE_WORDS = () => Object.fromEntries(ATTRIBUTES.map((a) => [idOf(a), ATTRIBUTE_NAMES[a]]));
+
+// Rank rises by 1 per 40 XP earned, to 3 (Core p.146): one notice per Rank reached, as session.end names it.
+const RANKS = [2, 3] as const;
+// The Corruption levels a gain enters (corruptionLevel, Core p.286): each but Chaos Spawn calls for a Mutation Test at
+// DN 3 plus the level's modifier (p.287, mutationDns, rules-flow §11.135), and Chaos Spawn gives the Agent to the GM.
+const corruptionSteps = () => {
+  const steps: { from: number; name: string; modifier: number; chaosSpawn: boolean }[] = [];
+  for (let p = 1; p <= CHAOS_SPAWN_AT; p++) {
+    const l = corruptionLevel(p);
+    if (l.level !== corruptionLevel(p - 1).level) steps.push({ from: p, ...l });
+  }
+  return steps;
+};
+
 const POOL = {
   die: 6,
   // 4 or 5 is an Icon, 6 an Exalted Icon worth two (p.159); a surplus Exalted Icon may be Shifted (p.165).
@@ -467,7 +486,8 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
 
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.4",
+    version: "0.1.5",
+    // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
     // none to give (a campaign's Tier is chosen when it is created).
@@ -727,6 +747,9 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         target: `ctx.dn + ${WOUNDED}`,
         inputs: { skill: "text", dn: "int", bonus: "int", ...IGNORE_WOUNDED },
         inputOptions: { skill: skills.map(idOf) },
+        label: "Skill Test",
+        inputLabels: { skill: "Skill", ...INPUT_WORDS },
+        inputOptionLabels: { skill: SKILL_WORDS() },
         cite: "Core p.158",
       },
       attribute: {
@@ -737,6 +760,9 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         target: `ctx.dn + ${WOUNDED}`,
         inputs: { attribute: "text", dn: "int", bonus: "int", ...IGNORE_WOUNDED },
         inputOptions: { attribute: ATTRIBUTES.map(idOf) },
+        label: "Attribute Test",
+        inputLabels: { attribute: "Attribute", ...INPUT_WORDS },
+        inputOptionLabels: { attribute: ATTRIBUTE_WORDS() },
         cite: "Core p.158",
       },
       trait: {
@@ -747,6 +773,9 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         target: `ctx.dn + ${WOUNDED}`,
         inputs: { trait: "text", dn: "int", bonus: "int", ...IGNORE_WOUNDED },
         inputOptions: { trait: ["influence", "resolve"] },
+        label: "Influence or Resolve Test",
+        inputLabels: { trait: "Trait", ...INPUT_WORDS },
+        inputOptionLabels: { trait: { influence: "Influence", resolve: "Resolve (Fear, Terror)" } },
         cite: "Core pp.169-170",
       },
       corruption: {
@@ -757,7 +786,25 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         // The source's DN plus the modifier of the Agent's Corruption level (p.286).
         target: `ctx.dn + derived.corruptionMod + ${WOUNDED}`,
         inputs: { dn: "int", bonus: "int", ...IGNORE_WOUNDED },
+        label: "Corruption Test",
+        inputLabels: INPUT_WORDS,
         cite: "Core p.285",
+      },
+      // An Opposed Test has no DN: most Icons wins (p.170), which both sides roll and compare at the table, so the app
+      // records who won (TEST_KINDS `opposed`, state.ts). It rolls a Skill or an Attribute, as this repo's call does.
+      opposed: {
+        kind: "reported",
+        entities: ["agent"],
+        outcomes: [
+          { id: "won", label: "Won", cite: "Core p.170" },
+          { id: "beaten", label: "Lost", cite: "Core p.170" },
+        ],
+        inputs: { roll: "text" },
+        inputOptions: { roll: [...skills.map(idOf), ...ATTRIBUTES.map(idOf)] },
+        label: "Opposed Test",
+        inputLabels: { roll: "Skill or Attribute" },
+        inputOptionLabels: { roll: { ...SKILL_WORDS(), ...ATTRIBUTE_WORDS() } },
+        cite: "Core p.170",
       },
     },
     // Alternating Turns (pp.176-177): after an Agent a Threat acts and the other way round, the side whose pick it is
@@ -854,6 +901,40 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         text: "A Threat below its first printed Tier takes that Tier's class, and past its last printed column keeps the last.",
         cite: "Core p.323",
       },
+      // What the notices below cannot say (rules-flow §11.187).
+      {
+        id: "unspentXpUntold",
+        text: "Session start does not name who has XP left to spend: a rule cannot read the XP a build has spent. Each player's sheet shows it.",
+        cite: "Core p.146, p.148",
+      },
+      {
+        id: "groupAscendUntold",
+        text: "Session end does not say the group may Ascend: a rule reads one Agent, and Ascending needs every Agent's XP. The GM checks PARTY.",
+        cite: "Core p.147",
+      },
+    ],
+    // What the GM is told after an action (InconsisTable's house decision #79), in this ruleset's own words; the pool-full
+    // line (p.320) is the platform's own. One notice per Rank reached and per Corruption level entered, as
+    // session.end and character.corrupt tell them (rules-flow §11.135, §11.187).
+    notices: [
+      ...RANKS.map((rank) => ({
+        id: `rank${rank}`,
+        when: "crossed",
+        entities: ["agent"],
+        if: `derived.rank >= ${rank}`,
+        text: `{name} reached Rank ${rank}`,
+        cite: "Core p.146",
+      })),
+      ...corruptionSteps().map((l) => ({
+        id: `corruption${l.from}`,
+        when: "crossed",
+        entities: ["agent"],
+        if: `${opt("res.corruption")} >= ${l.from}`,
+        text: l.chaosSpawn
+          ? "{name} is Chaos Spawn: the GM takes the Agent over"
+          : `{name} is ${l.name}: Mutation Test, DN ${3 + l.modifier}`,
+        cite: l.chaosSpawn ? "Core p.286" : "Core pp.286-287",
+      })),
     ],
     // Until the creation catalogue and the XP ledger are ported, a character is copied in from a finished sheet:
     // free input, nothing priced, each value checked only against its field's own range. Only the Attributes are
@@ -911,7 +992,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.4",
+    version: "0.2.5",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {

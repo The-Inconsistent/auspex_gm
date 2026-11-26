@@ -222,7 +222,8 @@ const exported = CampaignExport.parse({
         audience: [ID.ash],
         revealedAt: "2026-01-02T00:00:00.000Z",
       },
-      { id: ID.scrap, title: "Scrap note", style: "plain", revealedAt: null },
+      // Shown once and sealed again: its reveal time has no place.
+      { id: ID.scrap, title: "Scrap note", style: "plain", revealedAt: "2026-01-01T00:00:00.000Z" },
     ],
     items: [
       {
@@ -510,8 +511,14 @@ test("factions, NPCs, places, handouts and items", () => {
     [intercept.layout, intercept.header, intercept.audienceMode, intercept.audience],
     ["transcript", "INTERCEPT 7", "listed", [ID.ash]],
   );
+  // The reveal time travels with a shown handout (house decision #86); a handout shown with no time has none.
+  assert.equal(intercept.revealedAt, "2026-01-02T00:00:00.000Z");
+  assert.equal(notice.revealedAt, undefined);
   const scrap = entry(ID.scrap);
-  assert.deepEqual([scrap.layout, scrap.header, scrap.visibility], ["plain", undefined, undefined]);
+  assert.deepEqual(
+    [scrap.layout, scrap.header, scrap.visibility, scrap.revealedAt],
+    ["plain", undefined, undefined, undefined],
+  );
 
   const key = entry(ID.key);
   assert.deepEqual(key.fields, { location: ID.vault });

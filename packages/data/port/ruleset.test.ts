@@ -197,7 +197,8 @@ test("a Wounded Agent's called Test has +1 DN unless the call ignores it", { ski
     const scope = engine!.actorScope({ fields, derived, resources, campaign, ctx: { dn: 3, ignoreWounded } });
     return engine!.evaluateInt({ expr: compiled.tests[test]!.target, scope });
   };
-  for (const id of Object.keys(compiled.tests)) {
+  // A reported Test (the Opposed one, p.170) has no DN.
+  for (const id of Object.keys(compiled.tests).filter((id) => id !== "opposed")) {
     assert.equal(target(id, 0, false), 3, `${id}: not Wounded`);
     assert.equal(target(id, 1, false), 4, `${id}: Wounded`);
     assert.equal(target(id, 1, true), 3, `${id}: Wounded, ignored`);

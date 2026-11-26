@@ -94,6 +94,7 @@ export interface RoomEntry {
   prep?: Prep;
   imageId?: string;
   imageRevealed?: boolean;
+  revealedAt?: string;
 }
 export interface RoomActor {
   id: string;
@@ -455,7 +456,11 @@ export function buildRoomDocument(
 
   c.handouts.forEach((h, i) => {
     const p = `codex.handouts.${i}`;
-    if (h.revealedAt !== null) note(`${p}.revealedAt`, "the time it was revealed");
+    // The reveal time orders the phone's inbox (InconsisTable's house decision #86); the import keeps it only on an entry
+    // the document reveals, so a sealed handout's is reported.
+    const revealedAt = h.revealedAt === null ? null : new Date(h.revealedAt);
+    const at = revealedAt && !Number.isNaN(revealedAt.getTime()) ? revealedAt.toISOString() : null;
+    if (h.revealedAt !== null && !(h.revealed && at)) note(`${p}.revealedAt`, "the time it was revealed");
     const missing = h.audience.findIndex((a) => !characters.has(a));
     // An empty audience is every player, so a reader the file lacks cannot just be dropped (as this app's importer).
     if (missing >= 0) throw new Refusal(`${p}.audience.${missing}`, "a reader not in the file");
@@ -468,6 +473,7 @@ export function buildRoomDocument(
       layout: HANDOUT_LAYOUT[h.style],
       ...(header && { header: fit(`${p}.header`, header, CAPS.header) }),
       ...reader(h.revealed),
+      ...(h.revealed && at && { revealedAt: at }),
       ...(h.audience.length > 0 && { audienceMode: "listed" as const, audience: h.audience }),
       ...picture(p, h),
     });
