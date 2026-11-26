@@ -297,9 +297,11 @@ test("sustaining adds sustainPenalty's DN to every Test, and Manifest opens Peri
     ).find((s) => s.id === "manifest")!;
     assert.deepEqual(manifest.limit, { per: "round", max: 1 });
     assert.deepEqual(manifest.then, { table: TABLES.perils, inputs: { ones: "ones" } });
-    // Perils opens from one Wrath Die showing 1 up: the count the spend carries starts where the table's does.
+    // A Manifest with no Wrath Die showing 1 is recorded as 0; Perils, which starts at 1, is offered all the same and
+    // left unapplied by the GM (§11.191).
     const perils = (r.tables as Record<string, { inputs: { id: string; min: number }[] }>)[TABLES.perils]!;
-    assert.equal(manifest.inputs.ones.min, perils.inputs.find((x) => x.id === "ones")!.min);
+    assert.equal(manifest.inputs.ones.min, 0);
+    assert.equal(perils.inputs.find((x) => x.id === "ones")!.min, 1);
     const ev = (fields: Record<string, unknown>) =>
       engine!.evaluate({ node: engine!.parseExpr(manifest.if!), scope: engine!.actorScope({ fields }) });
     assert.equal(ev({ skill: { psychicMastery: 2 } }), true);

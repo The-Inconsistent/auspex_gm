@@ -334,14 +334,14 @@ const spends = ({ ledger }: { ledger: boolean }) =>
     },
     {
       // Manifest a psychic power: once a Round in a fight, whether or not it succeeds (p.259, rules-flow §11.181); with a
-      // Wrath Die showing 1 the GM opens Perils of the Warp with the extra ones (pp.263-264). Perils opens from one up,
-      // and a spend's `then` takes no condition, so the count starts at 1 as the table's does: a Manifest with no 1 leaves
-      // the offer unopened (§11.191).
+      // Wrath Die showing 1 the GM opens Perils of the Warp with the extra ones (pp.263-264). A spend's `then` takes
+      // no condition, so Perils is always offered; the count starts at 0 so a Manifest with no 1 is recorded as it
+      // was, the platform carries it to Perils at its own least, 1, and the GM leaves that offer unapplied (§11.191).
       id: "manifest",
       label: "Manifest a power",
       cost: [],
       if: PSYKER,
-      inputs: { ones: { label: "Wrath Dice showing 1", min: 1, max: "10" } },
+      inputs: { ones: { label: "Wrath Dice showing 1", min: 0, max: "10" } },
       limit: { per: "round", max: 1 },
       then: { table: TABLES.perils, inputs: { ones: "ones" } },
       entities: ["agent", "threat"],

@@ -1221,10 +1221,10 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      question 2: the holder and the GM side read a held record's name from the snapshot, the pack stays the GM's); a
      Mutation's Attribute, Skill and Trait changes are its effects, and its weapon, gear or Keyword is in its summary
      for the GM to add. Manifest is a spend once a Round with no cost for an Agent or a Threat with Psychic Mastery or
-     the PSYKER Keyword (p.259, §11.181), whose OPEN offers Perils with the Wrath Dice showing 1. The count starts at 1, as
-     Perils' own does (§11.181 opens Perils from one up): the platform's `then` takes no condition and opens the
-     table whatever the count, so a Manifest whose Wrath Dice show no 1 is recorded with 1 and its offer left
-     unopened. The powers sustained
+     the PSYKER Keyword (p.259, §11.181), whose OPEN offers Perils with the Wrath Dice showing 1. The platform's `then` takes
+     no condition, so every Manifest offers Perils: the count starts at 0, so a Manifest whose Wrath Dice show no 1 is
+     recorded truthfully, the platform carries it to Perils at the table's least, 1, and the GM leaves that offer
+     unapplied (§11.181 opens Perils only from one Wrath Die showing 1 up). The powers sustained
      are a list field shown as chips (the ledger one picks from the psychic powers), adding 2 DN per power to every Test
      and reminded at the psyker's Turn start (p.265, §11.180); the Willpower Test after damage is the GM's to call, as
      no reminder fires after a hit. *The owner's decision 1, and issue #324's recommendation, 2026-11-26.*
