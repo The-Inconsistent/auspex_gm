@@ -1333,6 +1333,16 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      Mob options by name (`mobAbilities`, `mobOptions`) and their weapons as weapon entries (`mobWeapons`), which the
      Threat attack's strike offers beside the others. Their text stays in the book, as every ability's; which option a
      Mob takes is the GM's. The ruleset is 0.1.16 and 0.2.16. *Issue #325's recommendation, 2026-11-27.*
+200. **What the converter writes for a Quick NPC, a relic's Powers and an entry copied from a book** (issue #327;
+     InconsisTable's house decision #97; §11.116, §11.197). A Quick NPC's stat source becomes its `quick` field naming
+     its Tier's row of the codex pack, with the specialty Skill and dice in their two fields, where it was a line of
+     GM notes. A relic's Powers go in the item's Power field as a few words of this repo's ("Damage +1; Rending (2)")
+     when each is a change to a number or a Trait and they fit its 80 characters; a Power that is the GM's own words or
+     bonus dice with their when stays a GM note, as before. An NPC, a faction or a place copied from a book (ADD FROM
+     BOOK keeps the printed name and opens the notes with its cite) names the codex pack entry it was made from as its
+     `source`, so its page opens from the entry; a scene from a book event keeps no such mark in this repo's export
+     and names none. Abandoned sessions stay undecided (issue #327 question 1). *Issue #327's recommendation,
+     2026-11-27.*
 
 ---
 
