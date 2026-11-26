@@ -24,6 +24,7 @@ import {
   MAX_PENDING_SPENDS,
   MAX_SPEND_AMOUNT,
   MAX_UPGRADES,
+  Overrides,
   RARITY_DN,
   MAX_KEYWORD_LENGTH,
   MAX_MUTATIONS,
@@ -52,6 +53,9 @@ export const idOf = (name: string) =>
     .join("");
 
 const attrPath = (a: Attribute) => `attr.${idOf(a)}`;
+// The derived ids of an Attribute's total and bonus on the sheet: `strengthTotal` is the one Skills already read.
+const attrTotalId = (a: Attribute) => `${idOf(ATTRIBUTE_NAMES[a])}Total`;
+const attrBonus = (a: Attribute) => `${idOf(ATTRIBUTE_NAMES[a])}Bonus`;
 // Skills and Attribute Tests roll the Attribute's total: Powered (X) armour adds X to Strength (p.232, rules-flow
 // §11.160). No Trait reads Strength, so the Traits keep the rating.
 const attrTotal = (a: Attribute) => (a === "S" ? "derived.strengthTotal" : attrPath(a));
@@ -128,6 +132,9 @@ const TRAITS: { id: string; label: string; expr: string; cite: string }[] = [
   },
   { id: "rank", label: "Rank", expr: `min(3, 1 + ${opt("xp")} / 40)`, cite: "Core pp.146-147" },
 ];
+
+// The Traits the GM may override (Overrides, state.ts): all but Passive Awareness and Max Traumatic Injuries.
+const OVERRIDDEN: ReadonlySet<string> = new Set(Object.keys(Overrides.shape));
 
 // The DN modifier of the Agent's Corruption level (Core p.286), as one expression over the points.
 const corruptionModifier = () => {
@@ -805,6 +812,112 @@ export const SPAWN = {
   },
 };
 
+// The sheet as the book prints it (pp.40-41, the sheet p.372) through InconsisTable's widgets (house decision #83): the
+// name bar, the Attributes in columns and the Skills in pairs, the Traits framed, Resilience as base plus armour, the
+// tracks, Corruption as pips in its levels (pp.285-286), the build's cards and folds (the ledger ruleset only, as they
+// read the saved build), the held Mutations and Who You Are (pp.32-36).
+const SHEET_TRAITS = ["defence", "resolve", "conviction", "influence", "passiveAwareness", "speed", "determination"];
+const corruptionPips = () => {
+  const steps: { label: string; size: number }[] = [];
+  for (let p = 1; p <= CHAOS_SPAWN_AT; p++) {
+    const { name } = corruptionLevel(p);
+    if (steps.at(-1)?.label === name) steps.at(-1)!.size++;
+    else steps.push({ label: name, size: 1 });
+  }
+  return steps;
+};
+function layoutOf({ ledger }: { ledger: boolean }) {
+  const skills = Object.keys(SKILLS) as Skill[];
+  return {
+    // The tracker row of a Threat: its personal Ruin, spent and gained there (p.325). Its class has no tag: the row draws
+    // an enum field as one, and the class is the column of the campaign's Tier (rules-flow §11.193).
+    threat: { sections: [], trackerRow: ["res.personalRuin"] },
+    agent: {
+      sections: [
+        {
+          id: "who",
+          label: "Agent",
+          show: [{ widget: "strip", bind: { title: "name", values: ["species", "archetype", "xp", "derived.rank"] } }],
+        },
+        {
+          id: "attributes",
+          label: "Attributes",
+          show: [
+            {
+              widget: "grid",
+              variant: "columns",
+              bind: {
+                ratings: ATTRIBUTES.map(attrPath),
+                bonus: ATTRIBUTES.map((a) => `derived.${attrBonus(a)}`),
+                total: ATTRIBUTES.map((a) => `derived.${a === "S" ? "strengthTotal" : attrTotalId(a)}`),
+              },
+            },
+          ],
+        },
+        {
+          id: "skills",
+          label: "Skills",
+          show: [
+            {
+              widget: "grid",
+              variant: "pairs",
+              bind: {
+                ratings: skills.map((s) => `skill.${idOf(s)}`),
+                total: skills.map((s) => `derived.${idOf(s)}`),
+                link: skills.map((s) => attrPath(SKILLS[s])),
+              },
+            },
+          ],
+        },
+        {
+          id: "traits",
+          label: "Traits",
+          show: [
+            { widget: "frames", bind: { values: SHEET_TRAITS.map((t) => `derived.${t}`) } },
+            {
+              widget: "sum",
+              label: "Resilience",
+              bind: { parts: ["derived.resilienceBase", "armour.ar"], total: "derived.resilience" },
+            },
+          ],
+        },
+        {
+          id: "pools",
+          label: "In play",
+          show: [
+            { widget: "track", label: "Wounds", bind: { value: "res.wounds", max: "derived.maxWounds" } },
+            { widget: "track", label: "Shock", bind: { value: "res.shock", max: "derived.maxShock" } },
+            {
+              widget: "track",
+              label: "Traumatic Injuries",
+              bind: { value: "traumatic", max: "derived.maxTraumatic" },
+            },
+            "res.wrath",
+            "res.wealth",
+            { widget: "pips", label: "Corruption", bind: { value: "res.corruption" }, steps: corruptionPips() },
+          ],
+        },
+        ...(ledger
+          ? [
+              {
+                id: "wargear",
+                label: "Wargear",
+                show: (["weapons", "armour", "gear", "powers"] as const).map((v) => ({ widget: "cards", variant: v })),
+              },
+              { id: "abilities", label: "Talents and Abilities", show: [{ widget: "folds", variant: "both" }] },
+            ]
+          : []),
+        { id: "mutations", label: "Mutations", show: [{ widget: "held" }] },
+        {
+          id: "detail",
+          label: "Who you are",
+          show: [{ widget: "notes", bind: { fields: DETAIL.map(([id]) => `detail.${id}`) } }],
+        },
+      ],
+    },
+  };
+}
+
 /**
  * The ruleset. By default (0.1.x) a character is copied in by hand through the `creation` steps. With
  * `builder: "ledger"` (0.2.x) the Agent is bought with XP by InconsisTable's ledger builder instead: the `build` block
@@ -832,6 +945,14 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
       Object.entries(MODS).map(([k, label]) => [`mod.${k}`, { type: "int", label: `Bonus: ${label}`, ...party }]),
     ),
     traumatic: { type: "int", label: "Traumatic Injuries", min: 0, ...party, cite: "Core pp.193-194" },
+    // The GM's override of a Trait (Overrides, state.ts; InconsisTable's house decision #96): set, it is the Trait, at
+    // least 1 as deriveStats clamps it (p.36); cleared, the Trait is worked out again.
+    ...Object.fromEntries(
+      TRAITS.filter((t) => OVERRIDDEN.has(t.id)).map((t) => [
+        `override.${t.id}`,
+        { type: "int", label: `GM override: ${t.label}`, min: 1, ...party },
+      ]),
+    ),
     annihilated: { type: "bool", label: "Annihilated", ...party, cite: "Core p.194" },
     // The Mutations the Agent holds, by the book row's id (the sheet's `mutations`, Core pp.287-295). Other players read
     // the effect on the numbers, not the names ("Unseen", state.ts).
@@ -850,7 +971,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
 
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.10",
+    version: "0.1.11",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
@@ -880,8 +1001,42 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
             ...party,
             cite: "Core p.232",
           },
+          // Each Attribute's bonus and total as the sheet prints them (attributeTotals, p.40, sheet p.372): Powered (X)
+          // armour is Strength's bonus (p.232); a Mutation's change is on the rating itself (rules-flow §11.193).
+          ...ATTRIBUTES.flatMap((a) => [
+            {
+              id: attrBonus(a),
+              label: `${ATTRIBUTE_NAMES[a]}: bonus`,
+              expr: a === "S" ? opt("armour.powered") : "0",
+              ...party,
+              cite: a === "S" ? "Core p.232" : "Core p.40",
+            },
+            ...(a === "S"
+              ? []
+              : [
+                  {
+                    id: attrTotalId(a),
+                    label: `${ATTRIBUTE_NAMES[a]}: total`,
+                    expr: attrPath(a),
+                    ...party,
+                    cite: "Core p.40",
+                  },
+                ]),
+          ]),
+          // Resilience before armour (p.36), the sheet's sum of base and Armour Rating.
+          {
+            id: "resilienceBase",
+            label: "Resilience before armour",
+            expr: `attr.t + 1 + ${mod("resilience")}`,
+            ...party,
+            cite: "Core pp.36-37",
+          },
           // Rank reads the XP earned, which only its owner sees.
-          ...TRAITS.map((t) => ({ ...t, visibility: t.id === "rank" ? "owner" : "party" })),
+          ...TRAITS.map((t) => ({
+            ...t,
+            visibility: t.id === "rank" ? "owner" : "party",
+            ...(OVERRIDDEN.has(t.id) && { override: `override.${t.id}` }),
+          })),
           {
             id: "corruptionMod",
             label: "Corruption DN modifier",
@@ -1402,6 +1557,27 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         text: "The encounter budget has no line for Monstrous Creatures: the book names a target for Troops, Mobs, Elites and Adversaries only.",
         cite: "Threat Assessment p.8",
       },
+      // What the sheet, the overrides and keepSheet say (rules-flow §11.193).
+      {
+        id: "traitOverride",
+        text: "The GM may override a Trait (Max Wounds to Determination, not Passive Awareness or Max Traumatic Injuries); it is at least 1, and clearing it works the Trait out again.",
+        cite: "Core p.36",
+      },
+      {
+        id: "keepSheetArmourWealth",
+        text: "A build saved over a sheet made by hand keeps the sheet's Armour Rating, Powered rating and Wealth.",
+        cite: "Core p.38",
+      },
+      {
+        id: "mutationOnRating",
+        text: "A Mutation's change to an Attribute shows in its rating on the sheet; the bonus column holds Powered (X) only.",
+        cite: "Core p.40",
+      },
+      {
+        id: "threatClassNoTag",
+        text: "A Threat's row on the tracker shows no class tag: the class is the stat block's column for the campaign's Tier.",
+        cite: "Core p.323",
+      },
       {
         id: "stacksUncapped",
         text: "Hindered, Bleeding and Vulnerable stack with no cap; the other Conditions are held or not.",
@@ -1462,26 +1638,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
       // Rank reads the XP earned in play (pp.146-147): nothing for a new character.
       { id: "experience", label: "XP earned in play", fields: ["xp"], optional: true, cite: "Core pp.146-147" },
     ].map((step) => ({ ...step, actor: "agent", kind: "fields" })),
-    layout: {
-      agent: {
-        sections: [
-          { id: "attributes", label: "Attributes", show: ATTRIBUTES.map(attrPath) },
-          {
-            id: "traits",
-            label: "Traits",
-            show: TRAITS.map((t) => `derived.${t.id}`),
-          },
-          {
-            id: "pools",
-            label: "In play",
-            show: ["res.wounds", "res.shock", "res.wrath", "res.wealth", "res.corruption"],
-          },
-          { id: "skills", label: "Skills", show: skills.map((s) => `derived.${idOf(s)}`) },
-          { id: "mutations", label: "Mutations", show: [{ widget: "held" }] },
-          { id: "who", label: "Who you are", show: DETAIL.map(([id]) => `detail.${id}`) },
-        ],
-      },
-    },
+    layout: layoutOf({ ledger: false }),
     codex: CODEX,
     // Critical Hits, Perils of the Warp and the Mutation tables, the book's rows as lookups (tables.ts; the owner's
     // decision 1 of 2026-11-26, rules-flow §11.191).
@@ -1509,7 +1666,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.10",
+    version: "0.2.11",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
@@ -1523,6 +1680,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     initiative: { ...ruleset.initiative, unableStates: ["dead", "lost", "slain"] },
     rests: [{ ...ruleset.rests[0]!, refusedIn: ["dying", "dead", "lost"] }],
     spends: spends({ ledger: true }),
+    layout: layoutOf({ ledger: true }),
     // ponytail: the budget's cost is compiled over every actor type the creation steps do not build, so the ledger's
     // Agent (built by `build`, not `creation`) is read as spawned and has no class; the budget comes back once the
     // platform leaves `build.actor` out of it.
@@ -1590,6 +1748,9 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
       // A session's end may award up to 100 XP (the `session.end` action), and the GM's band offers 8, 10 and 12
       // (Core p.321, apps/web/components/gm/party/constants.ts `XP_AWARDS`).
       award: { max: 100, suggested: [8, 10, 12], cite: "Core p.321" },
+      // A build saved over a sheet made by hand keeps its armour and Wealth (keepSheet, build.ts): the GM's ruling, no
+      // printed page (rules-flow §11.193).
+      keep: { fields: ["armour.ar", "armour.powered"], resources: ["wealth"] },
     },
   };
 }

@@ -470,6 +470,8 @@ test("characters: a build with the fields it does not write, a hand-made sheet, 
     "detail.appearance": "Tall.",
     "detail.personality": "Grim.",
     traumatic: 1,
+    // The GM's override of Defence, in its override field (house decision #96).
+    "override.defence": 3,
     mutations: [BLIGHTED_SOUL, "visions-true-divination"],
   });
   assert.deepEqual(ash!.resources, { wrath: 1, wealth: 5, corruption: 0, wounds: 3, shock: 1, ammoBolt: 2 });
@@ -747,7 +749,6 @@ test("the report counts exactly what the file has that the document holds no str
     "gm notes: an objective's story link": 1,
     "left out: a Condition the ruleset does not have": 1,
     "left out: a Condition's stack count": 1,
-    "left out: a GM override of a Trait: no field": 1,
     "left out: a Mutation's printed row: its key is kept": 2,
     "left out: a hand-made line longer than an item's name": stats.gear.filter((g) => g.length > CAPS.itemName).length,
     "left out: a hand-made weapon's profile: its name is carried": stats.weapons.length,

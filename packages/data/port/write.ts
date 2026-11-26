@@ -123,7 +123,9 @@ if (ledgerOut || catalogueOut.creation || catalogueOut.wargear) {
     const c = engine.compileRuleset(ledger);
     if (!c.ok) refuse(c.problems);
     else ledgerRuleset = c.compiled.ruleset;
-    if (!checksBuild(engine, ledger)) console.warn("this InconsisTable checkout does not check the build block yet");
+    // The layout's cards and folds read the saved build: the probe without a build leaves them out too.
+    if (!checksBuild(engine, { ...ledger, layout: {} }))
+      console.warn("this InconsisTable checkout does not check the build block yet");
     else if (!checksPlay(engine, ledger))
       console.warn("this InconsisTable checkout does not check the build block's ascension, gone and award keys yet");
   }

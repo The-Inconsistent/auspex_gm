@@ -112,7 +112,7 @@ test("both rulesets carry the background texts, which a pregen's sheet holds bes
     if (!result.ok) assert.fail(result.problems.map((p) => `${p.path}: ${p.message}`).join("\n"));
     const { entities, layout } = result.compiled.ruleset as unknown as {
       entities: { id: string; fields: Record<string, { type: string; visibility: string; editableBy: string }> }[];
-      layout: { agent: { sections: { id: string; show: string[] }[] } };
+      layout: { agent: { sections: { id: string; show: unknown[] }[] } };
     };
     const fields = entities.find((e) => e.id === "agent")!.fields;
     for (const id of ids) {
@@ -120,7 +120,11 @@ test("both rulesets carry the background texts, which a pregen's sheet holds bes
       assert.equal(fields[id]?.visibility, "party", id);
       assert.equal(fields[id]?.editableBy, "owner", id);
     }
-    assert.deepEqual(layout.agent.sections.at(-1), { id: "who", label: "Who you are", show: ids });
+    assert.deepEqual(layout.agent.sections.at(-1), {
+      id: "detail",
+      label: "Who you are",
+      show: [{ widget: "notes", bind: { fields: ids } }],
+    });
     // An invented background, one of them at the 4000 characters a CharacterDetail part may hold.
     const texts = {
       "detail.appearance": "x".repeat(4000),
