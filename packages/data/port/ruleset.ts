@@ -1068,7 +1068,7 @@ function layoutOf({ ledger }: { ledger: boolean }) {
 // INCOMING on a foe's Turn (incoming.tsx, rules-flow §11.175), YOU'RE HIT when Wounds rise (hit-sheet.tsx, §11.172),
 // AMBUSHED (ambushed.tsx, §11.177), DYING (dying.tsx) and the combat options on the Agent's Turn (combat-options.tsx).
 // Each reads only what a player reads of their own Agent. An attacker's class (a Troop lands no Critical Hit, p.323) is
-// the GM's to say: a panel reads no foe.
+// the GM's to say: a panel reads no foe. Exhausted is read from Shock alone: a panel reads no Condition (§11.201).
 const EXHAUSTED = "res.shock > derived.maxShock";
 const PANELS = [
   {
@@ -1141,6 +1141,7 @@ const PANELS = [
         text: "Your Turn: Crawl, a basic Combat Action with no options, or Fall Back; you can't stand",
         cite: "Core p.193",
       },
+      { text: "You are Wounded: +1 DN to every Test", cite: "Core p.193" },
       { text: "A Wound now is a Traumatic Injury: past your max, you die", cite: "Core p.193" },
       { text: "Determination that takes the damage to 0 saves you the Injury", cite: "Core p.193" },
       { text: "It ends when you recover any Wounds: a Medicae Test or Resting", cite: "Core p.124, p.196" },

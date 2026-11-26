@@ -1353,7 +1353,10 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      entries of the codex pack (0.1.3) every seat reads, each with its gist and what it needs of a weapon. The strip
      under the header shows Wounds, Shock and Wrath; the party's Glory is no value of the Agent's, so the strip leaves
      it to the header. On the Turn the ledger ruleset adds the phone's attack and power guides; the by-hand one has
-     neither, as they read the saved build. Not expressed: INCOMING's line that a Troop lands no Critical Hit (a panel
+     neither, as they read the saved build. Exhausted, which turns the Determination line into "you can't roll it", is
+     read from Shock over its max alone: a panel's expressions read no Condition, so an Agent Exhausted by the
+     Condition from another source (`isExhausted`, p.199) still sees the Determination line, and the GM says no. Not
+     expressed: INCOMING's line that a Troop lands no Critical Hit (a panel
      reads no foe), and sinking a combat option the Agent's weapons do not allow (no expression reads the weapons
      carried), so each option says what it needs instead. The ruleset is 0.1.17 and 0.2.17, and validates only against
      a platform with #257. *Issue #324's recommendation, 2026-11-27.*

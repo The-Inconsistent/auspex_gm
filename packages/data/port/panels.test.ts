@@ -9,7 +9,12 @@ import { buildRuleset, COMBAT_GROUPS } from "./ruleset.ts";
 // phones, so everything it reads must be in a player's served copy, which InconsisTable's own check says.
 const engine = await loadEngine();
 const served = await loadServedCheck();
-const skip = engine === null || served === null ? "InconsisTable is not checked out beside this repo" : false;
+const skip =
+  engine === null
+    ? "InconsisTable is not checked out beside this repo"
+    : served === null
+      ? "this InconsisTable checkout has no served-copy check (its house decision #113)"
+      : false;
 
 test("every panel reads only what a player's served copy keeps, in both rulesets", { skip }, () => {
   for (const r of [buildRuleset(), buildRuleset({ builder: "ledger" })]) {
