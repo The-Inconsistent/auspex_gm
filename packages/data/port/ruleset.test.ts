@@ -5,6 +5,7 @@ import {
   Action,
   ASCENSION_XP,
   ascensionGroup,
+  BLIGHTED_SOUL,
   ATTRIBUTES,
   CHAOS_SPAWN_AT,
   Character,
@@ -167,21 +168,22 @@ test("a called Test rolls the pool testPool gives", { skip }, () => {
   assert.equal(pool("corruption", {}), called({ kind: "corruption" }));
 });
 
-test("a Corruption Test's DN adds the level's modifier", { skip }, () => {
+test("a Corruption Test's DN adds the level's modifier, and 1 for Blighted Soul", { skip }, () => {
   const compiled = compile();
   const { stats, build } = PREGENS[0]!;
-  const fields = fieldsOf(stats);
   const campaign = campaignAt(compiled, build.tier);
-  for (let points = 0; points <= 30; points++) {
-    const resources = { corruption: points };
-    const derived = engine!.deriveValues({ compiled, entity: "agent", values: { fields, resources, campaign } });
-    const scope = engine!.actorScope({ fields, derived, resources, campaign, ctx: { dn: 3 } });
-    assert.equal(
-      engine!.evaluateInt({ expr: compiled.tests.corruption!.target, scope }),
-      corruptionTestDn({ source: 3, points }),
-      `${points} Corruption`,
-    );
-  }
+  for (const mutations of [undefined, [], ["horns"], [BLIGHTED_SOUL], ["horns", BLIGHTED_SOUL]])
+    for (let points = 0; points <= 30; points++) {
+      const fields = { ...fieldsOf(stats), ...(mutations && { mutations }) };
+      const resources = { corruption: points };
+      const derived = engine!.deriveValues({ compiled, entity: "agent", values: { fields, resources, campaign } });
+      const scope = engine!.actorScope({ fields, derived, resources, campaign, ctx: { dn: 3 } });
+      assert.equal(
+        engine!.evaluateInt({ expr: compiled.tests.corruption!.target, scope }),
+        corruptionTestDn({ source: 3, points, blighted: !!mutations?.includes(BLIGHTED_SOUL) }),
+        `${points} Corruption, ${JSON.stringify(mutations)}`,
+      );
+    }
 });
 
 // The one place the ruleset departs from this repo on purpose: callDn leaves the Wounded +1 DN (p.193) to the GM, the

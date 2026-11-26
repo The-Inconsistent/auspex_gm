@@ -11,12 +11,14 @@ import {
   ATTITUDE_DN,
   ATTRIBUTE_NAMES,
   AdventureStatus,
+  BLIGHTED_SOUL,
   BeatType,
   ATTRIBUTES,
   CONDITIONS,
   corruptionLevel,
   CHAOS_SPAWN_AT,
   CodexInput,
+  ENDURING_LIFE,
   FactionStance,
   MAX_FACTION_KEYWORDS,
   MAX_KEYWORD_LENGTH,
@@ -188,7 +190,12 @@ const THREAT_STATES = [
 
 // An Agent's states as pcStatus gives them (pp.193-196): Dead is an Annihilated Agent (p.194) or one past its Traumatic
 // Injuries, and a Dead Agent is neither Dying nor Wounded.
-const DEAD = `(has(annihilated) && annihilated) || ${opt("traumatic")} > derived.maxTraumatic`;
+// The Mutations whose printed effect changes a rule the ruleset runs, read from the Agent's held keys (the book row's id,
+// as `hasMutation` reads a sheet's `mutations`; Core pp.289, 294).
+const holds = (id: string) => `(has(mutations) && contains(mutations, "${id}"))`;
+const ENDURING = holds(ENDURING_LIFE);
+// With Enduring Life the Agent is never Dead, whether from Traumatic Injuries or Annihilation (p.294, rules-flow §11.185).
+const DEAD = `!${ENDURING} && ((has(annihilated) && annihilated) || ${opt("traumatic")} > derived.maxTraumatic)`;
 const DYING = `!(${DEAD}) && res.wounds > derived.maxWounds`;
 
 // What one hit does (the platform's `health.harm`): pcHit for an Agent, combatant.adjust for a Threat (state.ts,
@@ -209,7 +216,9 @@ const HARM = {
       // becoming Dying adds Prone (p.193).
       felled: { when: DYING, injuries: "traumatic", condition: "prone", healTo: "derived.maxWounds" },
       // One hit over twice Max Wounds, counted after Resilience (p.194, rules-flow §11.7).
-      destroyed: { over: "2 * derived.maxWounds", field: "annihilated" },
+      // Enduring Life makes it an ordinary hit and sets no flag (§11.185).
+      // ponytail: Enduring Life puts `over` past any hit (the op takes 100 at most); a `destroyed.when` would say it plainly.
+      destroyed: { over: `${ENDURING} ? 1000 : 2 * derived.maxWounds`, field: "annihilated" },
     },
     {
       entities: ["threat"],
@@ -232,6 +241,87 @@ const IGNORE_WOUNDED = { ignoreWounded: "bool" } as const;
 const INPUT_WORDS = { dn: "DN", bonus: "Bonus dice", ignoreWounded: "Not Wounded (no +1 DN)" } as const;
 const SKILL_WORDS = () => Object.fromEntries((Object.keys(SKILLS) as Skill[]).map((s) => [idOf(s), s]));
 const ATTRIBUTE_WORDS = () => Object.fromEntries(ATTRIBUTES.map((a) => [idOf(a), ATTRIBUTE_NAMES[a]]));
+
+// What a called Test's result offers the GM, one tap each (InconsisTable's house decision #80). A Wrath Critical earns
+// the party 1 Glory, and the GM may take 1 Ruin for a Complication in place of narrating it (pp.163-164, p.320).
+const WRATH_OFFERS = [
+  {
+    id: "wrathCritical",
+    label: "Wrath Critical: +1 Glory",
+    when: "result.flags.critical",
+    changes: [{ pool: "glory", by: "1" }],
+    cite: "Core pp.163-164",
+  },
+  {
+    id: "complicationRuin",
+    label: "Complication: +1 Ruin",
+    when: "result.flags.complication",
+    changes: [{ pool: "ruin", by: "1" }],
+    cite: "Core p.163, p.320",
+  },
+];
+// A failed Corruption Test gains DN − Icons, doubled on a Complication, and earns the GM 1 Ruin, in one tap as
+// character.corrupt (pp.286, 320; corruptionGain, rules-flow §11.134). The DN is the one the Agent rolled against.
+const CORRUPTION_OFFER = {
+  id: "corruptionGain",
+  label: "Gain the Corruption, +1 Ruin",
+  when: "!result.passed",
+  changes: [
+    { resource: "corruption", by: "max(0, result.target - result.total) * (result.flags.complication ? 2 : 1)" },
+    { pool: "ruin", by: "1" },
+  ],
+  cite: "Core p.286, p.320",
+};
+// A failed Fear Test earns the GM 1 Ruin (p.320); the GM marks a Resolve Test as one against Fear (p.199).
+const FEAR = { fear: { label: "Fear", cite: "Core p.199" } };
+const FEAR_OFFER = {
+  id: "fearRuin",
+  label: "Failed Fear: +1 Ruin",
+  when: 'ctx.fear && ctx.trait == "resolve" && !result.passed',
+  changes: [{ pool: "ruin", by: "1" }],
+  cite: "Core p.199, p.320",
+};
+
+// The Conditions the book prints with a rating that stacks: Hindered (2) and Bleeding (3) (p.197), Vulnerable (2) (the
+// Critical Hit table, p.198). The rest are held or not (addCondition, lookups.ts; rules-flow §11.188).
+const RATED = new Set(["Hindered", "Bleeding", "Vulnerable"]);
+// A line for the side running the fight while a combatant holds the Condition (TURN_START_REMINDERS and
+// TURN_END_REMINDERS, state.ts; pp.198-200), in this ruleset's words.
+const CONDITION_LINES: Record<string, { at: "turnStart" | "turnEnd"; text: string }> = {
+  "On Fire": {
+    at: "turnStart",
+    text: "On Fire: 1d3 Mortal Wounds; an Action and Prone with DN 3 Athletics puts it out",
+  },
+  Poisoned: { at: "turnStart", text: "Poisoned: a Toughness Test to shake it off" },
+  Frenzied: { at: "turnStart", text: "Frenzied: DN 3 Willpower Test to resist" },
+  Bleeding: { at: "turnEnd", text: "Bleeding: 1 Mortal Wound per stack; DN 4 Toughness stops it" },
+};
+
+// The Round's end (roundEndReminders, state.ts): a held action is lost (p.187), and the ambushed act normally from
+// Round 2 (p.177). A Mob with half or more slain (p.325) is the Threat's `halfSlain` state: a reminder is read on every
+// actor type and an Agent has no members to read (rules-flow §11.188).
+const REMINDERS = [
+  { id: "heldLost", at: "roundEnd", text: "The held action is lost", if: "held", cite: "Core p.187" },
+  {
+    id: "ambushOver",
+    at: "roundEnd",
+    text: "No longer ambushed: acts in Round 2",
+    if: "round == 1 && barred",
+    cite: "Core p.177",
+  },
+];
+
+// Enduring Life: 1d6 Corruption for each Traumatic Wound taken (p.294, §11.185). A notice holds once per Injury reached,
+// so each added Injury tells the GM one roll, as character.adjust does.
+// ponytail: up to 10 Traumatic Injuries, far past any Max (Tier + 1); more rules if a table goes past it.
+const ENDURING_NOTICES = Array.from({ length: 10 }, (_, i) => ({
+  id: `enduringLife${i + 1}`,
+  when: "crossed",
+  entities: ["agent"],
+  if: `${ENDURING} && ${opt("traumatic")} >= ${i + 1}`,
+  text: "{name}: Enduring Life, roll 1d6 Corruption",
+  cite: "Core p.294",
+}));
 
 // Rank rises by 1 per 40 XP earned, to 3 (Core p.146): one notice per Rank reached, as session.end names it.
 const RANKS = [2, 3] as const;
@@ -473,6 +563,9 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     ),
     traumatic: { type: "int", label: "Traumatic Injuries", min: 0, ...party, cite: "Core pp.193-194" },
     annihilated: { type: "bool", label: "Annihilated", ...party, cite: "Core p.194" },
+    // The Mutations the Agent holds, by the book row's id (the sheet's `mutations`, Core pp.287-295). Other players read
+    // the effect on the numbers, not the names ("Unseen", state.ts).
+    mutations: { type: "list", label: "Mutations", visibility: "owner", cite: "Core pp.287-295" },
     // Who the Agent is, in the player's own words (CharacterDetail, state.ts; Core pp.32-36), on the sheet's WHO YOU
     // ARE. Text only, in no formula. The portrait (`detail.portrait`) is not ported: it names an image bundled with this
     // repo's web app, which InconsisTable does not have.
@@ -486,7 +579,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
 
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.5",
+    version: "0.1.6",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
@@ -734,10 +827,16 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
       id: idOf(name),
       label: name,
       cite: conditionCite(name),
-      // "Until the end of your next Turn" is counted in the holder's own Turns (rules-flow §11.8).
-      duration: (TIMED_CONDITIONS as readonly string[]).includes(name) ? "ownTurnEnd" : "manual",
+      // "Until the end of your next Turn" is counted in the holder's own Turns, so one given in the holder's own Turn
+      // lasts through the next one too (rules-flow §11.8).
+      ...((TIMED_CONDITIONS as readonly string[]).includes(name)
+        ? { duration: "ownTurnEnd", from: "nextOwnTurn" }
+        : { duration: "manual" }),
+      ...(RATED.has(name) && { stacking: "stack" }),
+      ...CONDITION_LINES[name],
       ...party,
     })),
+    reminders: REMINDERS,
     tests: {
       skill: {
         kind: "poolSuccesses",
@@ -750,6 +849,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         label: "Skill Test",
         inputLabels: { skill: "Skill", ...INPUT_WORDS },
         inputOptionLabels: { skill: SKILL_WORDS() },
+        offers: WRATH_OFFERS,
         cite: "Core p.158",
       },
       attribute: {
@@ -763,6 +863,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         label: "Attribute Test",
         inputLabels: { attribute: "Attribute", ...INPUT_WORDS },
         inputOptionLabels: { attribute: ATTRIBUTE_WORDS() },
+        offers: WRATH_OFFERS,
         cite: "Core p.158",
       },
       trait: {
@@ -776,6 +877,8 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         label: "Influence or Resolve Test",
         inputLabels: { trait: "Trait", ...INPUT_WORDS },
         inputOptionLabels: { trait: { influence: "Influence", resolve: "Resolve (Fear, Terror)" } },
+        marks: FEAR,
+        offers: [FEAR_OFFER, ...WRATH_OFFERS],
         cite: "Core pp.169-170",
       },
       corruption: {
@@ -784,10 +887,12 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         entities: ["agent"],
         pool: "derived.conviction",
         // The source's DN plus the modifier of the Agent's Corruption level (p.286).
-        target: `ctx.dn + derived.corruptionMod + ${WOUNDED}`,
+        // Blighted Soul: +1 DN on the holder's own Corruption Tests (p.289, rules-flow §11.184).
+        target: `ctx.dn + derived.corruptionMod + (${holds(BLIGHTED_SOUL)} ? 1 : 0) + ${WOUNDED}`,
         inputs: { dn: "int", bonus: "int", ...IGNORE_WOUNDED },
         label: "Corruption Test",
         inputLabels: INPUT_WORDS,
+        offers: [CORRUPTION_OFFER, ...WRATH_OFFERS],
         cite: "Core p.285",
       },
       // An Opposed Test has no DN: most Icons wins (p.170), which both sides roll and compare at the table, so the app
@@ -824,7 +929,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
       // The GM taps BEGIN ROUND N: a Round never ends by itself (rules-flow §11.169).
       roundEnd: "manual",
       // Round 0: Determine Ambushes and Set the Scene, before Round 1 (p.176 Steps 1 and 2, rules-flow §11.167).
-      setup: { cite: "Core p.176" },
+      setup: { note: "Round 0: mark who is ambushed and set the scene, then begin Round 1", cite: "Core p.176" },
       // Seize the Initiative: 1 Glory for an Agent, 1 Ruin for a Threat (p.177, p.320).
       outOfTurn: {
         cost: { agents: { pool: "glory", amount: 1 }, threats: { pool: "ruin", amount: 1 } },
@@ -855,6 +960,8 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
       harm: HARM,
       cite: "Core pp.193-196, pp.324-325",
     },
+    // No Respite while Dying or Dead (character.respite; pp.196-197).
+    rests: [{ event: "longRest", refusedIn: ["dying", "dead"], cite: "Core pp.196-197" }],
     decisions: [
       {
         id: "ruinHidden",
@@ -912,6 +1019,22 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         text: "Session end does not say the group may Ascend: a rule reads one Agent, and Ascending needs every Agent's XP. The GM checks PARTY.",
         cite: "Core p.147",
       },
+      // What a called Test's offers cannot say (rules-flow §11.188).
+      {
+        id: "corruptionDnByHand",
+        text: "A Wrath Critical (DN -2) or a spent Wrath (DN -1, not below 1) on a Corruption Test is applied by the GM: a report carries dice, not that choice.",
+        cite: "Core p.286",
+      },
+      {
+        id: "monstrousImmuneByHand",
+        text: "Monstrous Creatures are immune to Fear, Pinned and Staggered: the GM leaves those off them.",
+        cite: "Core p.323",
+      },
+      {
+        id: "stacksUncapped",
+        text: "Hindered, Bleeding and Vulnerable stack with no cap; the other Conditions are held or not.",
+        cite: "Core pp.197-198",
+      },
     ],
     // What the GM is told after an action (InconsisTable's house decision #79), in this ruleset's own words; the pool-full
     // line (p.320) is the platform's own. One notice per Rank reached and per Corruption level entered, as
@@ -935,6 +1058,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
           : `{name} is ${l.name}: Mutation Test, DN ${3 + l.modifier}`,
         cite: l.chaosSpawn ? "Core p.286" : "Core pp.286-287",
       })),
+      ...ENDURING_NOTICES,
     ],
     // Until the creation catalogue and the XP ledger are ported, a character is copied in from a finished sheet:
     // free input, nothing priced, each value checked only against its field's own range. Only the Attributes are
@@ -992,7 +1116,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.5",
+    version: "0.2.6",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
@@ -1004,6 +1128,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     },
     // A Lost Agent is out of the turn order as a Dead one is (isOut reads isGone, state.ts).
     initiative: { ...ruleset.initiative, unableStates: ["dead", "lost", "slain"] },
+    rests: [{ ...ruleset.rests[0]!, refusedIn: ["dying", "dead", "lost"] }],
     entities: [...ruleset.entities, ...catalogueEntities(params)],
     creation: [],
     build: {
