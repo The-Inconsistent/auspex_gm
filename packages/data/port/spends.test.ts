@@ -57,6 +57,17 @@ test("both rulesets pass InconsisTable's validator with their spends", { skip },
   }
 });
 
+// Asks clear at session start and end (rules-flow §11.124), and the fight's own when it ends (§11.122).
+test("every ask clears when a session starts or ends, a fight's when it ends", () => {
+  for (const r of RULESETS)
+    for (const s of r.spends as (Spend & { clearOn: string[] })[])
+      assert.deepEqual(
+        s.clearOn,
+        ["sessionStart", "sessionEnd", ...(["seize", "aware", "determination"].includes(s.id) ? ["encounterEnd"] : [])],
+        s.id,
+      );
+});
+
 test("every spend kind of this repo is a spend, costing what spendCost says", { skip }, () => {
   const r = RULESETS[0]!;
   assert.deepEqual(r.requests, { max: MAX_PENDING_SPENDS });

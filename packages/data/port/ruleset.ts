@@ -249,6 +249,8 @@ const ATTRIBUTE_WORDS = () => Object.fromEntries(ATTRIBUTES.map((a) => [idOf(a),
 // What a player may ask the GM to spend, or the GM does in one tap (InconsisTable's house decision #84): this repo's
 // spend kinds (spendCost, spend.ts; spend.actions.ts), each with its cost and what it runs. The dice stay physical.
 const LOST = `${opt("res.corruption")} >= ${CHAOS_SPAWN_AT}`;
+// The spends asked of a running fight: Seize, Aware and Determination.
+const FIGHT_ONLY: ReadonlySet<string> = new Set(["seize", "aware", "determination"]);
 const spends = ({ ledger }: { ledger: boolean }) =>
   [
     // Wrath: Reroll Failures (p.164). The reroll is at the table: the app takes the Wrath.
@@ -283,7 +285,6 @@ const spends = ({ ledger }: { ledger: boolean }) =>
       cost: [{ pool: "glory", amount: "1", byRun: true }],
       if: "ctx.fight.in",
       run: [{ primitive: "initiative.sides", op: "seize", input: { id: "ctx.self" } }],
-      clearOn: ["encounterEnd"],
       cite: "Core p.177",
     },
     {
@@ -293,7 +294,6 @@ const spends = ({ ledger }: { ledger: boolean }) =>
       cost: [{ pool: "glory", amount: "1", byRun: true }],
       if: "ctx.fight.barred",
       run: [{ primitive: "initiative.sides", op: "lift", input: { id: "ctx.self" } }],
-      clearOn: ["encounterEnd"],
       cite: "Core p.177",
     },
     {
@@ -305,10 +305,15 @@ const spends = ({ ledger }: { ledger: boolean }) =>
       if: "res.wounds > 0",
       inputs: { icons: { label: "Icons rolled", min: 1, max: "max(1, res.wounds)" } },
       run: [{ primitive: "health.harm", op: "convert", input: { actorId: "ctx.self", amount: "ctx.icons" } }],
-      clearOn: ["encounterEnd"],
       cite: "Core p.196, p.199",
     },
-  ].map((x) => ({ ...x, entities: ["agent"] }));
+  ].map((x) => ({
+    ...x,
+    entities: ["agent"],
+    // An ask made against the old pools is cleared when a session starts or ends (p.162, p.164, rules-flow §11.124);
+    // one tied to the fight, when it ends (§11.122).
+    clearOn: ["sessionStart", "sessionEnd", ...(FIGHT_ONLY.has(x.id) ? ["encounterEnd"] : [])],
+  }));
 
 // What a called Test's result offers the GM, one tap each (InconsisTable's house decision #80). A Wrath Critical earns
 // the party 1 Glory, and the GM may take 1 Ruin for a Complication in place of narrating it (pp.163-164, p.320).
@@ -1096,8 +1101,8 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
       // How a spend ask differs from this repo's (rules-flow §11.189).
       {
         id: "spendAsks",
-        text: "A player may have 3 asks pending, counted per player, one per spend and Agent; an ask is shown to whoever sees the pool it costs.",
-        cite: "Core p.164, p.165",
+        text: "A player may have 3 asks pending, counted per player, one per spend and Agent; an ask is shown to whoever sees the pool it costs. Asks clear when a session starts or ends.",
+        cite: "Core p.162, p.164, p.165",
       },
       {
         id: "monstrousImmuneByHand",
