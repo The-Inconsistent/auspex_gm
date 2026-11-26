@@ -844,7 +844,8 @@ export function buildRoomDocument(
       };
     });
   // The campaign's premise: a lore entry every seat reads (the owner's decision 2 of 2026-11-26), and what to leave
-  // out as the room's safety lines.
+  // out as the room's safety lines, with the X-Card on as a room starts (InconsisTable's migration 0009): this repo
+  // has no X-Card setting to carry.
   const premise = {
     ...(campaign.kind.length > 0 && { kindOfGame: campaign.kind }),
     ...(campaign.framework && { framework: campaign.framework }),
@@ -872,7 +873,7 @@ export function buildRoomDocument(
       ...(campaign.nextSessionPlace.trim() && {
         nextSessionPlace: fit("campaign.nextSessionPlace", campaign.nextSessionPlace.trim(), CAPS.place),
       }),
-      ...(campaign.limits.length > 0 && { safety: { lines: campaign.limits, veils: [], xCard: false } }),
+      ...(campaign.limits.length > 0 && { safety: { lines: campaign.limits, veils: [], xCard: true } }),
     },
     expects: {
       ruleset: { slug: ledger.id, version: ledger.version },

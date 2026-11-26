@@ -433,8 +433,9 @@ test("the room: name, next session, Tier, pools, and the versions it expects", (
     name: "The Silent Choir",
     nextSessionAt: "2026-12-01T18:00:00.000Z",
     nextSessionPlace: "Upstairs",
-    // What to leave out is the room's safety lines (the owner's decision 2 of 2026-11-26).
-    safety: { lines: ["No spiders"], veils: [], xCard: false },
+    // What to leave out is the room's safety lines (the owner's decision 2 of 2026-11-26); the X-Card stays on, as a
+    // new room's is.
+    safety: { lines: ["No spiders"], veils: [], xCard: true },
   });
   // The premise is a lore entry every seat reads, with the kind of game and the Framework.
   const premise = document.codex.find((e) => e.kind === "lore")!;

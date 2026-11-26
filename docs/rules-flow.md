@@ -1301,7 +1301,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      with their cites: Kind of game, Framework and Patron (optional) read the premise's entry, Tier the campaign field,
      Setting the locations, Factions, NPCs and Scenes their entries, Characters the Agents (built ones in the ledger
      ruleset), Combat a scene with a roster and Session the sessions run. The converter writes the premise from the
-     campaign's Framework, its bonus, its Patron and its kind, and its limits as the room's safety lines. *The owner's
+     campaign's Framework, its bonus, its Patron and its kind, and its limits as the room's safety lines with the
+     X-Card on, as a new room starts, since this repo has no X-Card setting. *The owner's
      decision 2, and issue #324's recommendation, 2026-11-26.*
 
 ---
