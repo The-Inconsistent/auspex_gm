@@ -1031,6 +1031,11 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         cite: "Core p.323",
       },
       {
+        id: "enduringLifeOnGain",
+        text: "Gaining Enduring Life with Traumatic Injuries already taken tells a 1d6 Corruption roll for each: the GM ignores those.",
+        cite: "Core p.294",
+      },
+      {
         id: "stacksUncapped",
         text: "Hindered, Bleeding and Vulnerable stack with no cap; the other Conditions are held or not.",
         cite: "Core pp.197-198",

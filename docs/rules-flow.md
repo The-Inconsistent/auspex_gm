@@ -1161,18 +1161,20 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      recommendation, 2026-11-26.*
 188. **What the port's Tests offer, and its reminders and Conditions** (InconsisTable's house decisions #80, #81). A
      Resolve Test may carry the GM's Fear mark, and its failure offers 1 Ruin (pp.199, 320), as the tally does. A failed
-     Corruption Test offers the gain and 1 Ruin in one tap (§11.134); the gain reads the DN the Agent rolled against,
-     so it counts the level modifier, Blighted Soul (§11.184) and the platform's Wounded +1 DN. A Wrath Critical's DN −2
+     Corruption Test offers the gain and 1 Ruin in one tap (§11.134); the gain reads the DN the Agent rolled against, so
+     it counts the level modifier, Blighted Soul (§11.184) and the platform's Wounded +1 DN. A Wrath Critical's DN −2
      and a spent Wrath's DN −1 (p.286) are the GM's to apply: a report carries dice, not that choice. Every pool Test
-     also offers +1 Glory on a Wrath Critical and +1 Ruin for a Complication the GM does not narrate (pp.163–164,
-     320). Hindered, Bleeding and Vulnerable stack with no cap, the ratings the book prints (Hindered (2) and
-     Bleeding (3) p.197, Vulnerable (2) p.198); the other Conditions are held or not, as `addCondition`. The timed three
-     given in the holder's own Turn last through the next one (§11.8). Respite is refused while Dying, Dead or Lost
-     (pp.196–197). Enduring Life and Blighted Soul read the Agent's held Mutation keys (§11.184, §11.185); Enduring Life's
-     1d6 Corruption is one notice per Traumatic Injury reached, up to 10. Two of this repo's rules cannot be declared,
-     because a reminder and a Condition's immunity are read on every actor type and an Agent has no Mob members or
-     class: the half-slain Mob's Resolve Test (p.325) stays the Threat's "Resolve DN 3 at Round end" state, and the
-     Monstrous Creature's immunity to Fear, Pinned and Staggered (p.323) is a decision the GM applies. *Issue #324's
+     also offers +1 Glory on a Wrath Critical and +1 Ruin for a Complication the GM does not narrate (pp.163–164, 320).
+     Hindered, Bleeding and Vulnerable stack with no cap, the ratings the book prints (Hindered (2) and Bleeding (3)
+     p.197, Vulnerable (2) p.198); the other Conditions are held or not, as `addCondition`. The timed three given in the
+     holder's own Turn last through the next one (§11.8). Respite is refused while Dying, Dead or Lost (pp.196–197).
+     Enduring Life and Blighted Soul read the Agent's held Mutation keys (§11.184, §11.185); Enduring Life's 1d6
+     Corruption is one notice per Traumatic Injury reached, up to 10. A notice reads the Agent after the action, not
+     what changed, so gaining Enduring Life with Injuries already taken tells one roll per Injury, which Auspex does
+     not; the ruleset's `decisions` say the GM ignores those. Two of this repo's rules cannot be declared, because a
+     reminder and a Condition's immunity are read on every actor type and an Agent has no Mob members or class: the
+     half-slain Mob's Resolve Test (p.325) stays the Threat's "Resolve DN 3 at Round end" state, and the Monstrous
+     Creature's immunity to Fear, Pinned and Staggered (p.323) is a decision the GM applies. *Issue #324's
      recommendation, 2026-11-26.*
 
 ---

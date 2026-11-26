@@ -120,3 +120,14 @@ test("Enduring Life tells one 1d6 Corruption roll per Traumatic Injury taken, an
       assert.equal(told([], before, after), 0);
     }
 });
+
+// Auspex notices only when `traumatic` rises (character.actions.ts); a notice rule reads the Agent after the action, not
+// what changed, so gaining Enduring Life with Injuries already taken tells one roll per Injury (rules-flow §11.188).
+test("gaining Enduring Life with Injuries taken tells their rolls, a difference the decisions write", { skip }, () => {
+  const scope = (mutations: string[]) => engine!.actorScope({ fields: { mutations, traumatic: 2 } });
+  const crossed = plain.notices.filter(
+    (n) => n.id.startsWith("enduringLife") && ev(n.if, scope([])) !== true && ev(n.if, scope([ENDURING_LIFE])) === true,
+  );
+  assert.equal(crossed.length, 2);
+  assert.ok(plain.decisions.some((d) => d.id === "enduringLifeOnGain"));
+});
