@@ -154,7 +154,15 @@ const exported = CampaignExport.parse({
       id: ID.cog,
       name: "Cog",
       build: null,
-      stats: { ...(disruptor.stats as object), ammo: {} },
+      // A hand-made sheet's weapon with an upgrade fitted in play: no build line to fit it to.
+      stats: (() => {
+        const st = CharacterStats.parse(disruptor.stats);
+        return {
+          ...st,
+          ammo: {},
+          weapons: st.weapons.map((w, j) => (j === 0 ? { ...w, fitted: ["red-dot-sight"] } : w)),
+        };
+      })(),
       annihilated: true,
     }),
   ],
@@ -738,6 +746,7 @@ test("the report counts exactly what the file has that the document holds no str
     "left out: a portrait bundled with this app": 1,
     "left out: a requisition this session": 1,
     "left out: an on-entry pick the scene no longer links": 1,
+    "left out: an upgrade fitted in play to a line the build does not give": 1,
     "left out: the XP a session awarded: the sheets hold it": 1,
     "left out: the campaign's setup: no place in a room": 2,
     "left out: the time a session ended": 1,

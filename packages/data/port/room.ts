@@ -315,7 +315,8 @@ export function buildRoomDocument(
         else note(`${path}.${j}`, "an upgrade fitted in play to a line the build does not give");
       });
     fitted(`${at}.stats.armour.fitted`, s.armour.fitted, `armour/${s.armour.name}`);
-    if (ch.build) s.weapons.forEach((w, j) => fitted(`${at}.stats.weapons.${j}.fitted`, w.fitted, `weapons/${w.name}`));
+    // A hand-made sheet has no build line to fit to: `fitted` reports each one.
+    s.weapons.forEach((w, j) => fitted(`${at}.stats.weapons.${j}.fitted`, w.fitted, `weapons/${w.name}`));
 
     let build: string | undefined;
     if (ch.build) {

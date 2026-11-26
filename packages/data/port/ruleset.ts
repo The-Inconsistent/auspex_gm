@@ -330,11 +330,11 @@ const ITEM_KINDS = [
     label: "Upgrades",
     tag: "upgrade",
     fits: { to: ["weapon", "armour"], max: MAX_UPGRADES, slot: "slot", gmTag: "pair" },
-    cite: "Core pp.227-228",
+    cite: "Core pp.227-229",
   },
   { id: "ammo", label: "Ammunition", tag: "ammo", stacks: true, spend: true, cite: "Core p.229" },
   { id: "grenade", label: "Grenades and missiles", tag: "grenade", stacks: true, spend: true, cite: "Core p.229" },
-  { id: "gear", label: "Gear", card: "gear", cite: "Core pp.234-247" },
+  { id: "gear", label: "Gear", card: "gear", cite: "Core pp.229-247" },
 ].map((k) => ({ ...k, entry: "wargear", entities: ["agent"] }));
 /** The item kind a wargear entry of this catalogue kind is carried as: the first that takes its tag, else gear. */
 export const itemKindOf = (wargearKind: string) => ITEM_KINDS.find((k) => k.tag === wargearKind)?.id ?? "gear";
@@ -1181,6 +1181,11 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         id: "upgradeLimitsByHand",
         text: "Distinction counts toward an item's three upgrades, a support system takes its slot, and an upgrade's own copy limit (3 Chains, Blades and Hooks) is the GM's.",
         cite: "Core p.228",
+      },
+      {
+        id: "upgradeHostByHand",
+        text: "Which weapons or armour an upgrade may be fitted to (a sight to a ranged weapon, say) is the GM's: the app fits any upgrade to any weapon or armour. The Anti-Gravitic Suspensor Crystal takes its weapon slot on armour too.",
+        cite: "Core pp.227-228",
       },
       {
         id: "requisitionByHand",
