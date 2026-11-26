@@ -292,11 +292,14 @@ test("sustaining adds sustainPenalty's DN to every Test, and Manifest opens Peri
       for (const [id, t] of Object.entries(r.tests))
         if ("target" in t) assert.match(t.target, /derived\.sustainDn/, `${r.version} ${id}`);
     }
-    const manifest = (r.spends as { id: string; if?: string; limit?: object; then?: object }[]).find(
-      (s) => s.id === "manifest",
-    )!;
+    const manifest = (
+      r.spends as { id: string; if?: string; limit?: object; then?: object; inputs: { ones: { min: number } } }[]
+    ).find((s) => s.id === "manifest")!;
     assert.deepEqual(manifest.limit, { per: "round", max: 1 });
     assert.deepEqual(manifest.then, { table: TABLES.perils, inputs: { ones: "ones" } });
+    // Perils opens from one Wrath Die showing 1 up: the count the spend carries starts where the table's does.
+    const perils = (r.tables as Record<string, { inputs: { id: string; min: number }[] }>)[TABLES.perils]!;
+    assert.equal(manifest.inputs.ones.min, perils.inputs.find((x) => x.id === "ones")!.min);
     const ev = (fields: Record<string, unknown>) =>
       engine!.evaluate({ node: engine!.parseExpr(manifest.if!), scope: engine!.actorScope({ fields }) });
     assert.equal(ev({ skill: { psychicMastery: 2 } }), true);
