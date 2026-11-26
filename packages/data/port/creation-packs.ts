@@ -4,7 +4,7 @@
 // wording. Patrons, Frameworks and the flavour tables are left out. Written with
 // `bun packages/data/port/write.ts ... --creation <file> --wargear <file>`; both packs are private content and are
 // never committed.
-import { SOURCES, sourceCite, type Source } from "@wg/shared";
+import { isMeleeProfile, SOURCES, sourceCite, type Source, type WargearWeapon } from "@wg/shared";
 import { TYPES, buildCatalogue, type PortCatalogue } from "./build-catalogue.ts";
 import type { Schema } from "./engine.ts";
 import type { FieldValue, Pack } from "./pack.ts";
@@ -45,6 +45,24 @@ function hostEffects(u: Upgrade, cite: string): Effect[] {
 // platform keys entries by type, or takes this form for `record`.
 export const entryKey = (kind: keyof typeof TYPES, id: string) => `${kind}.${id}`;
 
+// What a strike reads of a carried weapon (InconsisTable's house decision #99): its printed numbers, whether it is
+// swung (isMeleeProfile, rules-flow §4) and adds Strength (S + X, pp.211-213), and its Traits as one text, as a list
+// cannot be a strike value. ED printed as dice or "Rank" and Traits past a text's length stay the card's.
+export const TRAIT_TEXT_MAX = 200;
+function weaponValues(w: WargearWeapon | undefined): Record<string, FieldValue> {
+  if (!w) return {};
+  const traits = w.traits.join(", ");
+  return {
+    damage: w.damage,
+    ...(typeof w.ed === "number" && { ed: w.ed }),
+    ...(w.ap !== undefined && { ap: w.ap }),
+    ...(typeof w.salvo === "number" && { salvo: w.salvo }),
+    melee: isMeleeProfile(w),
+    addStrength: w.addStrength,
+    ...(traits && traits.length <= TRAIT_TEXT_MAX && { traits }),
+  };
+}
+
 // The record's flat numbers (ruleset.ts, `catalogueEntities`); a price is repeated only when it is a plain number.
 function bodyOf(type: CatalogueEntry["type"], r: Json): Record<string, FieldValue> {
   const xp: Record<string, FieldValue> = typeof r.xp === "number" ? { xp: r.xp } : {};
@@ -66,6 +84,7 @@ function bodyOf(type: CatalogueEntry["type"], r: Json): Record<string, FieldValu
         ...(Array.isArray(r.keywords) && r.keywords.length > 0 && { keywords: r.keywords as string[] }),
         // A support system shares its slot with the other nine without being one per slot (§11.64): no slot.
         ...(u && u.exempt !== "slot" && { slot: u.slot }),
+        ...weaponValues(r.weapon as WargearWeapon | undefined),
       };
     }
     default:
@@ -98,7 +117,8 @@ const entry = (type: CatalogueEntry["type"], key: string, r: Json): CatalogueEnt
 export const CATALOGUE_PACKS = {
   creation: { slug: "wrath-and-glory-creation", version: "0.1.0" },
   // 0.1.1: the item kind as a tag, Keywords and an upgrade's slot in the body, and its host effects (#325).
-  wargear: { slug: "wrath-and-glory-wargear", version: "0.1.1" },
+  // 0.1.2: a weapon's numbers, melee, Strength and Traits, which a strike reads (#325).
+  wargear: { slug: "wrath-and-glory-wargear", version: "0.1.2" },
 } as const;
 
 const pack = (

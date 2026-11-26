@@ -85,7 +85,7 @@ test("the pack of a campaign's own Threats passes InconsisTable's validatePack",
 
 test("it is the GM's own: original, uncited, named after the campaign, for the Threat pack's rulesets", () => {
   assert.equal(pack.id, "the-rusted-choir-custom-threats");
-  assert.equal(pack.version, "0.1.0");
+  assert.equal(pack.version, "0.1.1");
   assert.equal(pack.license, "original");
   assert.deepEqual(pack.ruleset, buildPack().pack.ruleset);
   for (const e of pack.entries) assert.equal(e.cite, undefined, e.key);
