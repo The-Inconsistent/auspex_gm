@@ -1176,6 +1176,15 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      half-slain Mob's Resolve Test (p.325) stays the Threat's "Resolve DN 3 at Round end" state, and the Monstrous
      Creature's immunity to Fear, Pinned and Staggered (p.323) is a decision the GM applies. *Issue #324's
      recommendation, 2026-11-26.*
+189. **The port's spends and how an ask differs on the platform** (InconsisTable's house decision #84; §11.122–§11.124,
+     §11.172, §11.177). Each spend kind is declared with this repo's cost (`spendCost`): Reroll Failures and Restore
+     Shock 1 Wrath (p.164; Restore Shock gives back Rank + Tier, only while conscious and with Shock, p.196), Glory
+     dice and damage 1 Glory each up to 10 (p.165), Seize and Aware 1 Glory taken by the platform's own Seize and lift
+     (p.177), Determination free through the platform's convert, refused while Exhausted (pp.196, 199). Seize, Aware
+     and Determination asks go when the fight ends. The platform counts the 3 pending asks per player, not per Agent,
+     allows one per spend and Agent, and shows an ask to whoever sees the pool it costs, where this repo shows every
+     ask to the whole table; the ruleset's `decisions` say so. The Wrath an ask costs is checked alone, not against the
+     other pending asks. *Issue #324's recommendation, 2026-11-26.*
 
 ---
 
