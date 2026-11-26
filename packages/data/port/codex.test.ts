@@ -75,6 +75,7 @@ test("every field has its type, visibility and wording", () => {
     "item.location": ["entry", "gm", "Where it lies", "location", null],
     "item.holder": ["entry", "gm", "Who carries it", "npc", null],
     "item.found": ["text", "gm", "How many", 80, "Core p.247"],
+    "item.found2": ["text", "gm", "How many (second count)", 80, "Core p.247"],
     "item.fault": ["text", "gm", "Fault", 80, "Redacted Records p.22"],
     "item.relicPower": ["text", "gm", "Relic: Power", 80, "Redacted Records 2 pp.12-19"],
     "item.relicOwner": ["text", "gm", "Relic: original owner", 80, "Redacted Records 2 pp.12-19"],

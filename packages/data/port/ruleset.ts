@@ -781,6 +781,7 @@ export const CODEX = {
         // What a loot generator rolled beside the row (a count printed in dice, a fault), and a Holy Relic's parts
         // (house decision #98; Core pp.247-251, Redacted Records pp.17-22, Redacted Records 2 pp.12-19).
         found: { type: "text", label: "How many", maxLength: 80, visibility: "gm", cite: "Core p.247" },
+        found2: { type: "text", label: "How many (second count)", maxLength: 80, visibility: "gm", cite: "Core p.247" },
         fault: { type: "text", label: "Fault", maxLength: 80, visibility: "gm", cite: "Redacted Records p.22" },
         ...Object.fromEntries(
           (

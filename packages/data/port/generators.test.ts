@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { hazards, placeList, relics, scenePresets, spaceHulk } from "../index.ts";
 import { buildCodexPack, SUMMARY_MAX } from "./codex-packs.ts";
 import { loadEngine } from "./engine.ts";
-import { prepTables } from "./generators.ts";
+import { prepTables, ROW_MAX } from "./generators.ts";
 import { buildRuleset, idOf } from "./ruleset.ts";
 
 // The prep tables, the generators and the codex pack (InconsisTable's house decisions #89, #97, #98) against this repo's
@@ -44,6 +44,26 @@ test("every printed loot, hulk and relic row is a line of its table, a gap a lin
   for (const p of relics.powers) assert.ok(tables[idOf(`relic power ${p.kind}`)], p.kind);
   // Every Form sends the GM to its kind's Powers (RR2 p.13).
   for (const l of tables.relicForm!.entries) assert.ok(l.next && tables[l.next], l.id);
+});
+
+test("a row's label is a name or a tag of a few words, never a printed sentence (§11.195)", () => {
+  for (const [id, t] of Object.entries(tables))
+    for (const l of t.entries) assert.ok(l.label.length <= ROW_MAX, `${id}.${l.id}: ${l.label}`);
+  for (const g of generators)
+    for (const s of g.steps)
+      for (const l of Object.values((s.labels ?? {}) as Record<string, string>))
+        assert.ok(l.length <= ROW_MAX, `${g.id}.${s.id}: ${l}`);
+  // The trinkets print each row as a sentence: labelled by the roll only.
+  assert.equal(tables.lootCoreTrinkets1!.entries[0]!.label, "Trinket 11");
+});
+
+test("a row printing two counts in dice makes both into the item, none dropped", () => {
+  const g = generators.find((x) => x.id === "lootDarktideBountiesIndustrialWorks")!;
+  assert.deepEqual(
+    g.steps.filter((s) => s.id.startsWith("count")).map((s) => s.id),
+    ["count", "count2"],
+  );
+  assert.deepEqual((g.make as { fields: object }).fields, { found: "count", found2: "count2" });
 });
 
 test("a loot row's count in dice is rolled in its generator, only for the rows that print it (decision 3)", () => {

@@ -2,7 +2,9 @@
 // decision #98): the loot and bounty tables (Core pp.247-251, RR1 pp.17-22, Darktide pp.15-27; RR2 pp.20-31 and
 // Bloody Gates as lists to pick from), the Space Hulk Generator (RR1 pp.6-11) and the Holy Relic creator (RR2
 // pp.12-19). Built from packages/data/scene-presets through its schemas: a row's printed name, range and cite, never
-// its text (the owner's decision 1 of 2026-11-26: the rows live in the ruleset's `tables`).
+// its text (the owner's decision 1 of 2026-11-26: the rows live in the ruleset's `tables`). A row's label is a printed
+// name of a few words; a row the book prints as a sentence (a trinket, a hulk's occupants) is labelled by its roll or
+// by a tag in this repo's words, never the sentence (rules-flow §11.195).
 import { threatCite, type LootCount, type LootRow, type LootTable, type ThreatSource } from "@wg/shared";
 import { relics, scenePresets, spaceHulk } from "../index.ts";
 import { idOf } from "./ruleset.ts";
@@ -21,6 +23,23 @@ export type Generator = {
 
 const LABEL_MAX = 80;
 const CHOICE_MAX = 60;
+/** The longest a row's label may be: a name or a tag, never a printed sentence (rules-flow §11.195). */
+export const ROW_MAX = 40;
+// The trinket tables print each row as a sentence (Core pp.248-250): a row is labelled by its roll.
+const BY_ROLL = new Set(["core-trinkets-1", "core-trinkets-2", "core-trinkets-3"]);
+// The hulk's occupants print as sentences (Redacted Records p.8): each a tag in this repo's words.
+const OWN_WORDS: Record<string, string> = {
+  "rr1-hulk-occupants-lost-cult": "Despairing cult",
+  "rr1-hulk-occupants-aeldari-stasis": "Sleeping Aeldari",
+  "rr1-hulk-occupants-genestealer-cult": "Genestealer cult",
+  "rr1-hulk-occupants-chaos-cultists": "Ageless Chaos cultists",
+  "rr1-hulk-occupants-rogue-psykers": "Rogue psykers in hiding",
+  "rr1-hulk-occupants-purestrains": "Genestealer Purestrains",
+  "rr1-hulk-occupants-chaos-space-marines": "Chaos Space Marines summoning",
+  "rr1-hulk-occupants-orks": "Feuding Orks",
+  "rr1-hulk-occupants-feral-mutants": "Feral mutants",
+  "rr1-hulk-occupants-explorators": "Explorator expedition",
+};
 // A printed name as a line's label, cut at a word where it is longer than a label holds; the cite opens the page.
 const label = (name: string, max = LABEL_MAX) =>
   name.length <= max ? name : `${name.slice(0, max - 1).replace(/\s+\S*$/, "")}…`;
@@ -36,10 +55,11 @@ function rolled<R extends { id: string; from: number; to: number; name: string; 
   rows: readonly R[];
   gaps?: readonly number[];
   line?: (r: R) => Partial<TableLine>;
+  byRoll?: string;
 }): Rolled {
   const lines: TableLine[] = t.rows.map((r) => ({
     id: idOf(r.id),
-    label: label(r.name),
+    label: t.byRoll ? `${t.byRoll} ${r.from}${r.to === r.from ? "" : `-${r.to}`}` : (OWN_WORDS[r.id] ?? r.name),
     range: [r.from, r.to],
     cite: cite(t.source, r.page ?? t.page),
     ...t.line?.(r),
@@ -102,6 +122,7 @@ const lootTable = (t: LootTable): Rolled =>
     page: t.page,
     rows: t.rows.map((r) => ({ ...r, from: r.from!, to: r.to! })),
     gaps: t.gaps,
+    ...(BY_ROLL.has(t.id) && { byRoll: "Trinket" }),
     line: (r) => {
       const note = lootNote(r as LootRow);
       return note ? { note } : {};
@@ -125,7 +146,7 @@ function lootGenerator(t: LootTable, faults: LootTable | undefined): Generator {
           label: label(t.name, CHOICE_MAX),
           kind: "choice",
           options,
-          labels: Object.fromEntries(t.rows.map((r) => [idOf(r.id), label(r.name, CHOICE_MAX)])),
+          labels: Object.fromEntries(t.rows.map((r) => [idOf(r.id), r.name])),
         },
       ],
       make: { kind: "item", title: "find" },
@@ -155,7 +176,13 @@ function lootGenerator(t: LootTable, faults: LootTable | undefined): Generator {
     make: {
       kind: "item",
       title: "find",
-      fields: { ...(counts.length > 0 && { found: "count" }), ...(faults && { fault: "fault" }) },
+      // Each count rolled is its own field: a row printing two (Darktide p.19) keeps both.
+      fields: {
+        ...Object.fromEntries(
+          counts.map((_, i) => (i === 0 ? ["found", "count"] : [`found${i + 1}`, `count${i + 1}`])),
+        ),
+        ...(faults && { fault: "fault" }),
+      },
     },
   };
 }

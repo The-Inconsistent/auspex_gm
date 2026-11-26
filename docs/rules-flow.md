@@ -1280,10 +1280,13 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      inside it (§11.96), and a scene can be made from a book event with its type and first Test, the GM adding the rest
      (§11.75); nothing carries printed text (§11.80). The loot and bounty tables (Core pp.247–251, Redacted Records
      pp.17–22, Darktide pp.15–27), the Space Hulk (Redacted Records pp.6–11) and the Holy Relic (Redacted Records 2
-     pp.12–19) are the ruleset's tables, each row its printed name, range and cite (the owner's decision 1); the ledger
-     ruleset with them measures 145,656 bytes of the 512 KiB cap. One generator per loot table rolls the row, then a
-     count where the row prints dice (the owner's decision 3, §11.113), and a fault for Redacted Records' finds; a list
-     to pick from (Bloody Gates, Redacted Records 2) is a choice. The item is made by the row's name, its catalogue
+     pp.12–19) are the ruleset's tables, each row its printed name, range and cite (the owner's decision 1); a row the
+     book prints as a sentence is never its label: a trinket (Core pp.248–250) is labelled by its roll ("Trinket 11")
+     and a hulk's occupants (Redacted Records p.8) by a tag in this repo's words, and a test refuses any row or choice
+     label over 40 characters. The ledger ruleset with them measures 140,031 bytes of the 512 KiB cap. One generator
+     per loot table rolls the row, then a count where the row prints dice (the owner's decision 3, §11.113), each count
+     its own field (a Darktide row printing two, p.19, fills How many and its second), and a fault for Redacted
+     Records' finds; a list to pick from (Bloody Gates, Redacted Records 2) is a choice. The item is made by the row's name, its catalogue
      entry, ammunition and Wealth left to the GM. The Space Hulk names the hulk, rolls its Origin, Occupants and
      Objective into its fields and a room per round; an Objective the book prints no row for is rolled again. The Holy
      Relic rolls the Form on to its kind's Powers, the owner, the anointment, the oddity and, for a Power that names
