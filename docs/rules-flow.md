@@ -1201,6 +1201,30 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      hand-made sheet's armour, weapons and gear (issue #327's proposal for its question 2) as items; a hand-made line
      longer than an item's name stays in the report, as does an upgrade fitted to a hand-made sheet's weapon, which has
      no build line to fit to. *Issue #324's recommendation, 2026-11-26.*
+191. **The port's lookups, Mutations and psychic powers** (InconsisTable's house decisions #87, #88, #91; §11.125,
+     §11.136, §11.154–§11.156, §11.180, §11.181). Critical Hits (p.198), Perils of the Warp (pp.263–264) and the
+     Mutation tables (pp.287–295) are the ruleset's `tables`, each printed row a line with its name, range, cite and
+     effects and never its text (the owner's decision 1, 2026-11-26); the ledger ruleset with them measures 74,922 bytes
+     of the platform's 512 KiB. Critical Hits and Perils are typed only. A row's dice are rolled at the table and typed
+     into the table's input (issue #324 question 5): Critical Hits take one total, Perils one for Wounds or Shock and
+     one for Corruption; Mortal Wounds are applied as Wounds, as `planApply` does (p.193). A Critical Hit that does not
+     beat Resilience is a switch: 1 Wound and nothing else (p.197). The Glory stepper (single-effect rows only, §11.156)
+     adds the row's Glory effect per point and takes the Glory from the pool, up to 10, which the GM keeps within the
+     pool. Perils reads the d66 plus 10 per Wrath Die showing 1 past the first (§11.155); a Threat carries no
+     Corruption, so the GM leaves its Corruption dice at 0. Writhing Disfigurement goes on to the Minor Mutations table.
+     The Mutation chain is the severity d6 (p.287), the severity's d66 with 10 per Mutation held on every table
+     (§11.136), the top row on to the next table, and a Mutation's own d6 table; each line grants its Mutation into the
+     Agent's `held` list, whose other players read "Unseen" (`state.ts`). A d6 table's row is its own pack entry
+     carrying its parent's numbers with its own, and landing again on its parent with another result grants the second,
+     which the GM rerolls (p.287). The Warp Made Manifest grants what it includes unless held already, and its two
+     further rolls are a note (p.295). Mutation entries are `gm` in a new pack, `wrath-and-glory-mutations` (issue #325
+     question 2: the holder and the GM side read a held record's name from the snapshot, the pack stays the GM's); a
+     Mutation's Attribute, Skill and Trait changes are its effects, and its weapon, gear or Keyword is in its summary
+     for the GM to add. Manifest is a spend once a Round with no cost for an Agent or a Threat with Psychic Mastery or
+     the PSYKER Keyword (p.259, §11.181), whose OPEN offers Perils with the Wrath Dice showing 1. The powers sustained
+     are a list field shown as chips (the ledger one picks from the psychic powers), adding 2 DN per power to every Test
+     and reminded at the psyker's Turn start (p.265, §11.180); the Willpower Test after damage is the GM's to call, as
+     no reminder fires after a hit. *The owner's decision 1, and issue #324's recommendation, 2026-11-26.*
 
 ---
 

@@ -26,7 +26,9 @@ import {
   MAX_UPGRADES,
   RARITY_DN,
   MAX_KEYWORD_LENGTH,
+  MAX_MUTATIONS,
   MOB_MIN,
+  SEVERITIES,
   SKILLS,
   Threat,
   ThreatSize,
@@ -38,6 +40,7 @@ import {
 import { ADVENTURE_STATUS } from "../../../apps/web/components/gm/prep/constants.ts";
 import { rulesList } from "../index.ts";
 import { buildParams } from "./build-params.ts";
+import { bookTables, TABLES } from "./tables.ts";
 
 /** "Ballistic Skill" → "ballisticSkill": the camelCase ids the manifest asks for. */
 export const idOf = (name: string) =>
@@ -242,6 +245,25 @@ const HARM = {
 // for a character it does not apply to, until an entry can carry such an effect itself.
 const WOUNDED = "(has(res.wounds) && res.wounds > 0 && !ctx.ignoreWounded ? 1 : 0)";
 const IGNORE_WOUNDED = { ignoreWounded: "bool" } as const;
+// A psyker sustaining powers has +2 DN to every Test per power (p.265, sustainPenalty, rules-flow §11.180): the powers
+// are a list field shown as chips, the GM's to add and end, and the DN reads their count.
+const SUSTAIN = "derived.sustainDn";
+const sustaining = {
+  type: "list",
+  label: "Sustaining",
+  chips: true,
+  visibility: "party",
+  cite: "Core p.265",
+} as const;
+const SUSTAIN_DN = {
+  id: "sustainDn",
+  label: "Sustaining: DN",
+  expr: "has(sustaining) ? 2 * count(sustaining) : 0",
+  visibility: "party",
+  cite: "Core p.265",
+} as const;
+// Who manifests a power (the tracker's PSYCHIC POWERS panel, §11.180): Psychic Mastery rated, or the PSYKER Keyword.
+const PSYKER = `${opt("skill.psychicMastery")} > 0 || (has(keywords) && contains(keywords, "PSYKER"))`;
 
 // What the call form and a called Test's card call each Test and input (InconsisTable's house decision #77), in the
 // words of this repo's call form (TEST_KIND_LABELS, test-call.ts). The options are the printed Skill and Attribute names.
@@ -252,8 +274,8 @@ const ATTRIBUTE_WORDS = () => Object.fromEntries(ATTRIBUTES.map((a) => [idOf(a),
 // What a player may ask the GM to spend, or the GM does in one tap (InconsisTable's house decision #84): this repo's
 // spend kinds (spendCost, spend.ts; spend.actions.ts), each with its cost and what it runs. The dice stay physical.
 const LOST = `${opt("res.corruption")} >= ${CHAOS_SPAWN_AT}`;
-// The spends asked of a running fight: Seize, Aware and Determination.
-const FIGHT_ONLY: ReadonlySet<string> = new Set(["seize", "aware", "determination"]);
+// The spends asked of a running fight: Seize, Aware, Determination and Manifest.
+const FIGHT_ONLY: ReadonlySet<string> = new Set(["seize", "aware", "determination", "manifest"]);
 const spends = ({ ledger }: { ledger: boolean }) =>
   [
     // Wrath: Reroll Failures (p.164). The reroll is at the table: the app takes the Wrath.
@@ -310,9 +332,22 @@ const spends = ({ ledger }: { ledger: boolean }) =>
       run: [{ primitive: "health.harm", op: "convert", input: { actorId: "ctx.self", amount: "ctx.icons" } }],
       cite: "Core p.196, p.199",
     },
+    {
+      // Manifest a psychic power: once a Round in a fight, whether or not it succeeds (p.259, rules-flow §11.181); with a
+      // Wrath Die showing 1 the GM opens Perils of the Warp with the extra ones (pp.263-264).
+      id: "manifest",
+      label: "Manifest a power",
+      cost: [],
+      if: PSYKER,
+      inputs: { ones: { label: "Wrath Dice showing 1", min: 0, max: "10" } },
+      limit: { per: "round", max: 1 },
+      then: { table: TABLES.perils, inputs: { ones: "ones" } },
+      entities: ["agent", "threat"],
+      cite: "Core p.259, p.263",
+    },
   ].map((x) => ({
-    ...x,
     entities: ["agent"],
+    ...x,
     // An ask made against the old pools is cleared when a session starts or ends (p.162, p.164, rules-flow §11.124);
     // one tied to the fight, when it ends (§11.122).
     clearOn: ["sessionStart", "sessionEnd", ...(FIGHT_ONLY.has(x.id) ? ["encounterEnd"] : [])],
@@ -376,7 +411,7 @@ const requisition = () => ({
   entities: ["agent"],
   pool: "derived.influence",
   // Every input is the acquisition's, so the Wounded +1 DN (p.193) has no tick to take it off here.
-  target: "ctx.dn + (has(res.wounds) && res.wounds > 0 ? 1 : 0)",
+  target: `ctx.dn + (has(res.wounds) && res.wounds > 0 ? 1 : 0) + ${SUSTAIN}`,
   inputs: { dn: "int", bonus: "int" },
   label: "Requisition Test",
   inputLabels: { dn: INPUT_WORDS.dn, bonus: INPUT_WORDS.bonus },
@@ -450,6 +485,14 @@ const REMINDERS = [
     text: "No longer ambushed: acts in Round 2",
     if: "round == 1 && barred",
     cite: "Core p.177",
+  },
+  // The sustaining psyker's +DN, at the start of each of its Turns (sustainTurnReminder, psychic.ts).
+  {
+    id: "sustaining",
+    at: "turnStart",
+    text: "Sustaining powers: +2 DN to every Test per power",
+    if: "has(sustaining) && count(sustaining) > 0",
+    cite: "Core p.265",
   },
 ];
 
@@ -711,6 +754,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     // The Mutations the Agent holds, by the book row's id (the sheet's `mutations`, Core pp.287-295). Other players read
     // the effect on the numbers, not the names ("Unseen", state.ts).
     mutations: { type: "list", label: "Mutations", visibility: "owner", cite: "Core pp.287-295" },
+    sustaining,
     // Who the Agent is, in the player's own words (CharacterDetail, state.ts; Core pp.32-36), on the sheet's WHO YOU
     // ARE. Text only, in no formula. The portrait (`detail.portrait`) is not ported: it names an image bundled with this
     // repo's web app, which InconsisTable does not have.
@@ -724,7 +768,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
 
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.8",
+    version: "0.1.9",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
@@ -763,6 +807,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
             visibility: "owner",
             cite: "Core p.286",
           },
+          SUSTAIN_DN,
         ],
       },
       {
@@ -831,6 +876,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
           // The keys of this Threat's weapon entries: from its abilities, and from its options.
           weapons: { type: "list", label: "Weapons", cite: "Core p.323" },
           variantWeapons: { type: "list", label: "Option weapons", cite: "Core p.323" },
+          sustaining,
           // A Mob's starting size (combatant.mobStart): two Troops or more (p.324, MOB_MIN); at most the 500 a Mob is
           // added with (combatant.addThreat, an app limit of this repo, not a rule). Unset for a single Threat.
           "mob.start": {
@@ -852,6 +898,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
             expr: `${MOB} ? (res.members + 1) / 2 : 0`,
             cite: "Core p.324",
           },
+          SUSTAIN_DN,
         ],
       },
       {
@@ -877,6 +924,17 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
           count: { type: "int", label: "Count", min: 1 },
           traits: { type: "list", label: "Traits", cite: "Core p.208" },
           fromOption: { type: "text", label: "From the option", maxLength: 120 },
+        },
+      },
+      {
+        // A printed Mutation, or a row of a Mutation's own d6 table (pp.287-295), which an Agent holds by key. Its
+        // effects are its mods; its summary says what the GM adds by hand (a weapon, gear, a Keyword).
+        id: "mutation",
+        label: "Mutation",
+        base: "ability",
+        fields: {
+          severity: { type: "enum", label: "Severity", values: [...SEVERITIES], cite: "Core p.287" },
+          summary: { type: "text", label: "Summary", maxLength: 200 },
         },
       },
     ],
@@ -988,7 +1046,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         ...POOL,
         entities: ["agent"],
         pool: "derived[ctx.skill]",
-        target: `ctx.dn + ${WOUNDED}`,
+        target: `ctx.dn + ${WOUNDED} + ${SUSTAIN}`,
         inputs: { skill: "text", dn: "int", bonus: "int", ...IGNORE_WOUNDED },
         inputOptions: { skill: skills.map(idOf) },
         label: "Skill Test",
@@ -1002,7 +1060,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         ...POOL,
         entities: ["agent"],
         pool: 'ctx.attribute == "s" ? derived.strengthTotal : attr[ctx.attribute]',
-        target: `ctx.dn + ${WOUNDED}`,
+        target: `ctx.dn + ${WOUNDED} + ${SUSTAIN}`,
         inputs: { attribute: "text", dn: "int", bonus: "int", ...IGNORE_WOUNDED },
         inputOptions: { attribute: ATTRIBUTES.map(idOf) },
         label: "Attribute Test",
@@ -1016,7 +1074,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         ...POOL,
         entities: ["agent"],
         pool: "derived[ctx.trait]",
-        target: `ctx.dn + ${WOUNDED}`,
+        target: `ctx.dn + ${WOUNDED} + ${SUSTAIN}`,
         inputs: { trait: "text", dn: "int", bonus: "int", ...IGNORE_WOUNDED },
         inputOptions: { trait: ["influence", "resolve"] },
         label: "Influence or Resolve Test",
@@ -1033,7 +1091,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         pool: "derived.conviction",
         // The source's DN plus the modifier of the Agent's Corruption level (p.286).
         // Blighted Soul: +1 DN on the holder's own Corruption Tests (p.289, rules-flow §11.184).
-        target: `ctx.dn + derived.corruptionMod + (${holds(BLIGHTED_SOUL)} ? 1 : 0) + ${WOUNDED}`,
+        target: `ctx.dn + derived.corruptionMod + (${holds(BLIGHTED_SOUL)} ? 1 : 0) + ${WOUNDED} + ${SUSTAIN}`,
         inputs: { dn: "int", bonus: "int", ...IGNORE_WOUNDED },
         label: "Corruption Test",
         inputLabels: INPUT_WORDS,
@@ -1202,6 +1260,47 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         text: "Gaining Enduring Life with Traumatic Injuries already taken tells a 1d6 Corruption roll for each: the GM ignores those.",
         cite: "Core p.294",
       },
+      // What the lookups and the Mutations cannot say (rules-flow §11.191).
+      {
+        id: "mortalAsWounds",
+        text: "A table's Mortal Wounds are applied as Wounds: they ignore Resilience, and a table's Wounds are counted after it.",
+        cite: "Core p.193",
+      },
+      {
+        id: "tableDiceTyped",
+        text: "A row's dice (1d3, 1d6+1 and the like) are rolled at the table and their total typed into the table's input before APPLY.",
+        cite: "Core p.198, p.264",
+      },
+      {
+        id: "gloryWithinPool",
+        text: "The Glory stepper of a Critical Hit goes to 10: the GM spends no more than the pool holds.",
+        cite: "Core p.197",
+      },
+      {
+        id: "perilsThreatCorruption",
+        text: "A Threat carries no Corruption: on Perils of the Warp the GM leaves the Corruption dice at 0 for one.",
+        cite: "Core p.264",
+      },
+      {
+        id: "mutationVariantAgain",
+        text: "Landing again on Visions, Extra Appendages or Aberration with another d6 result grants the second one; the book says roll again, which the GM does.",
+        cite: "Core p.287",
+      },
+      {
+        id: "mutationGrantsByHand",
+        text: "A Mutation's weapon, gear or Keyword (Horn, Spike or Claw; Corrosive Bile; Aquatic's apparatus; Wyrdling's PSYKER) is the GM's to add: a held record moves numbers only. Its summary says so.",
+        cite: "Core pp.288-295",
+      },
+      {
+        id: "sustainHitByHand",
+        text: "After a sustaining psyker takes damage, the Willpower Test (DN the Wounds and Shock taken plus 2 per power) is the GM's to call: a reminder has no moment after a hit.",
+        cite: "Core p.265",
+      },
+      {
+        id: "manifestWho",
+        text: "Manifest is offered to an Agent with Psychic Mastery or the PSYKER Keyword, and to a Threat with either; a power on a ledger sheet alone does not open it.",
+        cite: "Core p.259",
+      },
       {
         id: "stacksUncapped",
         text: "Hindered, Bleeding and Vulnerable stack with no cap; the other Conditions are held or not.",
@@ -1277,11 +1376,28 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
             show: ["res.wounds", "res.shock", "res.wrath", "res.wealth", "res.corruption"],
           },
           { id: "skills", label: "Skills", show: skills.map((s) => `derived.${idOf(s)}`) },
+          { id: "mutations", label: "Mutations", show: [{ widget: "held" }] },
           { id: "who", label: "Who you are", show: DETAIL.map(([id]) => `detail.${id}`) },
         ],
       },
     },
     codex: CODEX,
+    // Critical Hits, Perils of the Warp and the Mutation tables, the book's rows as lookups (tables.ts; the owner's
+    // decision 1 of 2026-11-26, rules-flow §11.191).
+    tables: bookTables(),
+    // The Mutations an Agent holds, by key: their mods move its numbers, and other players read "Unseen" in place of the
+    // name (state.ts; Core pp.287-295). Granted by a Mutation table's line.
+    held: {
+      mutations: {
+        label: "Mutations",
+        entry: "mutation",
+        field: "mutations",
+        entities: ["agent"],
+        unseen: "Unseen",
+        max: MAX_MUTATIONS,
+        cite: "Core pp.287-295",
+      },
+    },
     spends: spends({ ledger: false }),
     // Three pending asks at once (MAX_PENDING_SPENDS), counted per user on the platform (rules-flow §11.189).
     requests: { max: MAX_PENDING_SPENDS },
@@ -1291,7 +1407,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.8",
+    version: "0.2.9",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
@@ -1320,7 +1436,15 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         },
       },
     },
-    entities: [...ruleset.entities, ...catalogueEntities(params)],
+    // The quick picks of what an Agent sustains are the psychic powers the packs serve (house decision #91).
+    entities: [
+      ...ruleset.entities.map((e) =>
+        e.id === "agent"
+          ? { ...e, fields: { ...e.fields, sustaining: { ...sustaining, picks: { entity: "power" } } } }
+          : e,
+      ),
+      ...catalogueEntities(params),
+    ],
     creation: [],
     build: {
       strategy: "ledger",
