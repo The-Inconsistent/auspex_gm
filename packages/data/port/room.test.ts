@@ -95,6 +95,9 @@ const character = (over: Record<string, unknown>) => ({
   ...over,
 });
 
+// An upgrade that changes an armour's rating (Core pp.227-228).
+const ARMOUR_UPGRADE = [...wargear.values()].find((w) => w.upgrade?.mods.some((m) => m.kind === "ar"))!.id;
+
 const exported = CampaignExport.parse({
   format: "auspex-campaign",
   version: 1,
@@ -121,6 +124,8 @@ const exported = CampaignExport.parse({
       stats: {
         ...CharacterStats.parse(sergeant.stats),
         mutations: [sheetMutation(findMutation(mutationTables(), BLIGHTED_SOUL)!)],
+        // An upgrade fitted in play to the armour the build gives.
+        armour: { ...CharacterStats.parse(sergeant.stats).armour, fitted: [ARMOUR_UPGRADE] },
         wealth: 5,
         ammo: { Bolt: 2, "Kraken Bolt": 1 },
         requisitioned: { ammo: ID.session },
@@ -529,15 +534,41 @@ test("factions, NPCs, places, handouts and items", () => {
     ["plain", undefined, undefined, undefined],
   );
 
+  // The catalogue entry is the ref GIVE reads (house decision #95); a relic's Powers stay the GM's.
   const key = entry(ID.key);
-  assert.deepEqual(key.fields, { location: ID.vault });
-  assert.equal(
-    key.gmNotes,
-    `Catalogue: ${wargear.get(WARGEAR)!.name} (${WARGEAR})\n\nRelic Power: {"kind":"damage","delta":1}`,
-  );
+  assert.deepEqual(key.fields, { location: ID.vault, wargear: WARGEAR });
+  assert.equal(key.gmNotes, `Relic Power: {"kind":"damage","delta":1}`);
   assert.deepEqual(entry(ID.bell).fields, { holder: ID.rell });
+  // A given item is the holder's item row, not a listing (house decision #95).
   const given = entry(id(26));
-  assert.deepEqual([given.visibility, given.audienceMode, given.audience], ["party", "listed", [ID.bel]]);
+  assert.deepEqual([given.visibility, given.audienceMode, given.audience], [undefined, undefined, undefined]);
+  const [ash, bel, cog] = document.actors;
+  assert.deepEqual(
+    bel!.items!.map(({ id: _, ...it }) => it),
+    [{ kind: "gear", name: "Spare Bell", source: "give", entryId: id(26) }],
+  );
+  // A write-in ammo type is a counted item by its name; the seven fixed types stay resources.
+  assert.deepEqual(
+    ash!.items!.map(({ id: _, ...it }) => it),
+    [
+      {
+        kind: "upgrade",
+        entry: ARMOUR_UPGRADE,
+        fittedLine: `armour/${CharacterStats.parse(sergeant.stats).armour.name}`,
+      },
+      { kind: "ammo", name: "Kraken Bolt", quantity: 1, source: "hand" },
+    ],
+  );
+  // A hand-made sheet's armour, weapons and gear are carried by name; a line longer than a name stays in the report.
+  const disruptorStats = CharacterStats.parse(disruptor.stats);
+  assert.deepEqual(
+    cog!.items!.map((it) => [it.kind, it.name]),
+    [
+      ["armour", disruptorStats.armour.name],
+      ...disruptorStats.weapons.map((w) => ["weapon", w.name]),
+      ...disruptorStats.gear.filter((g) => g.length <= CAPS.itemName).map((g) => ["gear", g]),
+    ],
+  );
 });
 
 test("the adventure and its scenes, in order, with their fields, links and status", () => {
@@ -565,7 +596,6 @@ test("the adventure and its scenes, in order, with their fields, links and statu
     [
       "Keep it short.",
       "Hazard here: Live wire. It bites.. attribute Test, Agility, DN 3, ONE. Step over it (spotted)",
-      "Test: opposed Test, Deception, ONE. Out-sing the deacon",
       "Exit: Run for it",
     ].join("\n\n"),
   );
@@ -592,7 +622,7 @@ test("a scene's prepared lines: roster, Tests, pools, exits and reveals", () => 
       visibility: "bar",
     },
   ]);
-  const [skill, resolve, corruption] = prep.tests;
+  const [skill, opposed, resolve, corruption] = prep.tests;
   assert.deepEqual(skill, {
     id: "test-0",
     label: "Spot the bells",
@@ -608,6 +638,15 @@ test("a scene's prepared lines: roster, Tests, pools, exits and reveals", () => 
       { label: "Shift 3", text: "Three" },
       { label: "Shift 4", text: "Four" },
     ],
+  });
+  // An Opposed Test is reported, with what both sides roll and no DN (p.170).
+  assert.deepEqual(opposed, {
+    id: "test-1",
+    label: "Out-sing the deacon",
+    testId: "opposed",
+    inputs: { roll: "deception" },
+    takers: "pick",
+    outcomes: [],
   });
   assert.deepEqual(resolve, {
     id: "test-2",
@@ -656,15 +695,13 @@ test("every prepared Test line carries what its Test asks for, but a DN the scen
 
 test("the report counts exactly what the file has that the document holds no structure for", () => {
   const stats = CharacterStats.parse(disruptor.stats);
+  // A hand-made sheet's weapons, armour and gear are carried as items; the rest has no place.
   const handMade =
-    stats.weapons.length +
     stats.talents.length +
     stats.abilities.length +
     (stats.powers?.length ?? 0) +
-    stats.gear.length +
     (stats.weaponEffects?.length ?? 0) +
     stats.armour.traits.length +
-    (stats.armour.name ? 1 : 0) +
     (stats.armour.invulnerable ? 1 : 0);
   const got = new Map<string, number>();
   for (const n of report) got.set(`${n.to}: ${n.reason}`, (got.get(`${n.to}: ${n.reason}`) ?? 0) + 1);
@@ -679,7 +716,6 @@ test("the report counts exactly what the file has that the document holds no str
     "as written: a mention of an entry not in the file": 1,
     "gm notes: a Quick NPC stat block": 1,
     "gm notes: a Test's outcome past the platform's six": 1,
-    "gm notes: a catalogue entry": 1,
     "gm notes: a place's hazard": 2,
     "gm notes: a relic's Power": 1,
     "gm notes: a roster line's marker": 1,
@@ -690,17 +726,17 @@ test("the report counts exactly what the file has that the document holds no str
     "gm notes: an exit's words over 80 characters, as its note": 1,
     "gm notes: an objective rolled for the session": 1,
     "gm notes: an objective's story link": 1,
-    "gm notes: an opposed Test: the ruleset has none": 1,
     "left out: a Condition the ruleset does not have": 1,
     "left out: a Condition's stack count": 1,
     "left out: a GM override of a Trait: no field": 1,
     "left out: a Mutation's printed row: its key is kept": 1,
+    "left out: a hand-made line longer than an item's name": stats.gear.filter((g) => g.length > CAPS.itemName).length,
+    "left out: a hand-made weapon's profile: its name is carried": stats.weapons.length,
     "left out: a hazard its place no longer lists": 1,
     "left out: a link to an entry not in the file": 2,
     "left out: a picture the file could not read": 1,
     "left out: a portrait bundled with this app": 1,
     "left out: a requisition this session": 1,
-    "left out: an ammo type the ruleset has no resource for": 1,
     "left out: an on-entry pick the scene no longer links": 1,
     "left out: the XP a session awarded: the sheets hold it": 1,
     "left out: the campaign's setup: no place in a room": 2,

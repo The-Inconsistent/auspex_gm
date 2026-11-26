@@ -58,10 +58,15 @@ test("every record parses with its kind's schema, matches its entry, and fits th
       assert.equal(e.key, e.type === "wargear" ? e.record.id : entryKey(KIND_OF[e.type]!, e.record.id as string), at);
       assert.equal(e.record.name, e.name, at);
       assert.equal(e.cite, `${SOURCES[e.record.source as Source].cite} p.${e.record.page as number}`, at);
-      assert.deepEqual(
-        e.tags,
-        SOURCES[e.record.source as Source].official ? [e.record.source] : [e.record.source, "homebrew"],
-      );
+      // A wargear entry's kind is its item kind (ruleset.ts, ITEM_KINDS); Matched Pair is the GM's to fit.
+      const kind =
+        e.type === "wargear"
+          ? [e.record.kind, ...((e.record.upgrade as { gmOnly?: boolean } | undefined)?.gmOnly ? ["pair"] : [])]
+          : [];
+      assert.deepEqual(e.tags, [
+        ...(SOURCES[e.record.source as Source].official ? [e.record.source] : [e.record.source, "homebrew"]),
+        ...kind,
+      ]);
       assert.ok(!("summary" in e.record), `${at}: no summary is written`);
       const size = bytes(e.record);
       assert.ok(size <= MAX_RECORD_BYTES, `${at}: its record is ${size} bytes`);
@@ -245,7 +250,7 @@ test("the leak test finds wording planted in a pack", { skip }, () => {
 
 test("the default ruleset is the by-hand one, unchanged", () => {
   const plain = buildRuleset();
-  assert.equal(plain.version, "0.1.7");
+  assert.equal(plain.version, "0.1.8");
   assert.ok(!("build" in plain));
   assert.ok(plain.creation.length > 0);
   assert.deepEqual(
@@ -258,7 +263,7 @@ test("the default ruleset is the by-hand one, unchanged", () => {
 test("the ledger ruleset's build block meets the rules the platform checks", () => {
   const { build, entities, creation, campaignFields } = ledger;
   const params = buildParams();
-  assert.equal(ledger.version, "0.2.7");
+  assert.equal(ledger.version, "0.2.8");
   assert.equal(build.strategy, "ledger");
   const agent = entities.find((e) => e.id === build.actor)!;
   assert.equal(agent.base, "actor");

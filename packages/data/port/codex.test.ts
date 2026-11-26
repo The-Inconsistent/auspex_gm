@@ -32,7 +32,14 @@ test("both rulesets compile with the codex block, which the platform keeps as wr
   for (const [name, ruleset] of rulesets) {
     const c = engine!.compileRuleset(ruleset);
     if (!c.ok) assert.fail(`${name}: ${c.problems.map((p) => `${p.path}: ${p.message}`).join("\n")}`);
-    assert.deepEqual((c.compiled.ruleset as { codex?: unknown }).codex, CODEX, name);
+    assert.deepEqual((c.compiled.ruleset as { codex?: unknown }).codex, ruleset.codex, name);
+    // The ledger ruleset's item also names its catalogue entry, which GIVE reads (house decision #95).
+    const { item, ...rest } = ruleset.codex.kinds;
+    assert.deepEqual(rest, (({ item: _, ...k }) => k)(CODEX.kinds), name);
+    assert.deepEqual(Object.keys(item.fields), [
+      ...Object.keys(CODEX.kinds.item.fields),
+      ...("wargear" in item.fields ? ["wargear"] : []),
+    ]);
   }
 });
 

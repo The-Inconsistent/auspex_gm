@@ -20,6 +20,23 @@ export interface CatalogueEntry {
   visibility: "party";
   body: Record<string, FieldValue>;
   record: Json;
+  effects?: { path: string; mode: "add" | "override"; value: string; phase: "base"; cite: string }[];
+}
+
+type Upgrade = { slot: string; exempt?: "max" | "slot"; gmOnly?: boolean; mods: { kind: string }[] };
+// An upgrade's printed changes its host's card can hold (house decision #102: `host.<value>`, an integer that reads
+// nothing): damage, ED, AP and Salvo of a weapon, the armour's rating (pp.227-228, rules-flow §11.63). The rest (Traits,
+// ranges, bonus dice, the GM's own) stay the GM's, counted in `leftOutMods`.
+type Effect = NonNullable<CatalogueEntry["effects"]>[number];
+function hostEffects(u: Upgrade, cite: string): Effect[] {
+  return u.mods.flatMap((m): Effect[] => {
+    const x = m as { kind: string; delta?: number; value?: number };
+    if (["damage", "ed", "ap", "salvo", "ar"].includes(x.kind) && x.delta !== undefined)
+      return [{ path: `host.${x.kind}`, mode: "add" as const, value: String(x.delta), phase: "base" as const, cite }];
+    if (x.kind === "setAp" && x.value !== undefined)
+      return [{ path: "host.ap", mode: "override" as const, value: String(x.value), phase: "base" as const, cite }];
+    return [];
+  });
 }
 
 // shortcut: record ids are shared between creation kinds (a Keyword, a Faction and a Background table of one name,
@@ -40,12 +57,17 @@ function bodyOf(type: CatalogueEntry["type"], r: Json): Record<string, FieldValu
     case "package":
     case "power":
       return xp;
-    case "wargear":
+    case "wargear": {
+      const u = r.upgrade as Upgrade | undefined;
       return {
         kind: r.kind as string,
         ...(typeof r.value === "number" && { value: r.value }),
         ...(typeof r.rarity === "string" && { rarity: idOf(r.rarity) }),
+        ...(Array.isArray(r.keywords) && r.keywords.length > 0 && { keywords: r.keywords as string[] }),
+        // A support system shares its slot with the other nine without being one per slot (§11.64): no slot.
+        ...(u && u.exempt !== "slot" && { slot: u.slot }),
       };
+    }
     default:
       return {};
   }
@@ -53,22 +75,30 @@ function bodyOf(type: CatalogueEntry["type"], r: Json): Record<string, FieldValu
 
 const entry = (type: CatalogueEntry["type"], key: string, r: Json): CatalogueEntry => {
   const source = r.source as Source;
+  const cite = sourceCite({ source, page: r.page as number });
+  // A wargear entry's kind is the item kind it is carried as (ruleset.ts, ITEM_KINDS), and Matched Pair is the GM's to
+  // fit (Apocrypha p.388, §11.64).
+  const u = type === "wargear" ? (r.upgrade as Upgrade | undefined) : undefined;
+  const kindTags = type === "wargear" ? [r.kind as string, ...(u?.gmOnly ? ["pair"] : [])] : [];
+  const effects = u ? hostEffects(u, cite) : [];
   return {
     key,
     type,
     name: r.name as string,
-    tags: SOURCES[source].official ? [source] : [source, "homebrew"],
-    cite: sourceCite({ source, page: r.page as number }),
+    tags: [...(SOURCES[source].official ? [source] : [source, "homebrew"]), ...kindTags],
+    cite,
     visibility: "party",
     body: bodyOf(type, r),
     record: r,
+    ...(effects.length > 0 && { effects }),
   };
 };
 
 /** Both packs' slugs and version, which a room document expects (room.ts). */
 export const CATALOGUE_PACKS = {
   creation: { slug: "wrath-and-glory-creation", version: "0.1.0" },
-  wargear: { slug: "wrath-and-glory-wargear", version: "0.1.0" },
+  // 0.1.1: the item kind as a tag, Keywords and an upgrade's slot in the body, and its host effects (#325).
+  wargear: { slug: "wrath-and-glory-wargear", version: "0.1.1" },
 } as const;
 
 const pack = (

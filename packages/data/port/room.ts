@@ -24,7 +24,7 @@ import { hazards as bookHazards, wargear } from "../index.ts";
 import { remapApproval, type Reworded } from "./build-catalogue.ts";
 import { CATALOGUE_PACKS } from "./creation-packs.ts";
 import { buildCustomThreatPack, buildPack } from "./pack.ts";
-import { buildRuleset, CODEX, idOf, KEYWORD_JOIN } from "./ruleset.ts";
+import { buildRuleset, CODEX, COUNTED_KINDS, idOf, itemKindOf, KEYWORD_JOIN } from "./ruleset.ts";
 import { buildWorld, HANDOUT_DEFAULT_HEADER, HANDOUT_LAYOUT } from "./world.ts";
 
 /**
@@ -50,6 +50,8 @@ export const CAPS = {
   outcomeText: 500,
   poolText: 500,
   spawn: 50,
+  itemName: 120,
+  line: 130,
 } as const;
 
 /** Where something the document holds no structure for went: a GM notes line (or a prepared line's note), ordinary
@@ -96,6 +98,17 @@ export interface RoomEntry {
   imageRevealed?: boolean;
   revealedAt?: string;
 }
+/** An item an Agent carries (InconsisTable's house decision #95): a wargear entry by key, or a name written by hand. */
+export interface RoomItem {
+  id: string;
+  kind: string;
+  entry?: string;
+  name?: string;
+  quantity?: number;
+  fittedLine?: string;
+  source?: "give" | "hand";
+  entryId?: string;
+}
 export interface RoomActor {
   id: string;
   kind: "pc";
@@ -105,6 +118,7 @@ export interface RoomActor {
   fields?: Fields;
   resources?: Record<string, number>;
   conditions?: string[];
+  items?: RoomItem[];
 }
 export interface RoomDocument {
   format: "inconsistable-room";
@@ -283,7 +297,25 @@ export function buildRoomDocument(
     if (s.mutations.length) fields.mutations = s.mutations.map((m) => m.id);
     s.mutations.forEach((_, j) => note(`${at}.stats.mutations.${j}`, "a Mutation's printed row: its key is kept"));
     for (const k of Object.keys(s.requisitioned)) note(`${at}.stats.requisitioned.${k}`, "a requisition this session");
-    s.armour.fitted?.forEach((_, j) => note(`${at}.stats.armour.fitted.${j}`, "an upgrade fitted in play: no field"));
+    // The items the Agent carries (house decision #95): a wargear entry the pack serves, else a name written by hand.
+    const items: RoomItem[] = [];
+    const item = (path: string, it: Omit<RoomItem, "id">) => items.push({ id: uuidOf(`${ch.id}/${path}`), ...it });
+    const carried = (path: string, id: string | undefined, name: string, kind?: string) => {
+      const w = id ? wargear.get(id) : undefined;
+      if (w) item(path, { kind: kind ?? itemKindOf(w.kind), entry: w.id, source: "hand" });
+      // A hand-made line can say more than an item's name holds: it stays in the report rather than refuse the file.
+      else if (name.trim().length > CAPS.itemName) note(path, "a hand-made line longer than an item's name");
+      else item(path, { kind: kind ?? "gear", name: name.trim(), source: "hand" });
+    };
+    // An upgrade fitted in play to a line of the saved build (house decision #102): the armour worn, or a weapon.
+    const fitted = (path: string, ids: string[] | undefined, line: string) =>
+      ids?.forEach((id, j) => {
+        if (ch.build && wargear.get(id)?.kind === "upgrade" && line.length <= CAPS.line)
+          item(`${path}.${j}`, { kind: "upgrade", entry: id, fittedLine: line });
+        else note(`${path}.${j}`, "an upgrade fitted in play to a line the build does not give");
+      });
+    fitted(`${at}.stats.armour.fitted`, s.armour.fitted, `armour/${s.armour.name}`);
+    if (ch.build) s.weapons.forEach((w, j) => fitted(`${at}.stats.weapons.${j}.fitted`, w.fitted, `weapons/${w.name}`));
 
     let build: string | undefined;
     if (ch.build) {
@@ -310,11 +342,19 @@ export function buildRoomDocument(
         ...Object.fromEntries(Object.entries(s.mods).map(([k, v]) => [`mod.${k}`, v])),
       });
       const sheet = `${at}.stats`;
-      if (s.armour.name) note(`${sheet}.armour.name`, "a hand-made sheet's armour name: no field");
+      // A hand-made sheet's weapons, armour and gear as items carried (issue #327, question 2: the issue's proposal).
+      if (s.armour.name) carried(`${sheet}.armour`, s.armour.wargearId, s.armour.name, "armour");
+      s.weapons.forEach((w, j) => carried(`${sheet}.weapons.${j}`, w.wargearId, w.name, "weapon"));
+      s.gear.forEach((g, j) => carried(`${sheet}.gear.${j}`, undefined, g));
       if (s.armour.invulnerable) note(`${sheet}.armour.invulnerable`, "a hand-made sheet's armour: no field");
       s.armour.traits.forEach((_, j) => note(`${sheet}.armour.traits.${j}`, "a hand-made sheet's armour: no field"));
-      for (const list of ["weapons", "talents", "abilities", "powers", "gear", "weaponEffects"] as const)
+      for (const list of ["talents", "abilities", "powers", "weaponEffects"] as const)
         s[list]?.forEach((_, j) => note(`${sheet}.${list}.${j}`, `a hand-made sheet's ${list}: no field`));
+      s.weapons.forEach((w, j) => {
+        // What a carried weapon's line holds beyond its entry or name: the sheet's own profile.
+        if (!w.wargearId || !wargear.has(w.wargearId))
+          note(`${sheet}.weapons.${j}`, "a hand-made weapon's profile: its name is carried");
+      });
     }
 
     // Absolute values; Wounds and Shock start at 0, the rest as the build or the sheet sets them, so they always go.
@@ -323,7 +363,14 @@ export function buildRoomDocument(
     if (ch.shock) resources.shock = ch.shock;
     for (const [type, n] of Object.entries(s.ammo))
       if ((AMMO_TYPES as readonly string[]).includes(type)) resources[`ammo${type}`] = n;
-      else note(`${at}.stats.ammo.${type}`, "an ammo type the ruleset has no resource for");
+      // A write-in type is a counted item by its name (house decision #95); none left is nothing to carry.
+      else if (n > 0)
+        item(`${at}.stats.ammo.${type}`, {
+          kind: "ammo",
+          name: fit(`${at}.stats.ammo.${type}`, type, CAPS.itemName),
+          quantity: Math.min(n, 999),
+          source: "hand",
+        });
 
     const conditions = ch.conditions.flatMap((name, j) => {
       const [, base, stack] = /^(.+?)(?: \((\d+)\))?$/.exec(name) ?? [];
@@ -371,6 +418,7 @@ export function buildRoomDocument(
       fields,
       resources,
       ...(conditions.length > 0 && { conditions }),
+      ...(items.length > 0 && { items }),
     };
   });
 
@@ -485,14 +533,10 @@ export function buildRoomDocument(
   c.items.forEach((it, i) => {
     const p = `codex.items.${i}`;
     const lines = [];
-    if (it.wargearId) {
-      const name = wargear.get(it.wargearId)?.name;
-      lines.push({
-        path: `${p}.wargearId`,
-        reason: "a catalogue entry",
-        line: `Catalogue: ${name ? `${name} (${it.wargearId})` : it.wargearId}`,
-      });
-    }
+    // The catalogue entry it is, a ref GIVE reads (house decision #95), when the wargear pack serves it.
+    const w = it.wargearId ? wargear.get(it.wargearId) : undefined;
+    if (it.wargearId && !w)
+      lines.push({ path: `${p}.wargearId`, reason: "a catalogue entry", line: `Catalogue: ${it.wargearId}` });
     it.mods.forEach((m, j) =>
       lines.push({ path: `${p}.mods.${j}`, reason: "a relic's Power", line: `Relic Power: ${JSON.stringify(m)}` }),
     );
@@ -500,14 +544,29 @@ export function buildRoomDocument(
     const holder = ref(`${p}.npcId`, it.npcId, npcs);
     const given = it.givenTo !== null && characters.has(it.givenTo) ? it.givenTo : null;
     if (it.givenTo !== null && !given) note(`${p}.givenTo`, "a character not in the file");
+    // A GIVE puts it in the holder's items, read from the row (house decisions #95, rules-flow §11.112); a counted kind
+    // is never given, so it keeps its listing to the holder.
+    const kind = w ? itemKindOf(w.kind) : "gear";
+    const placed = given !== null && !COUNTED_KINDS.has(kind);
+    if (placed) {
+      const actor = actors.find((a) => a.id === given)!;
+      const name = fit(`${p}.name`, it.name.trim(), CAPS.itemName);
+      (actor.items ??= []).push({
+        id: uuidOf(`${it.id}/given`),
+        kind,
+        ...(w ? { entry: w.id } : { name }),
+        source: "give",
+        entryId: it.id,
+      });
+    }
     codex.push({
       id: it.id,
       kind: "item",
       title: title(`${p}.name`, it.name),
       body: linked(`${p}.description`, it.description) || undefined,
       gmNotes: notes(`${p}.gmNotes`, it.gmNotes, lines),
-      fields: nonEmpty({ ...(location && { location }), ...(holder && { holder }) }),
-      ...(given && { visibility: "party" as const, audienceMode: "listed" as const, audience: [given] }),
+      fields: nonEmpty({ ...(location && { location }), ...(holder && { holder }), ...(w && { wargear: w.id }) }),
+      ...(given && !placed && { visibility: "party" as const, audienceMode: "listed" as const, audience: [given] }),
     });
   });
 
@@ -619,7 +678,10 @@ export function buildRoomDocument(
               ? { testId: "trait", inputs: { trait: t.kind } }
               : t.kind === "corruption"
                 ? { testId: "corruption", inputs: {} }
-                : null;
+                : // An Opposed Test is reported, with no DN (p.170): it names what both sides roll.
+                  t.kind === "opposed" && (t.skill || t.attribute)
+                  ? { testId: "opposed", inputs: { roll: idOf(t.skill ?? t.attribute!) }, reported: true }
+                  : null;
       if (!target) {
         lines.push({ path: p, reason: `an ${t.kind} Test: the ruleset has none`, line: `Test: ${describeTest(t)}` });
         return;
@@ -644,7 +706,10 @@ export function buildRoomDocument(
         // The platform refuses a call that lacks any input its Test declares ("Fill in bonus"). The ruleset's Tests
         // take the bonus dice the GM grants at the table and a switch for a character the Wounded DN does not touch;
         // a prepared Test grants no dice and leaves the switch off. A Test with no DN is asked for one when it is sent.
-        inputs: { ...target.inputs, ...(t.dn !== null && { dn: t.dn }), bonus: 0, ignoreWounded: false },
+        inputs:
+          "reported" in target
+            ? target.inputs
+            : { ...target.inputs, ...(t.dn !== null && { dn: t.dn }), bonus: 0, ignoreWounded: false },
         takers: t.who === "each" ? "party" : "pick",
         outcomes: outcomes.slice(0, CAPS.outcomes).map(({ label, text }) => ({ label, text })),
       });

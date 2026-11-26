@@ -1185,6 +1185,20 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      counts the 3 pending asks per player, not per Agent, allows one per spend and Agent, and shows an ask to whoever
      sees the pool it costs, where this repo shows every ask to the whole table; the ruleset's `decisions` say so. The
      Wrath an ask costs is checked alone, not against the other pending asks. *Issue #324's recommendation, 2026-11-26.*
+190. **The port's items and requisition** (InconsisTable's house decisions #95, #102; §11.15, §11.63–§11.65,
+     §11.112). An Agent carries wargear by its catalogue kind: weapons and armour drawn as the build's cards, upgrades
+     fitted to them three at most and one per slot (pp.227–228; Matched Pair by the GM only, Apocrypha p.388),
+     Ammunition and Grenades counted and spent by the holder (p.229), the rest as gear. An upgrade's damage, ED, AP,
+     Salvo and armour rating change its host's card; its Traits, ranges and bonus dice stay notes. What the platform
+     cannot count is the GM's, in the ruleset's `decisions`: Distinction counts toward the three, a support system
+     takes its slot, an upgrade's own copy limit (IoE p.96). Requisition is an Influence Test against Value plus the
+     Rarity's penalty with a bonus die per Keyword past the first ([ANY] as §11.15), one Wargear Test and one Ammo Test
+     a session, Wealth buying Icons on a miss (pp.205–206); a Complication's 1 Wealth is the GM's. Acquired ammunition
+     is a counted item beside the seven ammo counters a build gives. GIVE reads the codex item's catalogue entry and
+     gives anything else as gear by its name; a counted kind is never given. The converter writes a given item, an
+     upgrade fitted in play to the build's armour or weapon, a write-in ammo type, and a hand-made sheet's armour,
+     weapons and gear (issue #327's proposal for its question 2) as items; a hand-made line longer than an item's name
+     stays in the report. *Issue #324's recommendation, 2026-11-26.*
 
 ---
 
