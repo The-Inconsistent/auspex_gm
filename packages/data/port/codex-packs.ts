@@ -13,29 +13,39 @@ import {
   type PresetTest,
   type Skill,
 } from "@wg/shared";
+import { COMBAT_OPTION_NEEDS } from "../../../apps/web/lib/combat-options/combat-options.ts";
 import { creationCatalogue, factionPresetList, npcPresetList, placeList, rulesList, scenePresets } from "../index.ts";
 import type { Pack } from "./pack.ts";
-import { idOf, SUMMARY_MAX } from "./ruleset.ts";
+import { COMBAT_GROUPS, idOf, SUMMARY_MAX } from "./ruleset.ts";
 
 export { SUMMARY_MAX };
 
 type Body = Record<string, string | number | string[]>;
 export interface CodexEntry {
   key: string;
-  type: "hazard" | "place" | "sceneEvent" | "framework" | "patron" | "npcPreset" | "factionPreset" | "quickNpc";
+  type:
+    | "hazard"
+    | "place"
+    | "sceneEvent"
+    | "framework"
+    | "patron"
+    | "npcPreset"
+    | "factionPreset"
+    | "quickNpc"
+    | "combatAction";
   name: string;
   tags: string[];
   cite: string;
-  visibility: "gm";
+  visibility: "gm" | "party";
   body: Body;
 }
 
 /** The pack's slug and version, which a room document expects (room.ts). */
 // 0.1.1: the Frameworks and Patrons the premise is made from (the owner's decision 2). 0.1.2: the NPC and faction
-// presets and the Quick NPC rows (#325).
-export const CODEX_PACK = { slug: "wrath-and-glory-codex", version: "0.1.2" } as const;
-// The rulesets whose codex reads these entries (0.1.15, 0.2.15).
-const RULESET = { id: "wrath-and-glory", range: "^0.1.15 || ^0.2.15" };
+// presets and the Quick NPC rows (#325). 0.1.3: the combat actions the phone's Combat options lists (#324).
+export const CODEX_PACK = { slug: "wrath-and-glory-codex", version: "0.1.3" } as const;
+// The rulesets whose codex and panels read these entries (0.1.17, 0.2.17).
+const RULESET = { id: "wrath-and-glory", range: "^0.1.17 || ^0.2.17" };
 /** A Quick NPC row's key, which an NPC's `quick` field names (p.326). */
 export const quickKey = (tier: number) => `quick.t${tier}`;
 
@@ -200,6 +210,24 @@ export function buildCodexPack(): Pack<CodexEntry> {
     visibility: "gm",
     body: { tier: Number(tier), ...row },
   }));
+  // The combat actions in Auspex's groups, for the phone's Combat options (#324, house decision #114): every seat reads
+  // them, as the rules reference's actions; a line in this repo's words (the gist) and what it needs of a weapon.
+  const actions = rulesList().filter((r) => r.kind === "action");
+  const actionEntries = COMBAT_GROUPS.flatMap((g) =>
+    g.ids.map((id): CodexEntry => {
+      const r = actions.find((a) => a.id === id)!;
+      const needs = COMBAT_OPTION_NEEDS[id];
+      return {
+        key: `action.${id}`,
+        type: "combatAction",
+        name: r.name,
+        tags: [r.source],
+        cite: sourceCite(r),
+        visibility: "party",
+        body: { group: g.id, summary: cut(`${r.gist}${needs ? ` (needs ${needs.label})` : ""}`) },
+      };
+    }),
+  );
   return {
     id: CODEX_PACK.slug,
     version: CODEX_PACK.version,
@@ -213,6 +241,7 @@ export function buildCodexPack(): Pack<CodexEntry> {
       ...npcEntries,
       ...factionEntries,
       ...quickEntries,
+      ...actionEntries,
     ],
   };
 }

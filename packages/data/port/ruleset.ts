@@ -43,6 +43,7 @@ import {
   type Skill,
 } from "@wg/shared";
 import { ADVENTURE_STATUS } from "../../../apps/web/components/gm/prep/constants.ts";
+import { COMBAT_OPTION_GROUPS } from "../../../apps/web/lib/combat-options/combat-options.ts";
 import { rulesList } from "../index.ts";
 import { buildParams } from "./build-params.ts";
 import { prepTables } from "./generators.ts";
@@ -1041,9 +1042,129 @@ function layoutOf({ ledger }: { ledger: boolean }) {
           show: [{ widget: "notes", bind: { fields: DETAIL.map(([id]) => `detail.${id}`) } }],
         },
       ],
+      // The vitals strip on every tab (vitals-strip.tsx): Wounds and Shock against their max, and Wrath.
+      phoneStrip: [
+        { widget: "track", label: "Wounds", bind: { value: "res.wounds", max: "derived.maxWounds" } },
+        { widget: "track", label: "Shock", bind: { value: "res.shock", max: "derived.maxShock" } },
+        "res.wrath",
+      ],
+      // The phone's Fight tab on the Agent's Turn (fight.tsx): the panels, the attack and the power (the ledger's, which
+      // read the saved build), then the asks.
+      phoneTurn: [
+        ...PANELS.map((p) => ({ widget: "panel", variant: p.id })),
+        ...(ledger
+          ? [
+              { widget: "strike", variant: "agentAttackTold" },
+              { widget: "strike", variant: "power" },
+            ]
+          : []),
+        { widget: "spends" },
+      ],
     },
   };
 }
+
+// The phone's fight panels (InconsisTable's house decision #114), Auspex's phone Fight tab in the ruleset's own words:
+// INCOMING on a foe's Turn (incoming.tsx, rules-flow §11.175), YOU'RE HIT when Wounds rise (hit-sheet.tsx, §11.172),
+// AMBUSHED (ambushed.tsx, §11.177), DYING (dying.tsx) and the combat options on the Agent's Turn (combat-options.tsx).
+// Each reads only what a player reads of their own Agent. An attacker's class (a Troop lands no Critical Hit, p.323) is
+// the GM's to say: a panel reads no foe.
+const EXHAUSTED = "res.shock > derived.maxShock";
+const PANELS = [
+  {
+    id: "ambushed",
+    label: "Ambushed",
+    cite: "Core pp.176-177",
+    entities: ["agent"],
+    when: "ctx.fight.barred",
+    lines: [
+      { text: "No Turn in Round 1, unless the party pays 1 Glory to make you aware", cite: "Core p.177" },
+      {
+        text: "The GM sets the scene before Round 1: say where you stand",
+        when: "ctx.fight.round == 0",
+        cite: "Core p.176",
+      },
+      { text: "Everyone not ambushed takes a Turn; you act from Round 2", cite: "Core p.177" },
+    ],
+    spends: ["aware"],
+  },
+  {
+    id: "incoming",
+    label: "Incoming",
+    cite: "Core pp.182-183, p.192",
+    entities: ["agent"],
+    when: "ctx.fight.foeActing",
+    lines: [
+      { text: "It needs Icons up to your Defence to hit you, before the cover the GM calls", cite: "Core p.182" },
+      { text: "Its damage over your Resilience, after its AP, is Wounds; equal is 1 Shock", cite: "Core p.192" },
+      {
+        text: "If it hits, roll Determination: each Icon turns 1 Wound into Shock",
+        when: `!(${EXHAUSTED})`,
+        cite: "Core p.196",
+      },
+      { text: "You're Exhausted: you can't roll Determination", when: EXHAUSTED, cite: "Core p.199" },
+      {
+        text: "You hold your action: to cut into this Turn, say so for an opposed Initiative Test",
+        when: "ctx.fight.held",
+        cite: "Core pp.177-178, p.187",
+      },
+    ],
+    figures: [
+      { label: "Defence", expr: "derived.defence", cite: "Core p.182" },
+      { label: "Resilience", expr: "derived.resilience", cite: "Core p.192" },
+      { label: "Determination dice", expr: "derived.determination", cite: "Core p.196" },
+    ],
+  },
+  {
+    id: "hit",
+    label: "You're hit",
+    cite: "Core p.193, p.196",
+    entities: ["agent"],
+    opensOn: { rises: "wounds" },
+    lines: [
+      { text: "Roll Determination: each Icon turns 1 Wound into 1 Shock", when: `!(${EXHAUSTED})`, cite: "Core p.196" },
+      { text: "Not against Mortal Wounds", cite: "Core p.193" },
+      { text: "You're Exhausted: you can't roll Determination", when: EXHAUSTED, cite: "Core p.199" },
+      { text: "Wounded: +1 DN to all your Tests", cite: "Core p.193" },
+    ],
+    figures: [{ label: "Determination dice", expr: "derived.determination", cite: "Core p.196" }],
+    spends: ["determination"],
+  },
+  {
+    id: "dying",
+    label: "Dying",
+    cite: "Core p.193",
+    entities: ["agent"],
+    holds: "dying",
+    lines: [
+      {
+        text: "Your Turn: Crawl, a basic Combat Action with no options, or Fall Back; you can't stand",
+        cite: "Core p.193",
+      },
+      { text: "A Wound now is a Traumatic Injury: past your max, you die", cite: "Core p.193" },
+      { text: "Determination that takes the damage to 0 saves you the Injury", cite: "Core p.193" },
+      { text: "It ends when you recover any Wounds: a Medicae Test or Resting", cite: "Core p.124, p.196" },
+      { text: "An ally can drag you with a Combat Action", cite: "Core p.193" },
+    ],
+    figures: [
+      { label: "Traumatic Injuries", expr: "(has(traumatic) ? traumatic : 0)", cite: "Core p.193" },
+      { label: "Most you survive", expr: "derived.maxTraumatic", cite: "Core p.193" },
+    ],
+  },
+  {
+    // The combat actions in Auspex's groups (combat-options.ts); what one needs of the Agent's weapons is said in its
+    // line, as no expression reads the weapons the Agent carries, so none sinks.
+    id: "combatOptions",
+    label: "Combat options",
+    cite: "Core pp.177-190",
+    entities: ["agent"],
+    when: "ctx.fight.acting",
+    unless: "dying",
+    options: { entry: "combatAction", group: "group" },
+  },
+];
+/** Auspex's groups of the combat actions (combat-options.ts), as an enum: each its id, its heading the label. */
+export const COMBAT_GROUPS = COMBAT_OPTION_GROUPS.map((g) => ({ id: idOf(g.title), label: g.title, ids: g.ids }));
 
 // The attack guide (attack.ts, the tracker's ATTACK and the phone's STRIKE; InconsisTable's house decision #99). The dice
 // stay physical: the GM types the damage total and the guide applies what woundsFromDamage gives (pp.182-183, 192).
@@ -1405,7 +1526,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const prep = prepTables();
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.16",
+    version: "0.1.17",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
@@ -1647,6 +1768,23 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         },
       },
       { id: "patron", label: "Patron", base: "ability", fields: {} },
+      // A combat action the phone's Combat options panel lists (#324, house decision #114): its group, a line in this
+      // repo's words (the rules reference's gist) and what it needs of a weapon.
+      {
+        id: "combatAction",
+        label: "Combat action",
+        base: "ability",
+        fields: {
+          group: {
+            type: "enum",
+            label: "Group",
+            values: COMBAT_GROUPS.map((g) => g.id),
+            labels: Object.fromEntries(COMBAT_GROUPS.map((g) => [g.id, g.label])),
+            ...party,
+          },
+          summary: { type: "text", label: "Summary", maxLength: SUMMARY_MAX, ...party },
+        },
+      },
       // A printed NPC and a printed faction (#325, house decision #97): names, a role, the stat block, the Keywords.
       {
         id: "npcPreset",
@@ -2231,6 +2369,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     spawn: SPAWN,
     strikes: strikesOf({ ledger: false }),
     spends: spends({ ledger: false }),
+    panels: PANELS,
     // Three pending asks at once (MAX_PENDING_SPENDS), counted per user on the platform (rules-flow §11.189).
     requests: { max: MAX_PENDING_SPENDS },
   };
@@ -2239,7 +2378,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.16",
+    version: "0.2.17",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
