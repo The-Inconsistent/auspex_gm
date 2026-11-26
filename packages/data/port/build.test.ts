@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 import {
+  SOURCES,
   ATTRIBUTES,
   BACKGROUND_ROWS,
   MAX_BOUGHT_WEALTH,
@@ -41,10 +42,25 @@ const setup = skip
       const schemas = engine!.buildSchemas!(params);
       const packs = buildCreationPacks(schemas);
       // As an import reads them: the packs as JSON, then their records by entity type.
-      const read = catalogueOf(JSON.parse(JSON.stringify([packs.creation, packs.wargear])) as never);
-      return { params, parity: buildCatalogue(schemas), pack: { ...packs.port, ...read } };
+      // A pack keeps no file order (the platform serves entries by slug and key): each kind is put back in the
+      // catalogue's order, which the builder's lists follow.
+      const read = (p: unknown[]) => {
+        const c = catalogueOf(JSON.parse(JSON.stringify(p)) as never);
+        for (const [kind, list] of Object.entries(c.creation)) {
+          const at = new Map(packs.port.creation[kind as keyof typeof c.creation].map((r, i) => [r.id, i]));
+          list.sort((a, b) => at.get(a.id as string)! - at.get(b.id as string)!);
+        }
+        return c;
+      };
+      // A room that allows no homebrew attaches the official packs only (#325, rules-flow §11.198).
+      return {
+        params,
+        parity: buildCatalogue(schemas),
+        pack: { ...packs.port, ...read([packs.creation, packs.wargear, packs.homebrew]) },
+        official: { ...packs.port, ...read([packs.creation, packs.wargear]) },
+      };
     })();
-type Mode = "parity" | "pack";
+type Mode = "parity" | "pack" | "official";
 
 type Play = { tier: number; xpEarned: number; packageWaived?: boolean };
 type Run = { build: CharacterBuildInput; homebrew: boolean; play?: Play };
@@ -70,13 +86,14 @@ const forPort = (build: CharacterBuildInput, mode: Mode): CharacterBuildInput =>
   const { reworded } = catalogue(mode);
   return { ...build, gm: { ...build.gm, approved: approved.map((p) => remapApproval(p, reworded, "auspex", "port")) } };
 };
-const port = ({ build, homebrew, play }: Run, mode: Mode) =>
-  engine!.resolveBuild!({
+const port = ({ build, homebrew, play }: Run, mode: Mode) => {
+  return engine!.resolveBuild!({
     params: setup!.params,
     catalogue: { creation: catalogue(mode).creation, wargear: catalogue(mode).wargear, homebrew },
     build: forPort(build, mode),
     play,
   });
+};
 
 // The pack's phrases are numbered within their record, so one can't be put back by its number: a string of this repo
 // is equal to the port's when it is the port's with each phrase standing for one of the originals of its kind (the
@@ -192,7 +209,7 @@ function compare(run: Run, mode: Mode) {
   if (run.build.gm?.approved?.some((x) => remapApproval(x, reworded, "auspex", "port") !== x))
     fired.add(mode === "parity" ? "compound gm approval" : "gm approval");
   const same =
-    mode === "pack" ? (x: string, y: string) => samePhrased(x, y) && (fired.add("phrase"), true) : () => false;
+    mode !== "parity" ? (x: string, y: string) => samePhrased(x, y) && (fired.add("phrase"), true) : () => false;
   const diff = firstDiff(normalise(a, "auspex", fired, mode), normalise(p, "port", fired, mode), same);
   return { a, p, diff, rules: [...fired] };
 }
@@ -307,8 +324,12 @@ const PREGENS = readdirSync(dir)
   );
 
 // The tests' names in each mode.
-const FROM: Record<Mode, string> = { parity: "", pack: " (from the packs' records)" };
-const MODES: Mode[] = ["parity", "pack"];
+const FROM: Record<Mode, string> = {
+  parity: "",
+  pack: " (from the packs' records)",
+  official: " (from the official packs alone)",
+};
+const MODES = ["parity", "pack"] as const;
 
 for (const mode of MODES)
   test(
@@ -364,9 +385,24 @@ for (const mode of MODES)
     },
   );
 
+// A room that allows no homebrew attaches the creation and wargear packs alone (#325, rules-flow §11.198): every
+// official archetype resolves as this repo does with homebrew off.
+test(`every official archetype resolves the same without homebrew${FROM.official}`, { skip }, () => {
+  const fails: { name: string; diff: string }[] = [];
+  const official = creation.archetypes.filter((a) => SOURCES[a.source].official);
+  let runs = 0;
+  for (const arch of official)
+    for (let tier = arch.tier; tier <= 5; tier++, runs++) {
+      const { diff } = compare({ build: { tier, archetypeId: arch.id }, homebrew: false }, "official");
+      if (diff) fails.push({ name: `${arch.id} at Tier ${tier}`, diff });
+    }
+  assert.ok(official.length > 0);
+  report(fails, runs);
+});
+
 // ── generated builds ──
 
-const BUILDS: Record<Mode, number> = {
+const BUILDS: Record<(typeof MODES)[number], number> = {
   parity: Number(process.env.PORT_BUILDS ?? 5000),
   pack: Number(process.env.PORT_PACK_BUILDS ?? 1000),
 };

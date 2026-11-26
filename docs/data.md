@@ -1223,3 +1223,25 @@ species, archetype and packages (at the XP in the fixture's build), talents, and
   revisit Core p.87 "Creating a Traitor", so those recipes stay as rule text on the `chaos` faction. Apocrypha's Chaos
   archetypes have no official counterpart and stay as homebrew. Revisit when an official Chaos player book prints
   archetypes.
+
+## 10. The packs for InconsisTable (`packages/data/port/`)
+
+`bun packages/data/port/write.ts` writes the files InconsisTable imports (GitHub issue #325). Every pack is `private`
+but the campaign's own Threats, carries names, numbers, structured effects, cites and this repo's own short summaries,
+never printed text (rules-flow §11.80), and stays out of both repositories. The tables the generators and lookups roll
+are the ruleset's, not a pack's (the owner's decision 1 of 2026-11-26).
+
+| Pack (flag) | What it carries | Fed by | Built in |
+|---|---|---|---|
+| `wrath-and-glory-threats` (2nd positional) | A `threat` per stat block (class per Tier, Attributes, Traits, Skills, Determination's numbers, ability names, Keywords, its weapons' keys) and a `weapon` per printed line; Mob abilities, options and their weapons, and every text, left out and counted | `threats/*.json` | `pack.ts` |
+| `<campaign>-custom-threats` (`--custom-threats`) | The GM's own stat blocks from a campaign export, `original` | the export's `customThreats` | `pack.ts` |
+| `wrath-and-glory-creation` (`--creation`) | Every official creation record the ledger builder reads, as its builder record without wording; a homebrew book's rules merged onto an official record stay on it (§9, "Keep homebrew extras") | `creation/<type>/*.json` | `creation-packs.ts`, `build-catalogue.ts` |
+| `wrath-and-glory-wargear` (`--wargear`) | Every official wargear entry: its item kind, Value, Rarity, Keywords, an upgrade's slot and host effects, a weapon's strike values; and the homebrew wargear an official record names as starting gear (rules-flow §11.47) | `wargear/*.json` | `creation-packs.ts` |
+| `wrath-and-glory-homebrew` (`--homebrew`) | The homebrew books' creation records and wargear (An Abundance of Apocrypha, Legacy of the Necrontyr), attached to a room that allows them (rules-flow §11.198) | as the two above | `creation-packs.ts` |
+| `wrath-and-glory-mutations` (`--mutations`) | A `mutation` per printed Mutation and per row of its own d6 table, with its severity and its changes as effects | `mutations/*.json` | `mutations.ts` |
+| `wrath-and-glory-codex` (`--codex`) | A `hazard` per book row, a `place` per place with its parent, a `sceneEvent` per event row, the Frameworks and Patrons, an `npcPreset` per printed NPC, a `factionPreset` per printed faction and a `quickNpc` per Tier row of p.326 | `scene-presets/hazards/`, `places/`, `scene-presets/*.json`, `creation/frameworks/`, `creation/patrons/`, `npc-presets/`, `faction-presets/`, `QUICK_NPC` | `codex-packs.ts` |
+
+The rulesets (`<ruleset file>`, `--ledger`) and the World (`--world`) are `ruleset.ts`, `tables.ts`, `generators.ts` and
+`world.ts`; a campaign export becomes a room document with `--room` (`room.ts`), which expects the packs above (the
+homebrew pack only when the campaign allows homebrew). The book's Ruin and Glory lists (`scene-presets/pools/`) and the
+flavour tables are not carried (rules-flow §11.197).

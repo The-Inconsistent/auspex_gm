@@ -1,9 +1,11 @@
 // The creation and wargear packs for InconsisTable's ledger builder (its ADR 0011, stage 2): every record the builder
 // reads, as an entry of its kind's entity type (ruleset.ts, `CATALOGUE_KINDS`) carrying the record in `record`, against
 // the ledger ruleset (`buildRuleset({ builder: "ledger" })`). The records are `buildCatalogue` in pack mode: no printed
-// wording. Patrons, Frameworks and the flavour tables are left out. Written with
-// `bun packages/data/port/write.ts ... --creation <file> --wargear <file>`; both packs are private content and are
-// never committed.
+// wording. Patrons, Frameworks and the flavour tables are left out. The homebrew books' records (An Abundance of
+// Apocrypha, Legacy of the Necrontyr) are a third pack, attached or not per room (#325): an official record's homebrew
+// extras stay on it, and a homebrew wargear an official record names stays in the wargear pack (rules-flow §11.198).
+// Written with `bun packages/data/port/write.ts ... --creation <file> --wargear <file> --homebrew <file>`; the packs
+// are private content and are never committed.
 import { isMeleeProfile, SOURCES, sourceCite, type Source, type WargearWeapon } from "@wg/shared";
 import { TYPES, buildCatalogue, type PortCatalogue } from "./build-catalogue.ts";
 import type { Schema } from "./engine.ts";
@@ -113,12 +115,15 @@ const entry = (type: CatalogueEntry["type"], key: string, r: Json): CatalogueEnt
   };
 };
 
-/** Both packs' slugs and version, which a room document expects (room.ts). */
+/** The packs' slugs and versions, which a room document expects (room.ts). */
 export const CATALOGUE_PACKS = {
-  creation: { slug: "wrath-and-glory-creation", version: "0.1.0" },
+  // 0.1.1: the homebrew records out, into their own pack (#325).
+  creation: { slug: "wrath-and-glory-creation", version: "0.1.1" },
   // 0.1.1: the item kind as a tag, Keywords and an upgrade's slot in the body, and its host effects (#325).
   // 0.1.2: a weapon's numbers, melee, Strength and Traits, which a strike reads (#325).
-  wargear: { slug: "wrath-and-glory-wargear", version: "0.1.2" },
+  // 0.1.3: the homebrew records out, but those an official record names (§11.47) (#325).
+  wargear: { slug: "wrath-and-glory-wargear", version: "0.1.3" },
+  homebrew: { slug: "wrath-and-glory-homebrew", version: "0.1.0" },
 } as const;
 
 const pack = (
@@ -132,10 +137,11 @@ const pack = (
   entries,
 });
 
-/** Both packs, from the builder's schemas (`buildSchemas(params)`), and the conversion behind them. */
+/** The three packs, from the builder's schemas (`buildSchemas(params)`), and the conversion behind them. */
 export function buildCreationPacks(schemas: Record<string, Schema>): {
   creation: Pack<CatalogueEntry>;
   wargear: Pack<CatalogueEntry>;
+  homebrew: Pack<CatalogueEntry>;
   port: PortCatalogue;
 } {
   const port = buildCatalogue(schemas, { wording: "pack" });
@@ -143,9 +149,18 @@ export function buildCreationPacks(schemas: Record<string, Schema>): {
     port.creation[kind].map((r) => entry(CATALOGUE_KINDS[kind], entryKey(kind, r.id as string), r)),
   );
   const wargear = [...port.wargear.values()].map((r) => entry("wargear", r.id as string, r));
+  const homebrew = (e: CatalogueEntry) => e.tags.includes("homebrew");
+  // A homebrew wargear an official record names (its starting gear, rules-flow §11.47) stays with the official ones.
+  const named = JSON.stringify(creation.filter((e) => !homebrew(e)).map((e) => e.record));
+  const official = (e: CatalogueEntry) =>
+    !homebrew(e) || (e.type === "wargear" && named.includes(JSON.stringify(e.key)));
   return {
-    creation: pack(CATALOGUE_PACKS.creation, creation),
-    wargear: pack(CATALOGUE_PACKS.wargear, wargear),
+    creation: pack(CATALOGUE_PACKS.creation, creation.filter(official)),
+    wargear: pack(CATALOGUE_PACKS.wargear, wargear.filter(official)),
+    homebrew: pack(
+      CATALOGUE_PACKS.homebrew,
+      [...creation, ...wargear].filter((e) => !official(e)),
+    ),
     port,
   };
 }

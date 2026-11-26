@@ -452,6 +452,7 @@ test("the room: name, next session, Tier, pools, and the versions it expects", (
     packs: [
       CATALOGUE_PACKS.creation,
       CATALOGUE_PACKS.wargear,
+      CATALOGUE_PACKS.homebrew,
       { slug: threatPack.id, version: threatPack.version },
       { slug: "wrath-and-glory-mutations", version: "0.1.0" },
       { slug: "wrath-and-glory-codex", version: "0.1.2" },
@@ -459,6 +460,12 @@ test("the room: name, next session, Tier, pools, and the versions it expects", (
     ],
     world: { slug: world.id, version: world.version },
   });
+  // A campaign allowing no homebrew expects the official packs alone (#325, rules-flow §11.198).
+  const official = buildRoomDocument(
+    { ...exported, campaign: { ...exported.campaign, homebrew: false } },
+    { reworded },
+  );
+  assert.ok(!official.document.expects.packs.some((p) => p.slug === CATALOGUE_PACKS.homebrew.slug));
   assert.equal(document.sessions.length, 1);
   assert.deepEqual(document.sessions[0], {
     title: "First bell",
@@ -826,7 +833,8 @@ test("nothing of the file is lost without being in the document or the report", 
     [/\.asMob$/, () => scene.prep!.roster.some((l) => l.mob)],
     [/\.done$/, () => document.codex.some((e) => e.kind === "quest" && e.status === "done")],
     [/\.annihilated$/, () => document.actors.some((a) => a.fields?.annihilated === true)],
-    [/^campaign\.homebrew$/, () => true], // the platform's builder always allows homebrew
+    // The homebrew books' pack is expected (#325).
+    [/^campaign\.homebrew$/, () => document.expects.packs.some((p) => p.slug === CATALOGUE_PACKS.homebrew.slug)],
     [
       /\.spotted$/,
       () => (scene.prep!.picks as unknown as { rows: { on: boolean }[] }[]).some((l) => l.rows.some((r) => r.on)),

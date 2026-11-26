@@ -1317,6 +1317,15 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      reads fixed tables where this repo rolls the species' own). The book's Ruin and Glory lists (`scene-presets/pools/`)
      are not carried: no block makes a scene's pool line from a pack entry, and their rows are printed sentences. The
      ruleset is 0.1.15 and 0.2.15. *Issue #325's recommendation, 2026-11-27.*
+198. **The homebrew books are a pack of their own** (issue #325; §11.47, docs/data.md §9 and §10). The records of An
+     Abundance of Apocrypha and Legacy of the Necrontyr leave the creation pack (0.1.1) and the wargear pack (0.1.3)
+     for `wrath-and-glory-homebrew` (0.1.0), which a room attaches when it allows homebrew; the converter expects it
+     when the campaign's homebrew switch is on, so the switch is carried and no longer reported. Two things stay with
+     the official packs, since a pack entry is one record whole and a room without the homebrew pack must still build
+     every official archetype as this repo does with homebrew off: a homebrew book's rules merged onto an official
+     record (the platform's ledger builder hides them with homebrew off, as `officialOnly` does), and a homebrew wargear
+     an official record names as starting gear (§11.47), eight entries. A build saved before the split names the same
+     keys, served by the homebrew pack once it is attached. *Issue #325's recommendation, 2026-11-27.*
 
 ---
 
