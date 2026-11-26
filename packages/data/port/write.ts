@@ -121,7 +121,7 @@ if (custom) {
   }
 }
 
-if (ledgerOut || catalogueOut.creation || catalogueOut.wargear) {
+if (ledgerOut || catalogueOut.creation || catalogueOut.wargear || catalogueOut.homebrew) {
   const ledger = buildRuleset({ builder: "ledger" });
   let ledgerRuleset = null;
   if (engine !== null) {
