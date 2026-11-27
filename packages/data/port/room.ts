@@ -84,7 +84,7 @@ export interface Prep {
 }
 export interface RoomEntry {
   id: string;
-  kind: "adventure" | "scene" | "npc" | "location" | "faction" | "item" | "handout" | "quest";
+  kind: "adventure" | "scene" | "npc" | "location" | "faction" | "item" | "handout" | "quest" | "lore";
   title: string;
   body?: string;
   gmNotes?: string;
@@ -843,10 +843,23 @@ export function buildRoomDocument(
         ...(s.notes && { notes: linked(`${p}.notes`, s.notes, CAPS.sessionText) }),
       };
     });
-  for (const k of ["framework", "frameworkBonus", "patron"] as const)
-    if (campaign[k]) note(`campaign.${k}`, "the campaign's setup: no place in a room");
-  campaign.kind.forEach((_, j) => note(`campaign.kind.${j}`, "the campaign's setup: no place in a room"));
-  campaign.limits.forEach((_, j) => note(`campaign.limits.${j}`, "the campaign's setup: no place in a room"));
+  // The campaign's premise: a lore entry every seat reads (the owner's decision 2 of 2026-11-26), and what to leave
+  // out as the room's safety lines, with the X-Card on as a room starts (InconsisTable's migration 0009): this repo
+  // has no X-Card setting to carry.
+  const premise = {
+    ...(campaign.kind.length > 0 && { kindOfGame: campaign.kind }),
+    ...(campaign.framework && { framework: campaign.framework }),
+    ...(campaign.frameworkBonus && { frameworkBonus: campaign.frameworkBonus }),
+    ...(campaign.patron && { patron: campaign.patron }),
+  };
+  if (Object.keys(premise).length > 0)
+    codex.unshift({
+      id: uuidOf(`${campaign.name}/premise`),
+      kind: "lore",
+      title: "Premise",
+      fields: premise,
+      visibility: "party",
+    });
   if (!campaign.homebrew) note("campaign.homebrew", "the platform's ledger builder always allows homebrew");
 
   const exportedAt = new Date(exported.exportedAt);
@@ -860,6 +873,7 @@ export function buildRoomDocument(
       ...(campaign.nextSessionPlace.trim() && {
         nextSessionPlace: fit("campaign.nextSessionPlace", campaign.nextSessionPlace.trim(), CAPS.place),
       }),
+      ...(campaign.limits.length > 0 && { safety: { lines: campaign.limits, veils: [], xCard: true } }),
     },
     expects: {
       ruleset: { slug: ledger.id, version: ledger.version },

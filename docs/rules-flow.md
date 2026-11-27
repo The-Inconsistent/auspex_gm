@@ -1293,6 +1293,17 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      one, the enemy, into the item the GM names. NPC and faction presets and the NPC name and look rolls are not ported
      yet. The converter writes a faction's Keywords as words, a place's hazards as rows and a scene's hazards as a pick
      with Spotted. *The owner's decisions 1 and 3, and issue #324's recommendation, 2026-11-26.*
+196. **The port's premise and setup checklist** (InconsisTable's house decision #90; §11.80, issue #45). The campaign's
+     premise is a lore entry every seat reads (the owner's decision 2, 2026-11-26): the kind of game as words (Core
+     p.316), the Framework and its bonus (pp.18–20) and the Patron (pp.310–313), made by hand or from a printed
+     Framework or Patron of the codex pack (0.1.1), which fills the name only, never the prose or the Tier (§11.80);
+     what to leave out is the room's safety lines. The checklist is this repo's eleven SETUP steps in the book's order
+     with their cites: Kind of game, Framework and Patron (optional) read the premise's entry, Tier the campaign field,
+     Setting the locations, Factions, NPCs and Scenes their entries, Characters the Agents (built ones in the ledger
+     ruleset), Combat a scene with a roster and Session the sessions run. The converter writes the premise from the
+     campaign's Framework, its bonus, its Patron and its kind, and its limits as the room's safety lines with the
+     X-Card on, as a new room starts, since this repo has no X-Card setting. *The owner's
+     decision 2, and issue #324's recommendation, 2026-11-26.*
 
 ---
 

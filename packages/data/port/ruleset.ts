@@ -22,6 +22,8 @@ import {
   FactionStance,
   MAX_FACTION_KEYWORDS,
   MAX_HAZARDS,
+  MAX_TABLE_LINES,
+  CampaignSetup,
   MAX_PENDING_SPENDS,
   MAX_SPEND_AMOUNT,
   MAX_UPGRADES,
@@ -772,6 +774,46 @@ export const CODEX = {
       },
       from: [{ entity: "place", children: "parent" }],
     },
+    // The campaign's premise (the owner's decision 2 of 2026-11-26): a lore entry every seat reads, holding the kind of
+    // game, the Framework with its bonus and the Patron (Core pp.18-20, 310-313, 316); what to leave out is the room's
+    // safety lines. A printed Framework or Patron fills its name only, never its prose or Tier (rules-flow §11.80).
+    lore: {
+      fields: {
+        kindOfGame: {
+          type: "tags",
+          label: "Kind of game",
+          maxItems: MAX_TABLE_LINES,
+          writeIn: true,
+          visibility: "party",
+          cite: "Core p.316",
+        },
+        framework: {
+          type: "text",
+          label: "Framework",
+          maxLength: CampaignSetup.shape.framework.maxLength!,
+          visibility: "party",
+          cite: "Core pp.18-20",
+        },
+        frameworkBonus: {
+          type: "text",
+          label: "Framework bonus",
+          maxLength: CampaignSetup.shape.frameworkBonus.maxLength!,
+          visibility: "party",
+          cite: "Core p.20",
+        },
+        patron: {
+          type: "text",
+          label: "Patron",
+          maxLength: CampaignSetup.shape.patron.maxLength!,
+          visibility: "party",
+          cite: "Core pp.310-313",
+        },
+      },
+      from: [
+        { entity: "framework", name: "framework" },
+        { entity: "patron", name: "patron" },
+      ],
+    },
     // A player reads only a given item's name and description, the entry's own title and text: where it lay and who
     // carried it (`locationId`, `npcId`, worded as holder-field.tsx asks) stay the GM's.
     item: {
@@ -1187,9 +1229,110 @@ function strikesOf({ ledger }: { ledger: boolean }) {
   return [threat, agent, phone, power];
 }
 
-/** The ledger ruleset without what reads the saved build (its layout's cards and folds, its strikes' ledger means), as
+// The campaign's set-up in the book's order (Auspex's SETUP_STEPS, apps/web/lib/setup/constants.ts; InconsisTable's
+// house decision #90), each with its cite and this repo's hint. Kind of game, Framework and Patron read the premise's
+// lore entry (the owner's decision 2); the Tier is the campaign field, set at creation.
+export const CHECKLIST = [
+  {
+    id: "kind",
+    label: "Kind of game",
+    cite: "Core p.316",
+    done: { count: "entries", kind: "lore", field: "kindOfGame" },
+    goto: { tab: "codex", kind: "lore" },
+    note: "Agree the kind of game and what to leave out (the safety lines).",
+  },
+  {
+    id: "framework",
+    label: "Framework",
+    cite: "Core pp.18-20, 316-317, 374",
+    done: { count: "entries", kind: "lore", field: "framework" },
+    goto: { tab: "codex", kind: "lore" },
+    note: "Who the Agents are, what they want, their shared goal.",
+  },
+  {
+    id: "tier",
+    label: "Tier",
+    cite: "Core pp.19-20, 160",
+    done: { count: "campaignField", field: "tier" },
+    goto: { tab: "party" },
+    note: "Set when the room is made; ascending raises it.",
+  },
+  {
+    id: "setting",
+    label: "Setting",
+    cite: "Core pp.296-309, 320",
+    done: { count: "entries", kind: "location" },
+    goto: { tab: "codex", kind: "location" },
+    note: "Keep the adventures to one limited area.",
+  },
+  {
+    id: "patron",
+    label: "Patron",
+    cite: "Core pp.310-313, FSPG pp.64-89",
+    done: { count: "entries", kind: "lore", field: "patron" },
+    goto: { tab: "codex", kind: "lore" },
+    note: "Each patron offers two Frameworks.",
+    optional: true,
+  },
+  {
+    id: "factions",
+    label: "Factions and Keywords",
+    cite: "Core pp.42-87, 167, 317, 375-378",
+    done: { count: "entries", kind: "faction" },
+    goto: { tab: "codex", kind: "faction" },
+    note: "Who can work together, and who needs a reason.",
+  },
+  {
+    id: "characters",
+    label: "Characters",
+    cite: "Core p.17",
+    done: { count: "actors", entity: "agent" },
+    goto: { tab: "party" },
+    note: "Build the Agents, or bring them from your library.",
+  },
+  {
+    id: "npcs",
+    label: "NPCs and locations",
+    cite: "Core pp.315, 317, 168, 326",
+    done: { count: "entries", kind: "npc" },
+    goto: { tab: "codex", kind: "npc" },
+    note: "A few vivid features for each person and place.",
+  },
+  {
+    id: "scenes",
+    label: "Scenes",
+    cite: "Core pp.317-319, 160-161, 165-166",
+    done: { count: "entries", kind: "scene" },
+    goto: { tab: "prep" },
+    note: "Set the scene, ask, listen, show consequences.",
+  },
+  {
+    id: "combat",
+    label: "Combat",
+    cite: "Core p.176, Threat Assessment p.8",
+    done: { count: "entries", kind: "scene", prep: "roster" },
+    goto: { tab: "prep" },
+    note: "Two Troops per Agent, half in a Mob, one Elite or Adversary.",
+  },
+  {
+    id: "session",
+    label: "Session",
+    cite: "Core pp.30, 43, 162, 317, 320-321",
+    done: { count: "sessions" },
+    goto: { tab: "track" },
+    note: "Starting resets the pools; ending awards 8, 10 or 12 XP.",
+  },
+];
+
+/** The ledger ruleset without what reads the saved build (its layout's cards and folds, its strikes' ledger means, its
+ * checklist's built Agents), as
  * a probe of whether the platform checks the `build` block sends it with no build. */
-export const withoutBuildReaders = <R extends object>(r: R) => ({ ...r, layout: {}, strikes: undefined });
+export const withoutBuildReaders = <R extends object>(r: R) => ({
+  ...r,
+  layout: {},
+  strikes: undefined,
+  checklist: undefined,
+});
 
 /**
  * The ruleset. By default (0.1.x) a character is copied in by hand through the `creation` steps. With
@@ -1245,7 +1388,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const prep = prepTables();
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.13",
+    version: "0.1.14",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
@@ -1472,6 +1615,17 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         base: "ability",
         fields: { parent: { type: "ref", label: "Inside", entity: "place" } },
       },
+      // A printed Framework and a Patron, by name, with the Tier it suits and the Patron that offers it (#325).
+      {
+        id: "framework",
+        label: "Framework",
+        base: "ability",
+        fields: {
+          tier: { type: "int", label: "Tier", min: 1, max: 5, cite: "Core p.20" },
+          patron: { type: "ref", label: "Patron", entity: "patron" },
+        },
+      },
+      { id: "patron", label: "Patron", base: "ability", fields: {} },
       {
         id: "sceneEvent",
         label: "Scene event",
@@ -1932,6 +2086,12 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         text: "NPC and faction presets and the NPC name and look rolls are not in the codex pack: the GM writes them.",
         cite: "Core p.315",
       },
+      // Where the premise lives (rules-flow §11.196).
+      {
+        id: "premiseAsLore",
+        text: "The campaign's premise (kind of game, Framework and its bonus, Patron) is a lore entry every seat reads; what to leave out is the room's safety lines.",
+        cite: "Core p.316",
+      },
       {
         id: "stacksUncapped",
         text: "Hindered, Bleeding and Vulnerable stack with no cap; the other Conditions are held or not.",
@@ -1994,6 +2154,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     ].map((step) => ({ ...step, actor: "agent", kind: "fields" })),
     layout: layoutOf({ ledger: false }),
     codex: CODEX,
+    checklist: CHECKLIST,
     // Critical Hits, Perils of the Warp and the Mutation tables, the book's rows as lookups (tables.ts; the owner's
     // decision 1 of 2026-11-26, rules-flow §11.191).
     tables: { ...bookTables(), ...prep.tables },
@@ -2023,7 +2184,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.13",
+    version: "0.2.14",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
@@ -2037,6 +2198,8 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     initiative: { ...ruleset.initiative, unableStates: ["dead", "lost", "slain"] },
     rests: [{ ...ruleset.rests[0]!, refusedIn: ["dying", "dead", "lost"] }],
     spends: spends({ ledger: true }),
+    // An Agent counts once its build is saved (house decision #90).
+    checklist: CHECKLIST.map((c) => (c.id === "characters" ? { ...c, done: { ...c.done, built: true } } : c)),
     layout: layoutOf({ ledger: true }),
     strikes: strikesOf({ ledger: true }),
     // ponytail: the budget's cost is compiled over every actor type the creation steps do not build, so the ledger's

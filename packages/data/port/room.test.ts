@@ -113,7 +113,7 @@ const exported = CampaignExport.parse({
     framework: "Hunt the choir",
     patron: "",
     kind: ["grim"],
-    limits: [],
+    limits: ["No spiders"],
     homebrew: true,
     nextSessionAt: "2026-12-01T18:00:00.000Z",
     nextSessionPlace: "Upstairs",
@@ -433,7 +433,16 @@ test("the room: name, next session, Tier, pools, and the versions it expects", (
     name: "The Silent Choir",
     nextSessionAt: "2026-12-01T18:00:00.000Z",
     nextSessionPlace: "Upstairs",
+    // What to leave out is the room's safety lines (the owner's decision 2 of 2026-11-26); the X-Card stays on, as a
+    // new room's is.
+    safety: { lines: ["No spiders"], veils: [], xCard: true },
   });
+  // The premise is a lore entry every seat reads, with the kind of game and the Framework.
+  const premise = document.codex.find((e) => e.kind === "lore")!;
+  assert.deepEqual(
+    [premise.title, premise.visibility, premise.fields],
+    ["Premise", "party", { kindOfGame: ["grim"], framework: "Hunt the choir" }],
+  );
   assert.deepEqual(document.campaignFields, { tier: 3 });
   assert.deepEqual(document.pools, { glory: 2, ruin: 1 });
   const ledger = buildRuleset({ builder: "ledger" });
@@ -445,7 +454,7 @@ test("the room: name, next session, Tier, pools, and the versions it expects", (
       CATALOGUE_PACKS.wargear,
       { slug: threatPack.id, version: threatPack.version },
       { slug: "wrath-and-glory-mutations", version: "0.1.0" },
-      { slug: "wrath-and-glory-codex", version: "0.1.0" },
+      { slug: "wrath-and-glory-codex", version: "0.1.1" },
       { slug: buildCustomThreatPack(exported).pack.id, version: "0.1.1" },
     ],
     world: { slug: world.id, version: world.version },
@@ -781,7 +790,6 @@ test("the report counts exactly what the file has that the document holds no str
     "left out: an on-entry pick the scene no longer links": 1,
     "left out: an upgrade fitted in play to a line the build does not give": 1,
     "left out: the XP a session awarded: the sheets hold it": 1,
-    "left out: the campaign's setup: no place in a room": 2,
     "left out: the time a session ended": 1,
     "left out: the time a session started": 1,
     "left out: the time it was revealed": 1,
