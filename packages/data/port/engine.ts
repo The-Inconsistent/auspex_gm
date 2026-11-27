@@ -82,6 +82,11 @@ export interface Engine {
   WORLD_TEXTURES?: readonly string[];
   WORLD_SHAPES?: Record<string, readonly string[]>;
   WORLD_CONTRAST_PAIRS?: readonly { fg: string; bg: string; min: number }[];
+  // The slate readout's floor (its house decision #204) and the terms (#159): absent from a checkout made before them.
+  WORLD_SLATE_PAIR?: { fg: string; bg: string; min: number };
+  TERM_IDS?: readonly string[];
+  /** A ruleset document read in one language (its house decision #211): absent from a checkout made before #159. */
+  localRuleset?(manifest: unknown, lang: "en" | "vi"): unknown;
   // The handout layouts (InconsisTable's house decision #72): absent from a checkout made before them.
   HANDOUT_LAYOUTS?: readonly string[];
   validateWorld?(input: unknown): { ok: true; world: unknown } | { ok: false; problems: Problem[] };

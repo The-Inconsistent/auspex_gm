@@ -2,7 +2,8 @@
 // apps/web/app/globals.css, as values for the platform's Theme tokens and picks from the platform's lists. The colours
 // are read from that stylesheet when the World is built, never retyped: the day set (`:root`) is the World's light set,
 // the night set (`:root[data-theme="vigil"]` over `:root`) its dark set. A World carries no font file and no image. Its
-// only words are the handout layouts' names (its house decision #72), which are this app's own handout styles' names.
+// words are the handout layouts' names (its house decision #72), which are this app's own handout styles' names, and
+// this app's words for the platform's terms (`TERMS`, its house decisions #212 and #213).
 import { readFileSync } from "node:fs";
 import { HandoutStyle } from "@wg/shared";
 import { DEFAULT_HEADER, HANDOUT_STYLE_LABEL } from "../../../apps/web/components/ui/handout-doc/constants.ts";
@@ -95,6 +96,10 @@ export const MAPPING: Record<string, Line> = {
   "halo-light": { light: "vellum-2", dark: "vellum-2" },
   // no counterpart: the halo round a focus ring on a band (the workspace footer); the band itself
   "halo-dark": { light: "iron", dark: "iron" },
+  // The two sides of a fight (the platform's house decision #207): this app's outlines on the phone's fight cards, blue
+  // for the Agents and orange for the Threats, by day and by night.
+  "side-ally": { light: "side-agents", dark: "side-agents" },
+  "side-foe": { light: "side-threats", dark: "side-threats" },
 
   // The names the components read, on the table and the app page.
   paper: { light: "vellum", dark: "vellum" },
@@ -129,6 +134,41 @@ export const SHAPES = {
   headingRule: "quill",
   headingCase: "caps",
   buttonFrame: "double",
+  // The platform's picks for this app's touches (its house decisions #203 to #206, #219, #220): handouts stay a sheet
+  // of paper on a night phone, the phone's dataslate (scanlines, clipped corners), the sealed plate with its winged
+  // skull, the stat-block heads on iron, the printed stat block and the chapter rail down the GM's right edge.
+  handoutPaper: "light",
+  readout: "slate",
+  gmSeal: "skull",
+  tableHead: "band",
+  statBlock: "printed",
+  gmNav: "rail",
+} as const;
+
+/**
+ * This app's words for the platform's terms (its house decisions #212, #213; rules-flow §11.204), from the screens as
+ * they ship: the Agents and the Threats (AGENTS and THREATS of the fight's sides), a Mob, the Round and the Turn,
+ * capitalised as the books and this app write them, and SCENE, MISSION, CODEX, HANDOUT, TABLE SCREEN as named. English
+ * where this app has a word; Vietnamese only where the English differs from the platform's own word, so the platform's
+ * Vietnamese stands for the rest. The marker colours keep the platform's words: this app names them by colour alone.
+ */
+export const TERMS = {
+  party: { en: { one: "party", other: "parties" } },
+  foe: { en: { one: "Threat", other: "Threats" }, vi: "mối đe dọa" },
+  gm: { en: { one: "GM", other: "GMs" } },
+  player: { en: { one: "player", other: "players" } },
+  session: { en: { one: "session", other: "sessions" } },
+  fight: { en: { one: "fight", other: "fights" } },
+  round: { en: { one: "Round", other: "Rounds" } },
+  turn: { en: { one: "Turn", other: "Turns" } },
+  character: { en: { one: "Agent", other: "Agents" }, vi: "đặc vụ" },
+  creature: { en: { one: "Threat", other: "Threats" }, vi: "mối đe dọa" },
+  mob: { en: { one: "Mob", other: "Mobs" } },
+  scene: { en: { one: "scene", other: "scenes" } },
+  mission: { en: { one: "mission", other: "missions" } },
+  handout: { en: { one: "handout", other: "handouts" } },
+  codex: { en: { one: "codex", other: "codices" } },
+  tableScreen: { en: { one: "table screen", other: "table screens" } },
 } as const;
 
 type Rgba = { rgb: [number, number, number]; alpha: number };
@@ -161,7 +201,8 @@ export function buildWorld(look = readLook()) {
     Object.fromEntries(Object.entries(MAPPING).map(([token, line]) => [token, colourOf(line[side], set)]));
   return {
     id: "wrath-and-glory",
-    version: "0.1.1",
+    // 0.1.2: the platform's picks of #296 and #297 (the platform's #235), the side colours, and the terms (its #159).
+    version: "0.1.2",
     core: buildRuleset().core,
     name: "Imperial Manuscript",
     theme: {
@@ -175,5 +216,6 @@ export function buildWorld(look = readLook()) {
       layouts: HandoutStyle.options.map((s) => HANDOUT_LAYOUT[s]),
       names: Object.fromEntries(HandoutStyle.options.map((s) => [HANDOUT_LAYOUT[s], HANDOUT_STYLE_LABEL[s]])),
     },
+    terms: TERMS,
   };
 }
