@@ -21,6 +21,8 @@ import {
   ENDURING_LIFE,
   FactionStance,
   MAX_FACTION_KEYWORDS,
+  MAX_PENDING_SPENDS,
+  MAX_SPEND_AMOUNT,
   MAX_KEYWORD_LENGTH,
   MOB_MIN,
   SKILLS,
@@ -219,6 +221,8 @@ const HARM = {
       // Enduring Life makes it an ordinary hit and sets no flag (§11.185).
       // ponytail: Enduring Life puts `over` past any hit (the op takes 100 at most); a `destroyed.when` would say it plainly.
       destroyed: { over: `${ENDURING} ? 1000 : 2 * derived.maxWounds`, field: "annihilated" },
+      // Determination turns Wounds into Shock (p.196); the op refuses an Exhausted Agent (p.199, rules-flow §11.172).
+      convert: true,
     },
     {
       entities: ["threat"],
@@ -241,6 +245,75 @@ const IGNORE_WOUNDED = { ignoreWounded: "bool" } as const;
 const INPUT_WORDS = { dn: "DN", bonus: "Bonus dice", ignoreWounded: "Not Wounded (no +1 DN)" } as const;
 const SKILL_WORDS = () => Object.fromEntries((Object.keys(SKILLS) as Skill[]).map((s) => [idOf(s), s]));
 const ATTRIBUTE_WORDS = () => Object.fromEntries(ATTRIBUTES.map((a) => [idOf(a), ATTRIBUTE_NAMES[a]]));
+
+// What a player may ask the GM to spend, or the GM does in one tap (InconsisTable's house decision #84): this repo's
+// spend kinds (spendCost, spend.ts; spend.actions.ts), each with its cost and what it runs. The dice stay physical.
+const LOST = `${opt("res.corruption")} >= ${CHAOS_SPAWN_AT}`;
+// The spends asked of a running fight: Seize, Aware and Determination.
+const FIGHT_ONLY: ReadonlySet<string> = new Set(["seize", "aware", "determination"]);
+const spends = ({ ledger }: { ledger: boolean }) =>
+  [
+    // Wrath: Reroll Failures (p.164). The reroll is at the table: the app takes the Wrath.
+    { id: "reroll", label: "Reroll failures", cost: [{ resource: "wrath", amount: "1" }], cite: "Core p.164" },
+    {
+      // Wrath: Restore Shock, Rank + Tier (restoreShockAmount), only while conscious and with Shock to restore (p.196).
+      id: "restoreShock",
+      label: "Restore Shock",
+      cost: [{ resource: "wrath", amount: "1" }],
+      if: `res.shock > 0 && !(${DEAD}) && !(${DYING})${ledger ? ` && !(${LOST})` : ""}`,
+      run: [
+        {
+          primitive: "health.harm",
+          op: "hit",
+          input: { actorId: "ctx.self", shock: "-(derived.rank + campaign.tier)" },
+        },
+      ],
+      cite: "Core p.164, p.196",
+    },
+    // Glory: one per extra die or point of damage (p.165), up to 10 a request (MAX_SPEND_AMOUNT) and to the pool.
+    ...(["dice", "damage"] as const).map((what) => ({
+      id: what === "dice" ? "gloryDice" : "gloryDamage",
+      label: what === "dice" ? "Glory dice" : "Glory damage",
+      cost: [{ pool: "glory", amount: `ctx.${what}` }],
+      inputs: { [what]: { label: what === "dice" ? "Dice" : "Damage", min: 1, max: String(MAX_SPEND_AMOUNT) } },
+      cite: "Core p.165",
+    })),
+    {
+      // Seize the Initiative: the run op takes its own Glory and checks the Seize limit (p.177, rules-flow §11.1).
+      id: "seize",
+      label: "Seize the Initiative",
+      cost: [{ pool: "glory", amount: "1", byRun: true }],
+      if: "ctx.fight.in",
+      run: [{ primitive: "initiative.sides", op: "seize", input: { id: "ctx.self" } }],
+      cite: "Core p.177",
+    },
+    {
+      // Aware of the ambush: 1 Glory to act in Round 1 (p.177, rules-flow §11.177).
+      id: "aware",
+      label: "Aware of the ambush",
+      cost: [{ pool: "glory", amount: "1", byRun: true }],
+      if: "ctx.fight.barred",
+      run: [{ primitive: "initiative.sides", op: "lift", input: { id: "ctx.self" } }],
+      cite: "Core p.177",
+    },
+    {
+      // Determination: the Icons rolled turn as many Wounds into Shock, free, never while Exhausted (pp.196, 199;
+      // rules-flow §11.172). Mortal Wounds cannot be turned: the GM judges before accepting.
+      id: "determination",
+      label: "Determination",
+      cost: [],
+      if: "res.wounds > 0",
+      inputs: { icons: { label: "Icons rolled", min: 1, max: "max(1, res.wounds)" } },
+      run: [{ primitive: "health.harm", op: "convert", input: { actorId: "ctx.self", amount: "ctx.icons" } }],
+      cite: "Core p.196, p.199",
+    },
+  ].map((x) => ({
+    ...x,
+    entities: ["agent"],
+    // An ask made against the old pools is cleared when a session starts or ends (p.162, p.164, rules-flow §11.124);
+    // one tied to the fight, when it ends (§11.122).
+    clearOn: ["sessionStart", "sessionEnd", ...(FIGHT_ONLY.has(x.id) ? ["encounterEnd"] : [])],
+  }));
 
 // What a called Test's result offers the GM, one tap each (InconsisTable's house decision #80). A Wrath Critical earns
 // the party 1 Glory, and the GM may take 1 Ruin for a Complication in place of narrating it (pp.163-164, p.320).
@@ -579,7 +652,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
 
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.6",
+    version: "0.1.7",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
@@ -1025,6 +1098,12 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         text: "A Wrath Critical (DN -2) or a spent Wrath (DN -1, not below 1) on a Corruption Test is applied by the GM: a report carries dice, not that choice.",
         cite: "Core p.286",
       },
+      // How a spend ask differs from this repo's (rules-flow §11.189).
+      {
+        id: "spendAsks",
+        text: "A player may have 3 asks pending, counted per player, one per spend and Agent; an ask is shown to whoever sees the pool it costs. Asks clear when a session starts or ends.",
+        cite: "Core p.162, p.164, p.165",
+      },
       {
         id: "monstrousImmuneByHand",
         text: "Monstrous Creatures are immune to Fear, Pinned and Staggered: the GM leaves those off them.",
@@ -1115,13 +1194,16 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
       },
     },
     codex: CODEX,
+    spends: spends({ ledger: false }),
+    // Three pending asks at once (MAX_PENDING_SPENDS), counted per user on the platform (rules-flow §11.189).
+    requests: { max: MAX_PENDING_SPENDS },
   };
   if (builder !== "ledger") return ruleset;
 
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.6",
+    version: "0.2.7",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
@@ -1134,6 +1216,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     // A Lost Agent is out of the turn order as a Dead one is (isOut reads isGone, state.ts).
     initiative: { ...ruleset.initiative, unableStates: ["dead", "lost", "slain"] },
     rests: [{ ...ruleset.rests[0]!, refusedIn: ["dying", "dead", "lost"] }],
+    spends: spends({ ledger: true }),
     entities: [...ruleset.entities, ...catalogueEntities(params)],
     creation: [],
     build: {
