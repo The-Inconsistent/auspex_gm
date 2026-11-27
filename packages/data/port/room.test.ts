@@ -1,8 +1,15 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { CampaignExport, CharacterStats, type CharacterBuildInput } from "@wg/shared";
-import { hazards, wargear } from "../index.ts";
+import {
+  BLIGHTED_SOUL,
+  CampaignExport,
+  CharacterStats,
+  findMutation,
+  sheetMutation,
+  type CharacterBuildInput,
+} from "@wg/shared";
+import { hazards, mutationTables, wargear } from "../index.ts";
 import { remapApproval } from "./build-catalogue.ts";
 import { buildParams } from "./build-params.ts";
 import { buildCreationPacks, CATALOGUE_PACKS } from "./creation-packs.ts";
@@ -113,6 +120,7 @@ const exported = CampaignExport.parse({
       builtAt: 1,
       stats: {
         ...CharacterStats.parse(sergeant.stats),
+        mutations: [sheetMutation(findMutation(mutationTables(), BLIGHTED_SOUL)!)],
         wealth: 5,
         ammo: { Bolt: 2, "Kraken Bolt": 1 },
         requisitioned: { ammo: ID.session },
@@ -438,6 +446,7 @@ test("characters: a build with the fields it does not write, a hand-made sheet, 
     "detail.appearance": "Tall.",
     "detail.personality": "Grim.",
     traumatic: 1,
+    mutations: [BLIGHTED_SOUL],
   });
   assert.deepEqual(ash!.resources, { wrath: 1, wealth: 5, corruption: 0, wounds: 3, shock: 1, ammoBolt: 2 });
   assert.deepEqual(ash!.conditions, ["bleeding", "hindered"]);
@@ -685,6 +694,7 @@ test("the report counts exactly what the file has that the document holds no str
     "left out: a Condition the ruleset does not have": 1,
     "left out: a Condition's stack count": 1,
     "left out: a GM override of a Trait: no field": 1,
+    "left out: a Mutation's printed row: its key is kept": 1,
     "left out: a hazard its place no longer lists": 1,
     "left out: a link to an entry not in the file": 2,
     "left out: a picture the file could not read": 1,

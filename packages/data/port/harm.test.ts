@@ -6,7 +6,10 @@ import {
   CHAOS_SPAWN_AT,
   CharacterStats,
   deriveStats,
+  ENDURING_LIFE,
   exhaustedShock,
+  findMutation,
+  sheetMutation,
   isExhausted,
   isOut,
   mobBonusDice,
@@ -18,6 +21,7 @@ import {
   type LiveState,
   type ThreatCombatant,
 } from "@wg/shared";
+import { mutationTables } from "../index.ts";
 import { loadEngine, type Compiled } from "./engine.ts";
 import { buildRuleset, idOf, THREAT_CLASSES } from "./ruleset.ts";
 
@@ -68,6 +72,9 @@ function rng(seed: number) {
   const pick = <T>(xs: readonly T[]): T => xs[Math.floor(next() * xs.length)]!;
   return { next, int, pick };
 }
+
+// The printed row, as character.mutate puts it on a sheet.
+const ENDURING = sheetMutation(findMutation(mutationTables(), ENDURING_LIFE)!);
 
 const dir = new URL("../fixtures/pregens/", import.meta.url);
 const PREGENS = readdirSync(dir)
@@ -270,9 +277,11 @@ function agentCase(seed: number, ledger: boolean) {
   const [W, S, T] = [d.maxWounds, d.maxShock, d.maxTraumatic];
   const wounds = Math.max(0, pick([0, 1, W - 1, W, W + 1, W + 3, int(0, 2 * W + 2)]));
   const shock = Math.max(0, pick([0, 1, S - 1, S, S + 1, int(0, 2 * S + 2)]));
+  // An Agent with Enduring Life is never Dead, and Annihilation is an ordinary hit (p.294, rules-flow §11.185).
+  const mutations = next() < 0.25 ? [ENDURING] : [];
   const c = {
     id: "ch",
-    stats: { ...stats, corruption },
+    stats: { ...stats, corruption, mutations },
     overrides: {},
     wounds,
     shock,
@@ -291,7 +300,12 @@ function agentCase(seed: number, ledger: boolean) {
 
 const agentActor = (compiled: Compiled, c: Character, tier: number): Actor => ({
   entity: "agent",
-  fields: { ...fieldsOf(c.stats), traumatic: c.traumatic, annihilated: c.annihilated },
+  fields: {
+    ...fieldsOf(c.stats),
+    traumatic: c.traumatic,
+    annihilated: c.annihilated,
+    mutations: c.stats.mutations.map((m) => m.id),
+  },
   resources: { wounds: c.wounds, shock: c.shock, corruption: c.stats.corruption },
   conditions: c.conditions.map(idOf),
   campaign: engine!.campaignValues({ compiled, stored: { tier } }),

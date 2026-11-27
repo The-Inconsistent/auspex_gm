@@ -278,7 +278,10 @@ export function buildRoomDocument(
     if (ch.traumatic) fields.traumatic = ch.traumatic;
     if (ch.annihilated) fields.annihilated = true;
     for (const k of Object.keys(ch.overrides)) note(`${at}.overrides.${k}`, "a GM override of a Trait: no field");
-    s.mutations.forEach((_, j) => note(`${at}.stats.mutations.${j}`, "a Mutation: no field"));
+    // The held Mutations by the book row's id, which Enduring Life and Blighted Soul read (rules-flow §11.188); the row's
+    // name, text and mods are the book's, not the room's.
+    if (s.mutations.length) fields.mutations = s.mutations.map((m) => m.id);
+    s.mutations.forEach((_, j) => note(`${at}.stats.mutations.${j}`, "a Mutation's printed row: its key is kept"));
     for (const k of Object.keys(s.requisitioned)) note(`${at}.stats.requisitioned.${k}`, "a requisition this session");
     s.armour.fitted?.forEach((_, j) => note(`${at}.stats.armour.fitted.${j}`, "an upgrade fitted in play: no field"));
 
