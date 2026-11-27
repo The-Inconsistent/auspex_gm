@@ -1416,6 +1416,21 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      unchanged; the GM's codex fields, tables and generators stay English (a Vietnamese device reads them in English,
      the ruleset's own language). The ledger builder's `build` labels stay one string, as the platform reads them.
      The rulesets are 0.1.18 and 0.2.19, and validate only against a platform with #159. *Issue #326, 2026-11-27.*
+206. **The sheet's meanings on tap, and the GM's words in Vietnamese** (issue #326; InconsisTable's house decisions #126
+     and #211, its #222 and #299). Each of the 63 meanings of `lib/sheet-terms` (this app's own words, never the
+     book's, as its JOIN page already shows them) becomes the `summary` of the definitions that name it
+     (`packages/data/port/meanings.ts`): 54 of them on 123 definitions (the Attributes, Skills and Traits of an Agent
+     and a Threat, the pools, a weapon's profile, the Tier). A definition keeps its own cite; one without a cite takes
+     the term's. Nine name no definition the platform can give a summary (the sections Attributes and Skills, Dice to
+     roll, DN, Abilities, Talents, Wargear, Critical Hit, Perils of the Warp: a heading, a Test's input, a table or an
+     entry, none of which holds one), and the Conditions have no meaning here to carry. The platform holds a summary
+     in one language (its #211), so the meanings are English only. The GM's codex fields and their choices, the tables'
+     rows and the generators and their steps are now given in Vietnamese too (this replaces the last part of §11.205),
+     written for the port; a table's title is one string on the platform and stays English. Kept as the books print
+     them: the Keywords of the relic's enemy table (as the sheet's Keywords stay), "Test", the species Aeldari and Ork,
+     the Imperium's organisations and the High Gothic names (`AS_WRITTEN`). A word the codex shares with another label
+     (Faction, Patron, Framework, Type) reads the same everywhere. The rulesets are 0.1.19 and 0.2.20. *Issue #326,
+     2026-11-27.*
 
 ---
 
