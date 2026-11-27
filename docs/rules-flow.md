@@ -1228,6 +1228,20 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      are a list field shown as chips (the ledger one picks from the psychic powers), adding 2 DN per power to every Test
      and reminded at the psyker's Turn start (p.265, §11.180); the Willpower Test after damage is the GM's to call, as
      no reminder fires after a hit. *The owner's decision 1, and issue #324's recommendation, 2026-11-26.*
+192. **What a Threat takes when it joins, and the encounter budget** (InconsisTable's house decision #92; §11.82,
+     §11.103–§11.108). The three Threat Profiles (VoA p.126) are spawn options, additive, on any Threat at any Tier: an
+     Attribute, Resilience or Resolve printed "–" stays "–", and an unlisted Weapon or Ballistic Skill lands on the
+     Default pool plus the bonus, none without a Default (p.323). Scaling Threats (p.326) is a fourth option whose
+     adjustment adds, once at spawn, the Tier to an Elite's Wounds and Shock and the seated Agents plus the Tier to an
+     Adversary's or a Monstrous Creature's, nothing to a Troop or a Mob, on the class of the campaign's Tier; the
+     platform counts the Agents whose players hold a seat where this repo counted the Agents in the fight, which the
+     ruleset's `decisions` say. A Champion's personal Ruin starts from its stat block (p.325). The budget (Threat
+     Assessment p.8) reads two Troops per Agent, half in Mobs, one Elite or Adversary and 10 enemies tracked, doubled
+     when fortified; Monstrous Creatures have no line, as the book names no target. The ledger ruleset leaves the budget
+     out: the platform reads a budget line over every actor type its creation steps do not build, so the ledger's Agent,
+     which has no class, would be read as spawned; its `decisions` give the budget to the GM until the platform leaves
+     the built actor out. The converter writes a roster line's marker and its Profiles and Scaling as spawn options.
+     *Issue #324's recommendation, 2026-11-26.*
 
 ---
 

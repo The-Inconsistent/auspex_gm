@@ -28,6 +28,7 @@ import {
   MAX_KEYWORD_LENGTH,
   MAX_MUTATIONS,
   MOB_MIN,
+  THREAT_PROFILES,
   SEVERITIES,
   SKILLS,
   Threat,
@@ -725,6 +726,85 @@ export const CODEX = {
   },
 } as const;
 
+// What a Threat may take when it joins a fight (InconsisTable's house decision #92), as prepareThreat does (threat-scale.ts).
+// The Threat Profiles (VoA p.126), additive, on any Threat at any Tier (rules-flow §11.103, §11.108): an Attribute,
+// Resilience or Resolve printed "–" stays "–" (an add skips an unset field), and an unlisted Skill lands on the
+// block's Default pool plus the bonus (p.323, §11.105), none without a Default.
+const PROFILE_SKILL: Record<string, string> = {
+  "Weapon Skill": "skill.weaponSkill",
+  "Ballistic Skill": "skill.ballisticSkill",
+};
+const profileEffects = (mods: (typeof THREAT_PROFILES)[number]["mods"]) => [
+  ...Object.entries(mods.attributes ?? {}).map(([a, d]) => ({
+    path: attrPath(a as Attribute),
+    mode: "add",
+    value: String(d),
+  })),
+  ...Object.entries(mods.skills ?? {}).flatMap(([name, d]) => {
+    const path = PROFILE_SKILL[name]!;
+    return [
+      { path, mode: "add", value: String(d) },
+      { path, mode: "override", value: `skill.default + ${d}`, when: `!has(${path}) && has(skill.default)` },
+    ];
+  }),
+  ...(mods.resilience ? [{ path: "stat.resilience", mode: "add", value: String(mods.resilience) }] : []),
+  ...(mods.resolve ? [{ path: "stat.resolve", mode: "add", value: String(mods.resolve) }] : []),
+];
+// Scaling Threats (p.326, scaleBy): an Elite takes the Tier in Wounds and Shock, an Adversary or a Monstrous Creature
+// the Agents seated plus the Tier, a Troop or a Mob nothing (a Mob's members have 1 Wound each, p.325, §11.107); a Shock
+// printed "–" stays "–". Fixed at spawn on the class of the campaign's Tier.
+const SCALE_BY = `${CLASS} == "elite" ? campaign.tier : (${CLASS} == "troop" ? 0 : party.seated + campaign.tier)`;
+// Building Encounters (Threat Assessment p.8, encounterBudget, rules-flow §11.82): two Troops per Agent, half of them in
+// Mobs, one Elite or Adversary, at most 10 enemies tracked (a Mob is one); a fortified position doubles each.
+const TROOP = `${CLASS} == "troop"`;
+export const SPAWN = {
+  options: [
+    ...THREAT_PROFILES.map((p) => ({
+      id: idOf(p.id),
+      label: p.name,
+      entities: ["threat"],
+      effects: profileEffects(p.mods),
+      cite: p.cite,
+    })),
+    // Only a switch: what it adds is the adjustment below.
+    { id: "scaled", label: "Scaling Threats", entities: ["threat"], effects: [], cite: "Core p.326" },
+  ],
+  adjust: [
+    {
+      option: "scaled",
+      entities: ["threat"],
+      when: "!ctx.mob",
+      add: { "stat.wounds": SCALE_BY, "stat.shock": SCALE_BY },
+      cite: "Core p.326",
+    },
+  ],
+  budget: {
+    cite: "Threat Assessment p.8",
+    lines: [
+      { id: "troops", label: "Troops", cost: `${TROOP} ? ctx.count : 0`, budget: "2 * party.seated" },
+      {
+        id: "inMobs",
+        label: "Of those, in Mobs",
+        cost: `${TROOP} && ctx.mob && ctx.count >= ${MOB_MIN} ? ctx.count : 0`,
+        budget: "party.seated",
+      },
+      {
+        id: "elites",
+        label: "Elite or Adversary",
+        cost: `${CLASS} == "elite" || ${CLASS} == "adversary" ? ctx.count : 0`,
+        budget: "1",
+      },
+      {
+        id: "enemies",
+        label: "Enemies tracked",
+        cost: `ctx.mob && ctx.count >= ${MOB_MIN} ? 1 : ctx.count`,
+        budget: "10",
+      },
+    ],
+    switches: [{ id: "fortified", label: "Fortified position", by: "ctx.budget * 2" }],
+  },
+};
+
 /**
  * The ruleset. By default (0.1.x) a character is copied in by hand through the `creation` steps. With
  * `builder: "ledger"` (0.2.x) the Agent is bought with XP by InconsisTable's ledger builder instead: the `build` block
@@ -770,7 +850,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
 
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.9",
+    version: "0.1.10",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
@@ -1008,7 +1088,15 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         ...party,
         cite: "Core pp.324-325",
       },
-      { id: "personalRuin", label: "Personal Ruin", scope: "entity", entities: ["threat"], cite: "Core p.323, p.325" },
+      {
+        // A Champion's own Ruin, seeded from its stat block when it joins (combatant.personalRuin, p.325).
+        id: "personalRuin",
+        label: "Personal Ruin",
+        scope: "entity",
+        entities: ["threat"],
+        start: "has(stat.personalRuin) ? stat.personalRuin : 0",
+        cite: "Core p.323, p.325",
+      },
       { id: "wealth", label: "Wealth", scope: "entity", entities: ["agent"], ...party, cite: "Core p.38" },
       {
         id: "corruption",
@@ -1303,6 +1391,17 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         text: "Manifest is offered to an Agent with Psychic Mastery or the PSYKER Keyword, and to a Threat with either; a power on a ledger sheet alone does not open it.",
         cite: "Core p.259",
       },
+      // What spawning cannot say (rules-flow §11.192).
+      {
+        id: "scaleBySeated",
+        text: "Scaling Threats counts the Agents whose players hold a seat, where this app counted the Agents in the fight.",
+        cite: "Core p.326",
+      },
+      {
+        id: "monstrousBudgetUncounted",
+        text: "The encounter budget has no line for Monstrous Creatures: the book names a target for Troops, Mobs, Elites and Adversaries only.",
+        cite: "Threat Assessment p.8",
+      },
       {
         id: "stacksUncapped",
         text: "Hindered, Bleeding and Vulnerable stack with no cap; the other Conditions are held or not.",
@@ -1400,6 +1499,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         cite: "Core pp.287-295",
       },
     },
+    spawn: SPAWN,
     spends: spends({ ledger: false }),
     // Three pending asks at once (MAX_PENDING_SPENDS), counted per user on the platform (rules-flow §11.189).
     requests: { max: MAX_PENDING_SPENDS },
@@ -1409,7 +1509,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.9",
+    version: "0.2.10",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
@@ -1423,6 +1523,18 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     initiative: { ...ruleset.initiative, unableStates: ["dead", "lost", "slain"] },
     rests: [{ ...ruleset.rests[0]!, refusedIn: ["dying", "dead", "lost"] }],
     spends: spends({ ledger: true }),
+    // ponytail: the budget's cost is compiled over every actor type the creation steps do not build, so the ledger's
+    // Agent (built by `build`, not `creation`) is read as spawned and has no class; the budget comes back once the
+    // platform leaves `build.actor` out of it.
+    spawn: { options: SPAWN.options, adjust: SPAWN.adjust },
+    decisions: [
+      ...ruleset.decisions,
+      {
+        id: "budgetByHand",
+        text: "The encounter budget is the GM's in this ruleset: two Troops per Agent, half in Mobs, one Elite or Adversary, at most 10 enemies, doubled in a fortified position.",
+        cite: "Threat Assessment p.8",
+      },
+    ],
     tests: { ...ruleset.tests, requisition: requisition() },
     // GIVE reads the codex item's catalogue entry; an item with none is given as gear by its name (p.205, §11.112).
     items: { kinds: ITEM_KINDS, give: { ref: "wargear", loose: "gear" }, acquire: ACQUIRE },
