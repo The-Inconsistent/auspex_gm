@@ -3,7 +3,6 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import {
   BLIGHTED_SOUL,
-  CampaignExport,
   citeLine,
   CharacterStats,
   findMutation,
@@ -18,7 +17,7 @@ import { buildCreationPacks, CATALOGUE_PACKS } from "./creation-packs.ts";
 import { loadCoreSchema, loadEngine } from "./engine.ts";
 import { buildCodexPack, testOf } from "./codex-packs.ts";
 import { buildCustomThreatPack, buildPack } from "./pack.ts";
-import { buildRoomDocument, CAPS, Refusal, relicWords, RELIC_POWER_MAX } from "./room.ts";
+import { buildRoomDocument, CAPS, PortExport, Refusal, relicWords, RELIC_POWER_MAX } from "./room.ts";
 import { buildRuleset } from "./ruleset.ts";
 import { buildWorld, HANDOUT_DEFAULT_HEADER } from "./world.ts";
 
@@ -30,6 +29,9 @@ const noDocument =
   core === null
     ? "InconsisTable is not checked out beside this repo"
     : !core.RoomDocument && "this InconsisTable checkout has no room document yet";
+// Session dates, a status, stacks and the Ascension bookkeeping came with InconsisTable's #232.
+const noDates =
+  noDocument || (!core!.RoomExportReport && "this InconsisTable checkout's room document has no dates yet");
 // A GM approval moves with the creation pack's wording, which only the platform's ledger builder gives.
 const reworded =
   engine?.BuildParams && engine.buildSchemas
@@ -74,6 +76,7 @@ const ID = {
   fall: id(25),
   picture: id(30),
   session: id(40),
+  running: id(41),
   nowhere: id(99),
 } as const;
 const threatPack = buildPack().pack;
@@ -103,10 +106,10 @@ const ARMOUR_UPGRADE = [...wargear.values()].find((w) => w.upgrade?.mods.some((m
 
 const VISIONS = findMutation(mutationTables(), "visions")!;
 
-const exported = CampaignExport.parse({
+const exported = PortExport.parse({
   format: "auspex-campaign",
   version: 1,
-  exportedAt: "2026-01-01T00:00:00.000Z",
+  exportedAt: "2026-01-08T00:00:00.000Z",
   campaign: {
     name: "The Silent Choir",
     tier: 3,
@@ -147,7 +150,10 @@ const exported = CampaignExport.parse({
       wrath: 1,
       traumatic: 1,
       xp: 12,
-      conditions: ["Bleeding", "Hindered (2)", "Glowing"],
+      conditions: ["Bleeding", "Hindered (2)", "Pinned (2)", "Glowing"],
+      // The file's Ascension bookkeeping, which CampaignExport does not parse.
+      xpAtAscension: 8,
+      ascensionPackageWaived: true,
       detail: { appearance: "Tall.", personality: "Grim.", portrait: "p1" },
       overrides: { defence: 3 },
       objectives: [
@@ -360,6 +366,8 @@ const exported = CampaignExport.parse({
         notes: "Slow.",
         xp: 10,
       },
+      // Still running at export.
+      { id: ID.running, number: 2, startedAt: "2026-01-07T19:00:00.000Z", endedAt: null, recap: "", xp: 0 },
     ],
     customThreats: [
       {
@@ -394,7 +402,7 @@ const entry = (entryId: string) => document.codex.find((e) => e.id === entryId)!
 const scene = entry(ID.bells);
 const descent = entry(ID.descent);
 
-test("the document passes InconsisTable's RoomDocument", { skip: noDocument }, () => {
+test("the document passes InconsisTable's RoomDocument", { skip: noDates }, () => {
   const parsed = core!.RoomDocument!.safeParse(document);
   if (!parsed.success)
     assert.fail(parsed.error.issues.map((i) => `${i.path.map(String).join(".")}: ${i.message}`).join("\n"));
@@ -468,12 +476,19 @@ test("the room: name, next session, Tier, pools, and the versions it expects", (
     { reworded },
   );
   assert.ok(!official.document.expects.packs.some((p) => p.slug === CATALOGUE_PACKS.homebrew.slug));
-  assert.equal(document.sessions.length, 1);
-  assert.deepEqual(document.sessions[0], {
-    title: "First bell",
-    recap: `Met @[Deacon Rell](${ID.rell}) and @[npc:${ID.nowhere}].`,
-    notes: "Slow.",
-  });
+  // Each session with its dates and award (InconsisTable's house decision #181); one still running at export comes
+  // back ended then, with no award (#182), and none is abandoned (rules-flow §11.202).
+  assert.deepEqual(document.sessions, [
+    {
+      title: "First bell",
+      recap: `Met @[Deacon Rell](${ID.rell}) and @[npc:${ID.nowhere}].`,
+      notes: "Slow.",
+      startedAt: "2026-01-01T19:00:00.000Z",
+      endedAt: "2026-01-01T23:00:00.000Z",
+      award: 10,
+    },
+    { startedAt: "2026-01-07T19:00:00.000Z", endedAt: "2026-01-08T00:00:00.000Z" },
+  ]);
   assert.deepEqual(
     document.images.map((p) => p.id),
     [ID.picture],
@@ -495,7 +510,11 @@ test("characters: a build with the fields it does not write, a hand-made sheet, 
     mutations: [BLIGHTED_SOUL, "visions-true-divination"],
   });
   assert.deepEqual(ash!.resources, { wrath: 1, wealth: 5, corruption: 0, wounds: 3, shock: 1, ammoBolt: 2 });
-  assert.deepEqual(ash!.conditions, ["bleeding", "hindered"]);
+  // A rated Condition with its stacks (house decision #181); Pinned does not stack, so its count is reported.
+  assert.deepEqual(ash!.conditions, ["bleeding", { id: "hindered", stacks: 2 }, "pinned"]);
+  assert.deepEqual([ash!.xpAtAscension, ash!.packageWaived], [8, true]);
+  // The defaults are left out, and no status is written: Annihilated is the field, not the platform's `dead` (§11.202).
+  assert.deepEqual([bel!.xpAtAscension, bel!.packageWaived, "status" in bel!], [undefined, undefined, false]);
   // The marksman's GM approval stays; one of a reworded requirement moves to the port's wording.
   const approved = (JSON.parse(bel!.build!) as { gm: { approved: string[] } }).gm.approved;
   assert.deepEqual(approved, [
@@ -508,6 +527,7 @@ test("characters: a build with the fields it does not write, a hand-made sheet, 
   assert.equal(cog!.fields!["attr.wil"], stats.attributes.Wil);
   assert.equal(cog!.fields!.species, stats.species);
   assert.equal(cog!.fields!.annihilated, true);
+  assert.ok(!("status" in cog!));
 });
 
 test("objectives: one quest each, read by that character alone, its story as a mention in the GM notes", () => {
@@ -785,7 +805,7 @@ test("the report counts exactly what the file has that the document holds no str
     "gm notes: an objective rolled for the session": 1,
     "gm notes: an objective's story link": 1,
     "left out: a Condition the ruleset does not have": 1,
-    "left out: a Condition's stack count": 1,
+    "left out: a stack count on a Condition that does not stack": 1,
     "left out: a Mutation's printed row: its key is kept": 2,
     "left out: a hand-made line longer than an item's name": stats.gear.filter((g) => g.length > CAPS.itemName).length,
     "left out: a hand-made weapon's profile: its name is carried": stats.weapons.length,
@@ -797,9 +817,6 @@ test("the report counts exactly what the file has that the document holds no str
     "left out: a requisition this session": 1,
     "left out: an on-entry pick the scene no longer links": 1,
     "left out: an upgrade fitted in play to a line the build does not give": 1,
-    "left out: the XP a session awarded: the sheets hold it": 1,
-    "left out: the time a session ended": 1,
-    "left out: the time a session started": 1,
     "left out: the time it was revealed": 1,
     "left out: the time the build was made": 1,
   });
@@ -834,6 +851,7 @@ test("nothing of the file is lost without being in the document or the report", 
     [/\.asMob$/, () => scene.prep!.roster.some((l) => l.mob)],
     [/\.done$/, () => document.codex.some((e) => e.kind === "quest" && e.status === "done")],
     [/\.annihilated$/, () => document.actors.some((a) => a.fields?.annihilated === true)],
+    [/\.ascensionPackageWaived$/, () => document.actors.some((a) => a.packageWaived)],
     // The homebrew books' pack is expected (#325).
     [/^campaign\.homebrew$/, () => document.expects.packs.some((p) => p.slug === CATALOGUE_PACKS.homebrew.slug)],
     [
@@ -856,6 +874,8 @@ test("nothing of the file is lost without being in the document or the report", 
     if (value === true) return TRUE.some(([re, f]) => re.test(path) && f(path));
     if (typeof value === "number") return haystack.includes(String(value));
     if (/\.build\.gm\.approved\.\d+$/.test(path)) value = remapApproval(value, reworded, "auspex", "port");
+    // A rated Condition is said as its id and its stacks.
+    if (/\.conditions\.\d+$/.test(path)) value = value.replace(/ \((\d+)\)$/, " stacks $1");
     // A mention is said in the platform's form, so each part of the text around it is looked for.
     return value
       .split(/@\[[a-z]+:[0-9a-f-]{36}\]/)
@@ -909,7 +929,7 @@ test("an entry copied from a book names the codex pack entry it was made from (#
   raw.codex.npcs.push({ id: id(50), name: npc.name, gmNotes: `${citeLine(npc)}\n\nCopied.` });
   raw.codex.factions.push({ id: id(51), name: faction.name, notes: threatCite(faction) });
   raw.codex.locations.push({ id: id(52), name: place.name, gmNotes: threatCite(place) });
-  const { document } = buildRoomDocument(CampaignExport.parse(raw), { reworded });
+  const { document } = buildRoomDocument(PortExport.parse(raw), { reworded });
   const source = (entryId: string) => document.codex.find((e) => e.id === entryId)!.source;
   assert.deepEqual(source(id(50)), { entity: "npcPreset", key: npc.id });
   assert.deepEqual(source(id(51)), { entity: "factionPreset", key: faction.id });

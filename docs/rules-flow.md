@@ -1341,7 +1341,7 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      bonus dice with their when stays a GM note, as before. An NPC, a faction or a place copied from a book (ADD FROM
      BOOK keeps the printed name and opens the notes with its cite) names the codex pack entry it was made from as its
      `source`, so its page opens from the entry; a scene from a book event keeps no such mark in this repo's export
-     and names none. Abandoned sessions stay undecided (issue #327 question 1). *Issue #327's recommendation,
+     and names none. Abandoned sessions are never written (§11.202). *Issue #327's recommendation,
      2026-11-27.*
 201. **The phone's fight panels** (InconsisTable's house decisions #114 to #117, its pull request #257; §11.172,
      §11.175, §11.177, issue #324). The phone's Fight tab is declared as panels, each in the ruleset's own short words
@@ -1360,6 +1360,23 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      reads no foe), and sinking a combat option the Agent's weapons do not allow (no expression reads the weapons
      carried), so each option says what it needs instead. The ruleset is 0.1.17 and 0.2.17, and validates only against
      a platform with #257. *Issue #324's recommendation, 2026-11-27.*
+202. **What the converter writes for sessions, a character's standing and the library card** (issue #327; InconsisTable's
+     house decisions #181, #182 and #187, ADR 0012 decision 4 as amended). Each session goes with its `startedAt` and
+     `endedAt`, and its `xp` as the `award`; one still running at export comes back ended at the export's time, with
+     no award (the owner's decision). None is written `abandoned`: this repo records no abandoned session apart
+     (`session.abandon` ends one with 0 XP), and the platform infers none from a missing end or award, so issue #327's
+     question 1 closes as "never written" (the owner's decision). A rated Condition ("Hindered (2)", `addCondition`)
+     goes as `{ id, stacks }` where the ruleset stacks it (Hindered, Bleeding, Vulnerable, §11.188); a count on any
+     other is reported and the Condition goes plain. `xpAtAscension` and `ascensionPackageWaived`, which this repo's
+     file carries on each character but `CampaignExport` does not parse, are read by the converter's own `PortExport`
+     and go as `xpAtAscension` and `packageWaived` (0 and false left out). **No status is written.** This repo never
+     retires a character, so there is no `retired` to carry. An Annihilated Agent (p.194, §11.7) is not the platform's
+     `dead` status: `annihilated` is one of two ways to be Dead (Traumatic Injuries past the limit is the other), is
+     undone by the GM's RESTORE and by TURN BACK, where the platform's `dead` is a lifecycle status its health tracks
+     refuse changes on. It stays the `annihilated` field, which the ruleset's Dead state reads. The
+     ledger ruleset (0.2.18) names the archetype on a finished character's library card (`build.libraryLine:
+     "archetypes"`), as this repo's YOUR CHARACTERS does; it validates against a platform with #233, the by-hand
+     ruleset is unchanged. *Issue #327's recommendation, 2026-11-27.*
 
 ---
 

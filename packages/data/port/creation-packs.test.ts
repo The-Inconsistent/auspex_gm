@@ -277,7 +277,8 @@ test("the default ruleset is the by-hand one, unchanged", () => {
 test("the ledger ruleset's build block meets the rules the platform checks", () => {
   const { build, entities, creation, campaignFields } = ledger;
   const params = buildParams();
-  assert.equal(ledger.version, "0.2.17");
+  assert.equal(ledger.version, "0.2.18");
+  assert.equal(build.libraryLine, "archetypes");
   assert.equal(build.strategy, "ledger");
   const agent = entities.find((e) => e.id === build.actor)!;
   assert.equal(agent.base, "actor");

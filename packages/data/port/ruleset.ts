@@ -479,7 +479,7 @@ const FEAR_OFFER = {
 
 // The Conditions the book prints with a rating that stacks: Hindered (2) and Bleeding (3) (p.197), Vulnerable (2) (the
 // Critical Hit table, p.198). The rest are held or not (addCondition, lookups.ts; rules-flow §11.188).
-const RATED = new Set(["Hindered", "Bleeding", "Vulnerable"]);
+export const RATED = new Set(["Hindered", "Bleeding", "Vulnerable"]);
 // A line for the side running the fight while a combatant holds the Condition (TURN_START_REMINDERS and
 // TURN_END_REMINDERS, state.ts; pp.198-200), in this ruleset's words.
 const CONDITION_LINES: Record<string, { at: "turnStart" | "turnEnd"; text: string }> = {
@@ -2379,7 +2379,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.17",
+    version: "0.2.18",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
@@ -2474,6 +2474,9 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
       // A build saved over a sheet made by hand keeps its armour and Wealth (keepSheet, build.ts): the GM's ruling, no
       // printed page (rules-flow §11.193).
       keep: { fields: ["armour.ar", "armour.powered"], resources: ["wealth"] },
+      // A finished character's library card names its archetype, as this app's does (lobby-view.tsx; InconsisTable's
+      // house decision #187).
+      libraryLine: "archetypes",
     },
   };
 }
