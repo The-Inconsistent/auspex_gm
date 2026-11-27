@@ -860,7 +860,6 @@ export function buildRoomDocument(
       fields: premise,
       visibility: "party",
     });
-  if (!campaign.homebrew) note("campaign.homebrew", "the platform's ledger builder always allows homebrew");
 
   const exportedAt = new Date(exported.exportedAt);
   const document: RoomDocument = {
@@ -880,6 +879,8 @@ export function buildRoomDocument(
       packs: [
         CATALOGUE_PACKS.creation,
         CATALOGUE_PACKS.wargear,
+        // The homebrew books are their own pack (#325, rules-flow §11.198): a campaign allowing them expects it.
+        ...(campaign.homebrew ? [CATALOGUE_PACKS.homebrew] : []),
         { slug: threatPack.id, version: threatPack.version },
         MUTATION_PACK,
         CODEX_PACK,

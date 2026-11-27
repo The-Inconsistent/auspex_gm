@@ -1,7 +1,7 @@
 // Writes the Wrath & Glory ruleset, and optionally its Threat pack, for InconsisTable:
 // `bun packages/data/port/write.ts <ruleset file> [<pack file>]`; and, for its ledger builder, the ledger ruleset and
 // the creation and wargear packs: `... [--ledger <file>] [--creation <file>] [--wargear <file>]` (with or without the
-// ruleset file); and the World, this app's look: `... [--world <file>]`. Import the files through InconsisTable's
+// ruleset file), and the homebrew books' pack (`--homebrew <file>`); and the World, this app's look: `... [--world <file>]`. Import the files through InconsisTable's
 // /library; the Mutation and codex packs (`--mutations <file>`, `--codex <file>`); and a campaign export of this app as a room document (`--room <export file> <room file>`, room.ts), which
 // InconsisTable's IMPORT A ROOM takes. All are private content: keep them out of both repos (`port-out/` is ignored).
 import { readFileSync, writeFileSync } from "node:fs";
@@ -40,6 +40,7 @@ const { values: flags, positionals } = parseArgs({
     ledger: { type: "string" },
     creation: { type: "string" },
     wargear: { type: "string" },
+    homebrew: { type: "string" },
     world: { type: "string" },
     mutations: { type: "string" },
     codex: { type: "string" },
@@ -47,12 +48,13 @@ const { values: flags, positionals } = parseArgs({
 });
 const [out, packOut] = positionals;
 const ledgerOut = flags.ledger;
-const catalogueOut = { creation: flags.creation, wargear: flags.wargear };
+const catalogueOut = { creation: flags.creation, wargear: flags.wargear, homebrew: flags.homebrew };
 if (
   (!out &&
     !ledgerOut &&
     !catalogueOut.creation &&
     !catalogueOut.wargear &&
+    !catalogueOut.homebrew &&
     !flags.world &&
     !flags.mutations &&
     !flags.codex &&
@@ -62,7 +64,7 @@ if (
   (room && room.length !== 2)
 ) {
   console.error(
-    "usage: bun packages/data/port/write.ts [<ruleset file> [<pack file>]] [--ledger <file>] [--creation <file>] [--wargear <file>] [--world <file>] [--mutations <file>] [--codex <file>] [--custom-threats <export file> <pack file>] [--room <export file> <room file>]",
+    "usage: bun packages/data/port/write.ts [<ruleset file> [<pack file>]] [--ledger <file>] [--creation <file>] [--wargear <file>] [--homebrew <file>] [--world <file>] [--mutations <file>] [--codex <file>] [--custom-threats <export file> <pack file>] [--room <export file> <room file>]",
   );
   process.exit(2);
 }
@@ -119,7 +121,7 @@ if (custom) {
   }
 }
 
-if (ledgerOut || catalogueOut.creation || catalogueOut.wargear) {
+if (ledgerOut || catalogueOut.creation || catalogueOut.wargear || catalogueOut.homebrew) {
   const ledger = buildRuleset({ builder: "ledger" });
   let ledgerRuleset = null;
   if (engine !== null) {
@@ -136,13 +138,13 @@ if (ledgerOut || catalogueOut.creation || catalogueOut.wargear) {
     writeFileSync(ledgerOut, `${JSON.stringify(ledger, null, 2)}\n`);
     console.log(`${ledger.id} ${ledger.version} (ledger) → ${ledgerOut}: ${manifestBytes(ledger)}`);
   }
-  if (catalogueOut.creation || catalogueOut.wargear) {
+  if (catalogueOut.creation || catalogueOut.wargear || catalogueOut.homebrew) {
     if (!engine?.BuildParams || !engine.buildSchemas) {
       console.error("the packs are built with InconsisTable's ledger builder: check out a version that has it");
       process.exit(1);
     }
     const packs = buildCreationPacks(engine.buildSchemas(engine.BuildParams.parse(buildParams())));
-    for (const kind of ["creation", "wargear"] as const) {
+    for (const kind of ["creation", "wargear", "homebrew"] as const) {
       const file = catalogueOut[kind];
       if (!file) continue;
       const pack = packs[kind];
