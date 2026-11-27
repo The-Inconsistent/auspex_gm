@@ -21,7 +21,7 @@ import { CampaignExport } from "@wg/shared";
 import { buildMutationPack } from "./mutations.ts";
 import { buildCustomThreatPack, buildPack, type LeftOut, type Pack } from "./pack.ts";
 import { buildRoomDocument, Refusal } from "./room.ts";
-import { buildRuleset } from "./ruleset.ts";
+import { buildRuleset, withoutBuildReaders } from "./ruleset.ts";
 import { buildWorld } from "./world.ts";
 
 // `--custom-threats` and `--room` take two values, which parseArgs cannot say: taken out first.
@@ -123,8 +123,8 @@ if (ledgerOut || catalogueOut.creation || catalogueOut.wargear) {
     const c = engine.compileRuleset(ledger);
     if (!c.ok) refuse(c.problems);
     else ledgerRuleset = c.compiled.ruleset;
-    // The layout's cards and folds read the saved build: the probe without a build leaves them out too.
-    if (!checksBuild(engine, { ...ledger, layout: {} }))
+    // What reads the saved build (cards, folds, ledger strikes) goes with it in the probe.
+    if (!checksBuild(engine, withoutBuildReaders(ledger)))
       console.warn("this InconsisTable checkout does not check the build block yet");
     else if (!checksPlay(engine, ledger))
       console.warn("this InconsisTable checkout does not check the build block's ascension, gone and award keys yet");

@@ -7,7 +7,7 @@ import { buildParams } from "./build-params.ts";
 import { buildCreationPacks, entryKey, type CatalogueEntry } from "./creation-packs.ts";
 import { checksBuild, checksPlay, checksRecord, loadEngine, type Compiled } from "./engine.ts";
 import type { Pack } from "./pack.ts";
-import { CATALOGUE_KINDS, buildRuleset } from "./ruleset.ts";
+import { CATALOGUE_KINDS, buildRuleset, withoutBuildReaders } from "./ruleset.ts";
 
 // The creation and wargear packs and the ledger ruleset (InconsisTable's ADR 0011, stage 2). The packs are built from
 // the builder's own schemas, so everything but the ruleset's shape is skipped when InconsisTable is not checked out
@@ -250,7 +250,7 @@ test("the leak test finds wording planted in a pack", { skip }, () => {
 
 test("the default ruleset is the by-hand one, unchanged", () => {
   const plain = buildRuleset();
-  assert.equal(plain.version, "0.1.11");
+  assert.equal(plain.version, "0.1.12");
   assert.ok(!("build" in plain));
   assert.ok(plain.creation.length > 0);
   assert.deepEqual(
@@ -263,7 +263,7 @@ test("the default ruleset is the by-hand one, unchanged", () => {
 test("the ledger ruleset's build block meets the rules the platform checks", () => {
   const { build, entities, creation, campaignFields } = ledger;
   const params = buildParams();
-  assert.equal(ledger.version, "0.2.11");
+  assert.equal(ledger.version, "0.2.12");
   assert.equal(build.strategy, "ledger");
   const agent = entities.find((e) => e.id === build.actor)!;
   assert.equal(agent.base, "actor");
@@ -338,8 +338,8 @@ const compiledLedger = (): Compiled["ruleset"] | null => {
 };
 const checked =
   skip ||
-  // Its layout's cards and folds read the saved build, so the probe without a build leaves the layout out too.
-  (!checksBuild(engine!, { ...ledger, layout: {} })
+  // What reads the saved build (cards, folds, ledger strikes) goes with it in the probe.
+  (!checksBuild(engine!, withoutBuildReaders(ledger))
     ? "this InconsisTable checkout does not check a ruleset's build block yet"
     : !checksRecord(engine!, compiledLedger()!, built!.wargear)
       ? "this InconsisTable checkout does not check a pack entry's record yet"

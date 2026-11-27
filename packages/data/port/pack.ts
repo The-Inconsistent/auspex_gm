@@ -9,6 +9,7 @@
 //
 // `buildCustomThreatPack` turns a campaign export's own Threats into a pack of the same shape (`--custom-threats`).
 import {
+  isMeleeProfile,
   SKILLS,
   threatCite,
   threatClassAt,
@@ -18,6 +19,7 @@ import {
   type Weapon,
 } from "@wg/shared";
 import { threats } from "../index.ts";
+import { TRAIT_TEXT_MAX } from "./creation-packs.ts";
 import { idOf, THREAT_CLASSES } from "./ruleset.ts";
 
 export type FieldValue = number | string | boolean | string[];
@@ -165,6 +167,11 @@ function threatEntries(
     if (w.salvo !== null && w.salvo !== undefined) wb.salvo = w.salvo;
     if (w.count !== undefined) wb.count = w.count;
     wb.traits = w.traits;
+    // What a strike reads (house decision #99): melee rolls Weapon Skill (threatAttackPool), the Traits as one text.
+    wb.melee = w.melee ?? isMeleeProfile(w);
+    const traitText = w.traits.join(", ");
+    if (traitText.length > TRAIT_TEXT_MAX) skip("weapon Traits over a text's length", t.id);
+    else if (traitText) wb.traitText = traitText;
     if (fromOption !== undefined) wb.fromOption = fromOption;
     weaponEntries.push({ key, type: "weapon", name: w.name, ...at, visibility: "gm", body: wb });
     return key;
@@ -195,8 +202,8 @@ function threatEntries(
 }
 
 // Both rulesets this repo generates: 0.1.x (copied in by hand) and 0.2.x (the ledger builder), from the versions whose
-// Threat can be spawned as a Mob (0.1.1, 0.2.1).
-const THREAT_RULESET = { id: "wrath-and-glory", range: "^0.1.1 || ^0.2.1" };
+// weapon carries what a strike reads (0.1.12, 0.2.12).
+const THREAT_RULESET = { id: "wrath-and-glory", range: "^0.1.12 || ^0.2.12" };
 
 export function buildPack(): { pack: Pack; leftOut: LeftOut[]; normalised: Record<string, number> } {
   const leftOut: LeftOut[] = [];
@@ -204,7 +211,8 @@ export function buildPack(): { pack: Pack; leftOut: LeftOut[]; normalised: Recor
   const entries = [...threats.values()].flatMap((t) => threatEntries(t, threatCite(t), leftOut, normalised));
   const pack: Pack = {
     id: "wrath-and-glory-threats",
-    version: "0.1.1",
+    // 0.1.2: a weapon's melee and Traits as text, which a strike reads (#325).
+    version: "0.1.2",
     ruleset: THREAT_RULESET,
     license: "private",
     entries,
@@ -239,7 +247,7 @@ export function buildCustomThreatPack(exported: CampaignExport): {
     .replace(/-+$/, "");
   const pack: Pack = {
     id: `${slug}${CUSTOM_SUFFIX}`,
-    version: "0.1.0",
+    version: "0.1.1",
     ruleset: THREAT_RULESET,
     license: "original",
     entries,

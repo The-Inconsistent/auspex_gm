@@ -1255,6 +1255,22 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      Threat's tracker row carries its personal Ruin (p.325) and no class tag (issue #324 question 3): the class is the
      column of the campaign's Tier, which no enum field holds. None of these has a printed page beyond the cites given;
      the ruleset's `decisions` say so. *Issue #324's recommendation, 2026-11-26.*
+194. **The port's attack guide** (InconsisTable's house decisions #99, #101, #112, #113; §11.173, §11.176, §11.180).
+     Three strikes follow `attack.ts`: a Threat's attack with a weapon of its stat block, rolling Weapon Skill for a
+     swung weapon and Ballistic Skill otherwise, else its Default pool (p.323), with a Mob's bonus dice (p.324); an
+     Agent's weapon from the saved build or an item carried, rolling the Weapon or Ballistic Skill total and showing
+     Damage with Strength for a weapon that adds it (pp.211–213) and its Extra Damage Dice; and a psychic power from the
+     saved build at its printed DN with the Power Level's dice and Shock (pp.259–260). The DN to hit is the target's
+     Defence, +1 while the attacker is Wounded (a Mob never is) and +2 per power it sustains (`hitDn`); the damage total
+     typed in does what `woundsFromDamage` gives against Resilience less AP, never below 0, 1 Shock on a tie, none for a
+     Threat printed "–" (pp.182–183, 192, 324). The weapon guides offer Critical Hits next and the power Perils. A block
+     printing "Weapons Skill" rolls it, as the pack reads the misprint, where this repo's guide fell back to the Default
+     pool. The phone's own guide reads no Threat number (issue #324 question 4, the owner's direction of 2026-11-26):
+     the player types the Defence and Resilience the GM gives and tells the GM the outcome, as §11.173 shows the DN only
+     with the stat block; it is not one the player sends. Invulnerable armour against AP, cover, range, Aim, Salvo,
+     Traits, ED printed as dice and a DN printed in words stay the GM's, in the ruleset's `decisions`. The wargear pack
+     (0.1.2) carries a weapon's Damage, ED, AP, Salvo, melee, Strength and Traits as text, and the Threat pack (0.1.2) a
+     weapon's melee and Traits as text, which the strikes read. *Issue #324's recommendation, 2026-11-26.*
 
 ---
 

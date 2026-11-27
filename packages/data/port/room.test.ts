@@ -444,7 +444,7 @@ test("the room: name, next session, Tier, pools, and the versions it expects", (
       CATALOGUE_PACKS.wargear,
       { slug: threatPack.id, version: threatPack.version },
       { slug: "wrath-and-glory-mutations", version: "0.1.0" },
-      { slug: buildCustomThreatPack(exported).pack.id, version: "0.1.0" },
+      { slug: buildCustomThreatPack(exported).pack.id, version: "0.1.1" },
     ],
     world: { slug: world.id, version: world.version },
   });

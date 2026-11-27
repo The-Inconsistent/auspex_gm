@@ -592,6 +592,14 @@ function catalogueEntities(params: ReturnType<typeof buildParams>) {
       // What a requisition reads (p.205) and the slot an upgrade takes on its host (pp.227-228, rules-flow §11.64).
       keywords: { type: "list", label: "Keywords", ...party, cite: "Core p.205" },
       slot: { type: "enum", label: "Upgrade slot", values: [...UPGRADE_SLOTS], ...party, cite: "Core p.227" },
+      // A weapon's numbers, which a strike reads (house decision #99), cited as the stat block terms are.
+      damage: { type: "int", label: "Damage", min: 0, ...party, cite: statCite("Damage and Extra Damage Dice") },
+      ed: { type: "int", label: "Extra Damage Dice", min: 0, ...party, cite: statCite("Damage and Extra Damage Dice") },
+      ap: { type: "int", label: "AP", max: 0, ...party, cite: statCite("Armour Penetration") },
+      salvo: { type: "int", label: "Salvo", min: 0, ...party, cite: statCite("Salvo") },
+      melee: { type: "bool", label: "Melee", ...party, cite: statCite("Range") },
+      addStrength: { type: "bool", label: "Adds Strength", ...party, cite: "Core pp.211-213" },
+      traits: { type: "text", label: "Traits", maxLength: 200, ...party, cite: "Core p.208" },
     },
   };
   const labels: Record<CatalogueKind, string> = {
@@ -918,6 +926,210 @@ function layoutOf({ ledger }: { ledger: boolean }) {
   };
 }
 
+// The attack guide (attack.ts, the tracker's ATTACK and the phone's STRIKE; InconsisTable's house decision #99). The dice
+// stay physical: the GM types the damage total and the guide applies what woundsFromDamage gives (pp.182-183, 192).
+// The DN to hit is the target's Defence, +1 while the attacker is Wounded (p.193) and +2 per power it sustains (p.265,
+// hitDn); the soak is Resilience less AP, never below 0 (Invulnerable armour's immunity to AP, p.232, is the GM's,
+// as in this repo). Over the soak is Wounds by the difference, equal is 1 Shock, none for a Threat printed "–" (p.324).
+const WOUNDED_ATTACKER = {
+  label: "Attacker Wounded",
+  by: "1",
+  // A Mob is never Wounded (threatStatus).
+  when: "ctx.attackerMob == 0 && res.wounds > 0 && res.wounds <= derived.maxWounds",
+  cite: "Core p.193",
+};
+const SUSTAINING = { label: "Sustaining powers", by: SUSTAIN, cite: "Core p.265" };
+const OUTCOMES = [
+  {
+    id: "wounds",
+    label: "Wounds",
+    when: "ctx.total > ctx.soak",
+    wounds: "ctx.total - ctx.soak",
+    cite: "Core p.192",
+  },
+  {
+    id: "shock",
+    label: "1 Shock",
+    when: "ctx.total == ctx.soak",
+    shock: "ctx.target.derived.maxShock > 0 ? 1 : 0",
+    cite: "Core p.192, p.324",
+  },
+  { id: "none", label: "No harm", when: "ctx.total < ctx.soak", cite: "Core p.192" },
+];
+const SOAK = (resilience: string) => ({
+  label: "Resilience less AP",
+  expr: `max(0, ${resilience} + ctx.means.ap)`,
+  cite: `${statCite("Armour Penetration")}, p.232`,
+});
+const WEAPON_VALUES = {
+  damage: { key: "damage", type: "int" },
+  ed: { key: "ed", type: "int" },
+  ap: { key: "ap", type: "int" },
+  melee: { key: "melee", type: "bool" },
+  addStrength: { key: "addStrength", type: "bool" },
+} as const;
+const ATTACK_NOTES = [
+  { text: "A 6 on the Wrath Die: a Critical Hit, and +1 Glory", cite: "Core p.198" },
+  { text: "The target may roll Determination against the Wounds", when: 'ctx.outcome == "wounds"', cite: "Core p.196" },
+];
+function strikesOf({ ledger }: { ledger: boolean }) {
+  // A Threat's attack: Weapon Skill for a swung weapon, else Ballistic Skill, else its Default pool (threatAttackPool,
+  // p.323), and a Mob's bonus dice (p.324). Its printed Damage is final.
+  const dice = (skill: string) => `has(${skill}) ? ${skill} : (${opt("skill.default")})`;
+  const threat = {
+    id: "threatAttack",
+    label: "Threat attack",
+    cite: "Core pp.182-183, p.323",
+    entities: ["threat"],
+    means: [
+      { from: "list", field: "weapons", entry: "weapon" },
+      { from: "list", field: "variantWeapons", entry: "weapon" },
+    ],
+    values: {
+      damage: { key: "damage", type: "int" },
+      ed: { key: "ed", type: "int" },
+      ap: { key: "ap", type: "int" },
+      melee: { key: "melee", type: "bool" },
+      traits: { key: "traitText", type: "text" },
+    },
+    pool: {
+      label: "Skill dice",
+      expr: `ctx.means.melee ? (${dice("skill.weaponSkill")}) : (${dice("skill.ballisticSkill")})`,
+      cite: "Core p.323",
+      adds: [{ label: "Mob", by: "derived.mobBonusDice", when: "ctx.attackerMob > 0", cite: "Core p.324" }],
+    },
+    beat: {
+      label: "Defence",
+      expr: "ctx.target.derived.defence",
+      cite: "Core pp.182-183",
+      adds: [WOUNDED_ATTACKER, SUSTAINING],
+    },
+    soak: SOAK("ctx.target.derived.resilience"),
+    shows: [
+      { id: "damage", label: "Damage", expr: "ctx.means.damage", cite: "Core pp.182-183" },
+      { id: "ed", label: "Extra Damage Dice", expr: "ctx.means.ed", cite: "Core pp.182-183" },
+    ],
+    outcomes: OUTCOMES,
+    notes: ATTACK_NOTES,
+    then: { table: TABLES.criticalHits },
+  };
+  if (!ledger) return [threat];
+  // An Agent's weapon, from the saved build's lines or an item carried: Weapon Skill to swing it (Strength + X
+  // damage, pp.211-213), Ballistic Skill to shoot (p.182).
+  const means = [
+    { from: "ledger", lines: "weapons" },
+    { from: "items", kind: "weapon" },
+  ];
+  const agentPool = {
+    label: "Skill total",
+    expr: "ctx.means.melee ? derived.weaponSkill : derived.ballisticSkill",
+    cite: "Core pp.182-183",
+  };
+  const damage = [
+    {
+      id: "damage",
+      label: "Damage",
+      expr: "ctx.means.damage",
+      cite: "Core pp.182-183",
+      adds: [
+        { label: "Strength", by: "derived.strengthTotal", when: "ctx.means.addStrength", cite: "Core pp.211-213" },
+      ],
+    },
+    { id: "ed", label: "Extra Damage Dice", expr: "ctx.means.ed", cite: "Core pp.182-183" },
+  ];
+  const agent = {
+    id: "agentAttack",
+    label: "Weapon attack",
+    cite: "Core pp.182-183",
+    entities: ["agent"],
+    means,
+    values: WEAPON_VALUES,
+    pool: agentPool,
+    beat: {
+      label: "Defence",
+      expr: "ctx.target.derived.defence",
+      cite: "Core pp.182-183",
+      adds: [WOUNDED_ATTACKER, SUSTAINING],
+    },
+    soak: SOAK("ctx.target.derived.resilience"),
+    shows: damage,
+    outcomes: OUTCOMES,
+    notes: ATTACK_NOTES,
+    then: { table: TABLES.criticalHits },
+  };
+  // The phone's own guide reads only what the player may read (InconsisTable's house decisions #101, #112): a Threat's
+  // Defence and Resilience are the GM's, so the player types the DN and the Resilience the GM gives, and the phone
+  // says the outcome for the GM to apply (rules-flow §11.173, §11.194).
+  const phone = {
+    ...agent,
+    id: "agentAttackTold",
+    label: "Weapon attack (numbers from the GM)",
+    inputs: [
+      { id: "dn", label: "Defence the GM gives", type: "int", min: 0, max: 30, cite: "Core pp.182-183" },
+      { id: "resilience", label: "Resilience the GM gives", type: "int", min: 0, max: 40, cite: "Core p.192" },
+    ],
+    beat: { label: "Defence", expr: "ctx.dn", cite: "Core pp.182-183", adds: [WOUNDED_ATTACKER, SUSTAINING] },
+    soak: SOAK("ctx.resilience"),
+    outcomes: OUTCOMES.map((o) => (o.id === "shock" ? { ...o, shock: "1" } : o)),
+  };
+  // A psychic power (pp.259-260): a Psychic Mastery Test at the power's DN, with the Power Level's extra Wrath Dice;
+  // Transcendent adds Rank or Tier, whichever is higher, plus one, and costs as much Shock (powerLevelDice).
+  const LEVEL = "(ctx.level == 2 ? max(derived.rank, campaign.tier) + 1 : ctx.level)";
+  const power = {
+    id: "power",
+    label: "Psychic power",
+    cite: "Core pp.259-260",
+    entities: ["agent"],
+    targets: ["agent", "threat"],
+    means: [{ from: "ledger", lines: "powers" }],
+    values: { dn: { key: "dn", type: "int" } },
+    inputs: [
+      {
+        id: "level",
+        label: "Power Level",
+        type: "choice",
+        options: [
+          { label: "Bound", value: 0 },
+          { label: "Unbound", value: 1 },
+          { label: "Transcendent", value: 2 },
+        ],
+        cite: "Core p.260",
+      },
+    ],
+    pool: {
+      label: "Psychic Mastery",
+      expr: "derived.psychicMastery",
+      cite: "Core p.259",
+      adds: [{ label: "Power Level", by: LEVEL, cite: "Core p.260" }],
+    },
+    beat: { label: "The power's DN", expr: "ctx.means.dn", cite: "Core p.259", adds: [WOUNDED_ATTACKER, SUSTAINING] },
+    shows: [
+      {
+        id: "wrath",
+        label: "Wrath Dice",
+        expr: "1",
+        cite: "Core p.260",
+        adds: [{ label: "Power Level", by: LEVEL, cite: "Core p.260" }],
+      },
+      { id: "shock", label: "Shock to pay", expr: `ctx.level == 2 ? 1 + ${LEVEL} : 0`, cite: "Core p.260" },
+    ],
+    outcomes: [
+      { id: "manifested", label: "Manifested", when: "ctx.total >= ctx.beat", cite: "Core p.259" },
+      { id: "failed", label: "Not manifested", when: "ctx.total < ctx.beat", cite: "Core p.259" },
+    ],
+    notes: [
+      { text: "A Wrath Die showing 1: Perils of the Warp", cite: "Core p.263" },
+      { text: "A DN the power prints in words is the GM's", when: "ctx.means.dn == 0", cite: "Core p.259" },
+    ],
+    then: { table: TABLES.perils },
+  };
+  return [threat, agent, phone, power];
+}
+
+/** The ledger ruleset without what reads the saved build (its layout's cards and folds, its strikes' ledger means), as
+ * a probe of whether the platform checks the `build` block sends it with no build. */
+export const withoutBuildReaders = <R extends object>(r: R) => ({ ...r, layout: {}, strikes: undefined });
+
 /**
  * The ruleset. By default (0.1.x) a character is copied in by hand through the `creation` steps. With
  * `builder: "ledger"` (0.2.x) the Agent is bought with XP by InconsisTable's ledger builder instead: the `build` block
@@ -971,7 +1183,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
 
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.11",
+    version: "0.1.12",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
@@ -1128,6 +1340,9 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         derived: [
           { id: "maxWounds", label: "Max Wounds", expr: "stat.wounds", cite: "Core p.323" },
           { id: "maxShock", label: "Max Shock", expr: opt("stat.shock"), cite: "Core p.324" },
+          // The numbers a strike reads of its target under the Agent's names (attack.ts): the stat block's, 0 unprinted.
+          { id: "defence", label: "Defence", expr: opt("stat.defence"), cite: statCite("Defence") },
+          { id: "resilience", label: "Resilience", expr: opt("stat.resilience"), cite: statCite("Resilience") },
           // +1 bonus die per Troop, at most half of them, rounded up (mobBonusDice, attack.ts; rules-flow §11.173).
           {
             id: "mobBonusDice",
@@ -1161,6 +1376,10 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
           count: { type: "int", label: "Count", min: 1 },
           traits: { type: "list", label: "Traits", cite: "Core p.208" },
           fromOption: { type: "text", label: "From the option", maxLength: 120 },
+          // What a strike reads (house decision #99): whether it is swung, for Weapon Skill (threatAttackPool), and the
+          // Traits as one text, as a list cannot be a strike value.
+          melee: { type: "bool", label: "Melee", cite: statCite("Range") },
+          traitText: { type: "text", label: "Traits (text)", maxLength: 200, cite: "Core p.208" },
         },
       },
       {
@@ -1578,6 +1797,22 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         text: "A Threat's row on the tracker shows no class tag: the class is the stat block's column for the campaign's Tier.",
         cite: "Core p.323",
       },
+      // What the attack guide cannot say (rules-flow §11.194).
+      {
+        id: "strikeInvulnerableByHand",
+        text: "Invulnerable armour ignores AP: the guide takes AP off every Resilience, and the GM reads the outcome again for an Invulnerable target.",
+        cite: "Core p.232",
+      },
+      {
+        id: "strikeToldByGm",
+        text: "A player's own attack guide reads no Threat number: the player types the Defence and Resilience the GM gives, and tells the GM the outcome.",
+        cite: "Core pp.182-183",
+      },
+      {
+        id: "strikeExtrasByHand",
+        text: "Cover, range, Aim, Called Shots, Salvo and a weapon's Traits are the GM's; ED printed as dice or as Rank, and a power's DN printed in words, read as 0.",
+        cite: "Core pp.182-190",
+      },
       {
         id: "stacksUncapped",
         text: "Hindered, Bleeding and Vulnerable stack with no cap; the other Conditions are held or not.",
@@ -1657,6 +1892,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
       },
     },
     spawn: SPAWN,
+    strikes: strikesOf({ ledger: false }),
     spends: spends({ ledger: false }),
     // Three pending asks at once (MAX_PENDING_SPENDS), counted per user on the platform (rules-flow §11.189).
     requests: { max: MAX_PENDING_SPENDS },
@@ -1666,7 +1902,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.11",
+    version: "0.2.12",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
@@ -1681,6 +1917,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     rests: [{ ...ruleset.rests[0]!, refusedIn: ["dying", "dead", "lost"] }],
     spends: spends({ ledger: true }),
     layout: layoutOf({ ledger: true }),
+    strikes: strikesOf({ ledger: true }),
     // ponytail: the budget's cost is compiled over every actor type the creation steps do not build, so the ledger's
     // Agent (built by `build`, not `creation`) is read as spawned and has no class; the budget comes back once the
     // platform leaves `build.actor` out of it.
