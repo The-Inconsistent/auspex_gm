@@ -1,6 +1,6 @@
 import type { RuleEntry, Weapon } from "@wg/shared";
 
-import { weaponSkill } from "@/lib/sheet-pools/sheet-pools";
+import { weaponSkill } from "../sheet-pools/sheet-pools.ts";
 
 // FIGHT's OPTIONS (the player's Turn), catalogued so a player reads them by what they are doing, not in page order.
 // The grouping and the notes are the app's; every entry's text and page are the book's (Core pp.177–190).

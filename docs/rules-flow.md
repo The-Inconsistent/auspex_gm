@@ -1343,6 +1343,23 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      `source`, so its page opens from the entry; a scene from a book event keeps no such mark in this repo's export
      and names none. Abandoned sessions stay undecided (issue #327 question 1). *Issue #327's recommendation,
      2026-11-27.*
+201. **The phone's fight panels** (InconsisTable's house decisions #114 to #117, its pull request #257; §11.172,
+     §11.175, §11.177, issue #324). The phone's Fight tab is declared as panels, each in the ruleset's own short words
+     with its page and reading only what a player reads of their own Agent: AMBUSHED while the Agent is barred, with
+     the AWARE ask; INCOMING on a foe's Turn, with Defence, Resilience and the Determination dice, the hold-action line
+     while it holds one and the Exhausted line in place of Determination; YOU'RE HIT as a sheet when the Agent's Wounds
+     rise in a fight, with the Determination ask; DYING while the Agent is Dying, with its Traumatic Injuries and the
+     most it survives; and the combat options on the Agent's Turn, the 43 combat actions in this repo's seven groups as
+     entries of the codex pack (0.1.3) every seat reads, each with its gist and what it needs of a weapon. The strip
+     under the header shows Wounds, Shock and Wrath; the party's Glory is no value of the Agent's, so the strip leaves
+     it to the header. On the Turn the ledger ruleset adds the phone's attack and power guides; the by-hand one has
+     neither, as they read the saved build. Exhausted, which turns the Determination line into "you can't roll it", is
+     read from Shock over its max alone: a panel's expressions read no Condition, so an Agent Exhausted by the
+     Condition from another source (`isExhausted`, p.199) still sees the Determination line, and the GM says no. Not
+     expressed: INCOMING's line that a Troop lands no Critical Hit (a panel
+     reads no foe), and sinking a combat option the Agent's weapons do not allow (no expression reads the weapons
+     carried), so each option says what it needs instead. The ruleset is 0.1.17 and 0.2.17, and validates only against
+     a platform with #257. *Issue #324's recommendation, 2026-11-27.*
 
 ---
 

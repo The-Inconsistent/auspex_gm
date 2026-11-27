@@ -108,6 +108,16 @@ const coreEntry = resolve(root, "packages/core-schema/src/index.ts");
 export const loadCoreSchema = async (): Promise<CoreSchema | null> =>
   existsSync(coreEntry) ? ((await import(coreEntry)) as CoreSchema) : null;
 
+/**
+ * InconsisTable's check that a panel or an owner's strike reads only what a player's served copy keeps (its house
+ * decisions #113, #114; the reference seat view). Null on a checkout made before owner strikes.
+ */
+const servedEntry = resolve(root, "apps/api-go/vectors/reference/view.owner.ts");
+export const loadServedCheck = async (): Promise<((ruleset: unknown) => Problem[]) | null> =>
+  existsSync(servedEntry)
+    ? ((await import(servedEntry)) as { ownerStrikeProblems: (r: unknown) => Problem[] }).ownerStrikeProblems
+    : null;
+
 // A checkout made before the ledger builder's `build` block and pack `record`s strips both unread (its schemas are not
 // strict), so whether they are checked is asked by sending a broken one: refused only where it is validated.
 
