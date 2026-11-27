@@ -292,7 +292,8 @@ export function buildRoomDocument(
     if (ch.detail.portrait) note(`${at}.detail.portrait`, "a portrait bundled with this app");
     if (ch.traumatic) fields.traumatic = ch.traumatic;
     if (ch.annihilated) fields.annihilated = true;
-    for (const k of Object.keys(ch.overrides)) note(`${at}.overrides.${k}`, "a GM override of a Trait: no field");
+    // The GM's override of a Trait, in its override field (house decision #96); deriveStats reads it at least 1.
+    for (const [k, v] of Object.entries(ch.overrides)) if (v !== undefined) fields[`override.${k}`] = Math.max(1, v);
     // The held Mutations by the Mutation pack's key (the book row's id; a d6 table's row by its own), which the held kind
     // reads and Enduring Life and Blighted Soul too (rules-flow §11.188, §11.191); the name, text and mods are the pack's.
     if (s.mutations.length) fields.mutations = s.mutations.map(heldKeyOf);

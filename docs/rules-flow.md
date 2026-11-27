@@ -1242,6 +1242,19 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      which has no class, would be read as spawned; its `decisions` give the budget to the GM until the platform leaves
      the built actor out. The converter writes a roster line's marker and its Profiles and Scaling as spawn options.
      *Issue #324's recommendation, 2026-11-26.*
+193. **The port's sheet, the GM's overrides and a build over a hand-made sheet** (InconsisTable's house decisions #83,
+     #96; §11.160). The sheet is drawn with the platform's widgets as the book prints it (pp.40–41, the sheet p.372):
+     the name bar, the Attributes in columns of rating, bonus and total, the Skills in pairs with their linked
+     Attribute, the Traits framed, Resilience as its base plus the Armour Rating, the Wounds, Shock and Traumatic Injury
+     tracks, Corruption as pips in its five levels and Chaos Spawn (pp.285–286), the build's cards and folds (ledger
+     only, as they read the saved build), the held Mutations and Who You Are. A Mutation's change to an Attribute shows
+     in its rating, where this repo showed it as the bonus; the bonus column holds Powered (X) only (p.232). The GM may
+     override a Trait this repo's `Overrides` covers (not Passive Awareness or Max Traumatic Injuries), at least 1 as
+     `deriveStats` clamps it (p.36), and clearing it works the Trait out again; the converter writes each override. A
+     build saved over a hand-made sheet keeps its Armour Rating, Powered rating and Wealth, as `keepSheet` does. A
+     Threat's tracker row carries its personal Ruin (p.325) and no class tag (issue #324 question 3): the class is the
+     column of the campaign's Tier, which no enum field holds. None of these has a printed page beyond the cites given;
+     the ruleset's `decisions` say so. *Issue #324's recommendation, 2026-11-26.*
 
 ---
 
