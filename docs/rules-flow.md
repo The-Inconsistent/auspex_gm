@@ -1431,6 +1431,17 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      the Imperium's organisations and the High Gothic names (`AS_WRITTEN`). A word the codex shares with another label
      (Faction, Patron, Framework, Type) reads the same everywhere. The rulesets are 0.1.19 and 0.2.20. *Issue #326,
      2026-11-27.*
+207. **PARTY's card numbers and chips** (InconsisTable's PARTY cards: health bars, the numbers of the Agent's
+     `phoneStrip` that are not bars, a chip per health state that holds). The Agent's `phoneStrip` keeps Wounds and
+     Shock as bars and then carries Wrath, Corruption and Wealth, in this app's PARTY card order (`agent-card.tsx`), so
+     the phone's vitals strip shows Corruption and Wealth too. XP is not added: the platform shows it where the ruleset
+     keeps it (the ledger's build). The chips are the health states already declared, each with `pcStatus`'s condition:
+     Dead, Dying, Wounded (any Wounds up to Max Wounds on an Agent that is not Dead, p.193) and Exhausted (Shock over
+     Max Shock, p.199), and in the ledger ruleset Lost (Chaos Spawn, p.286). The by-hand ruleset still has no Lost
+     state, as before. The platform holds no cite on a single state, so the health block's cite widens to cover them
+     (Core pp.193-199, and p.286 in the ledger). This app's card also shows the Conditions, DRAFT and the objectives
+     line; those are not health states and are left to the platform. The rulesets are 0.1.20 and 0.2.21.
+     *2026-11-28.*
 
 ---
 

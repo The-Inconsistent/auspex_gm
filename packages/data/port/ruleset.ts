@@ -1044,11 +1044,14 @@ function layoutOf({ ledger }: { ledger: boolean }) {
           show: [{ widget: "notes", bind: { fields: DETAIL.map(([id]) => `detail.${id}`) } }],
         },
       ],
-      // The vitals strip on every tab (vitals-strip.tsx): Wounds and Shock against their max, and Wrath.
+      // The vitals strip on every tab (vitals-strip.tsx): Wounds and Shock against their max, then the numbers line of
+      // PARTY's card in its order (agent-card.tsx): Wrath, Corruption and Wealth (rules-flow §11.207).
       phoneStrip: [
         { widget: "track", label: "Wounds", bind: { value: "res.wounds", max: "derived.maxWounds" } },
         { widget: "track", label: "Shock", bind: { value: "res.shock", max: "derived.maxShock" } },
         "res.wrath",
+        "res.corruption",
+        "res.wealth",
       ],
       // The phone's Fight tab on the Agent's Turn (fight.tsx): the panels, the attack and the power (the ledger's, which
       // read the saved build), then the asks.
@@ -1535,7 +1538,8 @@ function englishRuleset({ builder }: { builder?: "ledger" } = {}) {
     id: "wrath-and-glory",
     // 0.1.18: the labels a player reads in English and Vietnamese (`labels-vi.ts`, rules-flow §11.205). 0.1.19: the
     // sheet's meanings on tap (`meanings.ts`, §11.206) and the GM's codex, tables and generators in Vietnamese too.
-    version: "0.1.19",
+    // 0.1.20: Corruption and Wealth on the strip, as PARTY's card shows them (§11.207).
+    version: "0.1.20",
     // The language a label falls back to where a viewer's has none (InconsisTable's house decision #211).
     language: "en",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
@@ -2076,7 +2080,8 @@ function englishRuleset({ builder }: { builder?: "ledger" } = {}) {
         ...THREAT_STATES,
       ],
       harm: HARM,
-      cite: "Core pp.193-196, pp.324-325",
+      // A state carries no cite of its own on the platform: Dead, Dying and Wounded pp.193-194, Exhausted p.199.
+      cite: "Core pp.193-199, pp.324-325",
     },
     // No Respite while Dying or Dead (character.respite; pp.196-197).
     rests: [{ event: "longRest", refusedIn: ["dying", "dead"], cite: "Core pp.196-197" }],
@@ -2389,7 +2394,7 @@ function englishRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.20",
+    version: "0.2.21",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
@@ -2403,6 +2408,7 @@ function englishRuleset({ builder }: { builder?: "ledger" } = {}) {
           entities: ["agent"],
         },
       ],
+      cite: "Core pp.193-199, p.286, pp.324-325",
     },
     // A Lost Agent is out of the turn order as a Dead one is (isOut reads isGone, state.ts).
     initiative: { ...ruleset.initiative, unableStates: ["dead", "lost", "slain"] },
