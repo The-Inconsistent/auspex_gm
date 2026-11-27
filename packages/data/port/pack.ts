@@ -4,8 +4,9 @@
 // private content and is never committed.
 //
 // What it leaves out on purpose (docs of the port, the product owner's decisions of 2026-11-20): the text of every
-// Ability, Bonus, Option and Determination, the transcription `note`, and all Mob content. Anything the fields cannot
-// hold comes back in `leftOut`, with its Threat id and why.
+// Ability, Bonus, Option and Determination, and the transcription `note`. A Mob's abilities and options come by name
+// and their weapons as entries, as a single Threat's do (#325, rules-flow §11.199). Anything the fields cannot hold
+// comes back in `leftOut`, with its Threat id and why.
 //
 // `buildCustomThreatPack` turns a campaign export's own Threats into a pack of the same shape (`--custom-threats`).
 import {
@@ -129,13 +130,16 @@ function threatEntries(
   }
 
   // Names only. An Ability with no name has nothing to carry but its text, which is not copied.
-  const abilities: string[] = [];
-  for (const a of t.abilities) {
-    if (a.name === undefined) skip("ability without a name (text not copied)", t.id);
-    else if (a.name.length > ABILITY_NAME_MAX) skip("ability name over the list item limit", t.id);
-    else abilities.push(a.type === undefined ? a.name : `${a.type}: ${a.name}`);
-  }
-  body.abilities = abilities;
+  const named = (list: typeof t.abilities, what = "ability") => {
+    const names: string[] = [];
+    for (const a of list) {
+      if (a.name === undefined) skip(`${what} without a name (text not copied)`, t.id);
+      else if (a.name.length > ABILITY_NAME_MAX) skip(`${what} name over the list item limit`, t.id);
+      else names.push(a.type === undefined ? a.name : `${a.type}: ${a.name}`);
+    }
+    return names;
+  };
+  body.abilities = named(t.abilities);
   body.bonuses = t.bonuses.map((b) => b.name);
   body.options = t.options.filter((o) => o.kind === "variant").map((o) => o.name);
 
@@ -181,16 +185,14 @@ function threatEntries(
     .filter((o) => o.kind === "variant")
     .flatMap((o) => [...o.weapons, ...o.abilities.flatMap((a) => a.weapons)].map((w) => addWeapon(w, o.name)));
 
-  // Mob content is not ported.
-  for (const a of t.mobAbilities) {
-    skip("Mob ability (mobAbilities)", t.id);
-    skip("weapon of a Mob ability", t.id, a.weapons.length);
-  }
-  for (const o of t.options.filter((o) => o.kind === "mob")) {
-    skip("Mob option", t.id);
-    skip("weapon of a Mob option", t.id, o.weapons.length + o.abilities.reduce((n, a) => n + a.weapons.length, 0));
-    skip("ability of a Mob option", t.id, o.abilities.length);
-  }
+  // A Mob's own abilities and options (p.324), as a single Threat's: names, and their weapons as entries (#325).
+  const mob = t.options.filter((o) => o.kind === "mob");
+  body.mobAbilities = named(t.mobAbilities, "Mob ability");
+  body.mobOptions = mob.map((o) => o.name);
+  body.mobWeapons = [
+    ...t.mobAbilities.flatMap((a) => a.weapons.map((w) => addWeapon(w, "Mob"))),
+    ...mob.flatMap((o) => [...o.weapons, ...o.abilities.flatMap((a) => a.weapons)].map((w) => addWeapon(w, o.name))),
+  ];
 
   const tags =
     t.keywords.length <= 20 && t.keywords.every((k) => k.length >= 1 && k.length <= 40) ? t.keywords : undefined;
@@ -202,8 +204,8 @@ function threatEntries(
 }
 
 // Both rulesets this repo generates: 0.1.x (copied in by hand) and 0.2.x (the ledger builder), from the versions whose
-// weapon carries what a strike reads (0.1.12, 0.2.12).
-const THREAT_RULESET = { id: "wrath-and-glory", range: "^0.1.12 || ^0.2.12" };
+// Threat carries a Mob's abilities, options and weapons (0.1.16, 0.2.16).
+const THREAT_RULESET = { id: "wrath-and-glory", range: "^0.1.16 || ^0.2.16" };
 
 export function buildPack(): { pack: Pack; leftOut: LeftOut[]; normalised: Record<string, number> } {
   const leftOut: LeftOut[] = [];
@@ -211,8 +213,8 @@ export function buildPack(): { pack: Pack; leftOut: LeftOut[]; normalised: Recor
   const entries = [...threats.values()].flatMap((t) => threatEntries(t, threatCite(t), leftOut, normalised));
   const pack: Pack = {
     id: "wrath-and-glory-threats",
-    // 0.1.2: a weapon's melee and Traits as text, which a strike reads (#325).
-    version: "0.1.2",
+    // 0.1.2: a weapon's melee and Traits as text, which a strike reads (#325). 0.1.3: Mob content (#325).
+    version: "0.1.3",
     ruleset: THREAT_RULESET,
     license: "private",
     entries,
@@ -247,7 +249,8 @@ export function buildCustomThreatPack(exported: CampaignExport): {
     .replace(/-+$/, "");
   const pack: Pack = {
     id: `${slug}${CUSTOM_SUFFIX}`,
-    version: "0.1.1",
+    // 0.1.2: Mob content, as the Threat pack's (#325).
+    version: "0.1.2",
     ruleset: THREAT_RULESET,
     license: "original",
     entries,

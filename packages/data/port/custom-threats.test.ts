@@ -85,7 +85,7 @@ test("the pack of a campaign's own Threats passes InconsisTable's validatePack",
 
 test("it is the GM's own: original, uncited, named after the campaign, for the Threat pack's rulesets", () => {
   assert.equal(pack.id, "the-rusted-choir-custom-threats");
-  assert.equal(pack.version, "0.1.1");
+  assert.equal(pack.version, "0.1.2");
   assert.equal(pack.license, "original");
   assert.deepEqual(pack.ruleset, buildPack().pack.ruleset);
   for (const e of pack.entries) assert.equal(e.cite, undefined, e.key);
@@ -115,6 +115,8 @@ test("every custom id is an entry key, its weapon keyed under it, and nothing el
   assert.ok(!("stat.shock" in pack.entries.find((e) => e.key === "custom-hollow-cantor")!.body));
   assert.deepEqual(
     leftOut.map((l) => `${l.id}: ${l.reason}`),
-    ["custom-scrap-thrall: Mob option", "custom-hollow-cantor: null value: stat.shock"],
+    ["custom-hollow-cantor: null value: stat.shock"],
   );
+  // A Mob option comes by name (#325).
+  assert.equal((thrall.body.mobOptions as string[]).length, 1);
 });
