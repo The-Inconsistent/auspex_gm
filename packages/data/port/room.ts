@@ -15,15 +15,18 @@ import {
   CONDITIONS,
   MentionKind,
   TEST_WHO_LABEL,
+  fromPreset,
+  npcFromPreset,
   onEntryIds,
+  threatCite,
   type BeatTest,
   type CampaignExport,
   type LocationHazard,
 } from "@wg/shared";
-import { hazards as bookHazards, wargear } from "../index.ts";
+import { hazards as bookHazards, factionPresetList, npcPresetList, placeList, rulesList, wargear } from "../index.ts";
 import { remapApproval, type Reworded } from "./build-catalogue.ts";
 import { CATALOGUE_PACKS } from "./creation-packs.ts";
-import { buildCodexPack, CODEX_PACK, SUMMARY_MAX, testOf } from "./codex-packs.ts";
+import { buildCodexPack, CODEX_PACK, quickKey, SUMMARY_MAX, testOf } from "./codex-packs.ts";
 import { heldKeyOf, MUTATION_PACK } from "./mutations.ts";
 import { buildCustomThreatPack, buildPack } from "./pack.ts";
 import { buildRuleset, CODEX, COUNTED_KINDS, idOf, itemKindOf } from "./ruleset.ts";
@@ -102,6 +105,8 @@ export interface RoomEntry {
   imageId?: string;
   imageRevealed?: boolean;
   revealedAt?: string;
+  /** The codex pack entry it was made from (house decision #97), which the import checks is served. */
+  source?: { entity: string; key: string };
 }
 /** An item an Agent carries (InconsisTable's house decision #95): a wargear entry by key, or a name written by hand. */
 export interface RoomItem {
@@ -195,6 +200,75 @@ const codexHazards = () =>
   ));
 const hazardSummaries = () => new Map([...codexHazards()].map(([k, v]) => [k, v.summary]));
 const codexCite = (key: string) => codexHazards().get(key)?.cite;
+
+/** The item field a relic's Powers go in (ruleset.ts), as long as a text of it is. */
+export const RELIC_POWER_MAX = 80;
+// A Trait by its rules id, its printed "(X)" dropped: "Heavy (X)" is Heavy.
+const traitName = (id: string) =>
+  rulesList()
+    .find((r) => r.id === id)
+    ?.name.replace(/\s*\(X\)$/, "") ?? id;
+const signed = (n: number) => (n < 0 ? `${n}` : `+${n}`);
+/**
+ * A relic's Powers (RR2 pp.12-19, §11.116) in a few words of this repo's: "Damage +1; Rending (2)". Null when one is
+ * the GM's own words or bonus dice with their when, or the words pass the field: those stay in the GM's notes.
+ */
+export function relicWords(mods: readonly { kind: string; [k: string]: unknown }[]): string | null {
+  if (mods.length === 0) return null;
+  const word = (m: Record<string, unknown>): string | null => {
+    const n = (k: string) => signed(m[k] as number);
+    switch (m.kind) {
+      case "trait":
+        return `${traitName(m.traitId as string)}${m.rating === undefined ? "" : ` (${m.rating as number})`}`;
+      case "removeTrait":
+        return `no ${traitName(m.traitId as string)}`;
+      case "traitRating":
+        return `${traitName(m.traitId as string)} ${n("delta")}`;
+      case "damage":
+        return `Damage ${n("delta")}`;
+      case "ed":
+        return `ED ${n("delta")}`;
+      case "ap":
+        return `AP ${n("delta")}`;
+      case "setAp":
+        return `AP ${m.value as number}`;
+      case "salvo":
+        return `Salvo ${n("delta")}`;
+      case "ar":
+        return `AR ${n("delta")}`;
+      case "range":
+        return m.multiply !== undefined
+          ? `Range ×${m.multiply as number}`
+          : m.bands
+            ? `Range ${(m.bands as number[]).map(signed).join("/")}`
+            : m.delta !== undefined
+              ? `Range ${n("delta")}`
+              : null;
+      default:
+        return null; // bonusDice (its when) and gm: the GM's own words
+    }
+  };
+  const words = mods.map(word);
+  if (words.some((w) => w === null)) return null;
+  const text = words.join("; ");
+  return text.length <= RELIC_POWER_MAX ? text : null;
+}
+
+// The codex pack entry an entry of this repo was copied from (house decision #97): ADD FROM BOOK keeps the printed
+// name as the title and opens the notes with the cite (presetNpc, presetFaction, placeNotes), which says which.
+const firstLine = (s: string) => s.split("\n", 1)[0];
+const npcSource = (n: { name: string; gmNotes: string }) => {
+  const p = npcPresetList().find((x) => npcFromPreset(n, x));
+  return p && { entity: "npcPreset", key: p.id };
+};
+const factionSource = (f: { name: string; notes: string }) => {
+  const p = factionPresetList().find((x) => fromPreset(f, x));
+  return p && { entity: "factionPreset", key: p.id };
+};
+const placeSource = (l: { name: string; gmNotes: string }) => {
+  const p = placeList().find((x) => x.name === l.name && firstLine(l.gmNotes) === threatCite(x));
+  return p && { entity: "place", key: p.id };
+};
 
 /**
  * The room document of an export, and the report. `reworded` is the creation pack's reworded requirements
@@ -456,6 +530,7 @@ export function buildRoomDocument(
       id: f.id,
       kind: "faction",
       title: title(`${p}.name`, f.name),
+      source: factionSource(f),
       body: linked(`${p}.notes`, f.notes) || undefined,
       gmNotes: linked(`${p}.secrets`, f.secrets) || undefined,
       fields: {
@@ -525,6 +600,7 @@ export function buildRoomDocument(
       id: l.id,
       kind: "location",
       title: title(`${p}.name`, l.name),
+      source: placeSource(l),
       parentId: ref(`${p}.parentId`, l.parentId, locations),
       body: linked(`${p}.description`, l.description) || undefined,
       gmNotes: notes(`${p}.gmNotes`, l.gmNotes, lines),
@@ -545,17 +621,16 @@ export function buildRoomDocument(
     if (n.role) fields.role = plain(`${p}.role`, n.role, CODEX.kinds.npc.fields.role.maxLength);
     const src = n.statSource;
     if (src.kind === "bestiary" && packOf(src.threatId).held) fields.stats = src.threatId;
-    else if (src.kind === "bestiary")
+    // A Quick NPC (p.326): its Tier's row of the codex pack, and the specialty as two fields (§11.87, §11.197).
+    else if (src.kind === "quick") {
+      fields.quick = quickKey(src.tier);
+      if (src.specialty)
+        Object.assign(fields, { specialty: idOf(src.specialty.skill), specialtyDice: src.specialty.dice });
+    } else if (src.kind === "bestiary")
       lines.push({
         path: `${p}.statSource`,
         reason: "a stat block no pack holds",
         line: `Stat block: ${src.threatId}`,
-      });
-    else if (src.kind === "quick")
-      lines.push({
-        path: `${p}.statSource`,
-        reason: "a Quick NPC stat block",
-        line: `Quick NPC stats (Core p.326): Tier ${src.tier}${src.specialty ? `, ${src.specialty.skill} ${src.specialty.dice}` : ""}`,
       });
     const faction = ref(`${p}.factionId`, n.factionId, factions);
     if (faction) fields.faction = faction;
@@ -564,6 +639,7 @@ export function buildRoomDocument(
       id: n.id,
       kind: "npc",
       title: title(`${p}.name`, n.name),
+      source: npcSource(n),
       body: linked(`${p}.description`, n.description) || undefined,
       gmNotes: notes(`${p}.gmNotes`, n.gmNotes, lines),
       fields: nonEmpty(fields),
@@ -604,9 +680,13 @@ export function buildRoomDocument(
     const w = it.wargearId ? wargear.get(it.wargearId) : undefined;
     if (it.wargearId && !w)
       lines.push({ path: `${p}.wargearId`, reason: "a catalogue entry", line: `Catalogue: ${it.wargearId}` });
-    it.mods.forEach((m, j) =>
-      lines.push({ path: `${p}.mods.${j}`, reason: "a relic's Power", line: `Relic Power: ${JSON.stringify(m)}` }),
-    );
+    // A relic's Powers in the item's Power field when each is a change a few words say and they fit (§11.116), else
+    // the GM's notes.
+    const power = relicWords(it.mods);
+    if (power === null)
+      it.mods.forEach((m, j) =>
+        lines.push({ path: `${p}.mods.${j}`, reason: "a relic's Power", line: `Relic Power: ${JSON.stringify(m)}` }),
+      );
     const location = ref(`${p}.locationId`, it.locationId, locations);
     const holder = ref(`${p}.npcId`, it.npcId, npcs);
     const given = it.givenTo !== null && characters.has(it.givenTo) ? it.givenTo : null;
@@ -632,7 +712,12 @@ export function buildRoomDocument(
       title: title(`${p}.name`, it.name),
       body: linked(`${p}.description`, it.description) || undefined,
       gmNotes: notes(`${p}.gmNotes`, it.gmNotes, lines),
-      fields: nonEmpty({ ...(location && { location }), ...(holder && { holder }), ...(w && { wargear: w.id }) }),
+      fields: nonEmpty({
+        ...(location && { location }),
+        ...(holder && { holder }),
+        ...(w && { wargear: w.id }),
+        ...(power && { relicPower: power }),
+      }),
       ...(given && !placed && { visibility: "party" as const, audienceMode: "listed" as const, audience: [given] }),
     });
   });

@@ -4,19 +4,21 @@ import { test } from "node:test";
 import {
   BLIGHTED_SOUL,
   CampaignExport,
+  citeLine,
   CharacterStats,
   findMutation,
   sheetMutation,
+  threatCite,
   type CharacterBuildInput,
 } from "@wg/shared";
-import { hazards, mutationTables, wargear } from "../index.ts";
+import { factionPresetList, hazards, mutationTables, npcPresetList, placeList, wargear } from "../index.ts";
 import { remapApproval } from "./build-catalogue.ts";
 import { buildParams } from "./build-params.ts";
 import { buildCreationPacks, CATALOGUE_PACKS } from "./creation-packs.ts";
 import { loadCoreSchema, loadEngine } from "./engine.ts";
 import { buildCodexPack, testOf } from "./codex-packs.ts";
 import { buildCustomThreatPack, buildPack } from "./pack.ts";
-import { buildRoomDocument, CAPS, Refusal } from "./room.ts";
+import { buildRoomDocument, CAPS, Refusal, relicWords, RELIC_POWER_MAX } from "./room.ts";
 import { buildRuleset } from "./ruleset.ts";
 import { buildWorld, HANDOUT_DEFAULT_HEADER } from "./world.ts";
 
@@ -537,9 +539,10 @@ test("factions, NPCs, places, handouts and items", () => {
   assert.deepEqual(rell.fields, { attitude: "hostile", role: "Cantor", stats: BOOK_THREAT, faction: ID.choir });
   assert.equal(rell.gmNotes, `Sworn to @[The Brass Choir](${ID.choir}).\n\nSecrets: He cracked the bell.`);
   assert.deepEqual([rell.visibility, rell.imageId, rell.imageRevealed], ["party", ID.picture, true]);
+  // A Quick NPC names its Tier's row, with the specialty (p.326, §11.197); neutral is left unset.
   const quill = entry(ID.quill);
-  assert.equal(quill.fields, undefined, "neutral is left unset");
-  assert.equal(quill.gmNotes, "Quick NPC stats (Core p.326): Tier 2, Awareness 6");
+  assert.deepEqual(quill.fields, { quick: "quick.t2", specialty: "awareness", specialtyDice: 6 });
+  assert.equal(quill.gmNotes, undefined);
   assert.equal(quill.visibility, undefined);
   assert.deepEqual(entry(ID.herald).fields, { attitude: "friendly", stats: "custom-scrap-thrall" });
 
@@ -596,10 +599,10 @@ test("factions, NPCs, places, handouts and items", () => {
     ["plain", undefined, undefined, undefined],
   );
 
-  // The catalogue entry is the ref GIVE reads (house decision #95); a relic's Powers stay the GM's.
+  // The catalogue entry is the ref GIVE reads (house decision #95); a relic's Powers in a few words (§11.116).
   const key = entry(ID.key);
-  assert.deepEqual(key.fields, { location: ID.vault, wargear: WARGEAR });
-  assert.equal(key.gmNotes, `Relic Power: {"kind":"damage","delta":1}`);
+  assert.deepEqual(key.fields, { location: ID.vault, wargear: WARGEAR, relicPower: "Damage +1" });
+  assert.equal(key.gmNotes, undefined);
   assert.deepEqual(entry(ID.bell).fields, { holder: ID.rell });
   // A given item is the holder's item row, not a listing (house decision #95).
   const given = entry(id(26));
@@ -775,9 +778,7 @@ test("the report counts exactly what the file has that the document holds no str
   assert.deepEqual(Object.fromEntries([...got].sort()), {
     "as text: a mention outside a body or GM notes, written as its title": 1,
     "as written: a mention of an entry not in the file": 1,
-    "gm notes: a Quick NPC stat block": 1,
     "gm notes: a Test's outcome past the platform's six": 1,
-    "gm notes: a relic's Power": 1,
     "gm notes: an NPC's secrets": 1,
     "gm notes: an exit to no scene": 1,
     "gm notes: an exit's words over 80 characters, as its note": 1,
@@ -880,4 +881,42 @@ test("a text over the platform's cap refuses the document, with the export path"
     () => buildRoomDocument(spend, { reworded }),
     (e) => e instanceof Refusal && e.path === "codex.adventures.0.beats.1.spends.0.name",
   );
+});
+
+test("a relic's Powers in a few words, or the GM's notes when one is the GM's own or they run long", () => {
+  assert.equal(
+    relicWords([
+      { kind: "damage", delta: 1 },
+      { kind: "ap", delta: -1 },
+      { kind: "range", bands: [3, 6, 9] },
+      { kind: "removeTrait", traitId: "heavy" },
+    ]),
+    "Damage +1; AP -1; Range +3/+6/+9; no Heavy",
+  );
+  assert.equal(relicWords([{ kind: "gm", what: "Whatever the GM says" }]), null);
+  assert.equal(relicWords([{ kind: "bonusDice", dice: 2, when: "on a charge" }]), null);
+  assert.equal(
+    relicWords(Array.from({ length: 12 }, () => ({ kind: "damage", delta: 1 }))),
+    null,
+    `over ${RELIC_POWER_MAX}`,
+  );
+  assert.equal(relicWords([]), null);
+});
+
+test("an entry copied from a book names the codex pack entry it was made from (#327)", () => {
+  const [npc, faction, place] = [npcPresetList()[0]!, factionPresetList()[0]!, placeList()[0]!];
+  const raw = JSON.parse(JSON.stringify(exported));
+  raw.codex.npcs.push({ id: id(50), name: npc.name, gmNotes: `${citeLine(npc)}\n\nCopied.` });
+  raw.codex.factions.push({ id: id(51), name: faction.name, notes: threatCite(faction) });
+  raw.codex.locations.push({ id: id(52), name: place.name, gmNotes: threatCite(place) });
+  const { document } = buildRoomDocument(CampaignExport.parse(raw), { reworded });
+  const source = (entryId: string) => document.codex.find((e) => e.id === entryId)!.source;
+  assert.deepEqual(source(id(50)), { entity: "npcPreset", key: npc.id });
+  assert.deepEqual(source(id(51)), { entity: "factionPreset", key: faction.id });
+  assert.deepEqual(source(id(52)), { entity: "place", key: place.id });
+  // Each names an entry the codex pack the document expects serves; a hand-made one names none.
+  const served = new Set(buildCodexPack().entries.map((e) => `${e.type}/${e.key}`));
+  for (const e of document.codex) if (e.source) assert.ok(served.has(`${e.source.entity}/${e.source.key}`), e.id);
+  assert.equal(source(ID.rell), undefined);
+  assert.equal(source(ID.choir), undefined);
 });
