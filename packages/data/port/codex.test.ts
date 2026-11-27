@@ -3,6 +3,7 @@ import { test } from "node:test";
 import { AdventureStatus, Attitude, BeatType, CodexInput, FactionStance, toPlayerCodex, type Codex } from "@wg/shared";
 import { checksCodex, loadEngine } from "./engine.ts";
 import { buildCodexPack } from "./codex-packs.ts";
+import { english } from "./labels-vi.ts";
 import { buildPack } from "./pack.ts";
 import { buildRuleset, CODEX } from "./ruleset.ts";
 
@@ -33,10 +34,10 @@ test("both rulesets compile with the codex block, which the platform keeps as wr
   for (const [name, ruleset] of rulesets) {
     const c = engine!.compileRuleset(ruleset);
     if (!c.ok) assert.fail(`${name}: ${c.problems.map((p) => `${p.path}: ${p.message}`).join("\n")}`);
-    assert.deepEqual((c.compiled.ruleset as { codex?: unknown }).codex, ruleset.codex, name);
+    assert.deepEqual((c.compiled.ruleset as { codex?: unknown }).codex, english(ruleset).codex, name);
     // The ledger ruleset's item also names its catalogue entry, which GIVE reads (house decision #95).
     // and its faction's Keywords suggest the Keyword entries' names (house decision #89).
-    const { item, faction, ...rest } = ruleset.codex.kinds;
+    const { item, faction, ...rest } = english(ruleset).codex.kinds;
     assert.deepEqual(rest, (({ item: _, faction: __, ...k }) => k)(CODEX.kinds), name);
     assert.deepEqual(
       (faction.fields.keywords as { entities?: string[] }).entities,

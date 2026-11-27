@@ -24,6 +24,7 @@ import {
 } from "@wg/shared";
 import { XP_AWARDS } from "../../../apps/web/components/gm/party/constants.ts";
 import { loadEngine } from "./engine.ts";
+import { english, VI } from "./labels-vi.ts";
 import { buildRuleset, idOf, THREAT_CLASSES } from "./ruleset.ts";
 
 // The parity target of the port: the ruleset InconsisTable runs must give, for every pregen, the numbers this repo's
@@ -302,7 +303,7 @@ test("with nothing stored for the campaign the Tier in play is 1", { skip }, () 
 
 // The ledger ruleset's play keys (`build.ascension`, `gone`, `award`): what happens after a character is made.
 const ledger = buildRuleset({ builder: "ledger" }) as Extract<ReturnType<typeof buildRuleset>, { build: unknown }>;
-const agentStates = ledger.health.states.filter((s) => !("entities" in s) || s.entities?.includes("agent"));
+const agentStates = english(ledger).health.states.filter((s) => !("entities" in s) || s.entities?.includes("agent"));
 
 test("the ledger ruleset carries the play keys from this repo's constants, and the default one has none", () => {
   const { ascension, gone, award } = ledger.build;
@@ -426,3 +427,26 @@ test(
     assert.equal(deadWith({ traumatic: 99 }), true);
   },
 );
+
+// ---------- the labels in Vietnamese (InconsisTable's house decision #211; rules-flow §11.205) ----------
+
+const noLanguages = skip || (!engine!.localRuleset && "this InconsisTable checkout reads labels in one language only");
+
+test("every Vietnamese label is used, and the build block keeps its labels in one language", () => {
+  const both = [buildRuleset(), ledger];
+  for (const r of both) assert.equal(r.language, "en");
+  const text = JSON.stringify(both);
+  for (const [en, vi] of Object.entries(VI)) assert.ok(text.includes(JSON.stringify({ en, vi })), en);
+  assert.ok(!JSON.stringify(ledger.build).includes('"vi"'));
+});
+
+test("a Vietnamese seat reads the sheet in Vietnamese, an English one in English", { skip: noLanguages }, () => {
+  type Read = { resources: { id: string; label: string }[]; conditions: { id: string; label: string }[] };
+  for (const r of [buildRuleset(), ledger]) {
+    const [vi, en] = (["vi", "en"] as const).map((lang) => engine!.localRuleset!(r, lang) as Read);
+    const wounds = (x: Read) => x.resources.find((s) => s.id === "wounds")!.label;
+    assert.equal(wounds(vi!), "Vết thương");
+    assert.equal(wounds(en!), "Wounds");
+    assert.equal(vi!.conditions.find((c) => c.id === "onFire")?.label, "Bốc cháy");
+  }
+});

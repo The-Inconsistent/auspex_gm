@@ -1377,6 +1377,45 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      ledger ruleset (0.2.18) names the archetype on a finished character's library card (`build.libraryLine:
      "archetypes"`), as this repo's YOUR CHARACTERS does; it validates against a platform with #233, the by-hand
      ruleset is unchanged. *Issue #327's recommendation, 2026-11-27.*
+203. **The World wears this app's look as it ships** (issue #326; InconsisTable's house decisions #203 to #207, #219,
+     #220, its pull requests #296 and #297). Every pick the platform added for this app's touches is set to what this
+     app does: `handoutPaper: "light"` (a handout stays a sheet of paper on a night phone, as `--paper*` does here),
+     `readout: "slate"` (the phone's dataslate: scanlines and clipped corners; the band's bone on iron is 14.83:1 by
+     day and 17.57:1 by night, over the slate's 5:1 floor), `gmSeal: "skull"` (the sealed plate with its winged skull,
+     the platform's copy of this app's own mask), `tableHead: "band"` (stat-block heads on iron in both sets),
+     `statBlock: "printed"` (crest, crimson title bar, ragged bands) and `gmNav: "rail"` (the chapter rail down the
+     right edge from 900px). The side colours are read from this app's `--side-agents` and `--side-threats`, day and
+     vigil (`#2f5f9e`/`#b3541e`, `#7fa6e0`/`#e08a4a`), never retyped; the platform holds no contrast pair on them (its
+     #207). The earlier picks and the token mapping are unchanged. The World is 0.1.2. **Still not expressed:** the
+     marker colours (this app's are lighter, in an ink frame; the platform's are fixed, its house decision #92), brass
+     for Glory only (the World maps the platform's brass, its main action, to the crimson fill, so Glory may show in
+     crimson), the `+++ X +++` stamps (words the platform's term list does not hold yet, its house decision #221), and
+     the 63 meanings on tap of `lib/sheet-terms` (no term or label carries a meaning). *The owner's decision,
+     2026-11-27: match this app as it ships, tokens and widgets.*
+204. **The World's terms are this app's words** (issue #326; InconsisTable's house decisions #212 and #213, its #159).
+     The World gives the platform's terms as this app's screens name them, in English: Agent and Threat for a
+     character and a creature, Threat for the other side of a fight (AGENTS and THREATS), Mob, Round and Turn with the
+     capital this app and the books give them, and party, GM, player, session, fight, scene, mission, handout, codex
+     and table screen as the platform words them, written so a later change of the platform's words does not change
+     this app's. Vietnamese is given only where this app's English is not the platform's word: đặc vụ (Agent), mối đe
+     dọa (Threat, for both the creature and the other side). Everywhere else the platform's own Vietnamese stands, the
+     owner's words of 2026-11-27 among them (buổi, giao tranh, địch for any other game; sinh vật gives way to mối đe
+     dọa here). A capital only (Mob, Round, Turn) is no reason for a Vietnamese word of its own: Vietnamese keeps
+     đám đông, vòng and lượt. The marker words are left to the platform: this app names its markers by their colour
+     alone. **Not expressed:** this app calls the codex CODEX on the GM's tablet and INTEL on a phone; the platform has
+     one term for both, so both read codex (sổ tay in Vietnamese). *The owner's decision, 2026-11-27.*
+205. **The ruleset's labels in Vietnamese** (issue #326; InconsisTable's house decision #211). The ruleset declares
+     `language: "en"` and gives the labels a player reads both in English and in Vietnamese: the pools (Wrath, Glory,
+     Ruin, Wounds, Shock, Corruption, Wealth), the Attributes, the Skills, the Traits and the sheet's other numbers, its
+     sections and the Corruption levels, the Conditions, the fight's sides and health states, the spends and the
+     phone's panels, and a called Test's name, inputs, outcomes and offers (`packages/data/port/labels-vi.ts`). The
+     Vietnamese is written for the port (this app is English only), in the platform's style: "Test" and "DN" stay as
+     the platform's Vietnamese keeps them, and a W&G term keeps a capital on its first word (Vết thương, Phẫn nộ,
+     Vinh quang, Tai ương, Tha hóa). One English word with two meanings is written in place: Lost is "Thua" for the
+     opposed Test's outcome and "Sa ngã" for the ledger's Chaos Spawn state. Cites and every other label are
+     unchanged; the GM's codex fields, tables and generators stay English (a Vietnamese device reads them in English,
+     the ruleset's own language). The ledger builder's `build` labels stay one string, as the platform reads them.
+     The rulesets are 0.1.18 and 0.2.19, and validate only against a platform with #159. *Issue #326, 2026-11-27.*
 
 ---
 

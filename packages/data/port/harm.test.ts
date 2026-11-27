@@ -23,6 +23,7 @@ import {
 } from "@wg/shared";
 import { mutationTables } from "../index.ts";
 import { loadEngine, type Compiled } from "./engine.ts";
+import { english } from "./labels-vi.ts";
 import { buildRuleset, idOf, THREAT_CLASSES } from "./ruleset.ts";
 
 // What one hit does, as the ruleset's `health.harm` block says it (steps a to e and `muster` of the platform's
@@ -255,7 +256,11 @@ const RULESETS: [string, Ruleset, string | false][] = [
   ],
 ];
 const labelsOf = (ruleset: Ruleset, entity: string) =>
-  new Map(ruleset.health.states.filter((s) => s.entities.includes(entity)).map((s) => [s.label, s.id]));
+  new Map(
+    english(ruleset)
+      .health.states.filter((s) => s.entities.includes(entity))
+      .map((s) => [String(s.label), s.id]),
+  );
 const toIds = (labels: Map<string, string>, status: string[], what: string) =>
   status
     .map((l) => {
