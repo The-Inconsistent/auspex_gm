@@ -63,7 +63,11 @@ test("every ask clears when a session starts or ends, a fight's when it ends", (
     for (const s of r.spends as (Spend & { clearOn: string[] })[])
       assert.deepEqual(
         s.clearOn,
-        ["sessionStart", "sessionEnd", ...(["seize", "aware", "determination"].includes(s.id) ? ["encounterEnd"] : [])],
+        [
+          "sessionStart",
+          "sessionEnd",
+          ...(["seize", "aware", "determination", "manifest"].includes(s.id) ? ["encounterEnd"] : []),
+        ],
         s.id,
       );
 });

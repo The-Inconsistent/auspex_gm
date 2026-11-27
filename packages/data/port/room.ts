@@ -23,6 +23,7 @@ import {
 import { hazards as bookHazards, wargear } from "../index.ts";
 import { remapApproval, type Reworded } from "./build-catalogue.ts";
 import { CATALOGUE_PACKS } from "./creation-packs.ts";
+import { heldKeyOf, MUTATION_PACK } from "./mutations.ts";
 import { buildCustomThreatPack, buildPack } from "./pack.ts";
 import { buildRuleset, CODEX, COUNTED_KINDS, idOf, itemKindOf, KEYWORD_JOIN } from "./ruleset.ts";
 import { buildWorld, HANDOUT_DEFAULT_HEADER, HANDOUT_LAYOUT } from "./world.ts";
@@ -292,9 +293,9 @@ export function buildRoomDocument(
     if (ch.traumatic) fields.traumatic = ch.traumatic;
     if (ch.annihilated) fields.annihilated = true;
     for (const k of Object.keys(ch.overrides)) note(`${at}.overrides.${k}`, "a GM override of a Trait: no field");
-    // The held Mutations by the book row's id, which Enduring Life and Blighted Soul read (rules-flow §11.188); the row's
-    // name, text and mods are the book's, not the room's.
-    if (s.mutations.length) fields.mutations = s.mutations.map((m) => m.id);
+    // The held Mutations by the Mutation pack's key (the book row's id; a d6 table's row by its own), which the held kind
+    // reads and Enduring Life and Blighted Soul too (rules-flow §11.188, §11.191); the name, text and mods are the pack's.
+    if (s.mutations.length) fields.mutations = s.mutations.map(heldKeyOf);
     s.mutations.forEach((_, j) => note(`${at}.stats.mutations.${j}`, "a Mutation's printed row: its key is kept"));
     for (const k of Object.keys(s.requisitioned)) note(`${at}.stats.requisitioned.${k}`, "a requisition this session");
     // The items the Agent carries (house decision #95): a wargear entry the pack serves, else a name written by hand.
@@ -801,6 +802,7 @@ export function buildRoomDocument(
         CATALOGUE_PACKS.creation,
         CATALOGUE_PACKS.wargear,
         { slug: threatPack.id, version: threatPack.version },
+        MUTATION_PACK,
         ...(custom ? [{ slug: custom.id, version: custom.version }] : []),
       ],
       world: { slug: world.id, version: world.version },

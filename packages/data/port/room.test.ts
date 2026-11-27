@@ -98,6 +98,8 @@ const character = (over: Record<string, unknown>) => ({
 // An upgrade that changes an armour's rating (Core pp.227-228).
 const ARMOUR_UPGRADE = [...wargear.values()].find((w) => w.upgrade?.mods.some((m) => m.kind === "ar"))!.id;
 
+const VISIONS = findMutation(mutationTables(), "visions")!;
+
 const exported = CampaignExport.parse({
   format: "auspex-campaign",
   version: 1,
@@ -123,7 +125,14 @@ const exported = CampaignExport.parse({
       builtAt: 1,
       stats: {
         ...CharacterStats.parse(sergeant.stats),
-        mutations: [sheetMutation(findMutation(mutationTables(), BLIGHTED_SOUL)!)],
+        mutations: [
+          sheetMutation(findMutation(mutationTables(), BLIGHTED_SOUL)!),
+          // A row of a Mutation's own d6 table, held under its parent's id with both names (sheetMutation).
+          sheetMutation(
+            VISIONS,
+            VISIONS.sub!.rows.find((r) => r.id === "visions-true-divination"),
+          ),
+        ],
         // An upgrade fitted in play to the armour the build gives.
         armour: { ...CharacterStats.parse(sergeant.stats).armour, fitted: [ARMOUR_UPGRADE] },
         wealth: 5,
@@ -433,6 +442,7 @@ test("the room: name, next session, Tier, pools, and the versions it expects", (
       CATALOGUE_PACKS.creation,
       CATALOGUE_PACKS.wargear,
       { slug: threatPack.id, version: threatPack.version },
+      { slug: "wrath-and-glory-mutations", version: "0.1.0" },
       { slug: buildCustomThreatPack(exported).pack.id, version: "0.1.0" },
     ],
     world: { slug: world.id, version: world.version },
@@ -459,7 +469,7 @@ test("characters: a build with the fields it does not write, a hand-made sheet, 
     "detail.appearance": "Tall.",
     "detail.personality": "Grim.",
     traumatic: 1,
-    mutations: [BLIGHTED_SOUL],
+    mutations: [BLIGHTED_SOUL, "visions-true-divination"],
   });
   assert.deepEqual(ash!.resources, { wrath: 1, wealth: 5, corruption: 0, wounds: 3, shock: 1, ammoBolt: 2 });
   assert.deepEqual(ash!.conditions, ["bleeding", "hindered"]);
@@ -737,7 +747,7 @@ test("the report counts exactly what the file has that the document holds no str
     "left out: a Condition the ruleset does not have": 1,
     "left out: a Condition's stack count": 1,
     "left out: a GM override of a Trait: no field": 1,
-    "left out: a Mutation's printed row: its key is kept": 1,
+    "left out: a Mutation's printed row: its key is kept": 2,
     "left out: a hand-made line longer than an item's name": stats.gear.filter((g) => g.length > CAPS.itemName).length,
     "left out: a hand-made weapon's profile: its name is carried": stats.weapons.length,
     "left out: a hazard its place no longer lists": 1,
