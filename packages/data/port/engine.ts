@@ -99,6 +99,8 @@ export const loadEngine = async (): Promise<Engine | null> =>
 export interface CoreSchema {
   // Absent from a checkout made before the room document.
   RoomDocument?: Schema;
+  // Absent from a checkout made before the document carried session dates, status and stacks (its #232).
+  RoomExportReport?: Schema;
   ROOM_LIMITS?: Record<string, number>;
   MAX_PREP_LINES?: number;
   MAX_TEST_OUTCOMES?: number;

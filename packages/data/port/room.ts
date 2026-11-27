@@ -9,6 +9,7 @@
 // all is reported as left out. Nothing is cut: a text over the platform's cap refuses the document (`Refusal`) with the
 // export path. Custom Threats are not in the document: they are the separate pack (`buildCustomThreatPack`).
 import { createHash } from "node:crypto";
+import { z } from "zod";
 import {
   AMMO_TYPES,
   ATTRIBUTE_NAMES,
@@ -20,7 +21,7 @@ import {
   onEntryIds,
   threatCite,
   type BeatTest,
-  type CampaignExport,
+  CampaignExport,
   type LocationHazard,
 } from "@wg/shared";
 import { hazards as bookHazards, factionPresetList, npcPresetList, placeList, rulesList, wargear } from "../index.ts";
@@ -29,8 +30,25 @@ import { CATALOGUE_PACKS } from "./creation-packs.ts";
 import { buildCodexPack, CODEX_PACK, quickKey, SUMMARY_MAX, testOf } from "./codex-packs.ts";
 import { heldKeyOf, MUTATION_PACK } from "./mutations.ts";
 import { buildCustomThreatPack, buildPack } from "./pack.ts";
-import { buildRuleset, CODEX, COUNTED_KINDS, idOf, itemKindOf } from "./ruleset.ts";
+import { buildRuleset, CODEX, COUNTED_KINDS, idOf, itemKindOf, RATED } from "./ruleset.ts";
 import { buildWorld, HANDOUT_DEFAULT_HEADER, HANDOUT_LAYOUT } from "./world.ts";
+
+/**
+ * The export as the converter reads it. This app's file also carries each character's Ascension bookkeeping (the state
+ * row `exportCampaign` spreads), which `CampaignExport` does not parse: where the next Ascension counts from and
+ * whether the GM waived its package (state.ts, Core pp.147-148). A file without them reads as before.
+ */
+export const PortExport = CampaignExport.extend({
+  characters: z
+    .array(
+      CampaignExport.shape.characters.element.extend({
+        xpAtAscension: z.number().int().min(0).optional(),
+        ascensionPackageWaived: z.boolean().optional(),
+      }),
+    )
+    .max(50),
+});
+export type PortExport = z.infer<typeof PortExport>;
 
 /**
  * The platform's caps the converter holds texts and lists to (core-schema's `ROOM_LIMITS`, `CodexTitle`, `CodexText`,
@@ -127,7 +145,9 @@ export interface RoomActor {
   build?: string;
   fields?: Fields;
   resources?: Record<string, number>;
-  conditions?: string[];
+  conditions?: (string | { id: string; stacks: number })[];
+  xpAtAscension?: number;
+  packageWaived?: boolean;
   items?: RoomItem[];
 }
 export interface RoomDocument {
@@ -144,7 +164,14 @@ export interface RoomDocument {
   pools: { glory: number; ruin: number };
   actors: RoomActor[];
   codex: RoomEntry[];
-  sessions: { title?: string; recap?: string; notes?: string }[];
+  sessions: {
+    title?: string;
+    recap?: string;
+    notes?: string;
+    startedAt?: string;
+    endedAt?: string;
+    award?: number;
+  }[];
   images: { id: string; mime: string; base64: string }[];
 }
 
@@ -163,6 +190,11 @@ const mentionOf = (id: string, title: string) => `@[${title.replace(/[[\]\n]/g, 
 const VIEW = { hidden: "hidden", bars: "bar", stats: "full" } as const;
 const DETAIL = ["appearance", "past", "personality"] as const;
 const CONDITION_ID = new Map<string, string>(CONDITIONS.map((c) => [c, idOf(c)]));
+// A time as the platform takes it (an ISO date with its offset), or null when the file's does not read.
+const isoOf = (s: string | null) => {
+  const d = s === null ? null : new Date(s);
+  return d && !Number.isNaN(d.getTime()) ? d.toISOString() : null;
+};
 
 /** A Test as a GM notes line: what it rolls, its DN, who, and the GM's plan for it. */
 function describeTest(t: BeatTest): string {
@@ -276,7 +308,7 @@ const placeSource = (l: { name: string; gmNotes: string }) => {
  * the requirement's wording, as build.test.ts moves it (`forPort`).
  */
 export function buildRoomDocument(
-  exported: CampaignExport,
+  exported: PortExport,
   { reworded }: { reworded?: readonly Reworded[] } = {},
 ): { document: RoomDocument; report: Note[] } {
   const { campaign, codex: c } = exported;
@@ -385,6 +417,8 @@ export function buildRoomDocument(
     for (const d of DETAIL) if (ch.detail[d]) fields[`detail.${d}`] = ch.detail[d];
     if (ch.detail.portrait) note(`${at}.detail.portrait`, "a portrait bundled with this app");
     if (ch.traumatic) fields.traumatic = ch.traumatic;
+    // The field the Dead health state reads, not the platform's `dead` status, which this repo's flag does not match
+    // (rules-flow §11.202).
     if (ch.annihilated) fields.annihilated = true;
     // The GM's override of a Trait, in its override field (house decision #96); deriveStats reads it at least 1.
     for (const [k, v] of Object.entries(ch.overrides)) if (v !== undefined) fields[`override.${k}`] = Math.max(1, v);
@@ -469,12 +503,19 @@ export function buildRoomDocument(
           source: "hand",
         });
 
-    const conditions = ch.conditions.flatMap((name, j) => {
+    // A rated Condition ("Hindered (2)", addCondition) with its stacks when it holds more than one (InconsisTable's
+    // house decision #181), where the ruleset stacks it (RATED); another's count has no place.
+    const conditions = ch.conditions.flatMap<NonNullable<RoomActor["conditions"]>[number]>((name, j) => {
       const [, base, stack] = /^(.+?)(?: \((\d+)\))?$/.exec(name) ?? [];
       const id = CONDITION_ID.get(base ?? "");
-      if (!id) note(`${at}.conditions.${j}`, "a Condition the ruleset does not have");
-      else if (stack) note(`${at}.conditions.${j}`, "a Condition's stack count");
-      return id ? [id] : [];
+      if (!id) {
+        note(`${at}.conditions.${j}`, "a Condition the ruleset does not have");
+        return [];
+      }
+      const stacks = Number(stack ?? 1);
+      if (stacks > 1 && RATED.has(base!)) return [{ id, stacks }];
+      if (stacks > 1) note(`${at}.conditions.${j}`, "a stack count on a Condition that does not stack");
+      return [id];
     });
 
     // The GM's objectives for this Agent, each a quest only that character reads.
@@ -515,6 +556,9 @@ export function buildRoomDocument(
       fields,
       resources,
       ...(conditions.length > 0 && { conditions }),
+      // Where the next Ascension counts from (house decision #181); 0 and not waived are the platform's defaults.
+      ...(ch.xpAtAscension && { xpAtAscension: ch.xpAtAscension }),
+      ...(ch.ascensionPackageWaived && { packageWaived: true }),
       ...(items.length > 0 && { items }),
     };
   });
@@ -652,8 +696,7 @@ export function buildRoomDocument(
     const p = `codex.handouts.${i}`;
     // The reveal time orders the phone's inbox (InconsisTable's house decision #86); the import keeps it only on an entry
     // the document reveals, so a sealed handout's is reported.
-    const revealedAt = h.revealedAt === null ? null : new Date(h.revealedAt);
-    const at = revealedAt && !Number.isNaN(revealedAt.getTime()) ? revealedAt.toISOString() : null;
+    const at = isoOf(h.revealedAt);
     if (h.revealedAt !== null && !(h.revealed && at)) note(`${p}.revealedAt`, "the time it was revealed");
     const missing = h.audience.findIndex((a) => !characters.has(a));
     // An empty audience is every player, so a reader the file lacks cannot just be dropped (as this app's importer).
@@ -919,13 +962,21 @@ export function buildRoomDocument(
     .sort((x, y) => x.s.number - y.s.number)
     .map(({ s, i }) => {
       const p = `codex.sessions.${i}`;
-      note(`${p}.startedAt`, "the time a session started");
-      if (s.endedAt !== null) note(`${p}.endedAt`, "the time a session ended");
-      if (s.xp) note(`${p}.xp`, "the XP a session awarded: the sheets hold it");
+      // Its dates and award (InconsisTable's house decision #181). One still running at export comes back ended then,
+      // with no award (#182); none is ever written abandoned, which this app never records (rules-flow §11.202).
+      const running = s.endedAt === null;
+      const startedAt = isoOf(s.startedAt);
+      const endedAt = isoOf(running ? exported.exportedAt : s.endedAt);
+      if (!startedAt) note(`${p}.startedAt`, "a session time that does not read");
+      if (!running && !endedAt) note(`${p}.endedAt`, "a session time that does not read");
+      if (running && s.xp) note(`${p}.xp`, "the XP of a session running at export");
       return {
         ...(s.title && { title: fit(`${p}.title`, s.title.trim(), CAPS.sessionTitle) }),
         ...(s.recap && { recap: linked(`${p}.recap`, s.recap, CAPS.sessionText) }),
         ...(s.notes && { notes: linked(`${p}.notes`, s.notes, CAPS.sessionText) }),
+        ...(startedAt && { startedAt }),
+        ...(endedAt && { endedAt }),
+        ...(!running && s.xp > 0 && { award: s.xp }),
       };
     });
   // The campaign's premise: a lore entry every seat reads (the owner's decision 2 of 2026-11-26), and what to leave
@@ -946,11 +997,11 @@ export function buildRoomDocument(
       visibility: "party",
     });
 
-  const exportedAt = new Date(exported.exportedAt);
+  const exportedAt = isoOf(exported.exportedAt);
   const document: RoomDocument = {
     format: "inconsistable-room",
     version: 1,
-    ...(!Number.isNaN(exportedAt.getTime()) && { exportedAt: exportedAt.toISOString() }),
+    ...(exportedAt && { exportedAt }),
     room: {
       name: campaign.name,
       ...(campaign.nextSessionAt && { nextSessionAt: campaign.nextSessionAt }),

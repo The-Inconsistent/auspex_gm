@@ -21,7 +21,7 @@ import { CampaignExport } from "@wg/shared";
 import { buildCodexPack } from "./codex-packs.ts";
 import { buildMutationPack } from "./mutations.ts";
 import { buildCustomThreatPack, buildPack, type LeftOut, type Pack } from "./pack.ts";
-import { buildRoomDocument, Refusal } from "./room.ts";
+import { buildRoomDocument, PortExport, Refusal } from "./room.ts";
 import { buildRuleset, withoutBuildReaders } from "./ruleset.ts";
 import { buildWorld } from "./world.ts";
 
@@ -79,7 +79,8 @@ if (engine === null) console.warn("InconsisTable is not checked out beside this 
 
 const ruleset = buildRuleset();
 let compiled: ReturnType<NonNullable<typeof engine>["compileRuleset"]> | null = null;
-if (engine !== null) {
+// Only what is written against it: a room document is checked against the platform's RoomDocument alone.
+if (engine !== null && (out || packOut || custom)) {
   compiled = engine.compileRuleset(ruleset);
   if (!compiled.ok) refuse(compiled.problems);
   else if (!checksCodex(engine, ruleset))
@@ -209,7 +210,7 @@ if (flags.world) {
 
 if (room) {
   const [exportFile, file] = room as [string, string];
-  const exported = CampaignExport.safeParse(JSON.parse(readFileSync(exportFile, "utf8")));
+  const exported = PortExport.safeParse(JSON.parse(readFileSync(exportFile, "utf8")));
   if (!exported.success)
     refuse(exported.error.issues.map((i) => ({ path: i.path.map(String).join("."), message: i.message })));
   const core = await loadCoreSchema();
