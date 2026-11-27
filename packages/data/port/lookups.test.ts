@@ -22,6 +22,7 @@ import {
 } from "@wg/shared";
 import { lookups, mutationTables } from "../index.ts";
 import { loadEngine, type Compiled } from "./engine.ts";
+import { english } from "./labels-vi.ts";
 import { buildMutationPack, heldKeyOf } from "./mutations.ts";
 import { buildRuleset, idOf } from "./ruleset.ts";
 import { TABLES } from "./tables.ts";
@@ -56,7 +57,9 @@ const compiled = () => {
   return (compiledOnce = r.compiled);
 };
 const tableOf = (id: string) =>
-  (buildRuleset({ builder: "ledger" }).tables as Record<string, { entries: { id: string; label: string }[] }>)[id]!;
+  (english(buildRuleset({ builder: "ledger" })).tables as Record<string, { entries: { id: string; label: string }[] }>)[
+    id
+  ]!;
 const D66 = Array.from({ length: 56 }, (_, i) => i + 11).filter(isD66);
 const agent = (fields: Record<string, unknown> = {}) =>
   engine!.actorScope({ fields, resources: { wounds: 0, shock: 0, corruption: 0 } });
