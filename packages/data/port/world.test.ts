@@ -12,6 +12,7 @@ import {
   MAPPING,
   readLook,
   type Source,
+  TERMS,
 } from "./world.ts";
 
 // The World: skipped, like the ruleset's tests, when InconsisTable is not checked out beside this repo, and each check
@@ -147,7 +148,9 @@ test(
         ["card", new Map([...laid, ...card.decls])],
       ] as const) {
         const colour = (token: string) => resolve(`var(--${token})`, decls, side);
-        for (const { fg, bg, min } of engine!.WORLD_CONTRAST_PAIRS!) {
+        // The slate readout holds the band's pair to its own floor (the platform's house decision #204).
+        const slate = world.theme.shapes.readout === "slate" && engine!.WORLD_SLATE_PAIR;
+        for (const { fg, bg, min } of [...engine!.WORLD_CONTRAST_PAIRS!, ...(slate ? [slate] : [])]) {
           const r = ratio(colour(fg), colour(bg));
           console.log(`${side} ${where}: ${fg} ${colour(fg)} on ${bg} ${colour(bg)} = ${r.toFixed(2)} (≥ ${min})`);
           if (r < min) failures.push(`${side} ${where}: ${fg} on ${bg} is ${r.toFixed(2)}, under ${min}`);
@@ -171,7 +174,26 @@ test("the World passes InconsisTable's World validator", { skip: noValidator }, 
   assert.ok(!refused.ok && refused.problems.some((p) => p.path === "theme.schemes.light"));
 });
 
-test("the World is 0.1.1", () => assert.equal(world.version, "0.1.1"));
+test("the World is 0.1.2", () => assert.equal(world.version, "0.1.2"));
+
+// ---------- terms (InconsisTable's house decisions #212, #213) ----------
+
+const noTerms = noContract || (engine!.TERM_IDS ? false : "this InconsisTable checkout has no terms yet");
+
+test("every term is one the platform reads, and the contract keeps the terms as written", { skip: noTerms }, () => {
+  for (const id of Object.keys(TERMS)) assert.ok(engine!.TERM_IDS!.includes(id), id);
+  const parsed = engine!.World!.safeParse(world);
+  assert.ok(parsed.success);
+  assert.deepEqual((parsed.data as { terms?: unknown }).terms, TERMS);
+});
+
+test("every term has its English word, and a Vietnamese one only where Auspex's word is not the platform's", () => {
+  // Agent and Threat are this app's own words; the rest are the platform's, at most capitalised (Round, Turn, Mob).
+  for (const [id, words] of Object.entries(TERMS)) {
+    assert.ok("en" in words, `${id}: English`);
+    assert.equal("vi" in words, ["character", "creature", "foe"].includes(id), `${id}: Vietnamese`);
+  }
+});
 
 // ---------- handouts (InconsisTable's house decision #72) ----------
 
