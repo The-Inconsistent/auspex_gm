@@ -212,6 +212,55 @@ test("a Wounded Agent's called Test has +1 DN unless the call ignores it", { ski
   }
 });
 
+// PARTY's card (agent-card.tsx): the bars, then Wrath, Corruption and Wealth in its order; XP is the ledger's own (§11.207).
+test("the strip carries Wounds and Shock as bars, then Wrath, Corruption and Wealth in PARTY's order", () => {
+  for (const r of [buildRuleset(), buildRuleset({ builder: "ledger" })]) {
+    const strip = (r.layout as { agent: { phoneStrip: unknown[] } }).agent.phoneStrip;
+    const bars = strip.filter((w) => typeof w !== "string").map((w) => (w as { bind: { value: string } }).bind.value);
+    assert.deepEqual(bars, ["res.wounds", "res.shock"], r.version);
+    assert.deepEqual(
+      strip.filter((w) => typeof w === "string"),
+      ["res.wrath", "res.corruption", "res.wealth"],
+      r.version,
+    );
+  }
+});
+
+test("the Agent's Wounded, Dying, Dead and Exhausted chips hold where pcStatus gives them", { skip }, () => {
+  const compiled = compile();
+  const { stats, build } = PREGENS[0]!;
+  const d = deriveStats({ stats, overrides: {}, tier: build.tier });
+  const campaign = campaignAt(compiled, build.tier);
+  const [W, S, T] = [d.maxWounds, d.maxShock, d.maxTraumatic];
+  const cases = [
+    [0, 0, 0],
+    [1, 0, 0],
+    [W, 0, 0],
+    [W + 1, 0, 0],
+    [1, 0, T + 1],
+    [W + 1, S + 1, T + 1],
+    [0, S, 0],
+    [0, S + 1, 0],
+    [1, S + 1, 0],
+  ];
+  for (const [wounds, shock, traumatic] of cases) {
+    const c = { stats, wounds, shock, traumatic, annihilated: false } as unknown as Character;
+    const fields = { ...fieldsOf(stats), traumatic, annihilated: false };
+    const resources = { wounds, shock, corruption: 0 };
+    const derived = engine!.deriveValues({ compiled, entity: "agent", values: { fields, resources, campaign } });
+    const scope = engine!.actorScope({ fields, derived, resources, campaign });
+    const states = engine!.healthStatesOf({ compiled, entity: "agent", scope });
+    const what = `${wounds}/${W} W, ${shock}/${S} S, ${traumatic}/${T} T`;
+    assert.deepEqual(
+      states.sort(),
+      pcStatus(c, d)
+        .map((s) => s.toLowerCase())
+        .sort(),
+      what,
+    );
+  }
+});
+
 test("Glory and Ruin are capped as poolMax caps them", { skip }, () => {
   const compiled = compile();
   for (let players = 1; players <= 8; players++) {
