@@ -23,12 +23,15 @@ import {
   MAX_FACTION_KEYWORDS,
   MAX_PENDING_SPENDS,
   MAX_SPEND_AMOUNT,
+  MAX_UPGRADES,
+  RARITY_DN,
   MAX_KEYWORD_LENGTH,
   MOB_MIN,
   SKILLS,
   Threat,
   ThreatSize,
   TIMED_CONDITIONS,
+  UPGRADE_SLOTS,
   type Attribute,
   type Skill,
 } from "@wg/shared";
@@ -315,6 +318,72 @@ const spends = ({ ledger }: { ledger: boolean }) =>
     clearOn: ["sessionStart", "sessionEnd", ...(FIGHT_ONLY.has(x.id) ? ["encounterEnd"] : [])],
   }));
 
+// The items an Agent carries (InconsisTable's house decision #95), by the wargear entry's kind, which the wargear pack
+// writes as a tag (creation-packs.ts): weapons and armour drawn as the build's cards, upgrades fitted to them (three at
+// most, one per slot; Matched Pair by the GM only, pp.227-228, Apocrypha p.388, rules-flow §11.63-§11.64), counted
+// ammunition and grenades the holder spends (p.229), and the rest as gear (pp.211-247).
+const ITEM_KINDS = [
+  { id: "weapon", label: "Weapons", tag: "weapon", card: "weapons", cite: "Core pp.211-226" },
+  { id: "armour", label: "Armour", tag: "armour", card: "armour", cite: "Core pp.230-233" },
+  {
+    id: "upgrade",
+    label: "Upgrades",
+    tag: "upgrade",
+    fits: { to: ["weapon", "armour"], max: MAX_UPGRADES, slot: "slot", gmTag: "pair" },
+    cite: "Core pp.227-229",
+  },
+  { id: "ammo", label: "Ammunition", tag: "ammo", stacks: true, spend: true, cite: "Core p.229" },
+  { id: "grenade", label: "Grenades and missiles", tag: "grenade", stacks: true, spend: true, cite: "Core p.229" },
+  { id: "gear", label: "Gear", card: "gear", cite: "Core pp.229-247" },
+].map((k) => ({ ...k, entry: "wargear", entities: ["agent"] }));
+/** The item kind a wargear entry of this catalogue kind is carried as: the first that takes its tag, else gear. */
+export const itemKindOf = (wargearKind: string) => ITEM_KINDS.find((k) => k.tag === wargearKind)?.id ?? "gear";
+/** The item kinds that are counted, never given or fitted (p.229). */
+export const COUNTED_KINDS: ReadonlySet<string> = new Set(ITEM_KINDS.filter((k) => k.stacks).map((k) => k.id));
+// Requisition (pp.205-206, requisitionTest): DN Value + the Rarity's penalty, an Influence Test, open to an Agent with a
+// Keyword in common, each one past the first a bonus die; [ANY] stands for one more of the Agent's Keywords not
+// already matched (rules-flow §11.15).
+const RARITY = Object.entries(RARITY_DN).reduceRight(
+  (rest, [r, dn]) => `item.rarity == "${idOf(r)}" ? ${dn} : (${rest})`,
+  "0",
+);
+const SHARED = "overlap(item.keywords, keywords)";
+const MATCHES = `(${SHARED} + (contains(item.keywords, "[ANY]") && count(keywords) > ${SHARED} ? 1 : 0))`;
+const ACQUIRE = {
+  test: "requisition",
+  inputs: {
+    dn: [
+      { label: "Value", value: opt("item.value") },
+      { label: "Rarity", value: `has(item.rarity) ? (${RARITY}) : 0` },
+    ],
+    bonus: [{ label: "Keywords past the first", value: `max(0, ${MATCHES} - 1)` }],
+  },
+  if: `has(keywords) && has(item.value) && ${MATCHES} > 0`,
+  // One Wargear Test and one Ammo Test a session; Grenades and Missiles are got as Ammo (p.205, p.229).
+  limits: [
+    { kinds: ["weapon", "armour", "upgrade", "gear"], max: 1 },
+    { kinds: ["ammo", "grenade"], max: 1 },
+  ],
+  // A failed Test may buy Icons with Wealth, 1 each (p.205).
+  topUp: { resource: "wealth" },
+  // 3 Ammo, or 5 Grenades or Missiles less the Rarity penalty (p.229, requisitionYield).
+  quantity: `contains(item.tags, "grenade") ? 5 - (has(item.rarity) ? (${RARITY}) : 0) : 3`,
+  cite: "Core pp.205-206, p.229",
+};
+const requisition = () => ({
+  kind: "poolSuccesses",
+  ...POOL,
+  entities: ["agent"],
+  pool: "derived.influence",
+  // Every input is the acquisition's, so the Wounded +1 DN (p.193) has no tick to take it off here.
+  target: "ctx.dn + (has(res.wounds) && res.wounds > 0 ? 1 : 0)",
+  inputs: { dn: "int", bonus: "int" },
+  label: "Requisition Test",
+  inputLabels: { dn: INPUT_WORDS.dn, bonus: INPUT_WORDS.bonus },
+  offers: WRATH_OFFERS,
+  cite: "Core pp.205-206",
+});
+
 // What a called Test's result offers the GM, one tap each (InconsisTable's house decision #80). A Wrath Critical earns
 // the party 1 Glory, and the GM may take 1 Ruin for a Complication in place of narrating it (pp.163-164, p.320).
 const WRATH_OFFERS = [
@@ -467,6 +536,9 @@ function catalogueEntities(params: ReturnType<typeof buildParams>) {
       kind: { type: "enum", label: "Kind", values: params.vocabulary.wargearKinds, ...party },
       value: { type: "int", label: "Value", min: 0, max: 30, ...party },
       rarity: { type: "enum", label: "Rarity", values: params.rarity.order.map(idOf), ...party },
+      // What a requisition reads (p.205) and the slot an upgrade takes on its host (pp.227-228, rules-flow §11.64).
+      keywords: { type: "list", label: "Keywords", ...party, cite: "Core p.205" },
+      slot: { type: "enum", label: "Upgrade slot", values: [...UPGRADE_SLOTS], ...party, cite: "Core p.227" },
     },
   };
   const labels: Record<CatalogueKind, string> = {
@@ -652,7 +724,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
 
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.7",
+    version: "0.1.8",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
@@ -1104,6 +1176,22 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         text: "A player may have 3 asks pending, counted per player, one per spend and Agent; an ask is shown to whoever sees the pool it costs. Asks clear when a session starts or ends.",
         cite: "Core p.162, p.164, p.165",
       },
+      // What the items and requisition cannot say (rules-flow §11.190).
+      {
+        id: "upgradeLimitsByHand",
+        text: "Distinction counts toward an item's three upgrades, a support system takes its slot, and an upgrade's own copy limit (3 Chains, Blades and Hooks) is the GM's.",
+        cite: "Core p.228",
+      },
+      {
+        id: "upgradeHostByHand",
+        text: "Which weapons or armour an upgrade may be fitted to (a sight to a ranged weapon, say) is the GM's: the app fits any upgrade to any weapon or armour. The Anti-Gravitic Suspensor Crystal takes its weapon slot on armour too.",
+        cite: "Core pp.227-228",
+      },
+      {
+        id: "requisitionByHand",
+        text: "A requisition's Complication costs 1 Wealth, which the GM takes by hand; acquired ammunition is a counted item beside the seven ammo counters.",
+        cite: "Core p.205, p.229",
+      },
       {
         id: "monstrousImmuneByHand",
         text: "Monstrous Creatures are immune to Fear, Pinned and Staggered: the GM leaves those off them.",
@@ -1203,7 +1291,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.7",
+    version: "0.2.8",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
@@ -1217,6 +1305,21 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     initiative: { ...ruleset.initiative, unableStates: ["dead", "lost", "slain"] },
     rests: [{ ...ruleset.rests[0]!, refusedIn: ["dying", "dead", "lost"] }],
     spends: spends({ ledger: true }),
+    tests: { ...ruleset.tests, requisition: requisition() },
+    // GIVE reads the codex item's catalogue entry; an item with none is given as gear by its name (p.205, §11.112).
+    items: { kinds: ITEM_KINDS, give: { ref: "wargear", loose: "gear" }, acquire: ACQUIRE },
+    codex: {
+      kinds: {
+        ...CODEX.kinds,
+        item: {
+          fields: {
+            ...CODEX.kinds.item.fields,
+            // The catalogue entry it is (`wargearId`), which GIVE puts on the sheet (rules-flow §11.112).
+            wargear: { type: "ref", label: "Catalogue entry", entity: "wargear", visibility: "gm" },
+          },
+        },
+      },
+    },
     entities: [...ruleset.entities, ...catalogueEntities(params)],
     creation: [],
     build: {
