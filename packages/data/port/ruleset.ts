@@ -21,12 +21,12 @@ import {
   ENDURING_LIFE,
   FactionStance,
   MAX_FACTION_KEYWORDS,
+  MAX_HAZARDS,
   MAX_PENDING_SPENDS,
   MAX_SPEND_AMOUNT,
   MAX_UPGRADES,
   Overrides,
   RARITY_DN,
-  MAX_KEYWORD_LENGTH,
   MAX_MUTATIONS,
   MOB_MIN,
   THREAT_PROFILES,
@@ -42,7 +42,11 @@ import {
 import { ADVENTURE_STATUS } from "../../../apps/web/components/gm/prep/constants.ts";
 import { rulesList } from "../index.ts";
 import { buildParams } from "./build-params.ts";
+import { prepTables } from "./generators.ts";
 import { bookTables, TABLES } from "./tables.ts";
+
+/** The most words of this repo's own a codex pack entry's summary or a hazard row's effect holds. */
+export const SUMMARY_MAX = 200;
 
 /** "Ballistic Skill" → "ballisticSkill": the camelCase ids the manifest asks for. */
 export const idOf = (name: string) =>
@@ -678,10 +682,13 @@ export const CODEX = {
           labels: capitals(FactionStance.options),
           visibility: "gm",
         },
+        // The faction's Keywords as words, any written in (house decision #89); the ledger ruleset suggests the
+        // Keyword entries' names (MAX_FACTION_KEYWORDS, MAX_KEYWORD_LENGTH; codex.ts).
         keywords: {
-          type: "text",
+          type: "tags",
           label: "Keywords",
-          maxLength: MAX_FACTION_KEYWORDS * MAX_KEYWORD_LENGTH + (MAX_FACTION_KEYWORDS - 1) * KEYWORD_JOIN.length,
+          maxItems: MAX_FACTION_KEYWORDS,
+          writeIn: true,
           visibility: "gm",
           cite: "Core pp.375-378",
         },
@@ -700,6 +707,17 @@ export const CODEX = {
         goal: { type: "text", label: "Goal", maxLength: capOf(CodexInput.beat.shape.goal), visibility: "gm" },
         outcome: { type: "text", label: "Outcome", maxLength: capOf(CodexInput.beat.shape.outcome), visibility: "gm" },
       },
+      // A scene from a book event (house decision #97): its type, and its first printed Test as a prepared line.
+      from: [
+        {
+          entity: "sceneEvent",
+          values: { type: "type" },
+          tests: {
+            field: "tests",
+            inputs: { skill: "skill", attribute: "attribute", trait: "trait", roll: "roll", dn: "dn" },
+          },
+        },
+      ],
     },
     // The premise stays the entry's own text; the brief and the status are what a shown mission's phones read.
     adventure: {
@@ -719,7 +737,10 @@ export const CODEX = {
         },
       },
     },
-    // The GM's free-text hazards; the structured list (`hazardList`, book rows by id) is not ported.
+    // The GM's free-text hazards beside the list of the place's hazards (`hazardList`, issue #49): each a row filled
+    // from a book hazard or written by hand, with its Test and what it does; a scene picks the ones that apply, each
+    // spotted or not (house decision #89, rules-flow §11.92-§11.95). A place of the books comes with the places inside
+    // it (house decision #97, §11.96-§11.100); a hulk's origin, occupants and objective are its generator's rolls.
     location: {
       fields: {
         hazards: {
@@ -728,7 +749,28 @@ export const CODEX = {
           maxLength: capOf(CodexInput.location.shape.hazards),
           visibility: "gm",
         },
+        hazardRows: {
+          type: "rows",
+          label: "Hazard list",
+          columns: [
+            { id: "name", label: "Hazard", type: "text", maxLength: 200 },
+            { id: "test", label: "Test", type: "test" },
+            { id: "effect", label: "What it does", type: "text", maxLength: SUMMARY_MAX },
+          ],
+          maxRows: MAX_HAZARDS,
+          from: [{ entity: "hazard", name: "name", values: { effect: "summary" } }],
+          pick: { label: "Spotted" },
+          visibility: "gm",
+          cite: "Core pp.201-202",
+        },
+        ...Object.fromEntries(
+          (["origin", "occupants", "objective"] as const).map((k) => [
+            k,
+            { type: "text", label: `Hulk: ${k}`, maxLength: 80, visibility: "gm", cite: "Redacted Records pp.6-11" },
+          ]),
+        ),
       },
+      from: [{ entity: "place", children: "parent" }],
     },
     // A player reads only a given item's name and description, the entry's own title and text: where it lay and who
     // carried it (`locationId`, `npcId`, worded as holder-field.tsx asks) stay the GM's.
@@ -736,6 +778,25 @@ export const CODEX = {
       fields: {
         location: { type: "entry", label: "Where it lies", kind: "location", visibility: "gm" },
         holder: { type: "entry", label: "Who carries it", kind: "npc", visibility: "gm" },
+        // What a loot generator rolled beside the row (a count printed in dice, a fault), and a Holy Relic's parts
+        // (house decision #98; Core pp.247-251, Redacted Records pp.17-22, Redacted Records 2 pp.12-19).
+        found: { type: "text", label: "How many", maxLength: 80, visibility: "gm", cite: "Core p.247" },
+        found2: { type: "text", label: "How many (second count)", maxLength: 80, visibility: "gm", cite: "Core p.247" },
+        fault: { type: "text", label: "Fault", maxLength: 80, visibility: "gm", cite: "Redacted Records p.22" },
+        ...Object.fromEntries(
+          (
+            [
+              ["relicPower", "Relic: Power"],
+              ["relicOwner", "Relic: original owner"],
+              ["relicAnointment", "Relic: anointment"],
+              ["relicOddity", "Relic: oddity"],
+              ["relicEnemy", "Relic: enemy Keyword"],
+            ] as const
+          ).map(([k, l]) => [
+            k,
+            { type: "text", label: l, maxLength: 80, visibility: "gm", cite: "Redacted Records 2 pp.12-19" },
+          ]),
+        ),
       },
     },
   },
@@ -1181,9 +1242,10 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     ),
   };
 
+  const prep = prepTables();
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.12",
+    version: "0.1.13",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
@@ -1391,6 +1453,37 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         fields: {
           severity: { type: "enum", label: "Severity", values: [...SEVERITIES], cite: "Core p.287" },
           summary: { type: "text", label: "Summary", maxLength: 200 },
+        },
+      },
+      // What the codex pack's entries carry (codex-packs.ts, #325): a book hazard's summary in this repo's words and its
+      // DN; a place of the books and the place it sits in; a book event's scene type and first Test.
+      {
+        id: "hazard",
+        label: "Hazard",
+        base: "ability",
+        fields: {
+          summary: { type: "text", label: "Summary", maxLength: SUMMARY_MAX },
+          dn: { type: "int", label: "DN", min: 1, max: 20 },
+        },
+      },
+      {
+        id: "place",
+        label: "Place",
+        base: "ability",
+        fields: { parent: { type: "ref", label: "Inside", entity: "place" } },
+      },
+      {
+        id: "sceneEvent",
+        label: "Scene event",
+        base: "ability",
+        fields: {
+          type: { type: "enum", label: "Type", values: [...BeatType.options] },
+          tests: { type: "list", label: "Tests", maxItems: 1 },
+          skill: { type: "text", label: "Skill", maxLength: 40 },
+          attribute: { type: "text", label: "Attribute", maxLength: 40 },
+          trait: { type: "text", label: "Trait", maxLength: 40 },
+          roll: { type: "text", label: "Opposed: rolls", maxLength: 40 },
+          dn: { type: "int", label: "DN", min: 1, max: 20 },
         },
       },
     ],
@@ -1813,6 +1906,32 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         text: "Cover, range, Aim, Called Shots, Salvo and a weapon's Traits are the GM's; ED printed as dice or as Rank, and a power's DN printed in words, read as 0.",
         cite: "Core pp.182-190",
       },
+      // What the codex rows, the codex pack and the generators cannot say (rules-flow §11.195).
+      {
+        id: "hazardRowOneTest",
+        text: "A hazard row holds one Test, its first; a scene made from a book event takes the event's first Test with its first Skill. The GM adds the others.",
+        cite: "Core pp.201-202",
+      },
+      {
+        id: "lootByName",
+        text: "A loot generator makes the item by the row's name; its catalogue entry, ammunition and Wealth are the GM's to give, which the line's note names. Of Industrial Works' two counts, How many takes the 1d3.",
+        cite: "Core pp.247-251",
+      },
+      {
+        id: "hulkRollAgain",
+        text: "A Space Hulk Objective the book prints no row for (14-16, 46) is rolled again, and a Mixed Origin's further rolls are the GM's.",
+        cite: "Redacted Records p.7",
+      },
+      {
+        id: "relicFormByHand",
+        text: "A Holy Relic is made by the name the GM gives; its Form, read on the roll's trail, names the catalogue item the GM picks.",
+        cite: "Redacted Records 2 p.13",
+      },
+      {
+        id: "presetsByHand",
+        text: "NPC and faction presets and the NPC name and look rolls are not in the codex pack: the GM writes them.",
+        cite: "Core p.315",
+      },
       {
         id: "stacksUncapped",
         text: "Hindered, Bleeding and Vulnerable stack with no cap; the other Conditions are held or not.",
@@ -1877,7 +1996,9 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     codex: CODEX,
     // Critical Hits, Perils of the Warp and the Mutation tables, the book's rows as lookups (tables.ts; the owner's
     // decision 1 of 2026-11-26, rules-flow §11.191).
-    tables: bookTables(),
+    tables: { ...bookTables(), ...prep.tables },
+    // Loot, the Space Hulk and the Holy Relic (generators.ts; the owner's decisions 1 and 3, rules-flow §11.195).
+    generators: prep.generators,
     // The Mutations an Agent holds, by key: their mods move its numbers, and other players read "Unseen" in place of the
     // name (state.ts; Core pp.287-295). Granted by a Mutation table's line.
     held: {
@@ -1902,7 +2023,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.12",
+    version: "0.2.13",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
@@ -1936,6 +2057,13 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
     codex: {
       kinds: {
         ...CODEX.kinds,
+        faction: {
+          ...CODEX.kinds.faction,
+          fields: {
+            ...CODEX.kinds.faction.fields,
+            keywords: { ...CODEX.kinds.faction.fields.keywords, entities: ["keyword"] },
+          },
+        },
         item: {
           fields: {
             ...CODEX.kinds.item.fields,

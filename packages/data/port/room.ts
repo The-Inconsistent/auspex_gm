@@ -23,9 +23,10 @@ import {
 import { hazards as bookHazards, wargear } from "../index.ts";
 import { remapApproval, type Reworded } from "./build-catalogue.ts";
 import { CATALOGUE_PACKS } from "./creation-packs.ts";
+import { buildCodexPack, CODEX_PACK, SUMMARY_MAX, testOf } from "./codex-packs.ts";
 import { heldKeyOf, MUTATION_PACK } from "./mutations.ts";
 import { buildCustomThreatPack, buildPack } from "./pack.ts";
-import { buildRuleset, CODEX, COUNTED_KINDS, idOf, itemKindOf, KEYWORD_JOIN } from "./ruleset.ts";
+import { buildRuleset, CODEX, COUNTED_KINDS, idOf, itemKindOf } from "./ruleset.ts";
 import { buildWorld, HANDOUT_DEFAULT_HEADER, HANDOUT_LAYOUT } from "./world.ts";
 
 /**
@@ -69,7 +70,9 @@ export class Refusal extends Error {
   }
 }
 
-type Fields = Record<string, string | number | boolean | string[]>;
+// A `rows` field (house decision #89) holds rows, each its id, the entry it came from and its cells.
+type Row = { id: string; from?: { entity: string; key: string; cite?: string }; values: Record<string, unknown> };
+type Fields = Record<string, string | number | boolean | string[] | Row[]>;
 type Line = { id: string; label?: string; note?: string } & Record<string, unknown>;
 export interface Prep {
   roster: Line[];
@@ -77,6 +80,7 @@ export interface Prep {
   pools: Line[];
   exits: Line[];
   reveals: Line[];
+  picks?: Line[];
 }
 export interface RoomEntry {
   id: string;
@@ -175,6 +179,22 @@ function describeHazard(h: LocationHazard): string {
   }
   return [h.name, h.effect, ...h.tests.map(describeTest)].filter(Boolean).join(". ");
 }
+
+// A book hazard's Tests at the intensity the place picked (§11.94).
+function bookVariantTests(h: Extract<LocationHazard, { kind: "book" }>) {
+  const book = bookHazards.get(h.hazardId);
+  return book?.variants.find((v) => v.name === h.variant)?.tests ?? book?.tests ?? [];
+}
+// The codex pack's hazard summaries and cites, by key, read once.
+let codexEntries: Map<string, { summary?: string; cite: string }> | null = null;
+const codexHazards = () =>
+  (codexEntries ??= new Map(
+    buildCodexPack()
+      .entries.filter((e) => e.type === "hazard")
+      .map((e) => [e.key, { summary: e.body.summary as string | undefined, cite: e.cite }]),
+  ));
+const hazardSummaries = () => new Map([...codexHazards()].map(([k, v]) => [k, v.summary]));
+const codexCite = (key: string) => codexHazards().get(key)?.cite;
 
 /**
  * The room document of an export, and the report. `reworded` is the creation pack's reworded requirements
@@ -440,24 +460,67 @@ export function buildRoomDocument(
       gmNotes: linked(`${p}.secrets`, f.secrets) || undefined,
       fields: {
         stance: f.stance,
-        ...(f.keywords.length > 0 && {
-          keywords: plain(
-            `${p}.keywords`,
-            f.keywords.join(KEYWORD_JOIN),
-            CODEX.kinds.faction.fields.keywords.maxLength,
-          ),
-        }),
+        // One word per Keyword (house decision #89), as many and as long as the faction holds them.
+        ...(f.keywords.length > 0 && { keywords: f.keywords }),
       },
     });
   });
 
   c.locations.forEach((l, i) => {
     const p = `codex.locations.${i}`;
-    const lines = l.hazardList.map((h, j) => ({
-      path: `${p}.hazardList.${j}`,
-      reason: "a place's hazard",
-      line: `Hazard: ${describeHazard(h)}`,
-    }));
+    // The place's hazards as rows (house decision #89): a book row by its hazard entry, with its first Test; a
+    // hand-made one by its words. What a row cannot hold goes to the GM notes.
+    const lines: { path: string; reason: string; line: string }[] = [];
+    const hazardRows = l.hazardList.flatMap((h, j) => {
+      const hp = `${p}.hazardList.${j}`;
+      const tests =
+        h.kind === "book" ? (h.variant ? bookVariantTests(h) : (bookHazards.get(h.hazardId)?.tests ?? [])) : [];
+      if (h.kind === "book") {
+        const book = bookHazards.get(h.hazardId);
+        if (!book) {
+          lines.push({ path: hp, reason: "a hazard no book prints", line: `Hazard: ${describeHazard(h)}` });
+          return [];
+        }
+        const test = tests
+          .map((t) => testOf({ kind: t.kind, skill: t.skills[0], attribute: t.attribute, dn: t.dn }))
+          .find(Boolean);
+        const summary = hazardSummaries().get(h.hazardId);
+        return [
+          {
+            id: h.id,
+            from: { entity: "hazard", key: h.hazardId, cite: codexCite(h.hazardId) },
+            values: {
+              name: plain(`${hp}.hazardId`, describeHazard(h), 200),
+              ...(test && { test }),
+              ...(summary && { effect: summary }),
+            },
+          },
+        ];
+      }
+      const test = h.tests.map(testOf).find(Boolean);
+      // A row's Test holds the Test and its inputs, not what it is for.
+      h.tests.slice(0, 1).forEach((t) => t.purpose && note(`${hp}.tests.0.purpose`, "a hazard Test's purpose"));
+      h.tests.slice(1).forEach((t, k) =>
+        lines.push({
+          path: `${hp}.tests.${k + 1}`,
+          reason: "a hazard's Test past its first",
+          line: `Hazard test: ${h.name}: ${describeTest(t)}`,
+        }),
+      );
+      const effect = h.effect.length <= SUMMARY_MAX ? h.effect : "";
+      if (h.effect && !effect)
+        lines.push({
+          path: `${hp}.effect`,
+          reason: "a hazard's effect over a row's words",
+          line: `Hazard: ${h.name}: ${h.effect}`,
+        });
+      return [
+        {
+          id: h.id,
+          values: { name: plain(`${hp}.name`, h.name, 200), ...(test && { test }), ...(effect && { effect }) },
+        },
+      ];
+    });
     codex.push({
       id: l.id,
       kind: "location",
@@ -465,9 +528,10 @@ export function buildRoomDocument(
       parentId: ref(`${p}.parentId`, l.parentId, locations),
       body: linked(`${p}.description`, l.description) || undefined,
       gmNotes: notes(`${p}.gmNotes`, l.gmNotes, lines),
-      fields: nonEmpty(
-        l.hazards ? { hazards: plain(`${p}.hazards`, l.hazards, CODEX.kinds.location.fields.hazards.maxLength) } : {},
-      ),
+      fields: nonEmpty({
+        ...(l.hazards && { hazards: plain(`${p}.hazards`, l.hazards, CODEX.kinds.location.fields.hazards.maxLength) }),
+        ...(hazardRows.length > 0 && { hazardRows }),
+      }),
       ...reader(l.revealed),
       ...picture(p, l),
     });
@@ -604,17 +668,20 @@ export function buildRoomDocument(
         const links = [...new Set(linkIds.flatMap(([path, id]) => ref(path, id, titles) ?? []))];
         // The hazards of its place that apply here.
         const place = c.locations.find((l) => l.id === b.locationId);
-        b.hazards.forEach((h, j) => {
-          const row = place?.hazardList.find((x) => x.id === h.id);
-          if (!row) note(`${bp}.hazards.${j}`, "a hazard its place no longer lists");
-          else
-            lines.push({
-              path: `${bp}.hazards.${j}`,
-              reason: "a scene's pick of its place's hazards",
-              line: `Hazard here: ${describeHazard(row)}${h.spotted ? " (spotted)" : ""}`,
-            });
+        // ... as a pick of its place's hazard rows, each with its switch on when spotted (house decision #89).
+        const picked = b.hazards.flatMap((h, j) => {
+          if (place?.hazardList.some((x) => x.id === h.id)) return [{ rowId: h.id, on: h.spotted }];
+          note(`${bp}.hazards.${j}`, "a hazard its place no longer lists");
+          return [];
         });
-        const prep = scenePrep(b, bp, lines);
+        const scenePrepared = scenePrep(b, bp, lines);
+        const prep =
+          picked.length > 0 && place
+            ? {
+                ...(scenePrepared ?? { roster: [], tests: [], pools: [], exits: [], reveals: [] }),
+                picks: [{ id: "pick-0", entryId: place.id, field: "hazardRows", rows: picked }],
+              }
+            : scenePrepared;
         codex.push({
           id: b.id,
           kind: "scene",
@@ -801,6 +868,7 @@ export function buildRoomDocument(
         CATALOGUE_PACKS.wargear,
         { slug: threatPack.id, version: threatPack.version },
         MUTATION_PACK,
+        CODEX_PACK,
         ...(custom ? [{ slug: custom.id, version: custom.version }] : []),
       ],
       world: { slug: world.id, version: world.version },

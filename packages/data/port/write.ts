@@ -2,7 +2,7 @@
 // `bun packages/data/port/write.ts <ruleset file> [<pack file>]`; and, for its ledger builder, the ledger ruleset and
 // the creation and wargear packs: `... [--ledger <file>] [--creation <file>] [--wargear <file>]` (with or without the
 // ruleset file); and the World, this app's look: `... [--world <file>]`. Import the files through InconsisTable's
-// /library; the Mutation pack (`--mutations <file>`); and a campaign export of this app as a room document (`--room <export file> <room file>`, room.ts), which
+// /library; the Mutation and codex packs (`--mutations <file>`, `--codex <file>`); and a campaign export of this app as a room document (`--room <export file> <room file>`, room.ts), which
 // InconsisTable's IMPORT A ROOM takes. All are private content: keep them out of both repos (`port-out/` is ignored).
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
@@ -18,6 +18,7 @@ import {
   type Problem,
 } from "./engine.ts";
 import { CampaignExport } from "@wg/shared";
+import { buildCodexPack } from "./codex-packs.ts";
 import { buildMutationPack } from "./mutations.ts";
 import { buildCustomThreatPack, buildPack, type LeftOut, type Pack } from "./pack.ts";
 import { buildRoomDocument, Refusal } from "./room.ts";
@@ -41,6 +42,7 @@ const { values: flags, positionals } = parseArgs({
     wargear: { type: "string" },
     world: { type: "string" },
     mutations: { type: "string" },
+    codex: { type: "string" },
   },
 });
 const [out, packOut] = positionals;
@@ -53,13 +55,14 @@ if (
     !catalogueOut.wargear &&
     !flags.world &&
     !flags.mutations &&
+    !flags.codex &&
     !custom &&
     !room) ||
   (custom && custom.length !== 2) ||
   (room && room.length !== 2)
 ) {
   console.error(
-    "usage: bun packages/data/port/write.ts [<ruleset file> [<pack file>]] [--ledger <file>] [--creation <file>] [--wargear <file>] [--world <file>] [--mutations <file>] [--custom-threats <export file> <pack file>] [--room <export file> <room file>]",
+    "usage: bun packages/data/port/write.ts [<ruleset file> [<pack file>]] [--ledger <file>] [--creation <file>] [--wargear <file>] [--world <file>] [--mutations <file>] [--codex <file>] [--custom-threats <export file> <pack file>] [--room <export file> <room file>]",
   );
   process.exit(2);
 }
@@ -161,9 +164,12 @@ if (ledgerOut || catalogueOut.creation || catalogueOut.wargear) {
   }
 }
 
-// The Mutation pack, validated against both rulesets, which both hold Mutations (#325).
-if (flags.mutations) {
-  const pack = buildMutationPack();
+// The Mutation and codex packs, validated against both rulesets, which both read them (#325).
+for (const [file, pack] of [
+  [flags.mutations, flags.mutations ? buildMutationPack() : null],
+  [flags.codex, flags.codex ? buildCodexPack() : null],
+] as const) {
+  if (!file || !pack) continue;
   if (engine !== null)
     for (const r of [buildRuleset(), buildRuleset({ builder: "ledger" })]) {
       const c = engine.compileRuleset(r);
@@ -174,13 +180,14 @@ if (flags.mutations) {
         if (!result.ok) refuse(result.problems);
       }
     }
-  else console.warn("the Mutation pack was not validated");
+  else console.warn(`${pack.id} was not validated`);
   const json = `${JSON.stringify(pack)}\n`;
-  writeFileSync(flags.mutations, json);
-  const effects = pack.entries.filter((e) => e.effects.length > 0).length;
-  console.log(
-    `${pack.id} ${pack.version} → ${flags.mutations}: ${Buffer.byteLength(json)} bytes, ${pack.entries.length} entries, ${effects} with effects`,
+  writeFileSync(file, json);
+  const types = (pack.entries as { type: string }[]).reduce<Record<string, number>>(
+    (n, e) => ({ ...n, [e.type]: (n[e.type] ?? 0) + 1 }),
+    {},
   );
+  console.log(`${pack.id} ${pack.version} → ${file}: ${Buffer.byteLength(json)} bytes, ${JSON.stringify(types)}`);
 }
 
 if (flags.world) {

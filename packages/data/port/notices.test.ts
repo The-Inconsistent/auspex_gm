@@ -54,8 +54,8 @@ test("every kind of Test this repo calls is a Test of the ruleset", () => {
 });
 
 // The notices a change of the Agent's values raises: a `crossed` rule holds after and not before.
+const { notices } = buildRuleset();
 function crossed(before: Record<string, unknown>, after: Record<string, unknown>) {
-  const { notices } = buildRuleset();
   // A value a rule cannot read meets nothing, as the platform raises it (house decision #79).
   const holds = (n: (typeof notices)[number], scope: Record<string, unknown>) => {
     try {
