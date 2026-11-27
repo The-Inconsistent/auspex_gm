@@ -3,7 +3,7 @@
 // the creation and wargear packs: `... [--ledger <file>] [--creation <file>] [--wargear <file>]` (with or without the
 // ruleset file); and the World, this app's look: `... [--world <file>]`. Import the files through InconsisTable's
 // /library; and a campaign export of this app as a room document (`--room <export file> <room file>`, room.ts), which
-// InconsisTable's IMPORT A ROOM takes. All are private content: keep them out of both repos.
+// InconsisTable's IMPORT A ROOM takes. All are private content: keep them out of both repos (`port-out/` is ignored).
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
 import { buildParams } from "./build-params.ts";
@@ -59,6 +59,8 @@ const refuse = (problems: Problem[]) => {
   process.exit(1);
 };
 const engine = await loadEngine();
+// The size the platform caps a manifest at (its MAX_MANIFEST_BYTES, 512 KiB), measured as it measures it: compact JSON.
+const manifestBytes = (r: unknown) => `${Buffer.byteLength(JSON.stringify(r))} bytes of ${512 * 1024}`;
 if (engine === null) console.warn("InconsisTable is not checked out beside this repo: written without validating");
 
 const ruleset = buildRuleset();
@@ -71,7 +73,7 @@ if (engine !== null) {
 }
 if (out) {
   writeFileSync(out, `${JSON.stringify(ruleset, null, 2)}\n`);
-  console.log(`${ruleset.id} ${ruleset.version} → ${out}`);
+  console.log(`${ruleset.id} ${ruleset.version} → ${out}: ${manifestBytes(ruleset)}`);
 }
 
 // A Threat pack, validated against the by-hand ruleset, written, and counted.
@@ -118,7 +120,7 @@ if (ledgerOut || catalogueOut.creation || catalogueOut.wargear) {
   }
   if (ledgerOut) {
     writeFileSync(ledgerOut, `${JSON.stringify(ledger, null, 2)}\n`);
-    console.log(`${ledger.id} ${ledger.version} (ledger) → ${ledgerOut}`);
+    console.log(`${ledger.id} ${ledger.version} (ledger) → ${ledgerOut}: ${manifestBytes(ledger)}`);
   }
   if (catalogueOut.creation || catalogueOut.wargear) {
     if (!engine?.BuildParams || !engine.buildSchemas) {

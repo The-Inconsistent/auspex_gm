@@ -1147,6 +1147,18 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      (not a raw one) returns a notice "ENDURING LIFE · ROLL 1d6 CORRUPTION (p.294)"; the dice stay physical and the GM
      adds the total with ±CORRUPTION. Another Agent's phone is told the id of this one mutation, so it doesn't show an
      immortal Agent as Dead. *Approved by the GM, 2026-11-21.*
+186. **The InconsisTable ruleset declares `core: "^0.1.0"`** (`packages/data/port/ruleset.ts`; InconsisTable's ADR 0010
+     decision 6, issue #324 question 1). The owner's ruling is to declare the range InconsisTable's engine reports for
+     the merged stack; at its main (`fd6888a`) the engine reports no core version (a range is checked for its shape
+     only, `manifest.ts` beside `SemVerRange`) and every sample ruleset declares `^0.1.0`, so the port keeps it. When
+     the platform gives its core a version, the range follows it. *Owner, 2026-11-26.*
+187. **The port's notices: one per Rank reached and one per Corruption level entered** (Core p.146; pp.286–287;
+     InconsisTable's house decision #79). A rule reads one Agent and fixed words, so the ruleset says "reached Rank N"
+     for each Rank (as `session.end`), "Mutation Test, DN N" for each level entered with that level's DN (as
+     `mutationDns`, §11.135) and Chaos Spawn at 26 (p.286). Two of this repo's notices cannot be said and are written
+     in the ruleset's `decisions`: who has XP left to spend at a session's start (pp.146, 148; a rule cannot read the
+     XP a build has spent) and that the group may Ascend (p.147; it needs every Agent at once). *Issue #324's
+     recommendation, 2026-11-26.*
 
 ---
 

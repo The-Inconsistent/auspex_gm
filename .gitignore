@@ -11,3 +11,6 @@ dist/
 
 # Subagent git worktrees: a second checkout of this repo, never committed from it.
 .claude/worktrees/
+
+# What packages/data/port/write.ts writes: private content, never committed.
+port-out/
