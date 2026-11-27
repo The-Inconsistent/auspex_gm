@@ -47,6 +47,7 @@ import { COMBAT_OPTION_GROUPS } from "../../../apps/web/lib/combat-options/comba
 import { rulesList } from "../index.ts";
 import { buildParams } from "./build-params.ts";
 import { withVietnamese } from "./labels-vi.ts";
+import { withMeanings } from "./meanings.ts";
 import { prepTables } from "./generators.ts";
 import { bookTables, TABLES } from "./tables.ts";
 
@@ -1480,7 +1481,7 @@ export const withoutBuildReaders = <R extends object>(r: R) => ({
  * and the catalogue's entity types, and no `creation` steps (the platform refuses both on one actor type).
  */
 export function buildRuleset(opts: { builder?: "ledger" } = {}) {
-  return withVietnamese(englishRuleset(opts));
+  return withVietnamese(withMeanings(englishRuleset(opts)));
 }
 
 function englishRuleset({ builder }: { builder?: "ledger" } = {}) {
@@ -1532,8 +1533,9 @@ function englishRuleset({ builder }: { builder?: "ledger" } = {}) {
   const prep = prepTables();
   const ruleset = {
     id: "wrath-and-glory",
-    // 0.1.18: the labels a player reads in English and Vietnamese (`labels-vi.ts`, rules-flow §11.205).
-    version: "0.1.18",
+    // 0.1.18: the labels a player reads in English and Vietnamese (`labels-vi.ts`, rules-flow §11.205). 0.1.19: the
+    // sheet's meanings on tap (`meanings.ts`, §11.206) and the GM's codex, tables and generators in Vietnamese too.
+    version: "0.1.19",
     // The language a label falls back to where a viewer's has none (InconsisTable's house decision #211).
     language: "en",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
@@ -2387,7 +2389,7 @@ function englishRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.19",
+    version: "0.2.20",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
