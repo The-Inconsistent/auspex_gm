@@ -1290,8 +1290,8 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      entry, ammunition and Wealth left to the GM. The Space Hulk names the hulk, rolls its Origin, Occupants and
      Objective into its fields and a room per round; an Objective the book prints no row for is rolled again. The Holy
      Relic rolls the Form on to its kind's Powers, the owner, the anointment, the oddity and, for a Power that names
-     one, the enemy, into the item the GM names. NPC and faction presets and the NPC name and look rolls are not ported
-     yet. The converter writes a faction's Keywords as words, a place's hazards as rows and a scene's hazards as a pick
+     one, the enemy, into the item the GM names. NPC and faction presets are §11.197; the NPC name and look rolls are
+     not ported. The converter writes a faction's Keywords as words, a place's hazards as rows and a scene's hazards as a pick
      with Spotted. *The owner's decisions 1 and 3, and issue #324's recommendation, 2026-11-26.*
 196. **The port's premise and setup checklist** (InconsisTable's house decision #90; §11.80, issue #45). The campaign's
      premise is a lore entry every seat reads (the owner's decision 2, 2026-11-26): the kind of game as words (Core
@@ -1304,6 +1304,19 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      campaign's Framework, its bonus, its Patron and its kind, and its limits as the room's safety lines with the
      X-Card on, as a new room starts, since this repo has no X-Card setting. *The owner's
      decision 2, and issue #324's recommendation, 2026-11-26.*
+197. **The port's NPC and faction presets and Quick NPC rows** (InconsisTable's house decision #97; §11.80,
+     §11.86, §11.87, issue #325). The codex pack (0.1.2) carries each printed NPC (`npc-presets/`) by name, role, cite
+     and stat block, a bestiary Threat by key or a Quick row, and each printed faction (`faction-presets/`) by name,
+     cite and Keywords; their printed notes and secrets stay in the book. An NPC made from one takes its name, role and
+     stat block; its faction is the GM's to link, as the platform finds no entry by name. A faction made from one takes
+     its name only: the platform fills a field from an entry's field of the same type, and a faction's Keywords are
+     words (`tags`) where the entry holds a list, so the GM writes them in. The Quick NPC table (p.326) is four entries,
+     one per Tier, with its numbers; an NPC names its row in a `quick` field beside `stats`, and the specialty Skill and
+     its dice (§11.87) are two fields of its own, all the GM's. A Tier 5 game names the Tier 4 row (§11.86). The NPC
+     name and look rolls stay out (the owner's decision 8 of 2026-11-20 left the flavour tables out, and a rolled title
+     reads fixed tables where this repo rolls the species' own). The book's Ruin and Glory lists (`scene-presets/pools/`)
+     are not carried: no block makes a scene's pool line from a pack entry, and their rows are printed sentences. The
+     ruleset is 0.1.15 and 0.2.15. *Issue #325's recommendation, 2026-11-27.*
 
 ---
 

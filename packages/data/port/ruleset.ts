@@ -28,6 +28,7 @@ import {
   MAX_SPEND_AMOUNT,
   MAX_UPGRADES,
   Overrides,
+  QUICK_NPC,
   RARITY_DN,
   MAX_MUTATIONS,
   MOB_MIN,
@@ -665,13 +666,26 @@ export const CODEX = {
           cite: "Core p.168",
         },
         role: { type: "text", label: "Role", maxLength: capOf(CodexInput.npc.shape.role), visibility: "party" },
-        // The bestiary Threat it uses (StatSource `bestiary`), a pack entry's key. The `quick` source (a Tier row of
-        // the Quick NPC table, p.326, and a specialty Skill) is no field: the codex has no inline stat block, so the
-        // converter writes it into the GM notes (house decision #71: "a ref plus the GM's own text").
+        // The bestiary Threat it uses (StatSource `bestiary`), a pack entry's key; or the `quick` source, a Tier row of
+        // the Quick NPC table (p.326) as a codex pack entry, with the one Skill the GM tweaks up (a house field the
+        // table prints no column for, rules-flow §11.87).
         stats: { type: "ref", label: "Stat block", entity: "threat", visibility: "gm" },
+        quick: { type: "ref", label: "Quick NPC stats", entity: "quickNpc", visibility: "gm", cite: "Core p.326" },
+        specialty: {
+          type: "enum",
+          label: "Specialty Skill",
+          values: Object.keys(SKILLS).map(idOf),
+          labels: SKILL_WORDS(),
+          visibility: "gm",
+          cite: "Core p.326",
+        },
+        specialtyDice: { type: "int", label: "Specialty dice", min: 1, max: 20, visibility: "gm", cite: "Core p.326" },
         // `factionId`: players never receive it (toPlayerCodex).
         faction: { type: "entry", label: "Faction", kind: "faction", visibility: "gm" },
       },
+      // A printed NPC (#325, house decision #97): its name, role and stat block; its faction is the GM's to link, and
+      // its printed notes stay in the book (§11.80).
+      from: [{ entity: "npcPreset", values: { role: "role", stats: "stats", quick: "quick" } }],
     },
     // Players receive no faction. The card's ally hint (mixingHint, Core p.317) is computed from stance and Keywords,
     // which no field can say: it is not ported.
@@ -695,6 +709,8 @@ export const CODEX = {
           cite: "Core pp.375-378",
         },
       },
+      // A printed faction by name (#325): a list cannot fill a tags field, so its Keywords are the GM's to write in.
+      from: [{ entity: "factionPreset" }],
     },
     // Players receive no scene.
     scene: {
@@ -1388,7 +1404,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const prep = prepTables();
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.14",
+    version: "0.1.15",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
@@ -1626,6 +1642,40 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
         },
       },
       { id: "patron", label: "Patron", base: "ability", fields: {} },
+      // A printed NPC and a printed faction (#325, house decision #97): names, a role, the stat block, the Keywords.
+      {
+        id: "npcPreset",
+        label: "NPC of the books",
+        base: "ability",
+        fields: {
+          role: { type: "text", label: "Role", maxLength: 200 },
+          stats: { type: "ref", label: "Stat block", entity: "threat" },
+          quick: { type: "ref", label: "Quick NPC stats", entity: "quickNpc" },
+        },
+      },
+      {
+        id: "factionPreset",
+        label: "Faction of the books",
+        base: "ability",
+        fields: { keywords: { type: "list", label: "Keywords", maxItems: MAX_FACTION_KEYWORDS } },
+      },
+      // A Tier row of the Quick NPC table (p.326): the numbers a Quick NPC reads; a Tier 5 game reads Tier 4 (§11.86).
+      {
+        id: "quickNpc",
+        label: "Quick NPC stats",
+        base: "ability",
+        fields: Object.fromEntries(
+          (["tier", ...Object.keys(QUICK_NPC[1])] as const).map((k) => [
+            k,
+            {
+              type: "int",
+              label: k === "tier" ? "Tier" : k[0]!.toUpperCase() + k.slice(1),
+              min: 0,
+              cite: "Core p.326",
+            },
+          ]),
+        ),
+      },
       {
         id: "sceneEvent",
         label: "Scene event",
@@ -2184,7 +2234,7 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.14",
+    version: "0.2.15",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
