@@ -46,6 +46,7 @@ import { ADVENTURE_STATUS } from "../../../apps/web/components/gm/prep/constants
 import { COMBAT_OPTION_GROUPS } from "../../../apps/web/lib/combat-options/combat-options.ts";
 import { rulesList } from "../index.ts";
 import { buildParams } from "./build-params.ts";
+import { withVietnamese } from "./labels-vi.ts";
 import { prepTables } from "./generators.ts";
 import { bookTables, TABLES } from "./tables.ts";
 
@@ -1478,7 +1479,11 @@ export const withoutBuildReaders = <R extends object>(r: R) => ({
  * `builder: "ledger"` (0.2.x) the Agent is bought with XP by InconsisTable's ledger builder instead: the `build` block
  * and the catalogue's entity types, and no `creation` steps (the platform refuses both on one actor type).
  */
-export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
+export function buildRuleset(opts: { builder?: "ledger" } = {}) {
+  return withVietnamese(englishRuleset(opts));
+}
+
+function englishRuleset({ builder }: { builder?: "ledger" } = {}) {
   const skills = Object.keys(SKILLS) as Skill[];
   const party = { visibility: "party" } as const;
 
@@ -1527,7 +1532,10 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const prep = prepTables();
   const ruleset = {
     id: "wrath-and-glory",
-    version: "0.1.17",
+    // 0.1.18: the labels a player reads in English and Vietnamese (`labels-vi.ts`, rules-flow §11.205).
+    version: "0.1.18",
+    // The language a label falls back to where a viewer's has none (InconsisTable's house decision #211).
+    language: "en",
     // InconsisTable's engine reports no core version yet: the range its samples declare (rules-flow §11.186).
     core: "^0.1.0",
     // The default is the lowest valid Tier: the platform needs a value before the owner sets one, and this repo has
@@ -2379,14 +2387,19 @@ export function buildRuleset({ builder }: { builder?: "ledger" } = {}) {
   const params = buildParams();
   return {
     ...ruleset,
-    version: "0.2.18",
+    version: "0.2.19",
     // Chaos Spawn: the character is lost and the GM takes it over (Core p.286, `pcStatus`). The default ruleset has no
     // such state; the ledger's `build.gone` names this one beside Dead.
     health: {
       ...ruleset.health,
       states: [
         ...ruleset.health.states,
-        { id: "lost", label: "Lost", when: `${opt("res.corruption")} >= ${CHAOS_SPAWN_AT}`, entities: ["agent"] },
+        {
+          id: "lost",
+          label: { en: "Lost", vi: "Sa ngã" },
+          when: `${opt("res.corruption")} >= ${CHAOS_SPAWN_AT}`,
+          entities: ["agent"],
+        },
       ],
     },
     // A Lost Agent is out of the turn order as a Dead one is (isOut reads isGone, state.ts).

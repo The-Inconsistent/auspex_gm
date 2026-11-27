@@ -250,7 +250,7 @@ test("the leak test finds wording planted in a pack", { skip }, () => {
 
 test("the default ruleset is the by-hand one, unchanged", () => {
   const plain = buildRuleset();
-  assert.equal(plain.version, "0.1.17");
+  assert.equal(plain.version, "0.1.18");
   assert.ok(!("build" in plain));
   assert.ok(plain.creation.length > 0);
   assert.deepEqual(
@@ -277,7 +277,7 @@ test("the default ruleset is the by-hand one, unchanged", () => {
 test("the ledger ruleset's build block meets the rules the platform checks", () => {
   const { build, entities, creation, campaignFields } = ledger;
   const params = buildParams();
-  assert.equal(ledger.version, "0.2.18");
+  assert.equal(ledger.version, "0.2.19");
   assert.equal(build.libraryLine, "archetypes");
   assert.equal(build.strategy, "ledger");
   const agent = entities.find((e) => e.id === build.actor)!;
