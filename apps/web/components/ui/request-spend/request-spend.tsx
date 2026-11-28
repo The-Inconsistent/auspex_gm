@@ -15,6 +15,8 @@ import {
 import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
 
+const ALLY_KINDS: SpendKind[] = ["gloryDamage", "seize"];
+
 type SpendProps = { state: LiveState; characterId: string; send: Send };
 // "wrath" or "glory": the two pools a spend costs (spendCost).
 type RequestSpendProps = SpendProps & {
@@ -22,13 +24,23 @@ type RequestSpendProps = SpendProps & {
   // The button that opens the modal: a whole vitals cell on the strip, a big FIGHT button. Default: "SPEND WRATH".
   label?: ReactNode;
   className?: string;
+  // An ally this Agent's player runs (issue #350): the ask is Glory for that row, damage or Seize only (§11.208).
+  combatantId?: string | null;
 };
 
 // Ask the GM to spend a Wrath or Glory for you (rules-flow.md §11.122). Nothing is spent until the GM accepts. The
 // button (a pool's cell on the player's vitals strip, FIGHT's SPEND, the GM's long sheet) opens a modal <dialog>
 // (Escape, focus trap, backdrop, as Legend does).
 // An empty pool can't be asked for, and Glory never more than the party holds; the api checks both again.
-export function RequestSpend({ pool, state, characterId, send, label, className = "btn sm" }: RequestSpendProps) {
+export function RequestSpend({
+  pool,
+  state,
+  characterId,
+  send,
+  label,
+  className = "btn sm",
+  combatantId = null,
+}: RequestSpendProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const [amount, setAmount] = useState(1);
   const [error, setError] = useState<string | null>(null);
@@ -36,15 +48,22 @@ export function RequestSpend({ pool, state, characterId, send, label, className 
   const have = pool === "glory" ? state.campaign.glory : (me?.wrath ?? 0);
   const max = Math.min(MAX_SPEND_AMOUNT, have);
   const shown = Math.max(1, Math.min(amount, max)); // the pool may drop while the modal is open
-  const mine = state.spendRequests.filter((r) => r.characterId === characterId);
-  // AWARE is asked from the FIGHT tab's AMBUSHED panel, where the ambush is.
+  const mine = state.spendRequests.filter(
+    (r) => r.characterId === characterId && (r.combatantId ?? null) === combatantId,
+  );
+  // AWARE is asked from the FIGHT tab's AMBUSHED panel, where the ambush is. An ally takes only the two Glory spends
+  // the server allows it besides AWARE (gloryDamage p.165, seize p.177).
   const kinds = SPEND_KINDS.filter(
-    (k) => spendCost(k)[pool] > 0 && k !== "aware" && (k !== "seize" || !!state.encounter),
+    (k) =>
+      spendCost(k)[pool] > 0 &&
+      k !== "aware" &&
+      (k !== "seize" || !!state.encounter) &&
+      (!combatantId || ALLY_KINDS.includes(k)),
   );
   const word = pool.toUpperCase();
 
   const ask = async (kind: SpendKind) => {
-    const r = await send({ type: "spend.request", characterId, kind, amount: shown });
+    const r = await send({ type: "spend.request", characterId, kind, amount: shown, combatantId });
     setError(r.ok ? null : r.error);
     if (r.ok) ref.current?.close();
   };

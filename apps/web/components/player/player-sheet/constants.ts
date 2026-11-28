@@ -2,6 +2,7 @@
 export const SHEET_VIEWS = {
   glance: { label: "AT A GLANCE" },
   dossier: { label: "DOSSIER" },
+  followers: { label: "FOLLOWERS" }, // only offered while an NPC follows this Agent (issue #350)
 } as const;
 export type SheetView = keyof typeof SHEET_VIEWS;
 

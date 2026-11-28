@@ -14,7 +14,7 @@ import { useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
 
 import { Show, UserButton } from "@wg/auth/react";
-import { UNSEEN_ID, type RuleEntry } from "@wg/shared";
+import { UNSEEN_ID, isRunBy, type RuleEntry } from "@wg/shared";
 
 import { HitSheet } from "@/components/player/hit-sheet/hit-sheet";
 import { PlayerSheet } from "@/components/player/player-sheet/player-sheet";
@@ -58,6 +58,8 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
   const enc = state?.encounter ?? null;
   const myCombatant = enc?.combatants.find((c) => c.kind === "pc" && c.characterId === characterId);
   const myTurn = !!enc && !!myCombatant && enc.currentId === myCombatant.id;
+  // The GM started an ally this Agent's player runs (issue #350): the phone takes over for it as for the Agent.
+  const followerNow = enc?.combatants.find((c) => c.id === enc.currentId && isRunBy(c, characterId));
   // LEAVE: give the seat back first, then /leave drops a guest cookie and goes home.
   const leave = async () => {
     if (!window.confirm(`Leave ${me?.name ?? "this seat"}? Another player can then pick this Agent.`)) return;
@@ -67,7 +69,7 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
     if (r.ok) window.location.href = "/leave";
   };
 
-  const turnAlert = useTurnAlert(myTurn);
+  const turnAlert = useTurnAlert(myTurn || !!followerNow);
 
   // External system: the page scroll (IntersectionObserver). Once the marker near the top of the body slides under the
   // open header, the vitals strip folds to one line; the folded header is shorter, so it only opens again near the top.
@@ -110,9 +112,11 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
     ? "NO COMBAT · STANDING BY"
     : myTurn
       ? `▶ ${round} · YOUR TURN`
-      : enc.round === 0
-        ? `${round} · SETTING THE SCENE`
-        : `${round} · ${currentName ? `${currentName.toUpperCase()} ACTING` : `${(next ?? "—").toUpperCase()} PICK`}${myCombatant?.acted ? " · YOU: DONE" : ""}`;
+      : followerNow && followerNow.kind === "threat"
+        ? `▶ ${round} · ${followerNow.label.toUpperCase()} ACTS`
+        : enc.round === 0
+          ? `${round} · SETTING THE SCENE`
+          : `${round} · ${currentName ? `${currentName.toUpperCase()} ACTING` : `${(next ?? "—").toUpperCase()} PICK`}${myCombatant?.acted ? " · YOU: DONE" : ""}`;
 
   return (
     <BooksProvider books={books} requestPage={requestPage}>
@@ -125,7 +129,7 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                 {turnAlert.flashing && "Your turn"}
               </div>
               <header
-                className={`pl-head band torn slate-card ${myTurn ? "up" : ""} ${turnAlert.flashing ? "alert" : ""}`}
+                className={`pl-head band torn slate-card ${myTurn || followerNow ? "up" : ""} ${followerNow && !myTurn ? "ally" : ""} ${turnAlert.flashing ? "alert" : ""}`}
               >
                 {/* In the header, not fixed over it, so it never covers the menu or the account button. */}
                 {!online && <div className="badge-offline">NO SIGNAL</div>}
@@ -173,6 +177,12 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
                   <div className="pl-turn">
                     <span className="display">YOUR TURN</span>
                     <i>{me.name} acts. The GM ends the Turn.</i>
+                  </div>
+                )}
+                {followerNow && followerNow.kind === "threat" && (
+                  <div className="pl-turn">
+                    <span className="display">YOUR FOLLOWER</span>
+                    <i>{followerNow.label} acts. Say what it does; the GM taps.</i>
                   </div>
                 )}
                 <VitalsStrip me={me} state={state} send={send} folded={folded} onOpenSheet={() => handleTab("SHEET")} />

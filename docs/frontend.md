@@ -1327,6 +1327,7 @@ The toggle shows a Lucide moon (to vigil) or sun (to vellum), swapped by CSS (`.
 | `--marker-red`, `--marker-amber`, `--marker-green`, `--marker-blue`, `--marker-purple`, `--marker-white` | Threat marker swatches, always in an ink frame. They match the coloured tags on the physical minis, one per `Marker` value in `@wg/shared` |
 | `--side-agents`, `--side-threats` | Blue and orange outlines on the player FIGHT cards (Agents, Threats). Orange, not crimson, so a threat never reads as "now" |
 | `--ally`, `--ally-tint` | Slate blue and its wash for allies (issue #350): the tracker's ALLIES sub-block, `.chip.ally`, `.fight-seg.ally`. A step apart from `--side-agents`, never crimson or orange |
+| `--ally-fill` | The slate under bone text (the phone's YOUR FOLLOWER header); stays dark in vigil, as `--red-fill` does |
 | `--serif`, `--display`, `--mono` | Font stacks |
 | `--clerk-*` | Clerk's sign-in screens and `UserButton`, mapped from the tokens above (`--clerk-color-primary: var(--red-fill)`, `--clerk-color-background: var(--vellum)`, `--clerk-font-family: var(--serif)`, `--clerk-border-radius: 2px`…) |
 

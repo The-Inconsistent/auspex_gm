@@ -98,6 +98,7 @@ export function Intel({ codex, state, characterId, send, fresh, markSeen }: Inte
       <EntrySheet
         ref={sheet}
         codex={codex}
+        names={new Map(state.characters.map((c) => [c.id, c.name]))}
         entry={findEntry(codex, opened)}
         onClose={() => setOpened(null)}
         onShow={handleShow}

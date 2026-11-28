@@ -8,6 +8,7 @@ import {
   deriveStats,
   effectiveStrength,
   isOut,
+  isRunBy,
   pcStatus,
   sideOf,
   skillTotal,
@@ -30,15 +31,19 @@ import { Track } from "@/components/ui/track/track";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
 
-import { weaponSkill } from "@/lib/sheet-pools/sheet-pools";
+import { weaponPool, weaponSkill } from "@/lib/sheet-pools/sheet-pools";
 
 import { Ambushed } from "./components/ambushed/ambushed";
 import { Dying } from "./components/dying/dying";
+import { FollowerTurn } from "./components/follower-turn/follower-turn";
 import { Harm } from "./components/harm/harm";
 import { Incoming } from "./components/incoming/incoming";
 import { PowerSteps } from "./components/power-steps/power-steps";
 import { SpendSheet } from "./components/spend-sheet/spend-sheet";
 import { StrikeSteps } from "./components/strike-steps/strike-steps";
+import { allyLine } from "./utils";
+
+import "../../../player-ally.css";
 
 type FightProps = { state: LiveState; characterId: string; send: Send; legend: RuleEntry[]; actions: RuleEntry[] };
 
@@ -65,6 +70,11 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
   const mine = enc.combatants.find((c) => c.kind === "pc" && c.characterId === characterId);
   const myTurn = !!mine && enc.currentId === mine.id;
   const current = enc.combatants.find((c) => c.id === enc.currentId);
+  // YOUR FOLLOWER'S TURN: the GM started an ally this phone's Agent runs (issue #350, §11.208).
+  const followerNow = current && isRunBy(current, characterId) ? current : null;
+  const enemyNow = current?.kind === "threat" && !current.ally ? current : null;
+  const names = new Map(state.characters.map((c) => [c.id, c.name]));
+  const allies = enc.combatants.filter((c): c is ThreatCombatant => c.kind === "threat" && c.ally);
   const currentName = current
     ? current.kind === "pc"
       ? chars.get(current.characterId)?.name
@@ -89,7 +99,7 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
   };
 
   // The threat picked in 2 · PICK A TARGET; a slain one (a Mob at 0, Slain, p.324) is no target to aim at.
-  const picked = enc.combatants.find((c): c is ThreatCombatant => c.kind === "threat" && c.id === open);
+  const picked = enc.combatants.find((c): c is ThreatCombatant => c.kind === "threat" && !c.ally && c.id === open);
   const target = picked && !threatStatus(picked).includes("Slain") ? picked : null;
 
   // One combatant's row. On your Turn the Threats' rows are 2 · PICK A TARGET: opening one is the pick, the same tap that
@@ -137,13 +147,19 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
     );
     // Only the header is a button, so the expanded stat block isn't read out as the button's name.
     return (
-      <li key={c.id} className={`pf-row ${now ? "now" : ""} ${isMe ? "me" : ""} ${c.acted && !now ? "done" : ""}`}>
+      <li
+        key={c.id}
+        className={`pf-row ${now ? "now" : ""} ${isMe ? "me" : ""} ${c.acted && !now ? "done" : ""} ${c.kind === "threat" && c.ally ? "ally" : ""}`}
+      >
         {c.kind === "threat" ? (
           <button className="pf-hdr" aria-expanded={open === c.id} onClick={() => toggleOpen(c.id)}>
             {head}
           </button>
         ) : (
           <div className="pf-hdr">{head}</div>
+        )}
+        {c.kind === "threat" && c.ally && (
+          <span className="mono pf-ally-line">{allyLine({ c, characterId, names })}</span>
         )}
         {(conds.length > 0 || (c.kind === "threat" && threatStatus(c).length > 0)) && (
           <div className="pf-tags">
@@ -181,7 +197,16 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
     <div className="pf">
       {/* On your Turn it leads, as the Turn's text points up to it; otherwise it sits under the plate. */}
       {myTurn && dyingPanel}
-      {myTurn && me ? (
+      {followerNow ? (
+        <FollowerTurn
+          c={followerNow}
+          state={state}
+          characterId={characterId}
+          send={send}
+          target={target}
+          targets={<ul className="pf-rows threats">{rows("threats").map(renderRow)}</ul>}
+        />
+      ) : myTurn && me ? (
         <MyTurn
           me={me}
           state={state}
@@ -204,21 +229,31 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
               {mine ? ` · YOU: ${turnWord(state, mine)}` : ""}
             </span>
           )}
-          <span className="pf-now-note">When the GM picks you, this phone buzzes and the header turns crimson.</span>
+          <span className="pf-now-note">
+            {allies.length > 0 && !setting && !currentName && next === "agents"
+              ? "Say who acts, an Agent or an ally. The GM taps it."
+              : "When the GM picks you, this phone buzzes and the header turns crimson."}
+          </span>
         </section>
       )}
 
       {!myTurn && dyingPanel}
       {mine && turnMark(state, mine) === "ambushed" && <Ambushed state={state} characterId={characterId} send={send} />}
 
-      {/* A Threat acting, seen or not: every Agent still in the fight gets INCOMING (§11.175). */}
-      {!myTurn && me && mine && !isOut(state, mine) && (current?.kind === "threat" || enc.currentId === UNSEEN_ID) && (
-        <Incoming me={me} state={state} attacker={current?.kind === "threat" ? current : null} held={mine.held} />
+      {/* A Threat acting, seen or not (never an ally): every Agent still in the fight gets INCOMING (§11.175). */}
+      {!myTurn && me && mine && !isOut(state, mine) && (enemyNow || enc.currentId === UNSEEN_ID) && (
+        <Incoming
+          me={me}
+          state={state}
+          attacker={enemyNow ?? null}
+          held={mine.held}
+          allies={allies.filter((a) => isRunBy(a, characterId) && !isOut(state, a))}
+        />
       )}
 
       <div className="pf-field" ref={fieldRef} tabIndex={-1} aria-label="The field">
-        {/* On your Turn the Threats sit in 2 · PICK A TARGET, so the field below is the Agents. */}
-        {(myTurn ? (["agents"] as const) : Side.options).map((side) => (
+        {/* On your Turn, or your follower's, the Threats sit in a target pick, so the field below is the Agents. */}
+        {(myTurn || followerNow ? (["agents"] as const) : Side.options).map((side) => (
           <section key={side} className="pf-side" aria-label={side}>
             <div className="pf-h">
               <h2>{side.toUpperCase()}</h2>
@@ -227,7 +262,22 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
                 {rows(side).filter((c) => c.acted).length}/{rows(side).length} DONE
               </span>
             </div>
-            <ul className={`pf-rows ${side}`}>{rows(side).map(renderRow)}</ul>
+            {/* The allies are on the Agents' side (sideOf) but get their own block under it (§11.208). */}
+            <ul className={`pf-rows ${side}`}>
+              {rows(side)
+                .filter((c) => c.kind === "pc" || !c.ally)
+                .map(renderRow)}
+            </ul>
+            {side === "agents" && allies.length > 0 && (
+              <>
+                <div className="pf-h pf-h-ally">
+                  <h2>ALLIES</h2>
+                  <i />
+                  <span className="mono">ON YOUR SIDE</span>
+                </div>
+                <ul className="pf-rows ally">{allies.map(renderRow)}</ul>
+              </>
+            )}
           </section>
         ))}
       </div>
@@ -356,7 +406,8 @@ function MyTurn({ me, state, send, after, onField, actions, target, targets }: M
           {weapon ? (
             <StrikeSteps
               key={`${at}-${target?.id ?? ""}`}
-              me={me}
+              pool={weaponPool(me.stats, weapon)}
+              strength={effectiveStrength(me.stats)}
               weapon={weapon}
               wounded={wounded}
               sustain={sustain}

@@ -1,17 +1,16 @@
 "use client";
 import { useState, type ChangeEvent } from "react";
 
-import { effectiveStrength, hitDn, woundsFromDamage, type Character, type ThreatCombatant } from "@wg/shared";
+import { hitDn, woundsFromDamage, type ThreatCombatant, type Weapon } from "@wg/shared";
 
 import { RuleIdLink, RuleLink } from "@/components/ui/rule-link/rule-link";
 import { useRules } from "@/components/ui/rules-provider/rules-provider";
 import { Term } from "@/components/ui/term/term";
 
-import { weaponPool } from "@/lib/sheet-pools/sheet-pools";
-
 type StrikeStepsProps = {
-  me: Character;
-  weapon: Character["stats"]["weapons"][number];
+  pool: number; // the dice to roll: an Agent's Skill total, or a follower's Skill from its stat block (+ its Mob's bonus)
+  strength: number; // melee "S + X" (p.183); a follower's weapon Damage already counts it, so it adds nothing
+  weapon: Weapon & { addStrength?: boolean }; // an Agent's, or a follower's from its stat block
   wounded: boolean;
   sustain: number; // +2 DN per power the Agent sustains (sustainPenalty, Core p.265)
   target: ThreatCombatant | null; // the threat picked in 2 · PICK A TARGET; its stats are null while the GM shows bars (§11.56)
@@ -20,13 +19,12 @@ type StrikeStepsProps = {
 // THEN, WITH YOUR DICE: what to roll and say for the chosen weapon, the Attack's steps (Core pp.182–184). The dice stay on
 // the table; the phone only reads the numbers back, so the player doesn't work them out. With a target whose stat block
 // is shown, the DN and Resilience are its own, and the damage total typed here reads as Wounds (§11.173); the GM applies.
-export function StrikeSteps({ me, weapon: w, wounded, sustain, target }: StrikeStepsProps) {
+export function StrikeSteps({ pool, strength, weapon: w, wounded, sustain, target }: StrikeStepsProps) {
   const { find } = useRules();
   const [total, setTotal] = useState("");
   // Digits only, three at most: a damage total, never a sign or a decimal.
   const handleTotalChange = (e: ChangeEvent<HTMLInputElement>) =>
     setTotal(e.target.value.replace(/\D/g, "").slice(0, 3));
-  const strength = effectiveStrength(me.stats);
   const damage = "addStrength" in w && w.addStrength ? strength + w.damage : w.damage; // melee S + X (p.183)
   // An ED-changing trait's own table, from the rules data the phone already holds (Brutal: weapon-traits).
   const brutal = w.traits.some((t) => t.toLowerCase() === "brutal")
@@ -46,7 +44,7 @@ export function StrikeSteps({ me, weapon: w, wounded, sustain, target }: StrikeS
   return (
     <ol className="pf-steps" aria-label={`Attack with ${w.name}`}>
       <li>
-        <b>ROLL {weaponPool(me.stats, w)} DICE</b>
+        <b>ROLL {pool} DICE</b>
         <span>
           <RuleIdLink id="test-shifting">One is the Wrath Die. 4–5 = 1 Icon, 6 = 2 Icons.</RuleIdLink>
         </span>
