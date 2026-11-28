@@ -8,11 +8,12 @@ type IncomingProps = {
   state: LiveState;
   attacker: ThreatCombatant | null; // null while an unseen threat acts (§11.56)
   held: boolean; // this Agent holds its action (p.187)
+  allies?: ThreatCombatant[]; // the allies this Agent's player runs (issue #350): a hit on one comes down to its numbers
 };
 
 // INCOMING (rules-flow §11.175): on every Threat's Turn each Agent's phone says what a hit on them comes down to, from
 // their own sheet. The GM selects nothing; the dice stay the GM's.
-export function Incoming({ me, state, attacker, held }: IncomingProps) {
+export function Incoming({ me, state, attacker, held, allies = [] }: IncomingProps) {
   const d = deriveStats({ stats: me.stats, overrides: me.overrides, tier: state.campaign.tier });
   const exhausted = isExhausted({ shock: me.shock, maxShock: d.maxShock, conditions: me.conditions });
   // Only when its stat block is shown: a bars-only threat's class is the GM's to keep (§11.56).
@@ -36,6 +37,24 @@ export function Incoming({ me, state, attacker, held }: IncomingProps) {
           <span>Its damage over this, after its AP: Wounds. Equal: 1 Shock (p.192).</span>
         </div>
       </div>
+      {/* A follower's own Defence and Resilience, from its stat block (every phone holds it, §11.208). */}
+      {allies.map(
+        (a) =>
+          a.stats && (
+            <div key={a.id} className="pf-tiles pf-tiles-ally" aria-label={`Incoming on ${a.label}`}>
+              <div className="pf-tile slate-card cut">
+                <span className="label">{a.label.toUpperCase()} · DEFENCE</span>
+                <b className="mono">{a.stats.defence}</b>
+                <span>The Icons it needs to hit your follower.</span>
+              </div>
+              <div className="pf-tile slate-card cut">
+                <span className="label">RESILIENCE</span>
+                <b className="mono">{a.stats.resilience.value}</b>
+                <span>Its damage over this, after AP: Wounds. Equal: 1 Shock (p.192).</span>
+              </div>
+            </div>
+          ),
+      )}
       <ol className="pf-steps pf-plain" aria-label="If it hits you">
         <li>
           {exhausted ? (

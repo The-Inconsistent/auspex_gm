@@ -13,3 +13,8 @@ export function ungivenGear(gear: string[], items: Codex["items"]): string[] {
   }
   return left;
 }
+
+// The Codex NPCs given to this Agent as followers (npc.give, issue #350): the server sends a given NPC to every phone,
+// with its stat block when it has one.
+export const myFollowers = (codex: Codex, characterId: string): Codex["npcs"] =>
+  codex.npcs.filter((n) => n.followsId === characterId);

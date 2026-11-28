@@ -52,6 +52,7 @@
      crimson or orange, so an ally never reads as "now" or as a Threat. */
   --ally: #2f4a66;
   --ally-tint: rgba(47, 74, 102, 0.1);
+  --ally-fill: #2f4a66; /* fills under bone text; stays dark in vigil, like --red-fill */
   /* Paper for in-world props (handout styles, issue #204). Not redefined for vigil: a vox log or a decree stays a sheet
      of paper on a dark phone, the way a card on the table would. */
   --paper: #f2ecdf;

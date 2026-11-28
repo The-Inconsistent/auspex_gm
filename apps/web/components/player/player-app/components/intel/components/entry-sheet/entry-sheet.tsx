@@ -14,6 +14,7 @@ import { canShowTable, entryName, parentName, stampOf, type IntelEntry } from ".
 type EntrySheetProps = {
   ref: RefObject<HTMLDialogElement | null>;
   codex: Codex;
+  names: Map<string, string>; // Agent names, for an NPC's FOLLOWS line (issue #350)
   entry: IntelEntry | null;
   onClose: () => void; // the dialog closed (any way): the caller forgets the entry
   onShow: (e: IntelEntry) => void;
@@ -21,7 +22,7 @@ type EntrySheetProps = {
 
 // One entry in full, over INTEL: a native modal <dialog> (Escape, focus trap, focus return, backdrop click), as the
 // codebase's other dialogs. The Intel shell calls showModal, so the entry is rendered before focus is placed.
-export function EntrySheet({ ref, codex, entry, onClose, onShow }: EntrySheetProps) {
+export function EntrySheet({ ref, codex, names, entry, onClose, onShow }: EntrySheetProps) {
   const close = () => ref.current?.close();
   // A click on the dialog element itself, not its content, is a click on the backdrop: close.
   const handleBackdrop = (ev: MouseEvent<HTMLDialogElement>) => {
@@ -45,7 +46,7 @@ export function EntrySheet({ ref, codex, entry, onClose, onShow }: EntrySheetPro
           </div>
           <div className="pl-entry-body">
             <h2 className="pl-entry-name">{entryName(entry)}</h2>
-            <Body codex={codex} e={entry} />
+            <Body codex={codex} names={names} e={entry} />
           </div>
           <div className="pl-entry-keys">
             {canShowTable(entry) && (
@@ -63,7 +64,7 @@ export function EntrySheet({ ref, codex, entry, onClose, onShow }: EntrySheetPro
   );
 }
 
-function Body({ codex, e }: { codex: Codex; e: IntelEntry }) {
+function Body({ codex, names, e }: { codex: Codex; names: Map<string, string>; e: IntelEntry }) {
   if (e.kind === "handout") {
     return (
       <>
@@ -89,6 +90,9 @@ function Body({ codex, e }: { codex: Codex; e: IntelEntry }) {
       {e.kind === "npc" && e.entry.role && <span className="pl-entry-role">{e.entry.role}</span>}
       {parent && <span className="pl-entry-role">In {parent}</span>}
       {e.kind === "npc" && <AttitudeChip attitude={e.entry.attitude} />}
+      {e.kind === "npc" && e.entry.followsId && (
+        <span className="mono pl-entry-role">FOLLOWS {(names.get(e.entry.followsId) ?? "AN AGENT").toUpperCase()}</span>
+      )}
       {/* Only once the GM shows it: toPlayerCodex drops a held-back picture's id (issue #199). */}
       {imageId && <CodexPicture imageId={imageId} alt={name} large />}
       {description && (

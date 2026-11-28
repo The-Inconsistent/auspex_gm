@@ -2,6 +2,8 @@
 import { useRef, useState, type ReactNode } from "react";
 
 import {
+  ALLY_SPEND_KINDS,
+  MAX_PENDING_SPENDS,
   MAX_SPEND_AMOUNT,
   SPEND_KINDS,
   spendCost,
@@ -15,6 +17,9 @@ import {
 import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
 
+// AWARE is asked from the AMBUSHED panel (the mockup), so the ally list here leaves it out of the server's.
+const ALLY_KINDS = ALLY_SPEND_KINDS.filter((k) => k !== "aware");
+
 type SpendProps = { state: LiveState; characterId: string; send: Send };
 // "wrath" or "glory": the two pools a spend costs (spendCost).
 type RequestSpendProps = SpendProps & {
@@ -22,13 +27,23 @@ type RequestSpendProps = SpendProps & {
   // The button that opens the modal: a whole vitals cell on the strip, a big FIGHT button. Default: "SPEND WRATH".
   label?: ReactNode;
   className?: string;
+  // An ally this Agent's player runs (issue #350): the ask is Glory for that row, damage or Seize only (§11.208).
+  combatantId?: string | null;
 };
 
 // Ask the GM to spend a Wrath or Glory for you (rules-flow.md §11.122). Nothing is spent until the GM accepts. The
 // button (a pool's cell on the player's vitals strip, FIGHT's SPEND, the GM's long sheet) opens a modal <dialog>
 // (Escape, focus trap, backdrop, as Legend does).
 // An empty pool can't be asked for, and Glory never more than the party holds; the api checks both again.
-export function RequestSpend({ pool, state, characterId, send, label, className = "btn sm" }: RequestSpendProps) {
+export function RequestSpend({
+  pool,
+  state,
+  characterId,
+  send,
+  label,
+  className = "btn sm",
+  combatantId = null,
+}: RequestSpendProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const [amount, setAmount] = useState(1);
   const [error, setError] = useState<string | null>(null);
@@ -36,15 +51,22 @@ export function RequestSpend({ pool, state, characterId, send, label, className 
   const have = pool === "glory" ? state.campaign.glory : (me?.wrath ?? 0);
   const max = Math.min(MAX_SPEND_AMOUNT, have);
   const shown = Math.max(1, Math.min(amount, max)); // the pool may drop while the modal is open
-  const mine = state.spendRequests.filter((r) => r.characterId === characterId);
-  // AWARE is asked from the FIGHT tab's AMBUSHED panel, where the ambush is.
+  const own = state.spendRequests.filter((r) => r.characterId === characterId);
+  const mine = own.filter((r) => (r.combatantId ?? null) === combatantId);
+  const capped = own.length >= MAX_PENDING_SPENDS; // the api counts an ally's asks against the Agent too
+  // AWARE is asked from the FIGHT tab's AMBUSHED panel, where the ambush is. An ally takes only the two Glory spends
+  // the server allows it besides AWARE (gloryDamage p.165, seize p.177).
   const kinds = SPEND_KINDS.filter(
-    (k) => spendCost(k)[pool] > 0 && k !== "aware" && (k !== "seize" || !!state.encounter),
+    (k) =>
+      spendCost(k)[pool] > 0 &&
+      k !== "aware" &&
+      (k !== "seize" || !!state.encounter) &&
+      (!combatantId || ALLY_KINDS.includes(k)),
   );
   const word = pool.toUpperCase();
 
   const ask = async (kind: SpendKind) => {
-    const r = await send({ type: "spend.request", characterId, kind, amount: shown });
+    const r = await send({ type: "spend.request", characterId, kind, amount: shown, combatantId });
     setError(r.ok ? null : r.error);
     if (r.ok) ref.current?.close();
   };
@@ -99,7 +121,7 @@ export function RequestSpend({ pool, state, characterId, send, label, className 
               <button
                 key={kind}
                 className="btn sm"
-                disabled={have < 1 || mine.some((r) => r.kind === kind)}
+                disabled={have < 1 || capped || mine.some((r) => r.kind === kind)}
                 onClick={() => ask(kind)}
               >
                 {spendWord(kind)}
@@ -107,6 +129,9 @@ export function RequestSpend({ pool, state, characterId, send, label, className 
               </button>
             ))}
           </div>
+          {capped && (
+            <div className="label">AT MOST {MAX_PENDING_SPENDS} ASKS AT ONCE: WAIT FOR THE GM OR CANCEL ONE</div>
+          )}
           <Refusal error={error} onDismiss={() => setError(null)} />
         </div>
         <div className="dlg-foot">
@@ -125,6 +150,12 @@ export function PendingSpends({ state, characterId, send }: SpendProps) {
   const [error, setError] = useState<string | null>(null);
   if (state.spendRequests.length === 0 && !error) return null; // a failed CANCEL still shows why
   const names = new Map(state.characters.map((c) => [c.id, c.name]));
+  // An ask with a combatantId is for an ally, so it names that ally, not the Agent's own Seize or damage.
+  const forWhom = (combatantId: string | null) => {
+    if (!combatantId) return "";
+    const c = state.encounter?.combatants.find((x) => x.id === combatantId);
+    return ` · FOR ${c?.kind === "threat" ? c.label.toUpperCase() : "AN ALLY NO LONGER IN THE FIGHT"}`;
+  };
 
   const cancel = async (id: string) => {
     const r = await send({ type: "spend.cancel", id });
@@ -136,7 +167,10 @@ export function PendingSpends({ state, characterId, send }: SpendProps) {
       {state.spendRequests.map((r) =>
         r.characterId === characterId ? (
           <div key={r.id} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ flex: 1 }}>{spendLabel(r.kind, r.amount)} · WAITING</span>
+            <span style={{ flex: 1 }}>
+              {spendLabel(r.kind, r.amount)}
+              {forWhom(r.combatantId)} · WAITING
+            </span>
             <button className="btn sm" onClick={() => cancel(r.id)}>
               CANCEL
             </button>
@@ -144,6 +178,7 @@ export function PendingSpends({ state, characterId, send }: SpendProps) {
         ) : (
           <div key={r.id} className="label">
             {(names.get(r.characterId) ?? "AGENT").toUpperCase()} ASKS · {spendLabel(r.kind, r.amount)}
+            {forWhom(r.combatantId)}
           </div>
         ),
       )}
