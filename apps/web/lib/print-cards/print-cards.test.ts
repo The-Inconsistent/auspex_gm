@@ -160,7 +160,12 @@ test("card span follows the threat class, and unknown ids are skipped", () => {
 
 test("an item card spells mentions out as every phone would see them (issue #200)", () => {
   const id = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, "0")}`;
-  const npc = { ...CodexInput.npc.parse({ name: "Magos Verrin", revealed: true }), id: id(1) };
+  const npc = {
+    ...CodexInput.npc.parse({ name: "Magos Verrin", revealed: true }),
+    id: id(1),
+    followsId: null,
+    followerStats: null,
+  };
   // Not revealed, so no phone knows it.
   const vault = { ...CodexInput.location.parse({ name: "The Vault" }), id: id(2) };
   const handout = (n: number, audience: string[]) => ({
@@ -185,7 +190,12 @@ test("an item card spells mentions out as every phone would see them (issue #200
 
 test("printHandouts keeps the job's order, skips a lost id, and spells mentions out for the table (issue #204)", () => {
   const id = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, "0")}`;
-  const npc = { ...CodexInput.npc.parse({ name: "Magos Verrin", revealed: true }), id: id(1) };
+  const npc = {
+    ...CodexInput.npc.parse({ name: "Magos Verrin", revealed: true }),
+    id: id(1),
+    followsId: null,
+    followerStats: null,
+  };
   const handout = (n: number, data: Record<string, unknown>) => ({
     ...CodexInput.handout.parse({ title: `Note ${n}`, ...data }),
     id: id(n),

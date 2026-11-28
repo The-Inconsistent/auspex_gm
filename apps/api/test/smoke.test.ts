@@ -4203,3 +4203,283 @@ test("journal.undo: the GM undoes by the ack's entry, a later change blocks an o
   );
   assert.equal(leaked, 0, "the journal event goes to the GM room only");
 });
+
+test("allies: FIGHTS AS, GIVE, the Agents' side, Glory for Seize, a player's own follower (issue #350, §11.208)", async (t) => {
+  const gm = await newCampaign("Allies", 3, "10.22.1.1");
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  const b = await gm.send({ type: "character.create", name: "B" });
+  assert.ok(a.ok && a.id && b.ok && b.id);
+  const seat = async (characterId: string) => {
+    const issued = await gm.send({ type: "token.issue", characterId });
+    assert.ok(issued.ok && issued.token);
+    const p = connect({ auth: { token: issued.token }, headers: { "cf-connecting-ip": "10.22.1.1" } });
+    t.after(() => p.socket.close());
+    await p.until((s) => s.characters.length === 2);
+    return p;
+  };
+  const [pa, pb] = [await seat(a.id), await seat(b.id)];
+  const statSource = { kind: "bestiary", threatId: "ork-boy" } as const;
+  const npc = async (name: string, fightsAs?: "follower" | "ally" | "threat") => {
+    const r = await gm.send({ type: "codex.save", kind: "npc", data: { name, statSource, fightsAs } });
+    assert.ok(r.ok && r.id);
+    return r.id;
+  };
+  const follower = await npc("Boy Gruk", "follower");
+  const ally = await npc("Proctor Vane", "ally");
+  const threat = await npc("Turncoat Ganz");
+
+  // GIVE: never an Ally, and (like an item, §11.112) only at an open session.
+  const giveTo = (id: string, characterId: string) => gm.send({ type: "npc.give", id, characterId });
+  assert.deepEqual(await giveTo(ally, a.id), {
+    ok: false,
+    error: "Proctor Vane is an Ally: only the GM controls it, it can't be given",
+  });
+  assert.deepEqual(await giveTo(follower, a.id), {
+    ok: false,
+    error: "Start a session first: followers are given at the table (rules-flow.md §11.208)",
+  });
+  assert.equal((await pa.send({ type: "npc.give", id: follower, characterId: a.id })).ok, false, "GM only");
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  assert.ok((await giveTo(follower, a.id)).ok);
+  assert.deepEqual(await giveTo(follower, b.id), {
+    ok: false,
+    error: "Boy Gruk follows an Agent already: take it back first",
+  });
+  assert.deepEqual(await gm.send({ type: "npc.give", id: crypto.randomUUID(), characterId: a.id }), {
+    ok: false,
+    error: "NPC not found",
+  });
+  // A given follower reaches every phone though it was never revealed, with its stat block and no category.
+  await eventually(() => !!pb.codex()?.npcs.find((n) => n.id === follower), "the follower reaches B's phone");
+  const seen = pb.codex()!.npcs.find((n) => n.id === follower)!;
+  assert.equal(seen.followsId, a.id);
+  assert.equal(seen.followerStats, null, "its stat block goes to the Agent it follows only");
+  await eventually(() => pa.codex()?.npcs.find((n) => n.id === follower)?.followerStats?.id === "ork-boy", "A has it");
+  assert.equal(seen.fightsAs, "threat", "FIGHTS AS stays the GM's");
+  assert.equal(
+    pb.codex()!.npcs.some((n) => n.id === ally),
+    false,
+  );
+  // A follower with an Agent can't be turned into an Ally behind the GM's back.
+  assert.deepEqual(
+    await gm.send({
+      type: "codex.save",
+      kind: "npc",
+      id: follower,
+      data: { name: "Boy Gruk", statSource, fightsAs: "ally" },
+    }),
+    { ok: false, error: "Boy Gruk follows an Agent: take it back before making it an Ally" },
+  );
+
+  // ADD TO FIGHT: a Follower or Ally never joins as an enemy; an Ally is never run by a player; an Agent must be this
+  // campaign's; a stranger's NPC is nobody's.
+  assert.ok((await gm.send({ type: "encounter.start" })).ok);
+  assert.ok((await gm.send({ type: "combatant.addCharacter", characterId: a.id })).ok);
+  assert.ok((await gm.send({ type: "combatant.addCharacter", characterId: b.id })).ok);
+  const add = (extra: Record<string, unknown>) =>
+    gm.send({ type: "combatant.addThreat", threatId: "ork-boy", ...extra } as ActionInput);
+  assert.deepEqual(await add({ npcId: follower }), {
+    ok: false,
+    error: "Boy Gruk is a Follower: it fights only beside the Agents",
+  });
+  assert.deepEqual(await add({ npcId: ally }), {
+    ok: false,
+    error: "Proctor Vane is an Ally: it fights only beside the Agents",
+  });
+  assert.deepEqual(await add({ npcId: ally, ally: true, controllerId: a.id }), {
+    ok: false,
+    error: "Proctor Vane is an Ally: only the GM runs it",
+  });
+  assert.deepEqual(await add({ controllerId: a.id }), { ok: false, error: "Only an ally has someone to run it" });
+  assert.deepEqual(await add({ ally: true, controllerId: crypto.randomUUID() }), {
+    ok: false,
+    error: "Character not found",
+  });
+  assert.deepEqual(await add({ npcId: crypto.randomUUID(), ally: true }), { ok: false, error: "NPC not found" });
+  const allyF = await add({ npcId: follower, ally: true, controllerId: a.id });
+  const allyG = await add({ npcId: ally, ally: true });
+  assert.ok((await add({ npcId: threat })).ok, "a Threat NPC is an enemy by default");
+  const orc1 = await add({});
+  const orc2 = await add({});
+  assert.ok(allyF.ok && allyF.id && allyG.ok && allyG.id && orc1.ok && orc1.id && orc2.ok && orc2.id);
+  assert.ok((await gm.send({ type: "encounter.begin" })).ok);
+  assert.ok((await gm.send({ type: "pool.adjust", pool: "glory", delta: 3 })).ok);
+
+  // The row carries the NPC's name, runs on the Agents' side, and every phone reads its stat block (bars for a Threat).
+  const view = await pb.until((s) => !!s.encounter?.combatants.some((c) => c.id === allyF.id));
+  const row = (id: string) => view.encounter!.combatants.find((c) => c.id === id) as ThreatCombatant;
+  assert.equal(row(allyF.id).label, "Boy Gruk");
+  assert.equal(row(allyF.id).ally, true);
+  assert.equal(row(allyF.id).controllerId, a.id);
+  assert.equal(row(allyF.id).visibility, "stats");
+  assert.equal(row(allyF.id).stats?.id, "ork-boy", "an ally's stat block reaches every phone");
+  assert.equal(row(allyG.id).stats?.id, "ork-boy");
+  assert.equal(row(orc1.id).stats, null, "a Threat stays bars only");
+
+  // Who runs an ally: only an ally has a runner, never a player for an Ally, and the GM can change it any time.
+  const run = (id: string, controllerId: string | null) => gm.send({ type: "combatant.update", id, controllerId });
+  assert.deepEqual(await run(allyG.id, a.id), { ok: false, error: "Proctor Vane is an Ally: only the GM runs it" });
+  assert.deepEqual(await run(orc1.id, a.id), { ok: false, error: "Only an ally has someone to run it" });
+  assert.ok((await run(allyF.id, b.id)).ok);
+  assert.ok((await run(allyF.id, a.id)).ok);
+
+  // Seize for an ally costs Glory, never Ruin (p.177): Agents → ally Seize → Threat → Agent → Seize by a player's ask.
+  const pools = (s: LiveState) => [s.campaign.glory, s.campaign.ruin];
+  const [startGlory = 0, startRuin = 0] = pools(await gm.until((s) => s.campaign.glory === 3));
+  const pcRow = async (characterId: string) =>
+    (await gm.until((s) => !!s.encounter)).encounter!.combatants.find(
+      (c) => c.kind === "pc" && c.characterId === characterId,
+    )!.id;
+  const aRow = await pcRow(a.id);
+  const bRow = await pcRow(b.id);
+  assert.ok((await gm.send({ type: "turn.start", id: aRow })).ok);
+  assert.ok((await gm.send({ type: "turn.end" })).ok);
+  assert.ok((await gm.send({ type: "turn.seize", id: allyG.id })).ok);
+  const seized = await gm.until((s) => s.encounter?.currentId === allyG.id);
+  assert.deepEqual(pools(seized), [startGlory - 1, startRuin], "the ally's Seize paid Glory, not Ruin");
+  assert.ok((await gm.send({ type: "turn.end" })).ok);
+  assert.ok((await gm.send({ type: "turn.start", id: orc1.id })).ok);
+  assert.ok((await gm.send({ type: "turn.end" })).ok);
+  assert.ok((await gm.send({ type: "turn.start", id: bRow })).ok);
+  assert.ok((await gm.send({ type: "turn.end" })).ok);
+
+  // A player's ask for the ally they run: accepted by the GM as the Seize; for one they don't run, or a kind an ally
+  // has no use for, refused.
+  const ask = (p: typeof pa, characterId: string, combatantId: string, kind = "seize") =>
+    p.send({ type: "spend.request", characterId, combatantId, kind } as ActionInput);
+  assert.deepEqual(await ask(pb, b.id, allyF.id), {
+    ok: false,
+    error: "You don't run that ally: only the GM or its Agent's player asks for it",
+  });
+  assert.deepEqual(await ask(pa, a.id, allyG.id), {
+    ok: false,
+    error: "You don't run that ally: only the GM or its Agent's player asks for it",
+  });
+  assert.deepEqual(await ask(pa, a.id, orc2.id), { ok: false, error: "That is not an ally in this fight" });
+  assert.deepEqual(await ask(pa, a.id, crypto.randomUUID()), { ok: false, error: "That is not an ally in this fight" });
+  assert.equal((await ask(pa, a.id, allyF.id, "reroll")).ok, false, "Wrath is the Agent's own");
+  assert.equal((await ask(pa, a.id, allyF.id, "aware")).ok, false, "not ambushed");
+  assert.equal((await ask(pa, b.id, allyF.id)).ok, false, "not their Agent");
+  const asked = await ask(pa, a.id, allyF.id);
+  assert.ok(asked.ok && asked.id);
+  assert.equal((await ask(pa, a.id, allyF.id)).ok, false, "already asked");
+  const pending = await gm.until((s) => s.spendRequests.length === 1);
+  assert.equal(pending.spendRequests[0]?.combatantId, allyF.id);
+  assert.ok((await gm.send({ type: "spend.resolve", id: asked.id, accept: true })).ok);
+  const taken = await gm.until((s) => s.encounter?.currentId === allyF.id);
+  assert.deepEqual(pools(taken), [startGlory - 2, startRuin], "the player's ask spent Glory for the ally");
+  assert.equal(taken.spendRequests.length, 0);
+
+  // TAKE BACK: the follower's row goes back to the GM and stays an ally; taking back twice is refused.
+  assert.ok((await gm.send({ type: "npc.takeBack", id: follower })).ok);
+  const back = await gm.until(
+    (s) => (s.encounter?.combatants.find((c) => c.id === allyF.id) as ThreatCombatant).controllerId === null,
+  );
+  assert.equal((back.encounter!.combatants.find((c) => c.id === allyF.id) as ThreatCombatant).ally, true);
+  assert.deepEqual(await gm.send({ type: "npc.takeBack", id: follower }), {
+    ok: false,
+    error: "Boy Gruk follows no one",
+  });
+  await eventually(
+    () => !pb.codex()?.npcs.some((n) => n.id === follower),
+    "a taken-back, hidden NPC leaves the phones",
+  );
+  assert.deepEqual(await ask(pa, a.id, allyF.id), {
+    ok: false,
+    error: "You don't run that ally: only the GM or its Agent's player asks for it",
+  });
+});
+
+test("allies: AWARE paid in Glory, an ambush counts them, stale asks go with their runner (issue #350, §11.208)", async (t) => {
+  const gm = await newCampaign("Allies 2", 3, "10.22.2.1");
+  t.after(() => gm.socket.close());
+  const a = await gm.send({ type: "character.create", name: "A" });
+  assert.ok(a.ok && a.id);
+  const issued = await gm.send({ type: "token.issue", characterId: a.id });
+  assert.ok(issued.ok && issued.token);
+  const pa = connect({ auth: { token: issued.token }, headers: { "cf-connecting-ip": "10.22.2.1" } });
+  t.after(() => pa.socket.close());
+  await pa.until((s) => s.characters.length === 1);
+  const statSource = { kind: "bestiary", threatId: "ork-boy" } as const;
+  const npc = async (name: string) => {
+    const r = await gm.send({ type: "codex.save", kind: "npc", data: { name, statSource, fightsAs: "follower" } });
+    assert.ok(r.ok && r.id);
+    return r.id;
+  };
+  const [f1, f2] = [await npc("Boy One"), await npc("Boy Two")];
+  assert.ok((await gm.send({ type: "session.start" })).ok);
+  for (const id of [f1, f2]) assert.ok((await gm.send({ type: "npc.give", id, characterId: a.id })).ok);
+  assert.ok((await gm.send({ type: "encounter.start" })).ok);
+  assert.ok((await gm.send({ type: "combatant.addCharacter", characterId: a.id })).ok);
+  const add = async (npcId: string) => {
+    const r = await gm.send({
+      type: "combatant.addThreat",
+      threatId: "ork-boy",
+      npcId,
+      ally: true,
+      controllerId: a.id,
+    } as ActionInput);
+    assert.ok(r.ok && r.id);
+    return r.id;
+  };
+  const [r1, r2] = [await add(f1), await add(f2)];
+  const orc = await gm.send({ type: "combatant.addThreat", threatId: "ork-boy" });
+  assert.ok(orc.ok && orc.id);
+  assert.ok((await gm.send({ type: "pool.adjust", pool: "glory", delta: 3 })).ok);
+
+  // The Agents' ambush marks the allies with them, not the Threat.
+  assert.ok((await gm.send({ type: "encounter.ambush", side: "agents", ambushed: true })).ok);
+  const ambushed = await gm.until((s) => !!s.encounter?.combatants.find((c) => c.id === r1)?.ambushed);
+  const flag = (id: string) => ambushed.encounter!.combatants.find((c) => c.id === id)!.ambushed;
+  assert.deepEqual([flag(r1), flag(r2), flag(orc.id)], [true, true, false]);
+  assert.ok((await gm.send({ type: "encounter.begin" })).ok);
+
+  // An ally's AWARE is paid in Glory (p.177) and clears its ambush.
+  const ask = (combatantId: string, kind: string) =>
+    pa.send({ type: "spend.request", characterId: a.id, combatantId, kind } as ActionInput);
+  const aware = await ask(r1, "aware");
+  assert.ok(aware.ok && aware.id);
+  const before = await gm.until((s) => s.spendRequests.length === 1);
+  const glory0 = before.campaign.glory;
+  assert.ok((await gm.send({ type: "spend.resolve", id: aware.id, accept: true })).ok);
+  const paid = await gm.until((s) => s.campaign.glory === glory0 - 1);
+  assert.equal(paid.encounter!.combatants.find((c) => c.id === r1)!.ambushed, false);
+  assert.equal(paid.campaign.ruin, before.campaign.ruin, "never Ruin");
+
+  // RUN BY changes: what the old runner asked for goes with it, so ACCEPT has nothing stale to take.
+  const seize = await ask(r2, "seize");
+  assert.ok(seize.ok && seize.id);
+  assert.ok((await gm.send({ type: "combatant.update", id: r2, controllerId: null })).ok);
+  await gm.until((s) => s.spendRequests.length === 0);
+  assert.deepEqual(await gm.send({ type: "spend.resolve", id: seize.id, accept: true }), {
+    ok: false,
+    error: "Request not found: it may already be answered",
+  });
+
+  // TAKE BACK clears the follower's asks; so does making a fielded NPC an Ally.
+  assert.ok((await gm.send({ type: "combatant.update", id: r2, controllerId: a.id })).ok);
+  assert.ok((await ask(r2, "seize")).ok);
+  assert.ok((await gm.send({ type: "npc.takeBack", id: f2 })).ok);
+  await gm.until((s) => s.spendRequests.length === 0);
+  assert.ok((await gm.send({ type: "combatant.update", id: r2, controllerId: a.id })).ok);
+  assert.ok((await ask(r2, "seize")).ok);
+  assert.ok(
+    (
+      await gm.send({
+        type: "codex.save",
+        kind: "npc",
+        id: f2,
+        data: { name: "Boy Two", statSource, fightsAs: "ally" },
+      })
+    ).ok,
+  );
+  const released = await gm.until((s) => s.spendRequests.length === 0);
+  assert.equal((released.encounter!.combatants.find((c) => c.id === r2) as ThreatCombatant).controllerId, null);
+
+  // The fight ending takes every ally's ask with it (its row outlives the fight, so the cascade never runs).
+  assert.ok((await ask(r1, "gloryDamage")).ok);
+  await gm.until((s) => s.spendRequests.length === 1);
+  assert.ok((await gm.send({ type: "encounter.end" })).ok);
+  await gm.until((s) => s.spendRequests.length === 0);
+});

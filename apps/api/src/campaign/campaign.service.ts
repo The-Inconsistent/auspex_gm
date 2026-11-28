@@ -82,7 +82,8 @@ export async function exportCampaign(campaignId: string, { pictures = true } = {
       stats: statsOf.get(c.id) ?? c.stats,
       build: build as CampaignExport["characters"][number]["build"],
     })),
-    codex,
+    // followerStats is the bestiary's stat block, resolved for a phone: it never goes into a file (issue #350).
+    codex: { ...codex, npcs: codex.npcs.map(({ followerStats: _, ...n }) => n) },
     images: images.map((p) => ({ id: p.id, mime: p.mime, base64: p.bytes.toString("base64") })),
   };
 }
@@ -333,9 +334,14 @@ async function writeFile(
       .values(locations.map((l, i) => ({ ...own(l, i), parentId: ref(l.parentId), imageId: picture(l.imageId) })));
   const npcs = fresh(c.npcs);
   if (npcs.length)
-    await tx
-      .insert(npc)
-      .values(npcs.map((n, i) => ({ ...own(n, i), factionId: ref(n.factionId), imageId: picture(n.imageId) })));
+    await tx.insert(npc).values(
+      npcs.map((n, i) => ({
+        ...own(n, i),
+        factionId: ref(n.factionId),
+        followsId: ref(n.followsId),
+        imageId: picture(n.imageId),
+      })),
+    );
   const handouts = fresh(c.handouts);
   if (handouts.length)
     await tx.insert(handout).values(

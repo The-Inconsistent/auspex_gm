@@ -26,6 +26,9 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
   if (a.type === "screen.issue" || a.type === "screen.revoke") return { state: false, codex: false };
   // Deleting an adventure or scene unlinks the Agents' missions tied to it (§11.163), which ride the state snapshot.
   if (a.type === "codex.delete" && (a.kind === "adventure" || a.kind === "beat")) return { state: true, codex: true };
+  // Saving a fielded NPC as an Ally hands its fight row back to the GM and drops its player's asks (§11.208): the state moves.
+  if (a.type === "codex.save" && a.kind === "npc" && (a.data as { fightsAs?: string }).fightsAs === "ally")
+    return { state: true, codex: true };
   // A custom threat rides the codex snapshot (issue #43), so saving or deleting one only changes that.
   if (
     a.type === "codex.save" ||
@@ -38,6 +41,7 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
     a.type === "threat.delete" ||
     a.type === "codex.addLoot" ||
     a.type === "codex.addRelic" ||
+    a.type === "npc.give" || // followsId rides the codex
     a.type === "session.edit" // a recap or the GM's notes: no pool or sheet moves
   )
     return { state: false, codex: true };
@@ -48,6 +52,7 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
     a.type === "character.delete" ||
     a.type === "character.giveItem" ||
     a.type === "character.takeItem" ||
+    a.type === "npc.takeBack" || // may hand a fight row back to the GM (controllerId rides the state)
     a.type === "journal.undo" || // reverts rows in either snapshot
     a.type.startsWith("session.")
   )
@@ -218,6 +223,8 @@ function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promis
     case "codex.addHulk":
     case "codex.addLoot":
     case "codex.addRelic":
+    case "npc.give":
+    case "npc.takeBack":
       return applyCodexAction(tx, { ctx, action });
 
     case "threat.save":

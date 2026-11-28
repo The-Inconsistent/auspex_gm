@@ -26,6 +26,9 @@ const threat = ({ id, label }: { id: string; label: string }): ThreatCombatant =
   conditions: ["Prone"],
   visibility: "bars",
   stats: null,
+  ally: false,
+  controllerId: null,
+  npcId: null,
 });
 const s: LiveState = {
   campaign: {

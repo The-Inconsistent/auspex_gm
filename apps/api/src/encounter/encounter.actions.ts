@@ -1,20 +1,22 @@
-import { and, count, eq, inArray, max, sql } from "drizzle-orm";
+import { and, count, eq, inArray, max, or, sql } from "drizzle-orm";
 import {
   EncounterEntry,
   MONSTROUS_IMMUNE,
+  canBeEnemy,
   canSeize,
   exhaustedShock,
   isExhausted,
   isOut,
   isTimed,
+  playerMayRun,
   prepareThreat,
   sideOf,
-  sideOfKind,
   sideUpNext,
   threatClassAt,
   type Action,
   type ActionResult,
   type Combatant,
+  type FightsAs,
   type LiveState,
   type Marker,
   type ProfileId,
@@ -30,11 +32,11 @@ import { campaign } from "../campaign/campaign.schema.ts";
 import { ownCharacter } from "../character/character.actions.ts";
 import { character } from "../character/character.schema.ts";
 import { beginBeat } from "../codex/codex.actions.ts";
-import { beat } from "../codex/codex.schema.ts";
+import { beat, npc } from "../codex/codex.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
-import { clearMootAware, clearSpendRequests } from "../spend/spend.clear.ts";
+import { clearAllySpends, clearMootAware, clearSpendRequests } from "../spend/spend.clear.ts";
 import { loadState } from "../table/table.state.ts";
 import { loadThreats } from "../threat/threat.service.ts";
 import { combatant, encounter } from "./encounter.schema.ts";
@@ -87,6 +89,30 @@ async function combatantOf(tx: Tx, { encounterId, id }: { encounterId: string; i
   return c ?? fail("Combatant not found");
 }
 
+// The Codex NPC behind a fight row, of this campaign (issue #350). Never trust the id from the client.
+async function npcOf(tx: Tx, { campaignId, id }: { campaignId: string; id: string }) {
+  const [n] = await tx
+    .select({ name: npc.name, fightsAs: npc.fightsAs })
+    .from(npc)
+    .where(and(eq(npc.id, id), eq(npc.campaignId, campaignId)));
+  return n ?? fail("NPC not found");
+}
+
+// Who may run an ally (§11.208): the GM (null), or an Agent of this campaign, unless the NPC behind the row is an Ally,
+// which only the GM runs (the category is read as it is now, so a change in the story is honoured without re-adding it).
+async function checkController(
+  tx: Tx,
+  {
+    campaignId,
+    controllerId,
+    npc: n,
+  }: { campaignId: string; controllerId: string | null; npc: { name: string; fightsAs: FightsAs } | null },
+) {
+  if (!controllerId) return;
+  await ownCharacter(tx, { campaignId, id: controllerId });
+  if (n && !playerMayRun(n.fightsAs)) fail(`${n.name} is an Ally: only the GM runs it`);
+}
+
 async function nextOrder(tx: Tx, encounterId: string) {
   const [{ m } = { m: null }] = await tx
     .select({ m: max(combatant.order) })
@@ -108,6 +134,9 @@ async function addThreat(
     profiles,
     scale,
     agents,
+    ally,
+    controllerId,
+    npcId,
   }: {
     encounterId: string;
     tier: number;
@@ -119,6 +148,9 @@ async function addThreat(
     profiles?: readonly ProfileId[];
     scale?: boolean;
     agents: number;
+    ally?: boolean;
+    controllerId?: string | null;
+    npcId?: string | null;
   },
 ) {
   // What the GM ticked, applied before the snapshot: profiles (VoA p.126) and scaling (Core p.326). The class still
@@ -138,7 +170,10 @@ async function addThreat(
       mobStart: mobCount ?? null,
       personalRuin: t.personalRuin ?? 0,
       marker: marker ?? null,
-      visibility, // undefined takes the column default, bars
+      visibility: ally ? "stats" : visibility, // undefined takes the column default, bars; an ally is always seen (§11.208)
+      ally: ally ?? false,
+      controllerId: controllerId ?? null,
+      npcId: npcId ?? null,
     })
     .returning({ id: combatant.id });
   return c!.id; // the row was just inserted
@@ -164,6 +199,7 @@ async function addPc(tx: Tx, { encounterId, characterId }: { encounterId: string
 async function startEncounter(tx: Tx, campaignId: string) {
   await tx.update(encounter).set({ active: false }).where(eq(encounter.campaignId, campaignId));
   await clearSpendRequests(tx, { campaignId, kinds: FIGHT_SPENDS }); // asked against the fight this one replaces
+  await clearAllySpends(tx, { campaignId });
   const [e] = await tx.insert(encounter).values({ campaignId, round: 0 }).returning({ id: encounter.id });
   return e!.id; // the row was just inserted
 }
@@ -325,6 +361,7 @@ export async function applyEncounterAction(
     case "encounter.end":
       await tx.update(encounter).set({ active: false }).where(eq(encounter.campaignId, cid));
       await clearSpendRequests(tx, { campaignId: cid, kinds: FIGHT_SPENDS }); // there is no fight left to spend in
+      await clearAllySpends(tx, { campaignId: cid });
       return { ok: true };
 
     // Round 0 → Round 1 (p.176): the ambushes set in Round 0 stay; a done or held mark tapped there by mistake doesn't.
@@ -370,7 +407,9 @@ export async function applyEncounterAction(
         .where(
           and(
             eq(combatant.encounterId, enc.id),
-            eq(combatant.kind, a.side === "agents" ? "pc" : "threat"),
+            // An ally is on the Agents' side (§11.208).
+            a.side === "agents" ? or(eq(combatant.kind, "pc"), eq(combatant.ally, true)) : eq(combatant.ally, false),
+            a.side === "agents" ? undefined : eq(combatant.kind, "threat"),
             eq(combatant.acted, false),
           ),
         );
@@ -388,7 +427,8 @@ export async function applyEncounterAction(
         encounterId: before.id,
         who: a.id,
         label: (n) => `${n}'s ${a.type === "turn.seize" ? "Seize" : "Turn"}`,
-        refund: a.type === "turn.seize" ? { pool: picked.kind === "pc" ? "glory" : "ruin", n: 1 } : undefined,
+        refund:
+          a.type === "turn.seize" ? { pool: picked.kind === "pc" || picked.ally ? "glory" : "ruin", n: 1 } : undefined,
       });
       await endCurrentTurn(tx, { campaignId: cid, step: false });
       const { state, enc } = await liveTable(tx, cid);
@@ -470,13 +510,24 @@ export async function applyEncounterAction(
         fail(`Unknown threat "${a.threatId}"`);
       const enc = await activeEncounter(tx, cid);
       const tier = await campaignTier(tx, cid);
+      // A Codex NPC's FIGHTS AS decides how it may join (§11.208); a stat block picked straight from the bestiary has none.
+      const from = a.npcId ? await npcOf(tx, { campaignId: cid, id: a.npcId }) : null;
+      if (from && !a.ally && !canBeEnemy(from.fightsAs))
+        fail(
+          `${from.name} is ${from.fightsAs === "ally" ? "an Ally" : "a Follower"}: it fights only beside the Agents`,
+        );
+      if (a.controllerId && !a.ally) fail("Only an ally has someone to run it");
+      await checkController(tx, { campaignId: cid, controllerId: a.controllerId, npc: from });
       return {
         ok: true,
         id: await addThreat(tx, {
           encounterId: enc.id,
           tier,
           threat: t,
-          label: a.label,
+          ally: a.ally,
+          controllerId: a.controllerId,
+          npcId: a.npcId,
+          label: a.label ?? (a.mobCount ? undefined : from?.name),
           mobCount: a.mobCount,
           marker: a.marker,
           visibility: a.visibility,
@@ -500,7 +551,7 @@ export async function applyEncounterAction(
 
     case "combatant.update": {
       const enc = await activeEncounter(tx, cid);
-      const { type, id, ambushed, ...threatOnly } = a;
+      const { type, id, ambushed, controllerId, ...threatOnly } = a;
       const where = and(eq(combatant.id, id), eq(combatant.encounterId, enc.id));
       if (ambushed !== undefined) {
         await combatantOf(tx, { encounterId: enc.id, id }); // a stranger's id is refused before anything is kept
@@ -512,6 +563,16 @@ export async function applyEncounterAction(
         const r = await tx.update(combatant).set({ ambushed }).where(where).returning({ id: combatant.id });
         if (!r.length) fail("Combatant not found");
         await clearMootAware(tx, { campaignId: cid, encounterId: enc.id });
+      }
+      // Who runs an ally (§11.208): only an ally has a runner, and the NPC's category is checked as it is now.
+      if (controllerId !== undefined) {
+        const [row] = await tx.select({ ally: combatant.ally, npcId: combatant.npcId }).from(combatant).where(where);
+        if (!row) fail("Combatant not found");
+        if (!row.ally) fail("Only an ally has someone to run it");
+        const from = row.npcId ? await npcOf(tx, { campaignId: cid, id: row.npcId }) : null;
+        await checkController(tx, { campaignId: cid, controllerId, npc: from });
+        await tx.update(combatant).set({ controllerId }).where(where);
+        await clearAllySpends(tx, { campaignId: cid, combatantIds: [id] }); // asked by the one who ran it before
       }
       if (threatOnly.conditions) {
         const [row] = await tx
@@ -590,13 +651,14 @@ export async function applyEncounterAction(
         .where(and(eq(combatant.id, a.id), eq(combatant.encounterId, enc.id)));
       if (!c) fail("Combatant not found");
       if (!c.ambushed) fail("Not ambushed");
+      const side: Side = c.kind === "pc" || c.ally ? "agents" : "threats"; // an ally pays Glory (§11.208)
       await pushStep(tx, {
         encounterId: enc.id,
         who: c.id,
         label: (n) => `${n} AWARE`,
-        refund: { pool: c.kind === "pc" ? "glory" : "ruin", n: 1 },
+        refund: { pool: side === "agents" ? "glory" : "ruin", n: 1 },
       });
-      await spend(tx, { campaignId: cid, side: sideOfKind(c.kind) });
+      await spend(tx, { campaignId: cid, side });
       await tx.update(combatant).set({ ambushed: false }).where(eq(combatant.id, a.id));
       await clearMootAware(tx, { campaignId: cid, encounterId: enc.id });
       return { ok: true };

@@ -1,5 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import {
+  ALLY_SPEND_KINDS,
   MAX_PENDING_SPENDS,
   deriveStats,
   isExhausted,
@@ -37,6 +38,22 @@ async function ambushedCombatant(tx: Tx, { campaignId, characterId }: { campaign
   return c.id;
 }
 
+// The ally row a request names: in the current fight, an ally, run by this Agent's player. Never trust the id from the
+// client: the row is looked up in this campaign's active encounter.
+async function allyOf(
+  tx: Tx,
+  { campaignId, characterId, id }: { campaignId: string; characterId: string; id: string },
+) {
+  const encId = (await activeEncounterId(tx, campaignId)) ?? fail("No fight to ask for an ally in");
+  const [c] = await tx
+    .select({ ally: combatant.ally, controllerId: combatant.controllerId, ambushed: combatant.ambushed })
+    .from(combatant)
+    .where(and(eq(combatant.id, id), eq(combatant.encounterId, encId)));
+  if (!c?.ally) fail("That is not an ally in this fight");
+  if (c.controllerId !== characterId) fail("You don't run that ally: only the GM or its Agent's player asks for it");
+  return c;
+}
+
 // The active encounter's id, or null: a Seize needs a fight to Seize in.
 async function activeEncounterId(tx: Tx, campaignId: string) {
   const [enc] = await tx
@@ -64,13 +81,23 @@ export async function applySpendAction(
     case "spend.request": {
       const row = await ownCharacter(tx, { campaignId: cid, id: a.characterId });
       const amount = spendTakesAmount(a.kind) ? a.amount : 1; // only the Glory kinds and Determination have an amount to keep
-      if (a.kind === "seize" && !(await activeEncounterId(tx, cid))) fail("No fight to Seize the Initiative in");
-      if (a.kind === "aware") await ambushedCombatant(tx, { campaignId: cid, characterId: a.characterId });
+      if (a.combatantId) {
+        if (!ALLY_SPEND_KINDS.includes(a.kind))
+          fail(
+            "An ally can only ask for Glory on its damage, to Seize the Initiative or to be made AWARE (rules-flow.md §11.208)",
+          );
+        const ally = await allyOf(tx, { campaignId: cid, characterId: a.characterId, id: a.combatantId });
+        if (a.kind === "aware" && !ally.ambushed) fail("Not ambushed");
+      } else {
+        if (a.kind === "seize" && !(await activeEncounterId(tx, cid))) fail("No fight to Seize the Initiative in");
+        if (a.kind === "aware") await ambushedCombatant(tx, { campaignId: cid, characterId: a.characterId });
+      }
       const mine = await tx
-        .select({ kind: spendRequest.kind })
+        .select({ kind: spendRequest.kind, combatantId: spendRequest.combatantId })
         .from(spendRequest)
         .where(and(eq(spendRequest.campaignId, cid), eq(spendRequest.characterId, a.characterId)));
-      if (mine.some((r) => r.kind === a.kind)) fail("Already asked for that: wait for the GM or cancel it");
+      if (mine.some((r) => r.kind === a.kind && r.combatantId === a.combatantId))
+        fail("Already asked for that: wait for the GM or cancel it");
       if (mine.length >= MAX_PENDING_SPENDS) fail(`At most ${MAX_PENDING_SPENDS} requests at once`);
       // Asking needs the pool to cover it now (§11.122); ACCEPT checks again, since the pool may move in between.
       await canPay(tx, { campaignId: cid, row, cost: spendCost(a.kind, amount) });
@@ -81,6 +108,7 @@ export async function applySpendAction(
           characterId: a.characterId,
           kind: a.kind,
           amount,
+          combatantId: a.combatantId,
         })
         .returning({ id: spendRequest.id });
       return { ok: true, id: r!.id }; // the row was just inserted
@@ -129,6 +157,8 @@ async function spendIt(tx: Tx, { ctx, request: r }: { ctx: Ctx; request: typeof 
   // pool.adjust and character.adjust clamp at 0, which would let a spend the pool can't pay go through for less, so
   // affordability is checked here. (turn.seize has its own check in encounter.actions' spend().)
   await canPay(tx, { campaignId: cid, row, cost });
+  // The ask may be older than the fight or its runner (§11.208): the same check as when it was made.
+  if (r.combatantId) await allyOf(tx, { campaignId: cid, characterId: r.characterId, id: r.combatantId });
 
   switch (r.kind) {
     case "reroll":
@@ -179,6 +209,11 @@ async function spendIt(tx: Tx, { ctx, request: r }: { ctx: Ctx; request: typeof 
 
     // The existing combatant.aware pays the Glory and clears the ambush (p.177), so TURN BACK refunds it as the GM's own.
     case "aware": {
+      // An ally's ask names its row: the same combatant.aware, paid in Glory (§11.208).
+      if (r.combatantId) {
+        await applyEncounterAction(tx, { ctx, action: { type: "combatant.aware", id: r.combatantId } });
+        return;
+      }
       const id = await ambushedCombatant(tx, { campaignId: cid, characterId: r.characterId });
       await applyEncounterAction(tx, { ctx, action: { type: "combatant.aware", id } });
       return;
@@ -186,6 +221,10 @@ async function spendIt(tx: Tx, { ctx, request: r }: { ctx: Ctx; request: typeof 
 
     // The existing turn.seize pays the Glory and checks canSeize; the requester's combatant is the one that goes.
     case "seize": {
+      if (r.combatantId) {
+        await applyEncounterAction(tx, { ctx, action: { type: "turn.seize", id: r.combatantId } });
+        return;
+      }
       const encId = (await activeEncounterId(tx, cid)) ?? fail("No fight to Seize the Initiative in");
       const [c] = await tx
         .select({ id: combatant.id })

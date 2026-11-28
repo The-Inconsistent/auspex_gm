@@ -85,6 +85,8 @@ export const Action = z.union([
       characterId: id,
       kind: SpendKind,
       amount: z.number().int().min(1).max(MAX_SPEND_AMOUNT).default(1),
+      // For an ally this Agent's player runs (issue #350): Glory for its damage, Seize or AWARE.
+      combatantId: id.nullable().default(null),
     }),
     z.object({ type: z.literal("spend.cancel"), id }),
     z.object({ type: z.literal("spend.resolve"), id, accept: z.boolean() }),
@@ -232,6 +234,10 @@ export const Action = z.union([
     // The server builds the sheet line from the item.
     z.object({ type: z.literal("character.giveItem"), id, itemId: id }),
     z.object({ type: z.literal("character.takeItem"), id, itemId: id }),
+    // GM only: a Codex NPC given to an Agent as a follower, as an item is (issue #350, §11.208): an open session, no Test,
+    // never an Ally. TAKE BACK ends it, any time.
+    z.object({ type: z.literal("npc.give"), id, characterId: id }),
+    z.object({ type: z.literal("npc.takeBack"), id }),
     // GM only: a requisition Influence Test rolled at the table (pp.205–206, p.229). The server checks the Keywords and
     // the session limit, spends the Wealth and, on a success, adds the item to gear or ammo.
     z.object({
@@ -364,6 +370,10 @@ export const Action = z.union([
       // As on a prepared entry: profiles (VoA p.126) and scaling (Core p.326) are applied before the snapshot.
       profiles: Profiles,
       scale: z.boolean().default(false),
+      // Issue #350: on the Agents' side, run by an Agent's player (null: the GM), from a Codex NPC (its FIGHTS AS is checked).
+      ally: z.boolean().default(false),
+      controllerId: id.nullable().default(null),
+      npcId: id.nullable().default(null),
     }),
     z.object({ type: z.literal("combatant.addCharacter"), characterId: id }),
     z.object({
@@ -375,6 +385,7 @@ export const Action = z.union([
       visibility: Visibility.optional(),
       marker: Marker.nullable().optional(),
       ambushed: z.boolean().optional(),
+      controllerId: id.nullable().optional(), // an ally's runner: an Agent, or null for the GM (issue #350)
     }),
     // Same damage rules for Threats (Mob members p.325, Exhausted p.199); raw (the tracker's undo) skips them.
     z.object({

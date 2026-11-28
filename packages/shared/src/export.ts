@@ -62,7 +62,8 @@ export const CampaignExport = z.object({
       )
       .max(200),
     locations: z.array(CodexInput.location.extend({ id })).max(1000),
-    npcs: z.array(CodexInput.npc.extend({ id })).max(1000),
+    // `followsId`: the Agent in this file it was given to (issue #350), or nobody; files from before have none.
+    npcs: z.array(CodexInput.npc.extend({ id }).extend({ followsId: id.nullable().default(null) })).max(1000),
     handouts: z
       .array(CodexInput.handout.extend({ id }).extend({ revealedAt: z.string().max(40).nullable() }))
       .max(1000),
@@ -187,7 +188,7 @@ export function sliceAdventures(e: CampaignExport, adventureIds: readonly string
       factions: c.factions.filter((f) => linked.has(f.id)),
       adventures,
       locations,
-      npcs,
+      npcs: npcs.map((n) => ({ ...n, followsId: null })),
       handouts,
       items: items.map((i) => ({ ...i, givenTo: null })),
       sessions: [],

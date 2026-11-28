@@ -6,6 +6,7 @@ import {
   CharacterStats,
   Objectives,
   Overrides,
+  StatSource,
   rankOf,
   withUpgrades,
   withWeaponEffects,
@@ -13,6 +14,7 @@ import {
   type Codex,
   type Combatant,
   type LiveState,
+  type Threat,
 } from "@wg/shared";
 import { wargear } from "@wg/data";
 import { accessToken, appUser, invite, membership } from "../auth/auth.schema.ts";
@@ -23,7 +25,7 @@ import { db, type Db } from "../core/db.ts";
 import { combatant, encounter } from "../encounter/encounter.schema.ts";
 import { spendRequest } from "../spend/spend.schema.ts";
 import { testCall } from "../test-call/test-call.schema.ts";
-import { loadCustomThreats } from "../threat/threat.service.ts";
+import { loadCustomThreats, loadThreats } from "../threat/threat.service.ts";
 import { whisper } from "../whisper/whisper.schema.ts";
 
 // Upgrades held in gear, keyed off the gear line a requisition writes ("Magnocular Scope (Core p.228)"). The catalogue
@@ -227,15 +229,19 @@ export async function loadState(campaignId: string, conn: Db = db): Promise<Live
                   conditions: r.conditions,
                   visibility: r.visibility,
                   stats: r.statSnapshot,
+                  ally: r.ally,
+                  controllerId: r.controllerId,
+                  npcId: r.npcId,
                 },
           ),
         }
       : null,
-    spendRequests: spends.map(({ id, characterId, kind, amount, createdAt }) => ({
+    spendRequests: spends.map(({ id, characterId, kind, amount, combatantId, createdAt }) => ({
       id,
       characterId,
       kind,
       amount,
+      combatantId,
       createdAt: createdAt.toISOString(),
     })),
     testCall: call
@@ -296,6 +302,15 @@ export async function loadCodex(campaignId: string): Promise<Codex> {
     db.select().from(session).where(eq(session.campaignId, campaignId)).orderBy(asc(session.number)),
     loadCustomThreats(db, campaignId),
   ]);
+  // A given NPC's stat block for its Agent's sheet (§11.208): a bestiary or custom threat, else none.
+  const followed = npcs.flatMap((n) => {
+    const src = n.followsId ? StatSource.safeParse(n.statSource) : null;
+    return src?.success && src.data.kind === "bestiary" ? [{ id: n.id, threatId: src.data.threatId }] : [];
+  });
+  const followerThreats = followed.length
+    ? await loadThreats(db, { campaignId, ids: followed.map((f) => f.threatId) })
+    : new Map<string, Threat>();
+  const followerStats = new Map(followed.map((f) => [f.id, followerThreats.get(f.threatId) ?? null]));
   const beats = adventures.length
     ? await db
         .select()
@@ -320,7 +335,7 @@ export async function loadCodex(campaignId: string): Promise<Codex> {
       beats: beats.filter((b) => b.adventureId === a.id).map((b) => ({ ...strip(b), encounter: entriesOf(b) })),
     })) as Codex["adventures"],
     locations: locations.map(strip) as Codex["locations"],
-    npcs: npcs.map(strip) as Codex["npcs"],
+    npcs: npcs.map((n) => ({ ...strip(n), followerStats: followerStats.get(n.id) ?? null })) as Codex["npcs"],
     handouts: handouts.map((h) => ({ ...strip(h), revealedAt: h.revealedAt?.toISOString() ?? null })),
     items: items.map(strip) as Codex["items"],
     customThreats,

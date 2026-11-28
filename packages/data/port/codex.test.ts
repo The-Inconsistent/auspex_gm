@@ -170,6 +170,8 @@ test("a field is party exactly when toPlayerCodex sends its value to a revealed 
           factionId,
           revealed: true,
         }),
+        followsId: null,
+        followerStats: null,
       },
     ],
     handouts: [],
