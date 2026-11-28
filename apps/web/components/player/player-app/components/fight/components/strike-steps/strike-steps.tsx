@@ -7,13 +7,15 @@ import { RuleIdLink, RuleLink } from "@/components/ui/rule-link/rule-link";
 import { useRules } from "@/components/ui/rules-provider/rules-provider";
 import { Term } from "@/components/ui/term/term";
 
+import type { StrikeBy } from "./constants";
+
 type StrikeStepsProps = {
   pool: number; // the dice to roll: an Agent's Skill total, or a follower's Skill from its stat block (+ its Mob's bonus)
   strength: number; // melee "S + X" (p.183); a follower's weapon Damage already counts it, so it adds nothing
   weapon: Weapon & { addStrength?: boolean }; // an Agent's, or a follower's from its stat block
   wounded: boolean;
   sustain: number; // +2 DN per power the Agent sustains (sustainPenalty, Core p.265)
-  by?: "agent" | "troop" | "threat"; // who swings: an Agent (default), or a follower by its class (Core p.323)
+  by?: StrikeBy; // who swings: an Agent (default), or a follower by its class (Core p.323)
   target: ThreatCombatant | null; // the threat picked in 2 · PICK A TARGET; its stats are null while the GM shows bars (§11.56)
 };
 

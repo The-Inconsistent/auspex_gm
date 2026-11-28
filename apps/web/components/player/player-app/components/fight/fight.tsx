@@ -43,8 +43,6 @@ import { SpendSheet } from "./components/spend-sheet/spend-sheet";
 import { StrikeSteps } from "./components/strike-steps/strike-steps";
 import { allyLine } from "./utils";
 
-import "../../../player-ally.css";
-
 type FightProps = { state: LiveState; characterId: string; send: Send; legend: RuleEntry[]; actions: RuleEntry[] };
 
 // What a combatant is doing this Round, in words (state is never colour alone): @wg/shared's turnMark decides, so the

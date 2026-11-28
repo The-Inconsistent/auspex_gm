@@ -979,3 +979,20 @@ button.ps-fold-head > .ps-fold-title {
 #ps-xp > .btn {
   margin-top: 8px;
 }
+
+/* SHEET › FOLLOWERS (issue #350, §11.208): the ally's slate blue, --ally in globals.css */
+.ps-followers {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ps-follower {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ps-follower-tag {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--ally);
+}

@@ -7,6 +7,8 @@ import {
   type Weapon,
 } from "@wg/shared";
 
+import type { StrikeBy } from "../strike-steps/constants";
+
 // The weapons a follower can attack with: the ACTION abilities' weapons on its stat block, as the GM's attack guide reads them.
 export const followerWeapons = (c: ThreatCombatant): Weapon[] =>
   (c.stats?.abilities ?? []).filter((a) => a.type === "ACTION").flatMap((a) => a.weapons ?? []);
@@ -28,5 +30,5 @@ export const followerWounded = (c: ThreatCombatant) => threatStatus(c).includes(
 
 // Who swings, for the dice steps: a Troop rolls its Wrath Die but lands no Critical Hit (p.323); any other Threat's
 // Critical earns the party no Glory, as the GM's attack guide has it (+1 Glory is only for an Agent).
-export const followerStrikeBy = (c: ThreatCombatant): "troop" | "threat" =>
+export const followerStrikeBy = (c: ThreatCombatant): Exclude<StrikeBy, "agent"> =>
   c.threatClass === "T" ? "troop" : "threat";

@@ -2,6 +2,8 @@
 import { useRef, useState, type ReactNode } from "react";
 
 import {
+  ALLY_SPEND_KINDS,
+  MAX_PENDING_SPENDS,
   MAX_SPEND_AMOUNT,
   SPEND_KINDS,
   spendCost,
@@ -15,7 +17,8 @@ import {
 import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
 
-const ALLY_KINDS: SpendKind[] = ["gloryDamage", "seize"];
+// AWARE is asked from the AMBUSHED panel (the mockup), so the ally list here leaves it out of the server's.
+const ALLY_KINDS = ALLY_SPEND_KINDS.filter((k) => k !== "aware");
 
 type SpendProps = { state: LiveState; characterId: string; send: Send };
 // "wrath" or "glory": the two pools a spend costs (spendCost).
@@ -48,9 +51,9 @@ export function RequestSpend({
   const have = pool === "glory" ? state.campaign.glory : (me?.wrath ?? 0);
   const max = Math.min(MAX_SPEND_AMOUNT, have);
   const shown = Math.max(1, Math.min(amount, max)); // the pool may drop while the modal is open
-  const mine = state.spendRequests.filter(
-    (r) => r.characterId === characterId && (r.combatantId ?? null) === combatantId,
-  );
+  const own = state.spendRequests.filter((r) => r.characterId === characterId);
+  const mine = own.filter((r) => (r.combatantId ?? null) === combatantId);
+  const capped = own.length >= MAX_PENDING_SPENDS; // the api counts an ally's asks against the Agent too
   // AWARE is asked from the FIGHT tab's AMBUSHED panel, where the ambush is. An ally takes only the two Glory spends
   // the server allows it besides AWARE (gloryDamage p.165, seize p.177).
   const kinds = SPEND_KINDS.filter(
@@ -118,7 +121,7 @@ export function RequestSpend({
               <button
                 key={kind}
                 className="btn sm"
-                disabled={have < 1 || mine.some((r) => r.kind === kind)}
+                disabled={have < 1 || capped || mine.some((r) => r.kind === kind)}
                 onClick={() => ask(kind)}
               >
                 {spendWord(kind)}
@@ -126,6 +129,9 @@ export function RequestSpend({
               </button>
             ))}
           </div>
+          {capped && (
+            <div className="label">AT MOST {MAX_PENDING_SPENDS} ASKS AT ONCE: WAIT FOR THE GM OR CANCEL ONE</div>
+          )}
           <Refusal error={error} onDismiss={() => setError(null)} />
         </div>
         <div className="dlg-foot">
@@ -144,6 +150,12 @@ export function PendingSpends({ state, characterId, send }: SpendProps) {
   const [error, setError] = useState<string | null>(null);
   if (state.spendRequests.length === 0 && !error) return null; // a failed CANCEL still shows why
   const names = new Map(state.characters.map((c) => [c.id, c.name]));
+  // An ask with a combatantId is for an ally, so it names that ally, not the Agent's own Seize or damage.
+  const forWhom = (combatantId: string | null) => {
+    if (!combatantId) return "";
+    const c = state.encounter?.combatants.find((x) => x.id === combatantId);
+    return ` · FOR ${c?.kind === "threat" ? c.label.toUpperCase() : "AN ALLY NO LONGER IN THE FIGHT"}`;
+  };
 
   const cancel = async (id: string) => {
     const r = await send({ type: "spend.cancel", id });
@@ -155,7 +167,10 @@ export function PendingSpends({ state, characterId, send }: SpendProps) {
       {state.spendRequests.map((r) =>
         r.characterId === characterId ? (
           <div key={r.id} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ flex: 1 }}>{spendLabel(r.kind, r.amount)} · WAITING</span>
+            <span style={{ flex: 1 }}>
+              {spendLabel(r.kind, r.amount)}
+              {forWhom(r.combatantId)} · WAITING
+            </span>
             <button className="btn sm" onClick={() => cancel(r.id)}>
               CANCEL
             </button>
@@ -163,6 +178,7 @@ export function PendingSpends({ state, characterId, send }: SpendProps) {
         ) : (
           <div key={r.id} className="label">
             {(names.get(r.characterId) ?? "AGENT").toUpperCase()} ASKS · {spendLabel(r.kind, r.amount)}
+            {forWhom(r.combatantId)}
           </div>
         ),
       )}

@@ -13,7 +13,7 @@ type AmbushedProps = { state: LiveState; characterId: string; send: Send };
 // pending list every tab shows.
 export function Ambushed({ state, characterId, send }: AmbushedProps) {
   const [error, setError] = useState<string | null>(null);
-  const asked = state.spendRequests.some((r) => r.characterId === characterId && r.kind === "aware");
+  const asked = state.spendRequests.some((r) => r.characterId === characterId && r.kind === "aware" && !r.combatantId);
   const glory = state.campaign.glory;
   const ask = async () => {
     const r = await send({ type: "spend.request", characterId, kind: "aware" });
