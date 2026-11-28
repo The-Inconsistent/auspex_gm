@@ -25,6 +25,16 @@ export const joinRules = (npc: Pick<Npc, "fightsAs" | "followsId">) => ({
   controllerId: playerMayRun(npc.fightsAs) ? npc.followsId : null,
 });
 
+// Where JOINS and RUN BY start once an NPC is picked: an enemy only for a Threat (a Follower or Ally picked after a
+// Threat must not keep the old side), run by the Agent it follows when that Agent is in the fight, else the GM.
+export const pickDefaults = (npc: Pick<Npc, "fightsAs" | "followsId">, agentIds: string[]) => {
+  const r = joinRules(npc);
+  return {
+    side: r.enemy ? ("enemy" as const) : ("ally" as const),
+    runBy: r.controllerId && agentIds.includes(r.controllerId) ? r.controllerId : null,
+  };
+};
+
 // Who may run an ally row: the GM always, an Agent in the fight unless its NPC is an Ally. A row with no NPC behind it
 // (a bestiary block added by hand) is free.
 export const runByOptions = ({

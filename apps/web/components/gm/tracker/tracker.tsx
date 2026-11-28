@@ -56,6 +56,7 @@ import { JournalHistory } from "./components/journal-history/journal-history";
 import { KeyBar } from "./components/key-bar/key-bar";
 import { PsychicPanel } from "./components/psychic-panel/psychic-panel";
 import { RoundNotes } from "./components/round-notes/round-notes";
+import { RUN_BY_AS, type RunByAs } from "./components/run-by/constants";
 import { RunBy } from "./components/run-by/run-by";
 import { LOG_LIMIT, NEW_ROUND } from "./constants";
 import type { KeyAction, LogEntry, Run, TurnDo, Vitals } from "./types";
@@ -446,7 +447,7 @@ export function Tracker({ state, codex, journal, send, bestiary, lookups = null,
   };
 
   // The RUN BY picker for one ally row: THE GM, and the Agents in the fight unless its NPC is an Ally.
-  const runByFor = (c: Combatant, as: "chip" | "button") => {
+  const runByFor = (c: Combatant, as: RunByAs) => {
     if (c.kind !== "threat" || !c.ally) return null;
     const npc = c.npcId ? npcs.get(c.npcId) : undefined;
     return (
@@ -562,7 +563,7 @@ export function Tracker({ state, codex, journal, send, bestiary, lookups = null,
         onCounter={(field) => handleCounter({ id: c.id, field })}
         onVisibility={(visibility) => setVisibility({ threat: c, visibility })}
         allyTag={isAlly(c) ? FIGHTS_AS_LABEL[npc?.fightsAs === "follower" ? "follower" : "ally"] : undefined}
-        runBy={runByFor(c, "chip")}
+        runBy={runByFor(c, RUN_BY_AS.chip)}
       >
         {pad?.id === c.id && (
           <DeltaPad
@@ -717,7 +718,7 @@ export function Tracker({ state, codex, journal, send, bestiary, lookups = null,
                 : ""}
               On the Agents&apos; side: the players pick it, Seize and AWARE cost 1 Glory, off the budget (§11.208).
             </div>
-            {runByFor(sel, "button")}
+            {runByFor(sel, RUN_BY_AS.button)}
           </div>
         )}
         {sel?.kind === "threat" && sel.stats && (

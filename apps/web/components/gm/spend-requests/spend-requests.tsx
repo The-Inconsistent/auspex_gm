@@ -15,6 +15,16 @@ export function SpendRequests({ state, send }: SpendRequestsProps) {
   const [error, setError] = useState<string | null>(null);
   const names = new Map(state.characters.map((c) => [c.id, c.name]));
 
+  // An ally's ask is named for the ally, so the GM can tell it from the Agent's own (issue #350).
+  const who = (r: LiveState["spendRequests"][number]) => {
+    const agent = (names.get(r.characterId) ?? "AGENT").toUpperCase();
+    if (!r.combatantId) return agent;
+    const ally = state.encounter?.combatants.find((c) => c.id === r.combatantId);
+    return ally && ally.kind === "threat"
+      ? `${ally.label.toUpperCase()} FOR ${agent}`
+      : "AN ALLY NO LONGER IN THE FIGHT";
+  };
+
   const answer = async (id: string, accept: boolean) => {
     const r = await send({ type: "spend.resolve", id, accept });
     setError(r.ok ? null : r.error);
@@ -27,7 +37,7 @@ export function SpendRequests({ state, send }: SpendRequestsProps) {
           {state.spendRequests.map((r) => (
             <div key={r.id} style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
               <span className="display" style={{ flex: 1, minWidth: 220 }}>
-                {(names.get(r.characterId) ?? "AGENT").toUpperCase()} · {spendLabel(r.kind, r.amount)}
+                {who(r)} · {spendLabel(r.kind, r.amount)}
               </span>
               <button className="btn sm primary" onClick={() => answer(r.id, true)}>
                 ACCEPT

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { budgetEntries, followersToAdd, joinRules, runByOptions } from "./ally.ts";
+import { budgetEntries, followersToAdd, joinRules, pickDefaults, runByOptions } from "./ally.ts";
 
 const threat = (over: object) => ({
   kind: "threat",
@@ -63,4 +63,10 @@ test("+ FOLLOWERS skips an NPC already fielded and names one without a stat bloc
   );
   assert.deepEqual(r.noStats, ["quick"]);
   assert.equal(r.fielded, 1); // "here" is given and already in the fight
+});
+
+test("picking an NPC resets JOINS: a Threat after a Follower goes back to enemy, a runner outside the fight is the GM", () => {
+  assert.deepEqual(pickDefaults({ fightsAs: "follower", followsId: "a1" }, ["a1"]), { side: "ally", runBy: "a1" });
+  assert.deepEqual(pickDefaults({ fightsAs: "follower", followsId: "a1" }, []), { side: "ally", runBy: null });
+  assert.deepEqual(pickDefaults({ fightsAs: "threat", followsId: null }, ["a1"]), { side: "enemy", runBy: null });
 });

@@ -27,6 +27,7 @@ import {
   followersToAdd,
   joinRules,
   npcStats,
+  pickDefaults,
   runByOptions,
   type Npc,
 } from "@/lib/ally/ally";
@@ -66,7 +67,7 @@ export function AddCombatants({ state, codex, run, bestiary }: AddCombatantsProp
   const fighting = state.characters.filter((c) => inFight.has(c.id));
   const threat = bestiary.find((x) => x.id === threatId);
   const mobCount = Number(mob);
-  const npc = codex.npcs.find((n) => n.id === npcId);
+  const npc = mode === "codex" ? codex.npcs.find((n) => n.id === npcId) : undefined;
   const npcThreat = npc ? npcStats({ npc, bestiary }) : null;
   const rules = npc ? joinRules(npc) : null;
   // The fight as it stands, against the same guideline STORY uses (Threat Assessment p.8). The class was resolved when
@@ -103,18 +104,23 @@ export function AddCombatants({ state, codex, run, bestiary }: AddCombatantsProp
 
   // A Codex NPC: its category sets what is offered, and the Agent it follows runs it by default (an Ally: the GM).
   const handleNpcPick = (n: Npc) => {
-    const r = joinRules(n);
+    const d = pickDefaults(
+      n,
+      fighting.map((c) => c.id),
+    );
     setNpcId(n.id);
-    if (!r.enemy) setSide("ally");
-    setRunBy(r.controllerId && fighting.some((c) => c.id === r.controllerId) ? r.controllerId : null);
+    setSide(d.side);
+    setRunBy(d.runBy);
   };
 
-  // Each way in starts from the default: an enemy run by the GM. A follower picked in CODEX leaves JOINS on ally, and the
-  // next Ork Boy from the bestiary would join the Agents' side, off the budget lines.
+  // Each way in starts from the default: an enemy run by the GM, no NPC picked. A follower picked in CODEX would otherwise
+  // leave JOINS on ally (and its NPC behind), and the next Ork Boy from the bestiary would join the Agents' side.
   const handleModeChange = (m: AddMode) => {
     setMode(m);
     setSide("enemy");
     setRunBy(null);
+    setNpcId("");
+    setFind("");
   };
 
   // JOINS: the empty enemy choice is the old behaviour; an ally keeps its runner.
