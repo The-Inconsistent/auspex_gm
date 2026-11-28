@@ -60,11 +60,16 @@ export function followersToAdd({
   const fielded = new Set(combatants.flatMap((c) => (c.kind === "threat" && c.npcId ? [c.npcId] : [])));
   const add: { npc: Npc; threat: Threat }[] = [];
   const noStats: string[] = [];
+  let inFight = 0; // given to these Agents and already fielded
   for (const npc of codex.npcs) {
-    if (!npc.followsId || !agentIds.includes(npc.followsId) || fielded.has(npc.id)) continue;
+    if (!npc.followsId || !agentIds.includes(npc.followsId)) continue;
+    if (fielded.has(npc.id)) {
+      inFight++;
+      continue;
+    }
     const threat = npcStats({ npc, bestiary });
     if (threat) add.push({ npc, threat });
     else noStats.push(npc.name);
   }
-  return { add, noStats };
+  return { add, noStats, fielded: inFight };
 }

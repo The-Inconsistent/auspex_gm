@@ -109,6 +109,14 @@ export function AddCombatants({ state, codex, run, bestiary }: AddCombatantsProp
     setRunBy(r.controllerId && fighting.some((c) => c.id === r.controllerId) ? r.controllerId : null);
   };
 
+  // Each way in starts from the default: an enemy run by the GM. A follower picked in CODEX leaves JOINS on ally, and the
+  // next Ork Boy from the bestiary would join the Agents' side, off the budget lines.
+  const handleModeChange = (m: AddMode) => {
+    setMode(m);
+    setSide("enemy");
+    setRunBy(null);
+  };
+
   // JOINS: the empty enemy choice is the old behaviour; an ally keeps its runner.
   const ally = side === "ally" || (!!rules && !rules.enemy);
 
@@ -188,11 +196,12 @@ export function AddCombatants({ state, codex, run, bestiary }: AddCombatantsProp
     <>
       <div className="keys">
         <span className="label">JOINS</span>
-        <div className="fight-seg ally" role="group" aria-label="Which side it joins">
+        <div className="fight-seg" role="group" aria-label="Which side it joins">
           {(Object.keys(JOIN_SIDES) as JoinSide[]).map((s) => (
             <button
               key={s}
               type="button"
+              className={s === "ally" ? "ally" : undefined}
               aria-pressed={(s === "ally") === ally}
               disabled={s === "enemy" && !!rules && !rules.enemy}
               onClick={() => setSide(s)}
@@ -244,7 +253,7 @@ export function AddCombatants({ state, codex, run, bestiary }: AddCombatantsProp
           <div className="keys">
             <div className="fight-seg" role="group" aria-label="Add from">
               {(Object.keys(ADD_MODES) as AddMode[]).map((m) => (
-                <button key={m} type="button" aria-pressed={mode === m} onClick={() => setMode(m)}>
+                <button key={m} type="button" aria-pressed={mode === m} onClick={() => handleModeChange(m)}>
                   {ADD_MODES[m]}
                 </button>
               ))}
@@ -283,11 +292,13 @@ export function AddCombatants({ state, codex, run, bestiary }: AddCombatantsProp
                   ))}
                 </select>
                 {!ally && <VisibilitySelect value={visibility} onChange={setVisibility} />}
-                <button className="btn" disabled={!threat} onClick={handleAdd}>
-                  ADD
-                </button>
               </div>
               {sideChoices}
+              <div className="keys">
+                <button className="btn" disabled={!threat} onClick={handleAdd}>
+                  ADD{ally ? " AS AN ALLY" : ""}
+                </button>
+              </div>
               <ThreatScale
                 threat={threat}
                 tier={state.campaign.tier}
@@ -367,7 +378,9 @@ export function AddCombatants({ state, codex, run, bestiary }: AddCombatantsProp
             <>
               {followers.add.length === 0 && followers.noStats.length === 0 && (
                 <span className="dim">
-                  No NPC is given to an Agent in this fight (GIVE one in CODEX, IN THIS SCENE or STORY).
+                  {followers.fielded > 0
+                    ? "Every follower given to an Agent in this fight is already in it."
+                    : "No NPC is given to an Agent in this fight (GIVE one in CODEX, IN THIS SCENE or STORY)."}
                 </span>
               )}
               {followers.add.map(({ npc: n }) => (
@@ -391,7 +404,7 @@ export function AddCombatants({ state, codex, run, bestiary }: AddCombatantsProp
           )}
 
           {tally.models > 0 && <BudgetLines tally={tally} budget={budget} />}
-          {standing.some((c) => c.kind === "threat" && c.ally) && (
+          {tally.models > 0 && standing.some((c) => c.kind === "threat" && c.ally) && (
             <span className="dim">
               Allies stay off these lines: they are not the opposition (Threat Assessment p.8).
             </span>

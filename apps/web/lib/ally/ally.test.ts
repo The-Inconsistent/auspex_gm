@@ -62,4 +62,5 @@ test("+ FOLLOWERS skips an NPC already fielded and names one without a stat bloc
     ["kx9"],
   );
   assert.deepEqual(r.noStats, ["quick"]);
+  assert.equal(r.fielded, 1); // "here" is given and already in the fight
 });

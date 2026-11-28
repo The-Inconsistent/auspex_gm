@@ -10,8 +10,6 @@ type RunByProps = {
   as?: "chip" | "button";
 };
 
-const short = (name: string) => (name.split(" ")[0] ?? name).toUpperCase();
-
 // RUN BY (issue #350, rules-flow §11.208): who runs an ally, the GM or the Agent's player. One entry, then a native
 // popover with the choices (light dismiss, Escape), as the PLAYERS SEE picker. An Ally offers only THE GM, so it is a
 // plain chip with nothing to pick.
@@ -33,7 +31,9 @@ export function RunBy({ name, current, options, onPick, as = "chip" }: RunByProp
         aria-label={`${name}: run by ${who}. Tap to change`}
       >
         {as === "chip" ? (
-          <span className="chip ally fight-run">{current ? short(who) : "GM"}</span>
+          <span className="chip ally fight-run" title={who}>
+            {current ? who.toUpperCase() : "GM"}
+          </span>
         ) : (
           <>RUN BY · {current ? who.toUpperCase() : "THE GM"}</>
         )}

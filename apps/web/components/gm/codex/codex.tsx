@@ -225,9 +225,9 @@ export function CodexView({
           )}
           {npc && <AttitudeChip attitude={npc.attitude} />}
           {npc && <span className="chip ally">{FIGHTS_AS_LABEL[npc.fightsAs]}</span>}
-          {npc && (
-            <span onClick={(e) => e.preventDefault()}>
-              <NpcGive npc={npc} characters={characters} send={send} onError={setError} />
+          {npc?.followsId && (
+            <span className="chip ally">
+              FOLLOWS {(characters.find((c) => c.id === npc.followsId)?.name ?? "an Agent").toUpperCase()}
             </span>
           )}
           {item && !item.wargearId && <span className="chip">CUSTOM</span>}
@@ -298,6 +298,12 @@ export function CodexView({
         )}
         {handout && <HandoutDoc handout={handout} />}
         {item && <ItemCard item={item} entry={item.wargearId ? catalogue.get(item.wargearId) : undefined} />}
+        {npc && (
+          <div className="field">
+            <span className="label">FOLLOWER</span>
+            <NpcGive npc={npc} characters={characters} send={send} onError={setError} />
+          </div>
+        )}
         {npc && (
           <NpcCard
             npc={npc}
