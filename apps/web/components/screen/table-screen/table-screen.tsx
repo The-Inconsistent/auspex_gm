@@ -83,6 +83,7 @@ export function TableScreen({ campaignId }: TableScreenProps) {
         <b className="ts-name display">
           {now ? "▶ " : ""}
           {c.label.toUpperCase()}
+          {c.ally && " · ALLY"}
         </b>
         {c.mobCount !== null ? (
           <span className="bar">

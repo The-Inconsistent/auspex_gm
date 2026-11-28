@@ -89,7 +89,8 @@ export function AttackGuide({ state, attacker, target, run }: AttackGuideProps) 
   // Troops can't inflict Critical Hits or suffer Complications unless the stat block says so (p.323).
   const troop = attacker.kind === "threat" && attacker.threatClass === "T";
   const mobBonus = attacker.kind === "threat" && attacker.mobCount ? mobBonusDice(attacker.mobCount) : 0;
-  const visibility = target?.kind === "threat" ? target.visibility : "stats";
+  // An ally is always full on the phones (§11.208).
+  const visibility = target?.kind === "threat" && !target.ally ? target.visibility : "stats";
   const actions = rules.all.filter((r) => r.kind === "action");
 
   return (
@@ -224,6 +225,8 @@ export function AttackGuide({ state, attacker, target, run }: AttackGuideProps) 
 function determination(target: Combatant) {
   if (target.kind === "pc") return "Determination: the Agent rolls Toughness dice on their phone (p.196).";
   const printed = target.stats?.determination ? ` Stat block: ${target.stats.determination}.` : "";
+  // What an ally pays for Determination is not ruled yet (§11.208): show the stat block as printed and no price.
+  if (target.ally) return `Determination: what an ally pays is not ruled yet (§11.208).${printed}`;
   return target.threatClass === "T" || target.threatClass === "E"
     ? `Determination: needs 1 Ruin (p.323).${printed}`
     : `Determination: rolls as normal (p.323).${printed}`;

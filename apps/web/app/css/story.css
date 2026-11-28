@@ -234,6 +234,7 @@ b.story-exit {
 }
 .story-pick {
   display: flex;
+  flex-wrap: wrap; /* an NPC's GIVE (issue #350) drops under a long name */
   align-items: center;
   gap: 8px;
   min-height: 36px;

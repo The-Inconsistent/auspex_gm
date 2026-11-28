@@ -12,6 +12,7 @@ import {
   type Character,
   type Codex,
   type FactionKeyword,
+  type FightsAs,
   type FlavourTable,
   type HazardTable,
   type LocationHazard,
@@ -31,6 +32,7 @@ import { placeOptions } from "@/lib/places/places";
 
 import type { CodexKind } from "../../constants";
 import type { Row } from "../../types";
+import { FightsAsField } from "../fights-as-field/fights-as-field";
 import { HazardList } from "../hazard-list/hazard-list";
 import { HolderField } from "../holder-field/holder-field";
 import { ImageField } from "../image-field/image-field";
@@ -97,6 +99,7 @@ function fieldsFor({
           type: "select",
           options: Attitude.options.map((a): Option => [a, attitudeLabel(a)]),
         },
+        { key: "fightsAs", label: "FIGHTS AS (players never see this)", type: "fightsAs" },
         { key: "statSource", label: "STAT SOURCE", type: "statSource" },
         { key: "description", label: "DESCRIPTION (players see)", type: "area" },
         { key: "gmNotes", label: "GM NOTES", type: "area" },
@@ -238,7 +241,11 @@ export function CodexEditor({
         <span className="label" id={`f-${f.key}`}>
           {f.label}: {(draft[f.key] as string[]).length ? "SELECTED AGENTS ONLY" : "EVERYONE"}
         </span>
-      ) : f.type === "statSource" || f.type === "hazardList" || f.type === "holder" || f.type === "image" ? (
+      ) : f.type === "statSource" ||
+        f.type === "fightsAs" ||
+        f.type === "hazardList" ||
+        f.type === "holder" ||
+        f.type === "image" ? (
         <span className="label" id={`f-${f.key}`}>
           {f.label}
         </span>
@@ -272,6 +279,9 @@ export function CodexEditor({
           suggestions={keywords}
           onChange={(v) => setField(f.key, v)}
         />
+      )}
+      {f.type === "fightsAs" && (
+        <FightsAsField id={`f-${f.key}`} value={draft[f.key] as FightsAs} onChange={(v) => setField(f.key, v)} />
       )}
       {f.type === "statSource" && (
         <StatSourceField

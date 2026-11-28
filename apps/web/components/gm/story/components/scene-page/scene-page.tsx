@@ -23,6 +23,7 @@ import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
 import { Mentions } from "@/components/ui/mentions/mentions";
 import { ReachChip } from "@/components/ui/reach-chip/reach-chip";
 import { useMentions } from "@/components/ui/mentions/mentions-provider";
+import { NpcGive } from "@/components/ui/npc-give/npc-give";
 import { usePrint } from "@/components/ui/print-dialog/print-dialog";
 import type { Send } from "@/hooks/use-table/use-table";
 import { fieldedAgentIds } from "@/lib/print-cards/print-cards";
@@ -250,7 +251,18 @@ export function ScenePage({
             name: "cast",
             section: "cast",
             empty: "NO ONE YET",
-            children: npcs.length > 0 && <>{npcs.map((n) => entryRow({ kind: "npc", id: n.id, name: n.name }))}</>,
+            children: npcs.length > 0 && (
+              <>
+                {npcs.map((n) =>
+                  entryRow({
+                    kind: "npc",
+                    id: n.id,
+                    name: n.name,
+                    chip: <NpcGive npc={n} characters={state.characters} send={send} onError={onError} />,
+                  }),
+                )}
+              </>
+            ),
           })}
           {part({
             label: handouts.length ? `HANDOUTS · ${handouts.length}` : "HANDOUTS",

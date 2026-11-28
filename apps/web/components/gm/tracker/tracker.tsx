@@ -26,6 +26,7 @@ import {
   turnMark,
   type ActionInput,
   type Character,
+  type Codex,
   type Combatant,
   type JournalItem,
   type LiveState,
@@ -39,6 +40,7 @@ import { TurnActions } from "@/components/ui/turn-actions/turn-actions";
 import { VISIBILITY_LABEL } from "@/components/ui/visibility-select/constants";
 import { WeaponLine } from "@/components/ui/weapon-line/weapon-line";
 import type { Send } from "@/hooks/use-table/use-table";
+import { FIGHTS_AS_LABEL, runByOptions } from "@/lib/ally/ally";
 import { chronicleTurns } from "@/lib/chronicle/chronicle";
 import { parseCommand } from "@/lib/command/command";
 import { COUNTER_ACTIONS, type CounterField } from "@/lib/command/constants";
@@ -54,11 +56,13 @@ import { JournalHistory } from "./components/journal-history/journal-history";
 import { KeyBar } from "./components/key-bar/key-bar";
 import { PsychicPanel } from "./components/psychic-panel/psychic-panel";
 import { RoundNotes } from "./components/round-notes/round-notes";
+import { RunBy } from "./components/run-by/run-by";
 import { LOG_LIMIT, NEW_ROUND } from "./constants";
 import type { KeyAction, LogEntry, Run, TurnDo, Vitals } from "./types";
 
 type TrackerProps = {
   state: LiveState;
+  codex: Codex; // an ally's NPC: its category and the Agent it follows (issue #350)
   // HISTORY's entries, pushed by the api (the `journal` socket event).
   journal: JournalItem[];
   send: Send;
@@ -109,7 +113,7 @@ const conditionsAction = (c: Combatant, conditions: string[]): ActionInput =>
     ? { type: "character.update", id: c.characterId, conditions }
     : { type: "combatant.update", id: c.id, conditions };
 
-export function Tracker({ state, journal, send, bestiary, lookups = null, mutations = [] }: TrackerProps) {
+export function Tracker({ state, codex, journal, send, bestiary, lookups = null, mutations = [] }: TrackerProps) {
   const [selected, setSelected] = useState<string | null>(null);
   // The delta pad: which row's number was tapped, and which track it is.
   const [pad, setPad] = useState<{ id: string; field: CounterField } | null>(null);
@@ -121,6 +125,7 @@ export function Tracker({ state, journal, send, bestiary, lookups = null, mutati
   const enc = state.encounter;
   const tier = state.campaign.tier;
   const chars = useMemo(() => new Map(state.characters.map((c) => [c.id, c])), [state.characters]);
+  const npcs = useMemo(() => new Map(codex.npcs.map((n) => [n.id, n])), [codex.npcs]);
 
   const nameOf = (c: Combatant) => (c.kind === "pc" ? (chars.get(c.characterId)?.name ?? "?") : c.label);
 
@@ -186,7 +191,15 @@ export function Tracker({ state, journal, send, bestiary, lookups = null, mutati
   const portraitOf = (c: Combatant) =>
     combatantPortrait({ combatant: c, character: c.kind === "pc" ? chars.get(c.characterId) : undefined });
   const portraits = enc.combatants.some((c) => portraitOf(c));
-  const done = (side: Side) => `${rows(side).filter((c) => c.acted).length}/${rows(side).length}`;
+  const tally = (list: Combatant[]) => `${list.filter((c) => c.acted).length}/${list.length}`;
+  const done = (side: Side) => tally(rows(side));
+  // Allies fight on the Agents' side, as a sub-block under them (issue #350, §11.208).
+  const isAlly = (c: Combatant) => c.kind === "threat" && c.ally;
+  const allies = rows("agents").filter(isAlly);
+  const agentsOnly = rows("agents").filter((c) => !isAlly(c));
+  const agentOptions = enc.combatants.flatMap((c) =>
+    c.kind === "pc" ? [{ id: c.characterId, name: chars.get(c.characterId)?.name ?? "?" }] : [],
+  );
   // Seize and AWARE are paid from the combatant's own side's pool: Glory for Agents, Ruin for Threats (p.177).
   const costOf = (c: Combatant) => (sideOf(c) === "agents" ? "1 GLORY" : "1 RUIN");
   const setup = enc.round === 0; // Steps 1–2, before Round 1 (§11.167)
@@ -423,6 +436,30 @@ export function Tracker({ state, journal, send, bestiary, lookups = null, mutati
     );
   };
 
+  // RUN BY: the GM hands an ally to an Agent's player, or takes it back (the server refuses an Ally given to a player).
+  const setRunBy = ({ ally, controllerId }: { ally: Combatant; controllerId: string | null }) => {
+    const who = controllerId ? (chars.get(controllerId)?.name ?? "?") : "THE GM";
+    void run(
+      { type: "combatant.update", id: ally.id, controllerId },
+      `${nameOf(ally).toUpperCase()} RUN BY ${who.toUpperCase()}`,
+    );
+  };
+
+  // The RUN BY picker for one ally row: THE GM, and the Agents in the fight unless its NPC is an Ally.
+  const runByFor = (c: Combatant, as: "chip" | "button") => {
+    if (c.kind !== "threat" || !c.ally) return null;
+    const npc = c.npcId ? npcs.get(c.npcId) : undefined;
+    return (
+      <RunBy
+        name={nameOf(c)}
+        current={c.controllerId}
+        options={runByOptions({ agents: agentOptions, fightsAs: npc?.fightsAs ?? null })}
+        onPick={(controllerId) => setRunBy({ ally: c, controllerId })}
+        as={as}
+      />
+    );
+  };
+
   // REMOVE: takes the selected combatant out of the fight and clears the selection.
   const handleRemove = async () => {
     if (!sel) return;
@@ -486,6 +523,62 @@ export function Tracker({ state, journal, send, bestiary, lookups = null, mutati
   const ambushedCount = enc.combatants.filter((c) => c.ambushed).length;
   const endReminders = roundComplete ? roundEndReminders(enc, nameOf) : [];
 
+  // One combatant's row, an ally's with its category chip and RUN BY in place of PLAYERS SEE.
+  const renderRow = (c: Combatant) => {
+    const ch = c.kind === "pc" ? chars.get(c.characterId) : undefined;
+    const d = ch ? derivedOf(ch) : null;
+    const now = c.id === enc.currentId;
+    const status = c.kind === "pc" ? (ch && d ? pcStatus(ch, d) : []) : threatStatus(c);
+    const mark = turnMark(state, c);
+    // READY on the side that isn't up: the order is a suggestion, so it offers SEIZE or JUST GO (§11.168).
+    const offSide = mark === "ready" && next !== null && sideOf(c) !== next;
+    const padId = `fight-pad-${c.id}`;
+    const npc = c.kind === "threat" && c.npcId ? npcs.get(c.npcId) : undefined;
+    return (
+      <FightRow
+        key={c.id}
+        combatant={c}
+        name={nameOf(c)}
+        vitals={vitalsOf(c)}
+        conditions={conditionsOf(c)}
+        status={status}
+        mark={mark}
+        setup={setup}
+        onAmbush={() => toggleAmbush(c)}
+        turn={{
+          nextSide: offSide ? next : null,
+          seizeCost: canSeize(state, sideOf(c)) ? costOf(c) : null,
+          awareCost: costOf(c),
+          canAmbush: enc.round === 1,
+          onDo: (d) => doTurn(c, d),
+        }}
+        portrait={portraits ? portraitOf(c) : undefined}
+        showPortrait={portraits}
+        now={now}
+        selected={c.id === selected}
+        padField={pad?.id === c.id ? pad.field : null}
+        padId={padId}
+        onSelect={() => toggleSelected(c.id)}
+        onCounter={(field) => handleCounter({ id: c.id, field })}
+        onVisibility={(visibility) => setVisibility({ threat: c, visibility })}
+        allyTag={isAlly(c) ? FIGHTS_AS_LABEL[npc?.fightsAs === "follower" ? "follower" : "ally"] : undefined}
+        runBy={runByFor(c, "chip")}
+      >
+        {pad?.id === c.id && (
+          <DeltaPad
+            id={padId}
+            name={nameOf(c)}
+            field={pad.field}
+            onField={(field) => setPad({ id: c.id, field })}
+            readout={padReadout(c)}
+            onApply={({ field, delta }) => applyDelta({ combatant: c, field, delta })}
+            onClose={() => setPad(null)}
+          />
+        )}
+      </FightRow>
+    );
+  };
+
   return (
     <div className="tracker">
       <section className="tracker-main">
@@ -509,12 +602,13 @@ export function Tracker({ state, journal, send, bestiary, lookups = null, mutati
             </button>
           )}
           <span className="label">
-            RND {enc.round} · AGENTS {done("agents")} · THREATS {done("threats")}
+            RND {enc.round} · AGENTS {tally(agentsOnly)}
+            {allies.length > 0 && ` · ALLIES ${tally(allies)}`} · THREATS {done("threats")}
           </span>
         </div>
         {setup && (
           <RoundNotes
-            head={`ROUND I · ${act("agents").length} AGENTS AND ${act("threats").length} THREATS ACT · ${ambushedCount} AMBUSHED`}
+            head={`ROUND I · ${act("agents").length} ${allies.length ? "AGENTS AND ALLIES" : "AGENTS"} AND ${act("threats").length} THREATS ACT · ${ambushedCount} AMBUSHED`}
             items={[
               "Step 1 · Determine ambushes: an ambushed combatant has no Turn in Round 1; paying 1 Glory or 1 Ruin makes it aware (pp.176–177).",
               "Step 2 · Set the scene: narrate what each side sees, then begin the Round (p.176).",
@@ -523,88 +617,50 @@ export function Tracker({ state, journal, send, bestiary, lookups = null, mutati
         )}
         {endReminders.length > 0 && <RoundNotes head={`BEFORE ROUND ${enc.round + 1}`} items={endReminders} />}
 
-        {Side.options.map((side) => (
-          <div key={side} className="list table">
-            <div className={`tbar ${side === "threats" ? "iron" : ""}`}>
-              <span>{side.toUpperCase()}</span>
-              {setup ? (
-                <button
-                  type="button"
-                  className="tbar-toggle"
-                  aria-pressed={rows(side).length > 0 && rows(side).every((c) => c.ambushed)}
-                  onClick={() => toggleSideAmbush(side, !rows(side).every((c) => c.ambushed))}
-                >
-                  ALL AMBUSHED
-                </button>
-              ) : (
-                <span style={{ fontSize: 12 }}>{done(side)} ACTED</span>
+        {Side.options.map((side) => {
+          const list = side === "agents" ? agentsOnly : rows(side);
+          const withAllies = side === "agents" && allies.length > 0;
+          return (
+            <div key={side} className="list table">
+              <div className={`tbar ${side === "threats" ? "iron" : ""}`}>
+                <span>{withAllies ? "AGENTS & ALLIES" : side.toUpperCase()}</span>
+                {setup ? (
+                  <button
+                    type="button"
+                    className="tbar-toggle"
+                    aria-pressed={rows(side).length > 0 && rows(side).every((c) => c.ambushed)}
+                    onClick={() => toggleSideAmbush(side, !rows(side).every((c) => c.ambushed))}
+                  >
+                    ALL AMBUSHED
+                  </button>
+                ) : (
+                  <span style={{ fontSize: 12 }}>{done(side)} ACTED</span>
+                )}
+              </div>
+              <div className={`fight-head fight-${side}${withAllies ? " with-run" : ""}`}>
+                <span>STATE</span>
+                <span>DESIGNATION</span>
+                <span>WOUNDS</span>
+                <span>SHOCK</span>
+                <span className="hide-sm">DEF</span>
+                <span className="hide-sm">RES</span>
+                <span>STATUS</span>
+                {side === "threats" && <span>PLAYERS SEE</span>}
+                {withAllies && <span>RUN BY</span>}
+              </div>
+              <div className={`fight-rows fight-${side}${withAllies ? " with-run" : ""}`}>{list.map(renderRow)}</div>
+              {withAllies && (
+                <>
+                  <div className="fight-allies-h">
+                    <span>ALLIES · ON THE AGENTS&apos; SIDE</span>
+                    <span>NOT IN THE BUDGET</span>
+                  </div>
+                  <div className="fight-rows fight-agents with-run fight-allies">{allies.map(renderRow)}</div>
+                </>
               )}
             </div>
-            <div className={`fight-head fight-${side}`}>
-              <span>STATE</span>
-              <span>DESIGNATION</span>
-              <span>WOUNDS</span>
-              <span>SHOCK</span>
-              <span className="hide-sm">DEF</span>
-              <span className="hide-sm">RES</span>
-              <span>STATUS</span>
-              {side === "threats" && <span>PLAYERS SEE</span>}
-            </div>
-            <div className={`fight-rows fight-${side}`}>
-              {rows(side).map((c) => {
-                const ch = c.kind === "pc" ? chars.get(c.characterId) : undefined;
-                const d = ch ? derivedOf(ch) : null;
-                const now = c.id === enc.currentId;
-                const status = c.kind === "pc" ? (ch && d ? pcStatus(ch, d) : []) : threatStatus(c);
-                const mark = turnMark(state, c);
-                // READY on the side that isn't up: the order is a suggestion, so it offers SEIZE or JUST GO (§11.168).
-                const offSide = mark === "ready" && next !== null && sideOf(c) !== next;
-                const padId = `fight-pad-${c.id}`;
-                return (
-                  <FightRow
-                    key={c.id}
-                    combatant={c}
-                    name={nameOf(c)}
-                    vitals={vitalsOf(c)}
-                    conditions={conditionsOf(c)}
-                    status={status}
-                    mark={mark}
-                    setup={setup}
-                    onAmbush={() => toggleAmbush(c)}
-                    turn={{
-                      nextSide: offSide ? next : null,
-                      seizeCost: canSeize(state, sideOf(c)) ? costOf(c) : null,
-                      awareCost: costOf(c),
-                      canAmbush: enc.round === 1,
-                      onDo: (d) => doTurn(c, d),
-                    }}
-                    portrait={portraits ? portraitOf(c) : undefined}
-                    showPortrait={portraits}
-                    now={now}
-                    selected={c.id === selected}
-                    padField={pad?.id === c.id ? pad.field : null}
-                    padId={padId}
-                    onSelect={() => toggleSelected(c.id)}
-                    onCounter={(field) => handleCounter({ id: c.id, field })}
-                    onVisibility={(visibility) => setVisibility({ threat: c, visibility })}
-                  >
-                    {pad?.id === c.id && (
-                      <DeltaPad
-                        id={padId}
-                        name={nameOf(c)}
-                        field={pad.field}
-                        onField={(field) => setPad({ id: c.id, field })}
-                        readout={padReadout(c)}
-                        onApply={({ field, delta }) => applyDelta({ combatant: c, field, delta })}
-                        onClose={() => setPad(null)}
-                      />
-                    )}
-                  </FightRow>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+          );
+        })}
 
         <div style={{ flex: 1 }} />
         {current && <TurnActions />}
@@ -621,7 +677,7 @@ export function Tracker({ state, journal, send, bestiary, lookups = null, mutati
             endFight: { label: "END FIGHT", onClick: () => run({ type: "encounter.end" }, "ENCOUNTER ENDED") },
           }}
         >
-          <AddCombatants state={state} run={run} bestiary={bestiary} />
+          <AddCombatants state={state} codex={codex} run={run} bestiary={bestiary} />
         </KeyBar>
         <form className="cmd" onSubmit={handleCmdSubmit}>
           <span className="label" aria-hidden="true">
@@ -652,6 +708,18 @@ export function Tracker({ state, journal, send, bestiary, lookups = null, mutati
           target={sel && current && sideOf(sel) !== sideOf(current) ? sel : null}
           run={run}
         />
+        {sel?.kind === "threat" && sel.ally && (
+          <div className="stack" style={{ gap: 6 }}>
+            <div className="rule">ALLY · {sel.label.toUpperCase()}</div>
+            <div className="dim">
+              {sel.npcId && npcs.get(sel.npcId)?.followsId
+                ? `Follows ${chars.get(npcs.get(sel.npcId)?.followsId ?? "")?.name ?? "an Agent"} · `
+                : ""}
+              On the Agents&apos; side: the players pick it, Seize and AWARE cost 1 Glory, off the budget (§11.208).
+            </div>
+            {runByFor(sel, "button")}
+          </div>
+        )}
         {sel?.kind === "threat" && sel.stats && (
           <>
             <div

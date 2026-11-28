@@ -5,6 +5,7 @@ import type { Codex, LiveState, MentionKind } from "@wg/shared";
 
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
 import { useMentions } from "@/components/ui/mentions/mentions-provider";
+import { NpcGive } from "@/components/ui/npc-give/npc-give";
 import type { Send } from "@/hooks/use-table/use-table";
 import { revealAction } from "@/lib/scene-reveal/scene-reveal";
 
@@ -90,7 +91,9 @@ export function InThisScene({ codex, characters, beat, fightLive, onStartFight, 
                 shown={n.revealed}
                 onPeek={() => peek("npc", n.id)}
                 onToggle={() => reveal(n.id, !n.revealed)}
-              />
+              >
+                <NpcGive npc={n} characters={characters} send={send} onError={fail} />
+              </RevealRow>
             ))}
           </div>
         )}

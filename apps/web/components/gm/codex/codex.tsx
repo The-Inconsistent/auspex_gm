@@ -29,11 +29,13 @@ import { CodexSearch } from "@/components/ui/codex-search/codex-search";
 import { HandoutDoc } from "@/components/ui/handout-doc/handout-doc";
 import { holderOf, ItemGive } from "@/components/ui/item-give/item-give";
 import { Mentions } from "@/components/ui/mentions/mentions";
+import { NpcGive } from "@/components/ui/npc-give/npc-give";
 import { PageCite } from "@/components/ui/page-cite/page-cite";
 import { usePrint } from "@/components/ui/print-dialog/print-dialog";
 import { PrintPick } from "@/components/ui/print-pick/print-pick";
 import { Refusal } from "@/components/ui/refusal/refusal";
 import type { Send } from "@/hooks/use-table/use-table";
+import { FIGHTS_AS_LABEL } from "@/lib/ally/ally";
 import { revealAnchor } from "@/lib/anchor/anchor";
 import { gmPath } from "@/lib/gm-path/gm-path";
 import { toggleIn } from "@/lib/toggle-set/toggle-set";
@@ -222,6 +224,12 @@ export function CodexView({
             </button>
           )}
           {npc && <AttitudeChip attitude={npc.attitude} />}
+          {npc && <span className="chip ally">{FIGHTS_AS_LABEL[npc.fightsAs]}</span>}
+          {npc && (
+            <span onClick={(e) => e.preventDefault()}>
+              <NpcGive npc={npc} characters={characters} send={send} onError={setError} />
+            </span>
+          )}
           {item && !item.wargearId && <span className="chip">CUSTOM</span>}
           {holder && (
             <span className="dim">
