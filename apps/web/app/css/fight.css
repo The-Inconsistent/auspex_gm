@@ -5,7 +5,8 @@
 .fight-agents {
   --cols: 100px minmax(0, 1fr) 150px 76px 34px 34px minmax(84px, 1fr);
 }
-.fight-threats {
+.fight-threats,
+.fight-agents.with-run {
   --cols: 100px minmax(0, 1fr) 150px 76px 34px 34px minmax(84px, 1fr) 84px;
 }
 .fight-head,
@@ -371,7 +372,8 @@
   .fight-agents {
     --cols: 100px minmax(0, 1fr) 150px 76px minmax(84px, 1fr);
   }
-  .fight-threats {
+  .fight-threats,
+  .fight-agents.with-run {
     --cols: 100px minmax(0, 1fr) 150px 76px minmax(84px, 1fr) 84px;
   }
   .fight-head .hide-sm,
@@ -382,7 +384,8 @@
 /* Phones: the harm numbers keep their columns, STATUS and PLAYERS SEE drop to a second line under the name. */
 @container tracker (max-width: 599px) {
   .fight-agents,
-  .fight-threats {
+  .fight-threats,
+  .fight-agents.with-run {
     --cols: 92px minmax(0, 1fr) 84px 66px;
   }
   .fight-head > :nth-child(n + 7) {
@@ -558,4 +561,57 @@
 .history-what {
   flex: 1;
   min-width: 0;
+}
+
+/* Allies (issue #350): a tinted sub-block under the Agents, off the encounter budget. The acting ally keeps the crimson
+   "now" row, the tint only marks the rest. */
+.fight-allies-h {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 26px;
+  padding: 0 12px;
+  background: var(--ally-tint);
+  color: var(--ally);
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+.fight-allies-h > :first-child {
+  flex: 1;
+}
+.fight-rows.fight-allies > .fight-row,
+.fight-rows.fight-allies > .fight-row:nth-child(even) {
+  background: var(--ally-tint);
+}
+.fight-rows.fight-allies > .fight-row.now {
+  background: var(--red-fill);
+}
+.fight-run {
+  color: var(--ally);
+  border-color: var(--ally);
+}
+/* The Agent's whole name, cut with an ellipsis to the column (the full name is the chip's title). */
+.fight-row .fight-run {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fight-vis {
+  max-width: 100%;
+}
+.fight-row.now .fight-run {
+  color: inherit;
+}
+.fight-seg.ally > button[aria-pressed="true"],
+.fight-seg > button.ally[aria-pressed="true"] {
+  background: var(--ally);
+  color: var(--vellum);
+}
+.fight-seg > button:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: -2px;
 }

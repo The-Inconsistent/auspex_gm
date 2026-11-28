@@ -32,6 +32,9 @@ type FightRowProps = {
   onSelect: () => void;
   onCounter: (field: CounterField) => void;
   onVisibility: (v: Visibility) => void;
+  // An ally's row (issue #350): the chip that names its category, and RUN BY in place of PLAYERS SEE (an ally is always full).
+  allyTag?: string;
+  runBy?: ReactNode;
   // The delta pad, when it is open on this row.
   children?: ReactNode;
 };
@@ -58,6 +61,8 @@ export function FightRow({
   onSelect,
   onCounter,
   onVisibility,
+  allyTag,
+  runBy,
   children,
 }: FightRowProps) {
   const visId = useId();
@@ -132,7 +137,11 @@ export function FightRow({
           />
         )}
         <b className="fight-label">{name}</b>
-        <span className="tag dim hide-sm">{c.kind === "pc" ? "AGENT" : THREAT_CLASS_LABEL[c.threatClass]}</span>
+        {allyTag ? (
+          <span className="chip ally">{allyTag}</span>
+        ) : (
+          <span className="tag dim hide-sm">{c.kind === "pc" ? "AGENT" : THREAT_CLASS_LABEL[c.threatClass]}</span>
+        )}
       </span>
       <span className="fight-cell fight-harm">
         {!mob && <Track value={woundsLeft} max={v.maxWounds} tone="harm" />}
@@ -179,7 +188,8 @@ export function FightRow({
           </span>
         ))}
       </span>
-      {c.kind === "threat" && (
+      {c.kind === "threat" && c.ally && runBy}
+      {c.kind === "threat" && !c.ally && (
         <>
           <button
             type="button"

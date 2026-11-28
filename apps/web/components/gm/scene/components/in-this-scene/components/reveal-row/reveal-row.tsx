@@ -9,11 +9,12 @@ type RevealRowProps = {
   shown: boolean;
   only?: string; // a private handout: the names of the Agents whose phones it reaches
   onPeek: () => void;
-  onToggle?: () => void; // not with `children`
+  onToggle?: () => void; // with `children` (an NPC's GIVE) it sits after them; an item has no toggle
 };
 
 // One entry of the scene: its name opens the peek, and ONE toggle says the state (SHOWN / SEALED) while its accessible
-// name says the action it will do. A row with a different control (an item's GIVE) passes it as `children` instead.
+// name says the action it will do. A row with a different control passes it as `children`: an item's GIVE replaces the
+// toggle, an NPC's GIVE (issue #350) comes with it.
 export function RevealRow({
   name,
   shown,
@@ -23,13 +24,14 @@ export function RevealRow({
   children,
 }: RevealRowProps & { children?: ReactNode }) {
   return (
-    <div className={`scene-row ${children ? "wraps" : ""} ${shown || children ? "" : "sealed"}`}>
+    <div className={`scene-row ${children ? "wraps" : ""} ${shown || (children && !onToggle) ? "" : "sealed"}`}>
       <button type="button" className="scene-peek" aria-label={`Peek: ${name}`} onClick={onPeek}>
         {name}
       </button>
       {only && <ReachChip only={only} />}
       <span className="scene-leader" aria-hidden="true" />
-      {children ?? (
+      {children}
+      {(!children || onToggle) && (
         <button
           type="button"
           className={`scene-toggle ${shown ? "on" : ""}`}

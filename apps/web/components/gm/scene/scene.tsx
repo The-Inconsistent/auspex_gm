@@ -160,6 +160,7 @@ export function Scene({
         <div className="scene-fight" hidden={showing !== "fight"}>
           <Tracker
             state={state}
+            codex={codex}
             journal={journal}
             send={send}
             bestiary={bestiary}
