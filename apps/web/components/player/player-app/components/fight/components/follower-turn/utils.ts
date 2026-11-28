@@ -25,3 +25,8 @@ export const followerComplications = (c: ThreatCombatant): Ability[] =>
 
 // Wounded raises its Hit DN by 1 (p.193), as for an Agent.
 export const followerWounded = (c: ThreatCombatant) => threatStatus(c).includes("Wounded");
+
+// Who swings, for the dice steps: a Troop rolls its Wrath Die but lands no Critical Hit (p.323); any other Threat's
+// Critical earns the party no Glory, as the GM's attack guide has it (+1 Glory is only for an Agent).
+export const followerStrikeBy = (c: ThreatCombatant): "troop" | "threat" =>
+  c.threatClass === "T" ? "troop" : "threat";

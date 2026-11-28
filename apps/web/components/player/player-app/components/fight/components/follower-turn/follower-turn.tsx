@@ -9,7 +9,7 @@ import type { Send } from "@/hooks/use-table/use-table";
 
 import { StrikeSteps } from "../strike-steps/strike-steps";
 
-import { followerComplications, followerPool, followerWeapons, followerWounded } from "./utils";
+import { followerComplications, followerPool, followerStrikeBy, followerWeapons, followerWounded } from "./utils";
 
 type FollowerTurnProps = {
   c: ThreatCombatant; // the ally this phone runs, whose Turn it is
@@ -92,6 +92,7 @@ export function FollowerTurn({ c, state, characterId, send, target, targets }: F
             weapon={weapon}
             wounded={followerWounded(c)}
             sustain={0}
+            by={followerStrikeBy(c)}
             target={target}
           />
           {s && (

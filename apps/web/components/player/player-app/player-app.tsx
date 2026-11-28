@@ -126,7 +126,7 @@ export function PlayerApp({ campaignId, characterId, rules }: PlayerAppProps) {
             <div className="pl" onPointerUpCapture={turnAlert.handleTap}>
               {/* Always mounted, so a screen reader announces the text when it appears. */}
               <div className={`turn-flash ${turnAlert.flashing ? "on" : ""}`} aria-live="assertive">
-                {turnAlert.flashing && "Your turn"}
+                {turnAlert.flashing && (myTurn ? "Your turn" : "Your follower")}
               </div>
               <header
                 className={`pl-head band torn slate-card ${myTurn || followerNow ? "up" : ""} ${followerNow && !myTurn ? "ally" : ""} ${turnAlert.flashing ? "alert" : ""}`}

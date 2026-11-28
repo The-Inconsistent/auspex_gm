@@ -3,7 +3,7 @@ import { test } from "node:test";
 
 import type { ThreatCombatant } from "@wg/shared";
 
-import { followerComplications, followerPool, followerWeapons } from "./utils";
+import { followerComplications, followerPool, followerStrikeBy, followerWeapons } from "./utils";
 
 const arm = { name: "Servo Arm", damage: 9, ed: 2, ap: -3, range: [1], traits: ["Brutal"] };
 const gun = { name: "Stubber", damage: 7, ed: 1, range: [12, 24, 36], traits: [] };
@@ -41,4 +41,9 @@ test("complications: only the printed ones", () => {
     followerComplications(c()).map((a) => a.name),
     ["Error"],
   );
+});
+
+test("strike by: a Troop lands no Critical Hit (p.323), other Threats are Threats", () => {
+  assert.equal(followerStrikeBy(c({ threatClass: "T" })), "troop");
+  assert.equal(followerStrikeBy(c({ threatClass: "E" })), "threat");
 });

@@ -259,7 +259,8 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
               <h2>{side.toUpperCase()}</h2>
               <i />
               <span className="mono">
-                {rows(side).filter((c) => c.acted).length}/{rows(side).length} DONE
+                {rows(side).filter((c) => !(c.kind === "threat" && c.ally) && c.acted).length}/
+                {rows(side).filter((c) => !(c.kind === "threat" && c.ally)).length} DONE
               </span>
             </div>
             {/* The allies are on the Agents' side (sideOf) but get their own block under it (§11.208). */}
@@ -273,7 +274,9 @@ export function Fight({ state, characterId, send, legend, actions }: FightProps)
                 <div className="pf-h pf-h-ally">
                   <h2>ALLIES</h2>
                   <i />
-                  <span className="mono">ON YOUR SIDE</span>
+                  <span className="mono">
+                    ON YOUR SIDE · {allies.filter((a) => a.acted).length}/{allies.length} DONE
+                  </span>
                 </div>
                 <ul className="pf-rows ally">{allies.map(renderRow)}</ul>
               </>

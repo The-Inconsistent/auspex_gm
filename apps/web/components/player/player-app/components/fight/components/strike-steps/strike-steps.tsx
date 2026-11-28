@@ -13,13 +13,14 @@ type StrikeStepsProps = {
   weapon: Weapon & { addStrength?: boolean }; // an Agent's, or a follower's from its stat block
   wounded: boolean;
   sustain: number; // +2 DN per power the Agent sustains (sustainPenalty, Core p.265)
+  by?: "agent" | "troop" | "threat"; // who swings: an Agent (default), or a follower by its class (Core p.323)
   target: ThreatCombatant | null; // the threat picked in 2 · PICK A TARGET; its stats are null while the GM shows bars (§11.56)
 };
 
 // THEN, WITH YOUR DICE: what to roll and say for the chosen weapon, the Attack's steps (Core pp.182–184). The dice stay on
 // the table; the phone only reads the numbers back, so the player doesn't work them out. With a target whose stat block
 // is shown, the DN and Resilience are its own, and the damage total typed here reads as Wounds (§11.173); the GM applies.
-export function StrikeSteps({ pool, strength, weapon: w, wounded, sustain, target }: StrikeStepsProps) {
+export function StrikeSteps({ pool, strength, weapon: w, wounded, sustain, target, by = "agent" }: StrikeStepsProps) {
   const { find } = useRules();
   const [total, setTotal] = useState("");
   // Digits only, three at most: a damage total, never a sign or a decimal.
@@ -88,7 +89,15 @@ export function StrikeSteps({ pool, strength, weapon: w, wounded, sustain, targe
             : mob
               ? `Over ${resilience} (Resilience ${t.resilience.value}${w.ap ? `, AP ${w.ap}` : ""}): one of the Mob falls, one more per Icon over its Defence (p.325). `
               : `Over ${resilience} (Resilience ${t.resilience.value}${w.ap ? `, AP ${w.ap}` : ""}): Wounds. Equal: ${takesShock ? "1 Shock (p.192)" : "nothing, it takes no Shock (p.324)"}. `}
-          Wrath Die 6 on a hit: a <Term k="critical">Critical Hit</Term>, +1 Glory (pp.183, 197).
+          {by === "troop" ? (
+            // The GM's attack guide says the same for a Troop attacker.
+            "A Troop: no Critical Hits or Complications unless its stat block gives it a Wrath or Complication ability (p.323)."
+          ) : (
+            <>
+              Wrath Die 6 on a hit: a <Term k="critical">Critical Hit</Term>
+              {by === "agent" ? ", +1 Glory" : ""} (pp.183, 197).
+            </>
+          )}
         </span>
         {t && !mob && (
           <label className="pf-total">
