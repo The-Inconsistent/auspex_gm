@@ -36,7 +36,7 @@ import { beat, npc } from "../codex/codex.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { bump } from "../core/sql.ts";
-import { clearMootAware, clearSpendRequests } from "../spend/spend.clear.ts";
+import { clearAllySpends, clearMootAware, clearSpendRequests } from "../spend/spend.clear.ts";
 import { loadState } from "../table/table.state.ts";
 import { loadThreats } from "../threat/threat.service.ts";
 import { combatant, encounter } from "./encounter.schema.ts";
@@ -199,6 +199,7 @@ async function addPc(tx: Tx, { encounterId, characterId }: { encounterId: string
 async function startEncounter(tx: Tx, campaignId: string) {
   await tx.update(encounter).set({ active: false }).where(eq(encounter.campaignId, campaignId));
   await clearSpendRequests(tx, { campaignId, kinds: FIGHT_SPENDS }); // asked against the fight this one replaces
+  await clearAllySpends(tx, { campaignId });
   const [e] = await tx.insert(encounter).values({ campaignId, round: 0 }).returning({ id: encounter.id });
   return e!.id; // the row was just inserted
 }
@@ -360,6 +361,7 @@ export async function applyEncounterAction(
     case "encounter.end":
       await tx.update(encounter).set({ active: false }).where(eq(encounter.campaignId, cid));
       await clearSpendRequests(tx, { campaignId: cid, kinds: FIGHT_SPENDS }); // there is no fight left to spend in
+      await clearAllySpends(tx, { campaignId: cid });
       return { ok: true };
 
     // Round 0 → Round 1 (p.176): the ambushes set in Round 0 stay; a done or held mark tapped there by mistake doesn't.
@@ -570,6 +572,7 @@ export async function applyEncounterAction(
         const from = row.npcId ? await npcOf(tx, { campaignId: cid, id: row.npcId }) : null;
         await checkController(tx, { campaignId: cid, controllerId, npc: from });
         await tx.update(combatant).set({ controllerId }).where(where);
+        await clearAllySpends(tx, { campaignId: cid, combatantIds: [id] }); // asked by the one who ran it before
       }
       if (threatOnly.conditions) {
         const [row] = await tx

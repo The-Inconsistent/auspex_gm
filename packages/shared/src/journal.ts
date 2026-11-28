@@ -89,7 +89,7 @@ export function journalLabel(a: Action, name: NameOf): string {
     case "beat.startEncounter":
       return `Start the encounter of ${name(a.id) ?? "a scene"}`;
     case "combatant.addThreat":
-      return `Add ${a.label ?? name(a.threatId) ?? a.threatId}${a.mobCount ? ` x${a.mobCount}` : ""} to the fight`;
+      return `Add ${a.ally ? "ally " : ""}${threatName(a, name)}${a.mobCount ? ` x${a.mobCount}` : ""} to the fight`;
     case "combatant.addCharacter":
       return `Add ${who(a.characterId, "an Agent")} to the fight`;
     case "combatant.remove":
@@ -108,6 +108,10 @@ export function journalLabel(a: Action, name: NameOf): string {
       return `Give ${name(a.itemId) ?? "an item"} to ${who(a.id, "an Agent")}`;
     case "character.takeItem":
       return `Take ${name(a.itemId) ?? "an item"} from ${who(a.id, "an Agent")}`;
+    case "npc.give":
+      return `Give ${name(a.id) ?? "an NPC"} to ${who(a.characterId, "an Agent")}`;
+    case "npc.takeBack":
+      return `Take ${name(a.id) ?? "an NPC"} back`; // the payload doesn't say which Agent had it
     case "codex.save": {
       const title = "name" in a.data ? a.data.name : "title" in a.data ? a.data.title : undefined;
       return `${a.id ? "Edit" : "Add"} ${a.kind}${title ? ` ${title}` : ""}`;
@@ -133,6 +137,10 @@ export function journalLabel(a: Action, name: NameOf): string {
   }
 }
 
+// A combatant added from a stat block: its label, else the Codex NPC's name (an ally is labelled with it), else the block's.
+const threatName = (a: Extract<Action, { type: "combatant.addThreat" }>, name?: NameOf) =>
+  a.label ?? (a.npcId ? name?.(a.npcId) : undefined) ?? name?.(a.threatId) ?? a.threatId;
+
 // What a recap needs of a journal entry: the parsed action, and whether the entry stands.
 export type RecapEntry = { action: Action; undoneBy?: string | null; undoes?: string | null };
 
@@ -148,13 +156,19 @@ export function draftRecap(entries: RecapEntry[], name?: NameOf): string[] {
   let open = false; // a fight has started and not been written out yet
   let rounds = 0;
   let threats: string[] = [];
+  let allies: string[] = []; // on the Agents' side (issue #350), apart from the Threats
   let removed: string[] = [];
   const items: string[] = [];
+  const followers: string[] = []; // Codex NPCs given to an Agent (issue #350)
   const pools: Record<string, number> = {};
   const flush = () => {
     if (!open) return;
     open = false;
-    lines.push(`Fight ${fights}${rounds > 1 ? `, ${rounds} Rounds` : ""}: ${threats.join(", ") || "no Threats"}.`);
+    lines.push(
+      `Fight ${fights}${rounds > 1 ? `, ${rounds} Rounds` : ""}: ${threats.join(", ") || "no Threats"}${
+        allies.length ? `, with ${allies.join(", ")} beside them` : ""
+      }.`,
+    );
     if (removed.length)
       lines.push(
         name
@@ -162,6 +176,7 @@ export function draftRecap(entries: RecapEntry[], name?: NameOf): string[] {
           : `${removed.length} combatant${removed.length > 1 ? "s" : ""} removed from the fight.`,
       );
     threats = [];
+    allies = [];
     removed = [];
     rounds = 0;
   };
@@ -182,8 +197,8 @@ export function draftRecap(entries: RecapEntry[], name?: NameOf): string[] {
         break;
       case "combatant.addThreat":
         {
-          const who = a.label ?? name?.(a.threatId) ?? a.threatId;
-          threats.push(a.mobCount ? `${who} x${a.mobCount}` : who);
+          const who = threatName(a, name);
+          (a.ally ? allies : threats).push(a.mobCount ? `${who} x${a.mobCount}` : who);
         }
         break;
       case "combatant.remove":
@@ -192,6 +207,9 @@ export function draftRecap(entries: RecapEntry[], name?: NameOf): string[] {
       case "character.giveItem":
         items.push(`${name?.(a.itemId) ?? "an item"} to ${name?.(a.id) ?? "an Agent"}`);
         break;
+      case "npc.give":
+        followers.push(`${name?.(a.id) ?? "an NPC"} to ${name?.(a.characterId) ?? "an Agent"}`);
+        break;
       case "pool.adjust":
         // Net, not "spent": a GM correction is the same action as a spend.
         pools[a.pool] = (pools[a.pool] ?? 0) + a.delta;
@@ -199,6 +217,7 @@ export function draftRecap(entries: RecapEntry[], name?: NameOf): string[] {
       case "session.end":
         flush();
         itemLines(items, lines, name);
+        itemLines(followers, lines, name, "follower");
         poolLines(pools, lines);
         lines.push(`${a.xp} XP awarded.`);
         return lines;
@@ -206,14 +225,15 @@ export function draftRecap(entries: RecapEntry[], name?: NameOf): string[] {
   }
   flush();
   itemLines(items, lines, name);
+  itemLines(followers, lines, name, "follower");
   poolLines(pools, lines);
   return lines;
 }
 
-function itemLines(items: string[], lines: string[], name?: NameOf) {
+function itemLines(items: string[], lines: string[], name?: NameOf, noun = "item") {
   if (!items.length) return;
   lines.push(
-    name ? `Given out: ${items.join(", ")}.` : `${items.length} item${items.length > 1 ? "s" : ""} given out.`,
+    name ? `Given out: ${items.join(", ")}.` : `${items.length} ${noun}${items.length > 1 ? "s" : ""} given out.`,
   );
 }
 

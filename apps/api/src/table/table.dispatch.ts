@@ -26,6 +26,9 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
   if (a.type === "screen.issue" || a.type === "screen.revoke") return { state: false, codex: false };
   // Deleting an adventure or scene unlinks the Agents' missions tied to it (§11.163), which ride the state snapshot.
   if (a.type === "codex.delete" && (a.kind === "adventure" || a.kind === "beat")) return { state: true, codex: true };
+  // Saving a fielded NPC as an Ally hands its fight row back to the GM and drops its player's asks (§11.208): the state moves.
+  if (a.type === "codex.save" && a.kind === "npc" && (a.data as { fightsAs?: string }).fightsAs === "ally")
+    return { state: true, codex: true };
   // A custom threat rides the codex snapshot (issue #43), so saving or deleting one only changes that.
   if (
     a.type === "codex.save" ||

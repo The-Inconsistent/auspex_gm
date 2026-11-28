@@ -1057,6 +1057,19 @@ test("toPlayerView: an ally is never hidden or cut to bars", () => {
   assert.ok(v?.stats, "an ally's stat block reaches the phones");
 });
 
+test("toPlayerView: npcId reaches the phones on an ally only", () => {
+  const rows = [
+    threat("a", { ally: true, npcId: "n1" }),
+    threat("t", { npcId: "n2" }),
+    threat("b", { npcId: "n3", visibility: "bars" }),
+  ];
+  const out = toPlayerView(table(enc(rows)), "x").encounter!.combatants as ThreatCombatant[];
+  assert.deepEqual(
+    out.map((c) => c.npcId),
+    ["n1", null, null],
+  );
+});
+
 test("FIGHTS AS: what a Follower, an Ally and a Threat may do", () => {
   assert.deepEqual(
     (["follower", "ally", "threat"] as const).map((f) => [canGive(f), canBeEnemy(f), playerMayRun(f)]),
@@ -1093,6 +1106,8 @@ test("toPlayerCodex: a given NPC reaches the phones with its stat block, FIGHTS 
     "a hidden NPC not given stays off the phones",
   );
   assert.equal(out[0]?.followsId, "ch-a");
-  assert.equal(out[0]?.followerStats?.name, orkBoy.name);
+  assert.equal(out[0]?.followerStats, null, "another Agent's phone doesn't get its stat block");
   assert.equal(out[0]?.fightsAs, "threat", "the category never leaves the GM");
+  assert.equal(toPlayerCodex(codex, "ch-a").npcs[0]?.followerStats?.name, orkBoy.name, "the Agent it follows does");
+  assert.equal(toPlayerCodex(codex, null).npcs[0]?.followerStats, null, "the table screen doesn't");
 });

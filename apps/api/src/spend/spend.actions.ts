@@ -1,5 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import {
+  ALLY_SPEND_KINDS,
   MAX_PENDING_SPENDS,
   deriveStats,
   isExhausted,
@@ -11,7 +12,6 @@ import {
   spendTakesAmount,
   type Action,
   type ActionResult,
-  type SpendKind,
 } from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
 import { applyCampaignAction, campaignTier } from "../campaign/campaign.actions.ts";
@@ -37,10 +37,6 @@ async function ambushedCombatant(tx: Tx, { campaignId, characterId }: { campaign
   if (!c.ambushed) fail("Not ambushed");
   return c.id;
 }
-
-// What an ally's player may ask for (§11.208): Glory for its damage, Seize and AWARE. Determination's price for an ally
-// is still open, and nothing else is the Agent's own.
-const ALLY_SPENDS: readonly SpendKind[] = ["gloryDamage", "seize", "aware"];
 
 // The ally row a request names: in the current fight, an ally, run by this Agent's player. Never trust the id from the
 // client: the row is looked up in this campaign's active encounter.
@@ -86,7 +82,7 @@ export async function applySpendAction(
       const row = await ownCharacter(tx, { campaignId: cid, id: a.characterId });
       const amount = spendTakesAmount(a.kind) ? a.amount : 1; // only the Glory kinds and Determination have an amount to keep
       if (a.combatantId) {
-        if (!ALLY_SPENDS.includes(a.kind))
+        if (!ALLY_SPEND_KINDS.includes(a.kind))
           fail(
             "An ally can only ask for Glory on its damage, to Seize the Initiative or to be made AWARE (rules-flow.md §11.208)",
           );
@@ -161,6 +157,8 @@ async function spendIt(tx: Tx, { ctx, request: r }: { ctx: Ctx; request: typeof 
   // pool.adjust and character.adjust clamp at 0, which would let a spend the pool can't pay go through for less, so
   // affordability is checked here. (turn.seize has its own check in encounter.actions' spend().)
   await canPay(tx, { campaignId: cid, row, cost });
+  // The ask may be older than the fight or its runner (§11.208): the same check as when it was made.
+  if (r.combatantId) await allyOf(tx, { campaignId: cid, characterId: r.characterId, id: r.combatantId });
 
   switch (r.kind) {
     case "reroll":

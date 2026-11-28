@@ -17,6 +17,10 @@ export const SpendKind = z.enum([
 export type SpendKind = z.infer<typeof SpendKind>;
 export const SPEND_KINDS = SpendKind.options;
 
+// What a player may ask for an ally they run (issue #350, rules-flow §11.208): Glory for its damage, Seize and AWARE.
+// Determination's price for an ally is still open, and the rest are an Agent's own.
+export const ALLY_SPEND_KINDS: readonly SpendKind[] = ["gloryDamage", "seize", "aware"];
+
 // Glory buys any amount of dice or damage (p.165); a table of six Glory never needs more than this per request.
 export const MAX_SPEND_AMOUNT = 10;
 // Pending requests one Agent can have at once: enough for a Test's reroll, dice and damage, not a way to flood the GM.

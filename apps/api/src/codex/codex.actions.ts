@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { and, eq, inArray, isNull, max, sql } from "drizzle-orm";
+import { and, eq, inArray, isNotNull, isNull, max, sql } from "drizzle-orm";
 import { hazards, hulkHazardIds, loot, places, relics, spaceHulk, wargear } from "@wg/data";
 import type { z } from "zod";
 import {
@@ -30,6 +30,7 @@ import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
 import { combatant, encounter } from "../encounter/encounter.schema.ts";
+import { clearAllySpends } from "../spend/spend.clear.ts";
 import { checkThreats } from "../threat/threat.service.ts";
 import { adventure, beat, faction, handout, item, location, npc } from "./codex.schema.ts";
 import { hasImage, sweepImages } from "./image.store.ts";
@@ -85,6 +86,29 @@ export function checkHazards(list: LocationHazard[]) {
 export function checkWargear(wargearIds: (string | null)[]) {
   const unknown = wargearIds.find((w) => w !== null && !wargear.has(w));
   if (unknown) fail(`Unknown wargear "${unknown}"`);
+}
+
+// Rows of this NPC in the campaign's fights go back to the GM (§11.208), from `from` alone when given, and what their
+// player had asked for goes with it: the ask names a runner who no longer runs it.
+async function releaseAllies(
+  tx: Tx,
+  { campaignId, npcId, from }: { campaignId: string; npcId: string; from?: string },
+) {
+  const rows = await tx
+    .update(combatant)
+    .set({ controllerId: null })
+    .where(
+      and(
+        eq(combatant.npcId, npcId),
+        from ? eq(combatant.controllerId, from) : isNotNull(combatant.controllerId),
+        inArray(
+          combatant.encounterId,
+          tx.select({ id: encounter.id }).from(encounter).where(eq(encounter.campaignId, campaignId)),
+        ),
+      ),
+    )
+    .returning({ id: combatant.id });
+  await clearAllySpends(tx, { campaignId, combatantIds: rows.map((r) => r.id) });
 }
 
 // An item lies in one place or is carried by one NPC, not both (issue #51). Not a zod refinement: `.omit()` throws on a
@@ -279,7 +303,11 @@ export async function applyCodexAction(
           .set(data as never)
           .where(and(eq(table.id, a.id), eq(table.campaignId, cid)))
           .returning({ id: table.id });
-        return r.length ? { ok: true, id: a.id } : fail("Not found");
+        if (!r.length) fail("Not found");
+        // Made an Ally while fielded: only the GM runs it now (§11.208).
+        if (a.kind === "npc" && !canGive((a.data as z.output<typeof CodexInput.npc>).fightsAs))
+          await releaseAllies(tx, { campaignId: cid, npcId: a.id });
+        return { ok: true, id: a.id };
       }
       // A new beat goes last. The column default 0 would tie with the first beat once beat.reorder has numbered them.
       if (a.kind === "beat") {
@@ -331,22 +359,7 @@ export async function applyCodexAction(
       if (!found) fail("NPC not found");
       if (!found.followsId) fail(`${found.name} follows no one`);
       await tx.update(npc).set({ followsId: null }).where(eq(npc.id, a.id));
-      await tx
-        .update(combatant)
-        .set({ controllerId: null })
-        .where(
-          and(
-            eq(combatant.npcId, a.id),
-            eq(combatant.controllerId, found.followsId),
-            inArray(
-              combatant.encounterId,
-              tx
-                .select({ id: encounter.id })
-                .from(encounter)
-                .where(and(eq(encounter.campaignId, cid), eq(encounter.active, true))),
-            ),
-          ),
-        );
+      await releaseAllies(tx, { campaignId: cid, npcId: a.id, from: found.followsId });
       return { ok: true };
     }
 

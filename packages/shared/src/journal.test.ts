@@ -114,3 +114,29 @@ test("a recap with names says who was removed and what went to whom", () => {
     "Given out: Relic Bolter to Brother A.",
   ]);
 });
+
+test("allies and given NPCs read apart from the Threats, with names and without", () => {
+  const npc = "00000000-0000-4000-8000-000000000003";
+  const entries = [
+    e({ type: "encounter.start" }),
+    e({ type: "combatant.addThreat", threatId: "ork-boy", mobCount: 6 }),
+    e({ type: "combatant.addThreat", threatId: "ork-nob", ally: true, npcId: npc }),
+    e({ type: "encounter.end" }),
+    e({ type: "npc.give", id: npc, characterId: id }),
+  ];
+  assert.deepEqual(
+    draftRecap(entries, (x) => (x === npc ? "Skitarii Vigil" : x === "ork-boy" ? "Ork Boy" : nameOf(x))),
+    ["Fight 1: Ork Boy x6, with Skitarii Vigil beside them.", "Given out: Skitarii Vigil to Brother A."],
+  );
+  assert.deepEqual(draftRecap(entries), ["Fight 1: ork-boy x6, with ork-nob beside them.", "1 follower given out."]);
+  assert.equal(
+    journalLabel(Action.parse({ type: "npc.give", id: npc, characterId: id }), (x) =>
+      x === npc ? "Vigil" : nameOf(x),
+    ),
+    "Give Vigil to Brother A",
+  );
+  assert.equal(
+    journalLabel(Action.parse({ type: "npc.takeBack", id: npc }), (x) => (x === npc ? "Vigil" : nameOf(x))),
+    "Take Vigil back",
+  );
+});

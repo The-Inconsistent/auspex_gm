@@ -766,9 +766,12 @@ export const toPlayerView = (s: LiveState, characterId: string | null): LiveStat
     // id would name the stat block, and personal Ruin is the GM's.
     combatants: s.encounter.combatants
       .filter((c) => !isHidden(c))
+      // A phone needs `npcId` only on an ally (its runner's Turn); on a Threat it would tie the row to a Codex NPC.
       .map((c) =>
-        c.kind === "threat" && !c.ally && c.visibility === "bars"
-          ? { ...c, stats: null, threatId: "", personalRuin: 0 }
+        c.kind === "threat" && !c.ally
+          ? c.visibility === "bars"
+            ? { ...c, stats: null, threatId: "", personalRuin: 0, npcId: null }
+            : { ...c, npcId: null }
           : c,
       ),
   },

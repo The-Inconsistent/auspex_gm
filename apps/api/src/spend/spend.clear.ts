@@ -13,6 +13,24 @@ export async function clearSpendRequests(tx: Tx, { campaignId, kinds }: { campai
     .where(and(eq(spendRequest.campaignId, campaignId), kinds ? inArray(spendRequest.kind, kinds) : undefined));
 }
 
+// Asks that name an ally's row (§11.208): all of them when `combatantIds` is left out (the fight is over, so no ally is
+// left to ask for), or just those rows' when its runner changed or the NPC was taken back or made an Ally. Deleting the
+// row cascades, but a fight that ends keeps its rows, so these are cleared by hand.
+export async function clearAllySpends(
+  tx: Tx,
+  { campaignId, combatantIds }: { campaignId: string; combatantIds?: string[] },
+) {
+  if (combatantIds && !combatantIds.length) return;
+  await tx
+    .delete(spendRequest)
+    .where(
+      and(
+        eq(spendRequest.campaignId, campaignId),
+        combatantIds ? inArray(spendRequest.combatantId, combatantIds) : isNotNull(spendRequest.combatantId),
+      ),
+    );
+}
+
 // AWARE asks whose Agent (or ally, §11.208) is no longer ambushed in this fight (the GM cleared it on the tablet, or took
 // them out of it): nothing is left to ask for (p.177, §11.177).
 export async function clearMootAware(tx: Tx, { campaignId, encounterId }: { campaignId: string; encounterId: string }) {

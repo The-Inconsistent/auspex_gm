@@ -392,7 +392,8 @@ export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
         hazardList: [],
         parentId: l.parentId && shownLocations.has(l.parentId) ? l.parentId : null,
       })),
-    // A given NPC reaches every phone, revealed or not, with its stat block (§11.208); FIGHTS AS stays the GM's.
+    // A given NPC reaches every phone, revealed or not (FOLLOWS shows), but its stat block only the Agent it follows
+    // (§11.208); FIGHTS AS stays the GM's.
     npcs: c.npcs
       .filter((n) => n.revealed || n.followsId)
       // Attitude stays: the table may see how an NPC regards them (rules-flow §11.89).
@@ -403,7 +404,7 @@ export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
         statSource: { kind: "none" },
         factionId: null,
         fightsAs: "threat",
-        followerStats: n.followsId ? n.followerStats : null,
+        followerStats: n.followsId && n.followsId === characterId ? n.followerStats : null, // only its Agent's phone
       })),
     handouts: c.handouts
       .filter((h) => h.revealed && (!h.audience.length || (!!characterId && h.audience.includes(characterId))))
