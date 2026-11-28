@@ -11,7 +11,15 @@ import {
   type AnyPgColumn,
 } from "drizzle-orm/pg-core";
 import type { z } from "zod";
-import type { AdventureStatus, Attitude, BeatStatus, BeatType, FactionStance, HandoutStyle } from "@wg/shared";
+import type {
+  AdventureStatus,
+  Attitude,
+  BeatStatus,
+  BeatType,
+  FactionStance,
+  FightsAs,
+  HandoutStyle,
+} from "@wg/shared";
 import { owned } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import { body } from "../core/sql.ts";
@@ -109,6 +117,8 @@ export const npc = pgTable("npc", {
   secrets: body(),
   attitude: text().$type<z.infer<typeof Attitude>>().notNull().default("neutral"),
   statSource: jsonb().$type<unknown>().notNull().default({ kind: "none" }),
+  fightsAs: text().$type<FightsAs>().notNull().default("threat"), // issue #350, §11.208
+  followsId: uuid().references(() => character.id, { onDelete: "set null" }), // the Agent it was given to: server-owned (npc.give)
   revealed: boolean().notNull().default(false),
   ...picture(),
 });

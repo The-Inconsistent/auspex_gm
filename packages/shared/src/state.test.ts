@@ -36,6 +36,11 @@ import {
   roundEndReminders,
   turnMark,
   sideUpNext,
+  sideOf,
+  isRunBy,
+  canGive,
+  canBeEnemy,
+  playerMayRun,
   threatStatus,
   toPlayerCodex,
   CodexInput,
@@ -73,6 +78,9 @@ const threat = (id: string, o: Partial<ThreatCombatant> = {}): ThreatCombatant =
   conditions: ["Prone"],
   visibility: "bars",
   stats: orkBoy,
+  ally: false,
+  controllerId: null,
+  npcId: null,
   ...o,
 });
 const pc = (id: string, o: Partial<Combatant> = {}): Combatant =>
@@ -678,9 +686,12 @@ test("codex.save validates per kind; player codex drops secrets and unrevealed e
         secrets: "x",
         attitude: "uncooperative",
         statSource: { kind: "quick", tier: 4 },
+        fightsAs: "threat",
         revealed: true,
         imageId: null,
         imageRevealed: false,
+        followsId: null,
+        followerStats: null,
       },
       {
         id: "n2",
@@ -692,9 +703,12 @@ test("codex.save validates per kind; player codex drops secrets and unrevealed e
         secrets: "",
         attitude: "neutral",
         statSource: { kind: "none" },
+        fightsAs: "threat",
         revealed: false,
         imageId: null,
         imageRevealed: false,
+        followsId: null,
+        followerStats: null,
       },
     ],
     handouts: [],
@@ -740,6 +754,8 @@ test("a revealed entry's picture reaches phones only once it's shown too (issue 
   const npc = (imageRevealed: boolean) => ({
     id: "00000000-0000-4000-8000-000000000001",
     ...CodexInput.npc.parse({ name: "Magos", revealed: true, imageId, imageRevealed }),
+    followsId: null,
+    followerStats: null,
   });
   const handout = (imageRevealed: boolean) => ({
     id: "00000000-0000-4000-8000-000000000002",
@@ -878,8 +894,22 @@ test("an item defaults to no Powers, and another Agent's phone doesn't get it (i
 
 test("toPlayerView: every phone sees every pending spend request (rules-flow §11.123)", () => {
   const spendRequests = [
-    { id: "r1", characterId: "a", kind: "reroll" as const, amount: 1, createdAt: "2026-01-01T00:00:00.000Z" },
-    { id: "r2", characterId: "b", kind: "gloryDice" as const, amount: 2, createdAt: "2026-01-01T00:00:01.000Z" },
+    {
+      id: "r1",
+      characterId: "a",
+      kind: "reroll" as const,
+      amount: 1,
+      combatantId: null,
+      createdAt: "2026-01-01T00:00:00.000Z",
+    },
+    {
+      id: "r2",
+      characterId: "b",
+      kind: "gloryDice" as const,
+      amount: 2,
+      combatantId: null,
+      createdAt: "2026-01-01T00:00:01.000Z",
+    },
   ];
   const s = { ...table(enc([])), spendRequests };
   assert.deepEqual(toPlayerView(s, "a").spendRequests, spendRequests);
@@ -1001,4 +1031,68 @@ test("roundEndReminders: held actions are lost and ambushes end (p.177)", () => 
 test("toPlayerView: the undo trail stays off the phones", () => {
   const s = table(enc([pc("a")], { back: "Aurelian's Turn" }));
   assert.equal(toPlayerView(s, null).encounter!.back, null);
+});
+
+// Issue #350, rules-flow §11.208: allies sit on the Agents' side.
+test("an ally is on the Agents' side: the players pick it, the Threats go after it", () => {
+  const ally = threat("k", { ally: true, controllerId: "ch-a" });
+  assert.equal(sideOf(ally), "agents");
+  assert.equal(sideOf(threat("t")), "threats");
+  // Every Agent acted; the ally still holds the Agents' side up, so the Threats wait their turn.
+  const s = table(enc([pc("a", { acted: true }), ally, threat("t")], { lastSide: "threats" }));
+  assert.equal(sideUpNext(s), "agents");
+  const after = table(enc([pc("a", { acted: true }), { ...ally, acted: true }, threat("t")], { lastSide: "agents" }));
+  assert.equal(sideUpNext(after), "threats");
+  assert.equal(isRunBy(ally, "ch-a"), true);
+  assert.equal(isRunBy(ally, "ch-b"), false);
+  assert.equal(isRunBy({ ...ally, controllerId: null }, "ch-a"), false, "a GM-run ally is nobody's phone's");
+});
+
+test("toPlayerView: an ally is never hidden or cut to bars", () => {
+  const ally = threat("k", { ally: true, visibility: "hidden" });
+  const bars = threat("v", { ally: true, visibility: "bars" });
+  const [k, v] = toPlayerView(table(enc([ally, bars])), "x").encounter!.combatants as ThreatCombatant[];
+  assert.equal(k?.id, "k");
+  assert.ok(k?.stats, "a hidden-marked ally still shows");
+  assert.ok(v?.stats, "an ally's stat block reaches the phones");
+});
+
+test("FIGHTS AS: what a Follower, an Ally and a Threat may do", () => {
+  assert.deepEqual(
+    (["follower", "ally", "threat"] as const).map((f) => [canGive(f), canBeEnemy(f), playerMayRun(f)]),
+    [
+      [true, false, true],
+      [false, false, false],
+      [true, true, true],
+    ],
+  );
+});
+
+test("toPlayerCodex: a given NPC reaches the phones with its stat block, FIGHTS AS stays the GM's", () => {
+  const npc = (id: string, o: object) => ({
+    id,
+    ...CodexInput.npc.parse({ name: id, fightsAs: "follower", statSource: { kind: "bestiary", threatId: "ork-boy" } }),
+    followsId: null,
+    followerStats: null,
+    ...o,
+  });
+  const codex: Codex = {
+    factions: [],
+    adventures: [],
+    locations: [],
+    npcs: [npc("given", { followsId: "ch-a", followerStats: orkBoy }), npc("unseen", { followerStats: orkBoy })],
+    handouts: [],
+    items: [],
+    sessions: [],
+    customThreats: [],
+  };
+  const out = toPlayerCodex(codex, "ch-b").npcs;
+  assert.deepEqual(
+    out.map((n) => n.id),
+    ["given"],
+    "a hidden NPC not given stays off the phones",
+  );
+  assert.equal(out[0]?.followsId, "ch-a");
+  assert.equal(out[0]?.followerStats?.name, orkBoy.name);
+  assert.equal(out[0]?.fightsAs, "threat", "the category never leaves the GM");
 });

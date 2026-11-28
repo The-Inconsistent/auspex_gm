@@ -27,6 +27,7 @@ export const SpendRequest = z.object({
   characterId: z.string(),
   kind: SpendKind,
   amount: z.number().int(),
+  combatantId: z.string().nullable(), // an ally run by this Agent's player, else null (issue #350)
   createdAt: z.string(), // ISO, oldest first on the wire
 });
 export type SpendRequest = z.infer<typeof SpendRequest>;

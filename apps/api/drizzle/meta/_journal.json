@@ -253,6 +253,13 @@
       "when": 1794993024606,
       "tag": "0035_action_journal",
       "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1795858119639,
+      "tag": "0036_striped_barracuda",
+      "breakpoints": true
     }
   ]
 }

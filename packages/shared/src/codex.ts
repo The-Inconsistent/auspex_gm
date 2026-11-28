@@ -64,6 +64,16 @@ export const quickScaling = ({ row, tier, players }: { row: QuickRow; tier: numb
 });
 
 // Where an NPC's or encounter entry's stats come from.
+// How a Codex NPC may fight (issue #350, rules-flow §11.208): a Follower can be given to an Agent and fights only beside
+// them; an Ally fights beside them but only the GM runs it and it is never given; a Threat is an enemy by default but may
+// join as an ally or be given when the story turns. Players never see it.
+export const FightsAs = z.enum(["follower", "ally", "threat"]);
+export type FightsAs = z.infer<typeof FightsAs>;
+export const canGive = (f: FightsAs) => f !== "ally";
+export const canBeEnemy = (f: FightsAs) => f === "threat";
+// Whether a player may run it in a fight (the GM always may).
+export const playerMayRun = (f: FightsAs) => f !== "ally";
+
 export const StatSource = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("bestiary"), threatId: z.string() }),
   z.object({
@@ -281,6 +291,7 @@ export const CodexInput = {
     secrets: text().default(""),
     attitude: Attitude.default("neutral"),
     statSource: StatSource.default({ kind: "none" }),
+    fightsAs: FightsAs.default("threat"),
     revealed: z.boolean().default(false),
     ...picture,
   }),
@@ -334,7 +345,9 @@ export type Codex = {
   factions: Row<"faction">[];
   adventures: (Row<"adventure"> & { beats: (Row<"beat"> & { order: number })[] })[];
   locations: Row<"location">[];
-  npcs: Row<"npc">[];
+  // followsId: the Agent it was given to (`npc.give`, server-owned like an item's givenTo). followerStats: its stat block
+  // for that Agent's sheet, resolved by the server for a given NPC with a bestiary or custom stat source, else null.
+  npcs: (Row<"npc"> & { followsId: string | null; followerStats: Threat | null })[];
   handouts: (Row<"handout"> & { revealedAt: string | null })[];
   items: (Row<"item"> & { givenTo: string | null })[];
   sessions: {
@@ -379,10 +392,19 @@ export function toPlayerCodex(c: Codex, characterId: string | null): Codex {
         hazardList: [],
         parentId: l.parentId && shownLocations.has(l.parentId) ? l.parentId : null,
       })),
+    // A given NPC reaches every phone, revealed or not, with its stat block (§11.208); FIGHTS AS stays the GM's.
     npcs: c.npcs
-      .filter((n) => n.revealed)
+      .filter((n) => n.revealed || n.followsId)
       // Attitude stays: the table may see how an NPC regards them (rules-flow §11.89).
-      .map((n) => ({ ...pictured(n), gmNotes: "", secrets: "", statSource: { kind: "none" }, factionId: null })),
+      .map((n) => ({
+        ...pictured(n),
+        gmNotes: "",
+        secrets: "",
+        statSource: { kind: "none" },
+        factionId: null,
+        fightsAs: "threat",
+        followerStats: n.followsId ? n.followerStats : null,
+      })),
     handouts: c.handouts
       .filter((h) => h.revealed && (!h.audience.length || (!!characterId && h.audience.includes(characterId))))
       .map((h) => ({ ...pictured(h), audience: h.audience.length && characterId ? [characterId] : [] })),

@@ -2,6 +2,7 @@ import { boolean, integer, jsonb, pgTable, text, uuid, type AnyPgColumn } from "
 import type { CombatantKind, Marker, Side, Threat, ThreatClass, Visibility } from "@wg/shared";
 import { campaign } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
+import { npc } from "../codex/codex.schema.ts";
 import { conditions, createdAt } from "../core/sql.ts";
 import type { TurnStep } from "./encounter.turn-step.ts";
 
@@ -44,4 +45,9 @@ export const combatant = pgTable("combatant", {
   conditions: conditions(),
   expiring: conditions(), // timed Conditions held when this Turn started; they end with it (§11.8)
   visibility: text().$type<Visibility>().notNull().default("bars"), // players' view of a threat (§11.56)
+  // An ally fights on the Agents' side (issue #350, §11.208). controllerId: the Agent whose player runs it, null = the GM.
+  // npcId: the Codex NPC it came from, so its FIGHTS AS is checked as it is now.
+  ally: boolean().notNull().default(false),
+  controllerId: uuid().references(() => character.id, { onDelete: "set null" }),
+  npcId: uuid().references(() => npc.id, { onDelete: "set null" }),
 });

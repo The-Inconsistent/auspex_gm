@@ -1442,6 +1442,28 @@ narration, Fear/Terror DNs, when the encounter ends, Adversary Dying-vs-dead, op
      (Core pp.193-199, and p.286 in the ledger). This app's card also shows the Conditions, DRAFT and the objectives
      line; those are not health states and are left to the platform. The rulesets are 0.1.20 and 0.2.21.
      *2026-11-28.*
+208. **Allies: NPCs who fight beside the Agents** (GitHub issue #350; Core pp.115, 130–132, 165, 173, 177, 320;
+     Threat Assessment pp.8, 13; Redacted Records p.43). No book prints how an ally acts in a fight: who runs it, which
+     side's Turn it takes, what pays for it. Initiative is Agents against Threats, "GM-controlled NPCs that … oppose the
+     Agents" (p.173), and Glory or Ruin is spent for "your character" or "a Threat" (p.177). The house rules:
+     - **Side.** Turns stay Agents → Threats → Agents (p.177). Every ally counts on the Agents' side (`sideOf`), and the
+       players pick who acts, a GM-run Ally included; the GM then runs its Turn.
+     - **Who runs it.** The player whose Agent it follows, or the GM, as the story goes (`controllerId`, null for the
+       GM). The GM sets it and can change it. A player runs an ally as their own Agent: the phone shows its Turn and asks
+       for spends; the GM taps.
+     - **Seize and AWARE** for an ally cost 1 Glory, as for an Agent (p.177), never Ruin.
+     - **Budget.** Allies stay out of Building Encounters (Threat Assessment p.8 counts only the opposition): they are
+       the reward for talking the NPC round.
+     - **Death** by its threat class, as a Threat (pp.323–324).
+     - **Phones** always see an ally's full stat block, whoever runs it: never bars, never hidden.
+     - **FIGHTS AS** on a Codex NPC (`fightsAs`, default Threat): a **Follower** can be given to an Agent and fights
+       only beside the Agents; an **Ally** fights beside them, only the GM runs it and it is never given; a **Threat** is
+       an enemy by default, may join as an ally, and may be given. Giving does not change it. Players never see it.
+     - **GIVE / TAKE BACK** a Codex NPC (`npc.give`, `npc.takeBack`) works as an item's (§11.112, §11.114): an open
+       session, no Test; TAKE BACK any time. A given NPC reaches every phone, revealed or not, with its stat block.
+     - **Open:** what an ally pays for Determination. A Threat's stat block prints "Spend 1 Ruin"; the stat block is
+       shown as printed until this is ruled.
+     *User rulings, 2026-11-28.*
 
 ---
 

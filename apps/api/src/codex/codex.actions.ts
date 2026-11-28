@@ -1,9 +1,10 @@
 import { randomUUID } from "node:crypto";
-import { and, eq, inArray, max, sql } from "drizzle-orm";
+import { and, eq, inArray, isNull, max, sql } from "drizzle-orm";
 import { hazards, hulkHazardIds, loot, places, relics, spaceHulk, wargear } from "@wg/data";
 import type { z } from "zod";
 import {
   LocationHazard,
+  canGive,
   hulkNotes,
   lootNotes,
   relicNotes,
@@ -24,9 +25,11 @@ import {
 } from "@wg/shared";
 import type { Ctx } from "../auth/auth.service.ts";
 import { campaignRules } from "../campaign/campaign.actions.ts";
+import { session } from "../campaign/campaign.schema.ts";
 import { character } from "../character/character.schema.ts";
 import type { Tx } from "../core/db.ts";
 import { fail } from "../core/errors.ts";
+import { combatant, encounter } from "../encounter/encounter.schema.ts";
 import { checkThreats } from "../threat/threat.service.ts";
 import { adventure, beat, faction, handout, item, location, npc } from "./codex.schema.ts";
 import { hasImage, sweepImages } from "./image.store.ts";
@@ -42,7 +45,9 @@ export type CodexAction = Extract<
       | "codex.addPlaces"
       | "codex.addHulk"
       | "codex.addLoot"
-      | "codex.addRelic";
+      | "codex.addRelic"
+      | "npc.give"
+      | "npc.takeBack";
   }
 >;
 
@@ -207,6 +212,14 @@ export async function applyCodexAction(
         const n = a.data as z.output<typeof CodexInput.npc>;
         await refs(faction, [n.factionId], "Faction");
         if (n.statSource.kind === "bestiary") await checkThreats(tx, cid, [n.statSource.threatId]);
+        // A follower can't be turned into an Ally while an Agent has it: an Ally is never given (§11.208).
+        if (a.id && !canGive(n.fightsAs)) {
+          const [held] = await tx
+            .select({ name: npc.name, followsId: npc.followsId })
+            .from(npc)
+            .where(and(eq(npc.id, a.id), eq(npc.campaignId, cid)));
+          if (held?.followsId) fail(`${held.name} follows an Agent: take it back before making it an Ally`);
+        }
       }
       if (a.kind === "location") {
         const parentId = (a.data as z.output<typeof CodexInput.location>).parentId;
@@ -282,6 +295,59 @@ export async function applyCodexAction(
         .values({ ...data, campaignId: cid } as never)
         .returning({ id: table.id });
       return { ok: true, id: row!.id }; // the row was just inserted
+    }
+
+    // A Codex NPC given to an Agent as a follower (issue #350, §11.208), as an item is (§11.112): an open session, no Test.
+    // `followsId` is server-owned, so a codex.save leaves it alone, as it does an item's givenTo.
+    case "npc.give": {
+      const [found] = await tx
+        .select()
+        .from(npc)
+        .where(and(eq(npc.id, a.id), eq(npc.campaignId, cid)));
+      if (!found) fail("NPC not found");
+      const [agent] = await tx
+        .select({ id: character.id, name: character.name })
+        .from(character)
+        .where(and(eq(character.id, a.characterId), eq(character.campaignId, cid)));
+      if (!agent) fail("Character not found");
+      if (!canGive(found.fightsAs)) fail(`${found.name} is an Ally: only the GM controls it, it can't be given`);
+      if (found.followsId) fail(`${found.name} follows an Agent already: take it back first`);
+      const [open] = await tx
+        .select({ id: session.id })
+        .from(session)
+        .where(and(eq(session.campaignId, cid), isNull(session.endedAt)));
+      if (!open) fail("Start a session first: followers are given at the table (rules-flow.md §11.208)");
+      await tx.update(npc).set({ followsId: agent.id }).where(eq(npc.id, found.id));
+      return { ok: true };
+    }
+
+    // TAKE BACK needs no session, as an item's doesn't (§11.114). A row of the current fight that the Agent's player ran
+    // goes back to the GM; it stays an ally until the GM removes it.
+    case "npc.takeBack": {
+      const [found] = await tx
+        .select({ name: npc.name, followsId: npc.followsId })
+        .from(npc)
+        .where(and(eq(npc.id, a.id), eq(npc.campaignId, cid)));
+      if (!found) fail("NPC not found");
+      if (!found.followsId) fail(`${found.name} follows no one`);
+      await tx.update(npc).set({ followsId: null }).where(eq(npc.id, a.id));
+      await tx
+        .update(combatant)
+        .set({ controllerId: null })
+        .where(
+          and(
+            eq(combatant.npcId, a.id),
+            eq(combatant.controllerId, found.followsId),
+            inArray(
+              combatant.encounterId,
+              tx
+                .select({ id: encounter.id })
+                .from(encounter)
+                .where(and(eq(encounter.campaignId, cid), eq(encounter.active, true))),
+            ),
+          ),
+        );
+      return { ok: true };
     }
 
     case "codex.delete": {

@@ -413,13 +413,22 @@ export const ThreatCombatant = z.object({
   conditions: z.array(z.string()),
   visibility: Visibility,
   stats: Threat.nullable(), // null in the player view until visibility is "stats"
+  // An ally fights on the Agents' side (issue #350, rules-flow §11.208): the players pick it, Glory pays for it, it stays
+  // out of the encounter budget and every phone sees its stat block. `controllerId` is the Agent whose player runs it,
+  // null for the GM; `npcId` the Codex NPC it came from, whose FIGHTS AS the server checks on every change.
+  ally: z.boolean(),
+  controllerId: z.string().nullable(),
+  npcId: z.string().nullable(),
 });
 export type ThreatCombatant = z.infer<typeof ThreatCombatant>;
 
 export const Combatant = z.discriminatedUnion("kind", [PcCombatant, ThreatCombatant]);
 export type Combatant = z.infer<typeof Combatant>;
 export const sideOfKind = (kind: CombatantKind): Side => (kind === "pc" ? "agents" : "threats");
-export const sideOf = (c: Combatant): Side => sideOfKind(c.kind);
+export const sideOf = (c: Combatant): Side => (c.kind === "threat" && c.ally ? "agents" : sideOfKind(c.kind));
+// The ally rows a player runs (issue #350): their follower's Turn takes over that phone.
+export const isRunBy = (c: Combatant, characterId: string | null): c is ThreatCombatant =>
+  !!characterId && c.kind === "threat" && c.ally && c.controllerId === characterId;
 
 // The kind of game the table wants and what it leaves out (Core p.316, rules-flow §11.79): short lines, players see them.
 export const MAX_TABLE_LINES = 12;
@@ -693,7 +702,8 @@ export function threatStatus(c: ThreatCombatant): string[] {
 
 // The player view's currentId while a hidden threat takes its Turn (§11.56).
 export const UNSEEN_ID = "unseen";
-const isHidden = (c: Combatant) => c.kind === "threat" && c.visibility === "hidden";
+// An ally is never hidden nor cut to bars: every phone sees its stat block (§11.208).
+const isHidden = (c: Combatant) => c.kind === "threat" && !c.ally && c.visibility === "hidden";
 
 // Another Agent's mutation as a phone gets it: what it does to the numbers, so its bars match the GM's, but not which
 // mutation it is.
@@ -757,7 +767,9 @@ export const toPlayerView = (s: LiveState, characterId: string | null): LiveStat
     combatants: s.encounter.combatants
       .filter((c) => !isHidden(c))
       .map((c) =>
-        c.kind === "threat" && c.visibility === "bars" ? { ...c, stats: null, threatId: "", personalRuin: 0 } : c,
+        c.kind === "threat" && !c.ally && c.visibility === "bars"
+          ? { ...c, stats: null, threatId: "", personalRuin: 0 }
+          : c,
       ),
   },
 });

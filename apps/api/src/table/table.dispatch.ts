@@ -38,6 +38,7 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
     a.type === "threat.delete" ||
     a.type === "codex.addLoot" ||
     a.type === "codex.addRelic" ||
+    a.type === "npc.give" || // followsId rides the codex
     a.type === "session.edit" // a recap or the GM's notes: no pool or sheet moves
   )
     return { state: false, codex: true };
@@ -48,6 +49,7 @@ export function touches(a: Action): { state: boolean; codex: boolean } {
     a.type === "character.delete" ||
     a.type === "character.giveItem" ||
     a.type === "character.takeItem" ||
+    a.type === "npc.takeBack" || // may hand a fight row back to the GM (controllerId rides the state)
     a.type === "journal.undo" || // reverts rows in either snapshot
     a.type.startsWith("session.")
   )
@@ -218,6 +220,8 @@ function dispatch(tx: Tx, { ctx, action }: { ctx: Ctx; action: Action }): Promis
     case "codex.addHulk":
     case "codex.addLoot":
     case "codex.addRelic":
+    case "npc.give":
+    case "npc.takeBack":
       return applyCodexAction(tx, { ctx, action });
 
     case "threat.save":
